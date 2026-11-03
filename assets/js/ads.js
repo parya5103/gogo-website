@@ -10,9 +10,9 @@
       <head> of the informational pages. This script detects that tag
       and never injects a second copy.
    3. DONE: /ads.txt exists at the site root with the real publisher ID.
-   4. REMAINING: fill the slot IDs in CONFIG.slots with real AdSense
-      slot IDs. Until then every ad unit stays hidden and zero ad
-      units are served.
+   4. DONE (2026-11-03): CONFIG.slots filled with the owner-created
+      AdSense responsive display unit 7200569170 (reused across all
+      placements for now; separate units can be added later).
    5. REMAINING (EEA / UK / Switzerland): ad units stay OFF for those
       regions until a Google-certified CMP (e.g. Funding Choices)
       handles consent. Set cmpReady to true only after that
@@ -24,8 +24,8 @@
     publisherId: "ca-pub-2895136878543415",   /* owner-verified AdSense publisher ID (2026-11-03) */
     cmpReady: false,    /* true only after a Google-certified CMP handles consent */
     slots: {
-      "home-mid": "",       /* AdSense slot ID for the homepage mid-content unit */
-      "about-bottom": ""    /* AdSense slot ID for the about-page bottom unit */
+      "home-mid": "7200569170",       /* AdSense responsive display unit for the homepage mid-content placement */
+      "about-bottom": "7200569170"    /* AdSense responsive display unit for the about-page bottom placement */
     }
   };
 
