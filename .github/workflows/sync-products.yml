@@ -99,10 +99,21 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Drop any stale index entries (gitlinks from the broken first sync,
+          # or file entries from previous runs) so git add stages fresh trees.
+          # Without this, git add silently skips paths whose index entry is a
+          # gitlink (mode 160000) even though .git is no longer present.
+          git rm -r --cached --ignore-unmatch --quiet arrowout crystalquest sarkari-sarthi || true
           git add arrowout crystalquest sarkari-sarthi
+          if git ls-files -s | grep -q '^160000'; then
+            echo "::error::gitlink (embedded repository) entries present in index - refusing to publish"
+            git ls-files -s | grep '^160000' || true
+            exit 1
+          fi
           if git diff --cached --quiet; then
             echo "No product changes to publish."
           else
             git commit -m "sync: refresh product apps from source repositories"
+            git pull --rebase origin main
             git push
           fi
