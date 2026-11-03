@@ -189,7 +189,7 @@ function renderJobsTable() {
         tr.appendChild(tdCategory);
 
         const tdDate = document.createElement('td');
-        tdDate.textContent = job.last_date || 'Not specified';
+        tdDate.textContent = job.last_date || (job.important_dates && job.important_dates.last_date) || 'Not specified';
         tr.appendChild(tdDate);
 
         const tdActions = document.createElement('td');
@@ -218,6 +218,12 @@ function renderJobsTable() {
     tbody.appendChild(fragment);
 }
 
+// Security: job IDs become file names in the fetch pipeline
+// (jobs/<id>.json). Only [A-Za-z0-9_-]{1,80} is ever safe.
+function isValidJobId(id) {
+    return /^[A-Za-z0-9_-]{1,80}$/.test(id);
+}
+
 function escapeHTML(str) {
     if (!str) return '';
     return str.replace(/[&<>'"]/g,
@@ -231,6 +237,16 @@ function escapeHTML(str) {
     );
 }
 
+// Store dates in the portal house format (DD-MM-YYYY). Accepts a
+// YYYY-MM-DD value from the form and converts it; any other text is
+// kept as typed so free-text values are never corrupted.
+function normalizeHouseDate(raw) {
+    const v = (raw || '').trim();
+    const m = v.match(/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/);
+    if (m) return m[3] + '-' + m[2] + '-' + m[1];
+    return v || null;
+}
+
 function generateHash() {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }
@@ -240,6 +256,14 @@ function openAddJobModal() {
     document.getElementById('jobId').value = '';
     document.getElementById('jobTitle').value = '';
     document.getElementById('jobDepartment').value = '';
+    document.getElementById('jobOrganization').value = '';
+    document.getElementById('jobAdvtNo').value = '';
+    document.getElementById('jobVacancies').value = '';
+    document.getElementById('jobQualification').value = '';
+    document.getElementById('jobStartDate').value = '';
+    document.getElementById('jobNotificationUrl').value = '';
+    document.getElementById('jobApplyUrl').value = '';
+    document.getElementById('jobStatus').value = 'active';
     document.getElementById('jobCategory').value = 'Other Govt Jobs';
     document.getElementById('jobLastDate').value = '';
     document.getElementById('jobUrl').value = '';
@@ -260,10 +284,18 @@ function editJob(jobId) {
     document.getElementById('jobId').value = job.id;
     document.getElementById('jobTitle').value = job.title || '';
     document.getElementById('jobDepartment').value = job.department || '';
+    document.getElementById('jobOrganization').value = job.organization || '';
+    document.getElementById('jobAdvtNo').value = job.advertisement_no || '';
+    document.getElementById('jobVacancies').value = job.vacancies || '';
+    document.getElementById('jobQualification').value = job.qualification || '';
+    document.getElementById('jobStartDate').value = (job.important_dates && job.important_dates.application_start_date) || job.application_start_date || '';
+    document.getElementById('jobNotificationUrl').value = job.official_notification_url || '';
+    document.getElementById('jobApplyUrl').value = job.official_application_url || '';
+    document.getElementById('jobStatus').value = job.status || 'active';
     document.getElementById('jobCategory').value = job.category || 'Other Govt Jobs';
-    document.getElementById('jobLastDate').value = job.last_date || '';
+    document.getElementById('jobLastDate').value = job.last_date || (job.important_dates && job.important_dates.last_date) || '';
     document.getElementById('jobUrl').value = job.url || '';
-    document.getElementById('jobSummary').value = job.summary || '';
+    document.getElementById('jobSummary').value = job.summary || job.description || '';
 
     document.getElementById('jobModal').style.display = 'flex';
 }
@@ -284,14 +316,31 @@ async function deleteJob(jobId) {
 }
 
 async function saveJobData() {
+    const rawId = document.getElementById('jobId').value;
+    if (rawId && !isValidJobId(rawId)) {
+        alert('Invalid job ID. Use 1-80 characters: letters, numbers, hyphens and underscores only.');
+        return;
+    }
     const id = document.getElementById('jobId').value || `manual_${generateHash()}`;
 
+    // Manual import (Phase 3): optional fields are stored as null when
+    // left blank, never as invented values. null means 'not specified in
+    // the official notification'.
+    const val = (elemId) => (document.getElementById(elemId).value || '').trim() || null;
     const newJobData = {
         id: id,
         title: document.getElementById('jobTitle').value.trim(),
         department: document.getElementById('jobDepartment').value.trim(),
+        organization: val('jobOrganization'),
+        advertisement_no: val('jobAdvtNo'),
+        vacancies: val('jobVacancies'),
+        qualification: val('jobQualification'),
+        official_notification_url: val('jobNotificationUrl'),
+        official_application_url: val('jobApplyUrl'),
+        application_start_date: normalizeHouseDate(document.getElementById('jobStartDate').value),
+        status: val('jobStatus') || 'active',
         category: document.getElementById('jobCategory').value,
-        last_date: document.getElementById('jobLastDate').value.trim(),
+        last_date: normalizeHouseDate(document.getElementById('jobLastDate').value),
         url: document.getElementById('jobUrl').value.trim(),
         summary: document.getElementById('jobSummary').value.trim(),
         found_date: new Date().toISOString()
@@ -306,9 +355,28 @@ async function saveJobData() {
     const existingIndex = currentJobs.findIndex(j => j.id === id);
     if (existingIndex >= 0) {
         // Keep original found_date if it exists
-        newJobData.found_date = currentJobs[existingIndex].found_date || newJobData.found_date;
-        currentJobs[existingIndex] = { ...currentJobs[existingIndex], ...newJobData };
+        const existing = currentJobs[existingIndex];
+        newJobData.found_date = existing.found_date || newJobData.found_date;
+        const merged = { ...existing, ...newJobData };
+        // Scraped jobs keep dates inside important_dates. Mirror the flat
+        // admin field into the nested structure so the public listing
+        // (which reads important_dates.last_date) stays in sync.
+        if (existing.important_dates) {
+            merged.important_dates = { ...existing.important_dates };
+            if (newJobData.last_date) {
+                merged.important_dates.last_date = newJobData.last_date;
+            }
+            if (newJobData.application_start_date) {
+                merged.important_dates.application_start_date = newJobData.application_start_date;
+            }
+        }
+        if (existing.description && newJobData.summary) {
+            merged.description = newJobData.summary;
+        }
+        merged.last_verified = new Date().toISOString();
+        currentJobs[existingIndex] = merged;
     } else {
+        newJobData.last_verified = new Date().toISOString();
         currentJobs.unshift(newJobData); // Add to top
     }
 
@@ -325,6 +393,8 @@ async function updateManifestOnGithub(commitMessage) {
     const manifestData = {
         last_updated: new Date().toISOString(),
         total_jobs: currentJobs.length,
+        active_jobs: currentJobs.length,
+        expired_jobs: 0,
         jobs: currentJobs
     };
 

@@ -65,6 +65,7 @@ function sanitizeHTML(htmlString) {
 
 // Global variables
 let jobsData = [];
+let jobsLoadFailed = false; // true when the job manifest could not be loaded (no fake fallback jobs)
 let filteredJobs = [];
 let currentPage = 1;
 const jobsPerPage = 12;
@@ -168,6 +169,15 @@ function setupEventListeners() {
         }
     });
     
+    // Footer category links (href="#" placeholders): make them filter
+    // the jobs list instead of dead-ending.
+    document.querySelectorAll('a[data-category]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            filterByCategory(this.dataset.category);
+        });
+    });
+
     // Category card clicks
     document.querySelectorAll('.category-card').forEach(card => {
         card.addEventListener('click', function() {
@@ -188,20 +198,85 @@ function setupEventListeners() {
 }
 
 /**
- * Load jobs data (simulated for now)
+ * Parse a job date string in the formats used by job records
+ * (dd-mm-yyyy, dd/mm/yyyy, yyyy-mm-dd). Returns null if unparseable.
+ */
+function parseJobDate(dateStr) {
+    if (!dateStr) return null;
+    let m = dateStr.match(/(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/);
+    if (m) return new Date(+m[3], +m[2] - 1, +m[1]);
+    m = dateStr.match(/(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
+    if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
+    return null;
+}
+
+/**
+ * Filter out jobs whose last date has already passed, so closed
+ * vacancies are never displayed as active openings.
+ */
+function filterExpiredJobs(jobs) {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    return jobs.filter(job => {
+        // Server-side normalized status (Phase B) is authoritative when
+        // present; the date check below remains a safety net for old
+        // records that never passed through normalize_job.
+        const status = String(job.status || '').toLowerCase();
+        if (status === 'cancelled' || status === 'expired') return false;
+        const lastDateStr = job.important_dates && job.important_dates.last_date;
+        const lastDate = parseJobDate(lastDateStr);
+        // Keep jobs without a parseable last date: absence of a date is
+        // not evidence that a vacancy has closed.
+        if (!lastDate) return true;
+        return lastDate >= now;
+    });
+}
+
+/**
+ * Rebuild the category filter options from the currently loaded job
+ * data, so every category present in the manifest (including Medical,
+ * Engineering, Administrative and IT) is filterable, with counts.
+ */
+function populateCategoryFilter() {
+    if (!categoryFilter) return;
+    const selected = categoryFilter.value;
+    const counts = {};
+    jobsData.forEach(job => {
+        if (job.category) counts[job.category] = (counts[job.category] || 0) + 1;
+    });
+    while (categoryFilter.options.length > 1) {
+        categoryFilter.remove(1);
+    }
+    Object.keys(counts).sort().forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat;
+        opt.textContent = cat + ' (' + counts[cat] + ')';
+        categoryFilter.appendChild(opt);
+    });
+    if (selected && Array.from(categoryFilter.options).some(o => o.value === selected)) {
+        categoryFilter.value = selected;
+    }
+}
+
+/**
+ * Load jobs data from the published job manifest
  */
 async function loadJobs() {
     try {
         showLoading(true);
-        
+        jobsLoadFailed = false;
+
         // Try to load from job manifest first
         const response = await fetch('jobs/job_manifest.json');
         if (response.ok) {
             const manifest = await response.json();
-            jobsData = manifest.jobs || [];
+            jobsData = filterExpiredJobs(manifest.jobs || []);
+            populateCategoryFilter();
         } else {
-            // Fallback to sample data if manifest doesn't exist
-            jobsData = generateSampleJobs();
+            // Manifest missing or unreachable: show an honest error
+            // state. Never fall back to hard-coded sample jobs.
+            jobsData = [];
+            jobsLoadFailed = true;
         }
         
         // Optimization: Pre-compute _searchString once during data load to avoid O(N*5) string allocations on every search keystroke
@@ -217,8 +292,9 @@ async function loadJobs() {
         
     } catch (error) {
         console.error('Error loading jobs:', error);
-        // Use sample data as fallback
-        jobsData = generateSampleJobs();
+        // Honest error state: no fake sample-job fallback.
+        jobsData = [];
+        jobsLoadFailed = true;
 
         jobsData.forEach(job => {
             const skillsStr = job.skills ? job.skills.join(' ') : '';
@@ -233,96 +309,6 @@ async function loadJobs() {
     }
 }
 
-/**
- * Generate sample jobs for demonstration
- */
-function generateSampleJobs() {
-    const sampleJobs = [
-        {
-            id: 'sample1',
-            title: 'SBI Clerk Recruitment 2024',
-            source: 'State Bank of India',
-            category: 'Banking',
-            description: 'State Bank of India invites applications for the post of Junior Associate (Customer Support & Sales) in Clerical Cadre. This is a great opportunity for candidates looking to start their career in the banking sector.',
-            url: 'https://sbi.co.in/careers',
-            important_dates: {
-                last_date: '15-02-2024',
-                exam_date: '10-03-2024'
-            },
-            skills: ['Banking', 'Customer Service', 'Computer Skills'],
-            pdf_link: null
-        },
-        {
-            id: 'sample2',
-            title: 'SSC CGL 2024 Notification',
-            source: 'Staff Selection Commission',
-            category: 'SSC',
-            description: 'Staff Selection Commission has released notification for Combined Graduate Level Examination 2024. Various posts are available across different ministries and departments.',
-            url: 'https://ssc.nic.in',
-            important_dates: {
-                last_date: '20-02-2024',
-                exam_date: '15-04-2024'
-            },
-            skills: ['General Knowledge', 'Mathematics', 'English', 'Reasoning'],
-            pdf_link: null
-        },
-        {
-            id: 'sample3',
-            title: 'Railway Group D Recruitment',
-            source: 'Indian Railways',
-            category: 'Railway',
-            description: 'Railway Recruitment Board invites applications for Group D posts including Track Maintainer, Helper, Assistant Pointsman, and other technical posts.',
-            url: 'https://indianrailways.gov.in',
-            important_dates: {
-                last_date: '25-02-2024'
-            },
-            skills: ['Technical Skills', 'Physical Fitness'],
-            pdf_link: null
-        },
-        {
-            id: 'sample4',
-            title: 'UPSC Civil Services Preliminary Exam 2024',
-            source: 'Union Public Service Commission',
-            category: 'UPSC',
-            description: 'UPSC has announced the Civil Services Preliminary Examination 2024 for recruitment to various Group A and Group B services.',
-            url: 'https://upsc.gov.in',
-            important_dates: {
-                last_date: '28-02-2024',
-                exam_date: '26-05-2024'
-            },
-            skills: ['General Studies', 'Current Affairs', 'Optional Subject'],
-            pdf_link: null
-        },
-        {
-            id: 'sample5',
-            title: 'Delhi Police Constable Recruitment',
-            source: 'Delhi Police',
-            category: 'Police',
-            description: 'Delhi Police invites applications for the post of Constable (Executive) Male and Female. Physical and written tests will be conducted.',
-            url: 'https://delhipolice.nic.in',
-            important_dates: {
-                last_date: '18-02-2024'
-            },
-            skills: ['Physical Fitness', 'General Knowledge', 'Hindi', 'English'],
-            pdf_link: null
-        },
-        {
-            id: 'sample6',
-            title: 'Indian Army Agniveer Recruitment',
-            source: 'Indian Army',
-            category: 'Defence',
-            description: 'Indian Army is recruiting Agniveers for various technical and non-technical posts. This is under the Agnipath scheme.',
-            url: 'https://joinindianarmy.nic.in',
-            important_dates: {
-                last_date: '22-02-2024'
-            },
-            skills: ['Physical Fitness', 'Technical Skills', 'Discipline'],
-            pdf_link: null
-        }
-    ];
-    
-    return sampleJobs;
-}
 
 /**
  * Render jobs on the page
@@ -339,7 +325,17 @@ function renderJobs() {
     }
     
     if (jobsToShow.length === 0) {
-        jobsGrid.innerHTML = `
+        if (jobsLoadFailed) {
+            jobsGrid.innerHTML = `
+            <div class="no-jobs">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">📡</div>
+                <h3>Couldn't load job listings</h3>
+                <p>The latest job data could not be loaded. Check your internet connection and retry. We never display sample or outdated jobs as real vacancies.</p>
+                <button class="clear-filters-btn" onclick="location.reload()">Retry</button>
+            </div>
+        `;
+        } else {
+            jobsGrid.innerHTML = `
             <div class="no-jobs">
                 <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
                 <h3>No jobs found</h3>
@@ -347,6 +343,7 @@ function renderJobs() {
                 <button class="clear-filters-btn" onclick="clearAllFilters()">Clear All Filters</button>
             </div>
         `;
+        }
         loadMoreBtn.style.display = 'none';
         return;
     }
@@ -415,6 +412,16 @@ function createJobCard(job) {
     header.appendChild(headerTitleDiv);
     header.appendChild(categorySpan);
 
+    // Application status chip (Phase B status field): 'upcoming' jobs
+    // have a future application start date; expired and cancelled jobs
+    // are filtered out entirely.
+    if (String(job.status || '').toLowerCase() === 'upcoming') {
+        const statusSpan = document.createElement('span');
+        statusSpan.className = 'job-status status-upcoming';
+        statusSpan.textContent = 'Opening Soon';
+        header.appendChild(statusSpan);
+    }
+
     const descP = document.createElement('p');
     descP.className = 'job-description';
     descP.textContent = job.description;
@@ -440,6 +447,15 @@ function createJobCard(job) {
     dateSpan.className = 'job-date';
     dateSpan.textContent = `Last Date: ${lastDate}`;
     metaDiv.appendChild(dateSpan);
+
+    // Link to the static prerendered detail page (Phase 5): a
+    // stable, crawlable URL with the full verified notification data.
+    const detailsLink = document.createElement('a');
+    detailsLink.href = 'job/' + encodeURIComponent(job.id) + '/';
+    detailsLink.className = 'view-details-link';
+    detailsLink.textContent = 'View Details';
+    detailsLink.addEventListener('click', (e) => e.stopPropagation());
+    metaDiv.appendChild(detailsLink);
 
     card.appendChild(metaDiv);
     
@@ -468,7 +484,8 @@ function openJobModal(job) {
     if (!modalTitle || !modalBody || !modalApplyBtn) return;
     
     modalTitle.textContent = job.title;
-    modalApplyBtn.href = sanitizeURL(job.url);
+    // Prefer the verified official application URL when present.
+    modalApplyBtn.href = sanitizeURL(job.official_application_url || job.url);
     
     const lastDate = job.important_dates?.last_date || job.important_dates?.found_date || 'Not specified';
     const examDate = job.important_dates?.exam_date || 'Not specified';
@@ -545,7 +562,10 @@ function openJobModal(job) {
         detailsDiv.appendChild(section3);
     }
 
-    if (job.pdf_link) {
+    // Prefer the verified official notification URL when present;
+    // the legacy pdf_link remains the fallback for older records.
+    const notificationUrl = job.official_notification_url || job.pdf_link;
+    if (notificationUrl) {
         const section4 = document.createElement('div');
         section4.className = 'modal-section';
         const h4_4 = document.createElement('h4');
@@ -554,7 +574,7 @@ function openJobModal(job) {
 
         const pdfP = document.createElement('p');
         const pdfA = document.createElement('a');
-        pdfA.href = sanitizeURL(job.pdf_link);
+        pdfA.href = sanitizeURL(notificationUrl);
         pdfA.target = '_blank';
         pdfA.rel = 'noopener noreferrer';
         pdfA.className = 'pdf-link';
@@ -927,18 +947,10 @@ if (jobSearch) {
     jobSearch.addEventListener('input', debouncedSearch);
 }
 
-// Service Worker registration for PWA (optional)
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-            .then(registration => {
-                console.log('SW registered: ', registration);
-            })
-            .catch(registrationError => {
-                console.log('SW registration failed: ', registrationError);
-            });
-    });
-}
+// No service worker is registered here: this portal has no sw.js
+// asset, so a registration attempt would 404 on every page load.
+// The other GoGo apps (Arrow Out, Crystal Quest) keep their own PWA
+// service workers; this file is portal-specific.
 
 // Export functions for testing (if needed)
 if (typeof module !== 'undefined' && module.exports) {
@@ -946,8 +958,7 @@ if (typeof module !== 'undefined' && module.exports) {
         handleSearch,
         handleFilter,
         handleSort,
-        formatDate,
-        generateSampleJobs
+        formatDate
     };
 }
 

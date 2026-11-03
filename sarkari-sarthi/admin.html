@@ -266,6 +266,28 @@
                 <label for="jobDepartment">Department</label>
                 <input type="text" id="jobDepartment" required>
             </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label for="jobOrganization">Organization</label>
+                    <input type="text" id="jobOrganization" placeholder="Recruiting organization">
+                </div>
+                <div class="form-group">
+                    <label for="jobAdvtNo">Advertisement / Ref No</label>
+                    <input type="text" id="jobAdvtNo" placeholder="From official notification">
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label for="jobVacancies">Vacancies</label>
+                    <input type="text" id="jobVacancies" placeholder="As per notification">
+                </div>
+                <div class="form-group">
+                    <label for="jobQualification">Qualification</label>
+                    <input type="text" id="jobQualification" placeholder="As per notification">
+                </div>
+            </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                 <div class="form-group">
                     <label for="jobCategory">Category</label>
@@ -277,12 +299,42 @@
                         <option value="Defence">Defence</option>
                         <option value="Police">Police</option>
                         <option value="Teaching">Teaching</option>
+                        <option value="Medical">Medical</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Administrative">Administrative</option>
+                        <option value="IT">IT</option>
                         <option value="Other Govt Jobs">Other Govt Jobs</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="jobLastDate">Last Date</label>
-                    <input type="text" id="jobLastDate" placeholder="e.g. 2024-05-30 or 'Not specified'">
+                    <input type="text" id="jobLastDate" placeholder="e.g. 30-05-2026 (DD-MM-YYYY) or leave blank">
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label for="jobStartDate">Application Start Date</label>
+                    <input type="text" id="jobStartDate" placeholder="e.g. 01-12-2026">
+                </div>
+                <div class="form-group">
+                    <label for="jobStatus">Status</label>
+                    <select id="jobStatus">
+                        <option value="active">Active</option>
+                        <option value="upcoming">Upcoming (needs start date)</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label for="jobNotificationUrl">Official Notification URL</label>
+                    <input type="url" id="jobNotificationUrl" placeholder="Official PDF / notice link">
+                </div>
+                <div class="form-group">
+                    <label for="jobApplyUrl">Official Application URL</label>
+                    <input type="url" id="jobApplyUrl" placeholder="Official apply link">
                 </div>
             </div>
 

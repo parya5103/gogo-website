@@ -1,221 +1,9 @@
 {
-  "last_updated": "2026-11-03T14:22:48.155332",
-  "total_jobs": 176,
-  "active_jobs": 176,
-  "expired_jobs": 0,
+  "last_updated": "2026-11-03T17:07:45.000226",
+  "total_jobs": 115,
+  "active_jobs": 115,
+  "expired_jobs": 12,
   "jobs": [
-    {
-      "id": "70cdfc32ffea4d3ef253c798c6b48494",
-      "title": "All Government Jobs",
-      "url": "https://allgovernmentjobs.in/",
-      "source": "allgovernmentjobs.in",
-      "description": "Install All Government Jobs Home Latest Govt Jobs Results Qualifications Organizations Contact Us Login India's Best Portal for All Government Jobs Updates search 189 Notifications and 8,394 Jobs All Government Jobs - Sarkari Naukri India's Best Govt Job Site Get Your Latest Government Jobs Explore the world of All Government Jobs, which offer a wide range of career options. Our robust tool enables you to discover the perfect Govt job that aligns with your qualifications and interests. All Go...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-20T02:02:03.923985",
-      "links": []
-    },
-    {
-      "id": "df51fd822a4feaacdaf996e2d3c50661",
-      "title": "Qualifications",
-      "url": "https://allgovernmentjobs.in/jobs-by-qualification",
-      "source": "allgovernmentjobs.in",
-      "description": "Join on Telegram All Government Jobs Home Latest Govt Jobs Results Qualifications Organizations About Us Contact Us Register Login Jobs By Quaifications Education Total Post Notifications Apply Now Electrical Engineering 2,683 13 Apply / View B.E/ B.Tech 3,852 64 Apply / View Mechanical Engineering 3,812 38 Apply / View DNB 394 10 Apply / View MS/ MD 388 24 Apply / View Post Graduation 703 32 Apply / View BDS 546 35 Apply / View MBBS 555 38 Apply / View M.E / M.Tech 426 46 Apply / View M.Sc 4...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-20T02:02:03.924041",
-      "links": []
-    },
-    {
-      "id": "a14bae7bd9ce0589c8be86df885cf2ff",
-      "title": "Organizations",
-      "url": "https://allgovernmentjobs.in/jobs-by-organization",
-      "source": "allgovernmentjobs.in",
-      "description": "Join on Telegram All Government Jobs Home Latest Govt Jobs Results Qualifications Organizations About Us Contact Us Register Login Jobs By Organization Organization Total Post Notifications Apply Now IIT Jodhpur 3 2 Apply / View ACTREC 1 1 Apply / View THSTI 37 3 Apply / View NIMHANS 19 5 Apply / View IIT Guwahati 1 1 Apply / View TSPSC 1 1 Apply / View IIT Delhi 8 6 Apply / View IIT Kharagpur 6 5 Apply / View CSIR 1 1 Apply / View IIT Kanpur 5 3 Apply / View 1 2 3 Next All Government Jobs Al...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-20T02:02:03.924061",
-      "links": []
-    },
-    {
-      "id": "fe0401064c6850ee4a40cd1ad8e34043",
-      "title": "Latest Govt Jobs",
-      "url": "https://allgovernmentjobs.in/latest-government-jobs",
-      "source": "allgovernmentjobs.in",
-      "description": "Join on Telegram All Government Jobs Home Latest Govt Jobs Results Qualifications Organizations About Us Contact Us Register Login Home > Latest Government Jobs Government Jobs 2026 | 8,394 Latest Govt Jobs 189 Notifications All Government Jobs 2026: Here, you can apply for the latest job postings and recruitment notifications, we are expert in providing the government jobs that offer many employment opportunities for you. our job portal which provides the best recruitment information related...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [
-        "Excel"
-      ],
-      "scraped_at": "2026-10-20T02:02:03.924017",
-      "links": []
-    },
-    {
-      "id": "3aebc6c7ddcf741178ffb334ccd84169",
-      "title": "Medical",
-      "url": "https://allgovernmentjobs.in/medical-jobs",
-      "source": "allgovernmentjobs.in",
-      "description": "The Advanced Centre for Treatment, Research and Education in Cancer (ACTREC) has declared the latest job notification an... Indian Institute of Technology Kharagpur (IIT Kharagpur) has officially released the latest job notification for 2026. T... Indian Institute of Information Technology Design & Manufacturing (IIITDM) Kurnool has declared the official notific... The Indian Institute of Technology Jodhpur (IIT Jodhpur) has issued the official notification for 2026. To fill the vaca... Offic...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-20T02:02:03.924079",
-      "links": []
-    },
-    {
-      "id": "55ec3dbde87163e0b1955d0a26c8029e",
-      "title": "Nurse",
-      "url": "https://allgovernmentjobs.in/staff-nurse-jobs",
-      "source": "allgovernmentjobs.in",
-      "description": "Join on Telegram All Government Jobs Home Latest Govt Jobs Results Qualifications Organizations About Us Contact Us Register Login Home > Staff Nurse Jobs Staff Nurse Vacancy 2026, 642 Upcoming Nursing Job alert Staff Nurse Vacancy : Every year, lakhs of students apply for Government jobs as off now Total 12116 Nursing Govt Jobs were available, and try their best to secure a place in the tough government industry. This time, the Central Government of India has announced Staff Nurse Vacancy 20...",
-      "pdf_link": null,
-      "important_dates": {
-        "found_date": "26-10-20"
-      },
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-20T02:02:03.924143",
-      "links": []
-    },
-    {
-      "id": "40739f76344ff63612b1eab1bd5e8bb6",
-      "title": "Finance",
-      "url": "https://allgovernmentjobs.in/mba-jobs",
-      "source": "allgovernmentjobs.in",
-      "description": "National Health Systems Resource Centre (NHSRC) has declared the official notification for the recruitment of various&nb... Centre for Management Development Kerala (CMD Kerala) has declared the official notification for the recruitment of 02 P... Office of the District Medical & Health Officer, Mahabubabad  (DMHO Mahabubabad), has issued an official notifi... Centre for Management Development Kerala (CMD Kerala) has declared the official notification for the recruitment of vari... District M...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-20T02:02:03.924127",
-      "links": []
-    },
-    {
-      "id": "ba7971b0ef03335f68b55c65d003d7a6",
-      "title": "Dental",
-      "url": "https://allgovernmentjobs.in/bds-jobs",
-      "source": "allgovernmentjobs.in",
-      "description": "The Advanced Centre for Treatment, Research and Education in Cancer (ACTREC) has declared the latest job notification an... Indian Institute of Technology Kharagpur (IIT Kharagpur) has officially released the latest job notification for 2026. T... Indian Institute of Information Technology Design & Manufacturing (IIITDM) Kurnool has declared the official notific... The Indian Institute of Technology Jodhpur (IIT Jodhpur) has issued the official notification for 2026. To fill the vaca... Natio...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-20T02:02:03.924170",
-      "links": []
-    },
-    {
-      "id": "f8da4d1065d86319bcab0375f7a7ee5f",
-      "title": "Pharmacy",
-      "url": "https://allgovernmentjobs.in/pharmacy-jobs",
-      "source": "allgovernmentjobs.in",
-      "description": "Indian Institute of Technology Kharagpur (IIT Kharagpur) has officially released the latest job notification for 2026. T... CSIR National Chemical Laboratory (CSIR NCL) has issued the official notification for recruitment 2026. To fill the vaca... The Tata Memorial Centre (TMC) has declared the official notification for 2026. To fill up the vacancies for various Tri... Office of the District Medical & Health Officer, Mahabubabad  (DMHO Mahabubabad), has issued an official notifi... National I...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-20T02:02:03.924157",
-      "links": []
-    },
-    {
-      "id": "d7cfa41aa25c524e2ccb0798d6b41c8f",
-      "title": "Engineering",
-      "url": "https://allgovernmentjobs.in/engineering-jobs",
-      "source": "allgovernmentjobs.in",
-      "description": "Join on Telegram All Government Jobs Home Latest Govt Jobs Results Qualifications Organizations About Us Contact Us Register Login Home > Engineering Jobs Engineering Govt Jobs 2026- [all vacancies] Posts B.E / B.Tech, M.E / M.Tech Engineering Jobs : For all the students in India who have a dream to become an engineer and work in the government sector, Government Jobs for Engineering is the best match. The Central Government of India has announced Total 8987 vacancies for people who like to g...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-20T02:02:03.924095",
-      "links": []
-    },
-    {
-      "id": "2a7aa9e0a17fc238afce7ef7eb24c2ae",
-      "title": "Aviation",
-      "url": "https://allgovernmentjobs.in/aeronautical-engineering-jobs",
-      "source": "allgovernmentjobs.in",
-      "description": "SJVN has invited online applications for Apprentice Jobs. There are 300 positions released in Himachal Pradesh Gove... CSIR-National Aerospace Laboratories (NAL) has introduced the latest job notification for the 74 Project Associate, Seni... DRDO-Advanced Centre for Energetic Material (ACEM) has issued a new job notification for the position of Apprentice... Pawan Hans Limited (PHL) has published the latest job notification for the 20 General Manager, Joint General Manage... Central Mechanic...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-20T02:02:03.924183",
-      "links": []
-    },
-    {
-      "id": "d7c0b557d3d17d5cc3a05ba010391419",
-      "title": "Hotel Management",
-      "url": "https://allgovernmentjobs.in/hotel-management-jobs",
-      "source": "allgovernmentjobs.in",
-      "description": "DU Jobs 2023 is now out on its official website. Candidates who are looking for the University of Delhi Jobs 2023 can ap... Institute of Hotel Management, Catering Technology & Applied Nutrition (IHMCTAN), Mumbai invites applicants to fill ... National Institute of Technical Teachers Training and Research (NITTTR) Chennai has announced the Latest Job Notificatio... Jharkhand Staff Selection Commission (JSSC) has announced the Latest Job Notification for the Post of Training Officer w... Natio...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-20T02:02:03.924211",
-      "links": []
-    },
-    {
-      "id": "91f96aa87b17a2f9d92025c6155d4267",
-      "title": "Naval",
-      "url": "https://allgovernmentjobs.in/indian-navy-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "The Indian Navy has officially released the notification for 2026. To fill up the 5000 vacancies for Agniveer (Apprentic .... The Indian Navy has officially released the notification to fill the vacancies of 15 SSC Executive Posts. Interested and .... The Indian Navy has officially released the notification for 2026. To fill up the various vacancies for Agniveer Jo .... The Indian Navy has officially released the notification to fill the vacancies of 260 SSC Officer Posts. Interested and .......",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-20T02:02:03.924196",
-      "links": []
-    },
-    {
-      "id": "cdf3a911adf444977ac2ed3413ace85c",
-      "title": "Sports Quota",
-      "url": "https://allgovernmentjobs.in/sports-quota-jobs",
-      "source": "allgovernmentjobs.in",
-      "description": "Railway Recruitment Cell - East Central Railway has officially declared the notification for the posts of Sportsperson i... Northern Railway has released the notification for the position of Sports Quota. There are 21 vacancies announced on its... North Western Railway If you're passionate about sports and looking for a job opportunity, North Western Railway may hav...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-20T02:02:03.924224",
-      "links": []
-    },
-    {
-      "id": "9652317edecb5d653907b3152758d8b1",
-      "title": "Architecture",
-      "url": "https://allgovernmentjobs.in/architectural-engineering-jobs",
-      "source": "allgovernmentjobs.in",
-      "description": "National Aluminium Company Limited (NALCO) has issued a new job notification for the positions of Executive Director, Gr... Bharat Earth Movers Limited (BEML) has introduced the latest job notification for the 26 Chief General Manager, Assistan... Rail India Technical and Economic Services Limited (RITES) has published the latest job notification for the 01 &nb... School of Planning and Architecture, Bhopal (SPA) has released the latest job notification for the 01 Junior Research Fe... The Na...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-20T02:02:03.924238",
-      "links": []
-    },
-    {
-      "id": "56ea27387e66431c8e7a34e7d791a0ac",
-      "title": "ITI / Diploma",
-      "url": "https://allgovernmentjobs.in/iti-jobs",
-      "source": "allgovernmentjobs.in",
-      "description": "Kochi Metro Rail Limited (KMRL) has declared the official notification for the recruitment of 70 Apprenticeship Job... The Advanced Centre for Treatment, Research and Education in Cancer (ACTREC) has declared the official notification for ... The National Institute of Technology Raipur (NIT Raipur) has announced the official notification for 2026. To fill vacan... Bharat Heavy Electricals Limited (BHEL) has declared the official notification for 2026. To fill the vacancies for 660 a... The Ta...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-20T02:02:03.924250",
-      "links": []
-    },
     {
       "id": "5ccd399e8537b84c5a77d05981e8dc67",
       "title": "ACTREC Notification 2026 - Walk-in-Interview for Various Assistant Medical Administrator Posts",
@@ -226,23 +14,23 @@
       "important_dates": {
         "found_date": "04-11-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [],
       "scraped_at": "2026-10-20T02:02:03.926475",
-      "links": []
-    },
-    {
-      "id": "3bac3da83cb5d4a1f4731fce8cf4521d",
-      "title": "Agriculture",
-      "url": "https://allgovernmentjobs.in/agricultural-engineering-jobs",
-      "source": "allgovernmentjobs.in",
-      "description": "The National Institute of Hydrology (NIH) has declared the latest job notification for 2026. To fill up the vacancies fo... The Assam Public Service Commission (Assam PSC) has released the official Notification for 2025. To fill up the Vacancie... Rajasthan Public Service Commission (RPSC) has introduced the latest job notification for the positions of Ass... Professor Jayashankar Telangana State Agricultural University (PJTSAU) has introduced the latest job notification f... Maharashtra Remo...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-20T02:02:03.924265",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/actrec-notification-2026-walk-in-interview-for-various-assistant-medical-administrator-posts/44853",
+      "last_verified": "2026-10-20T02:02:03.926475",
+      "status": "active"
     },
     {
       "id": "6edd9680a17c63e706fac738836a0dde",
@@ -254,10 +42,23 @@
       "important_dates": {
         "found_date": "22-10-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-20T02:02:03.926511",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/thsti-notification-2026-walk-in-interview-for-02-research-associate-i-and-project-associate-i-ii-posts/44852",
+      "last_verified": "2026-10-20T02:02:03.926511",
+      "status": "active"
     },
     {
       "id": "c7d99f62ac6bf239e98105ff4e300598",
@@ -269,10 +70,23 @@
       "important_dates": {
         "found_date": "23-10-2026"
       },
-      "category": "Banking",
+      "category": "Engineering",
       "skills": [],
       "scraped_at": "2026-10-20T02:02:03.926525",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/iit-jodhpur-notification-2026-apply-online-for-02-field-engineer-posts/44851",
+      "last_verified": "2026-10-20T02:02:03.926525",
+      "status": "active"
     },
     {
       "id": "c2d62d7c04a134d6663050abf61441d9",
@@ -284,10 +98,23 @@
       "important_dates": {
         "found_date": "02-11-2026"
       },
-      "category": "Banking",
+      "category": "Teaching",
       "skills": [],
       "scraped_at": "2026-10-20T02:02:03.926550",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/pjtsu-notification-2026-walk-in-interview-for-various-teaching-assistant-posts/44849",
+      "last_verified": "2026-10-20T02:02:03.926550",
+      "status": "active"
     },
     {
       "id": "207c49267366b56c1d5b0138d91ca833",
@@ -299,10 +126,23 @@
       "important_dates": {
         "found_date": "22-10-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-20T02:02:03.926578",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/iit-kharagpur-notification-2026-apply-online-for-various-research-associate-posts/44847",
+      "last_verified": "2026-10-20T02:02:03.926578",
+      "status": "active"
     },
     {
       "id": "668697ff7de2db52e3ef9c71dca4c778",
@@ -314,10 +154,23 @@
       "important_dates": {
         "found_date": "03-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-20T02:02:03.926561",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/iit-delhi-notification-2026-apply-online-for-junior-research-fellow-posts/44848",
+      "last_verified": "2026-10-20T02:02:03.926561",
+      "status": "active"
     },
     {
       "id": "6abc59f4d0fdbda14ca95a04ac749cb8",
@@ -329,23 +182,23 @@
       "important_dates": {
         "found_date": "23-10-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-20T02:02:03.926590",
-      "links": []
-    },
-    {
-      "id": "3524b2ea2db573ad95ae2aa75a69e0bf",
-      "title": "TSPSC",
-      "url": "https://allgovernmentjobs.in/tspsc-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Professor Jayashankar Telangana State Agricultural University (PJTSAU) has officially released the notification to fill .... Professor Jayashankar Telangana State Agricultural University (PJTSAU) has announced the official notification for 2026. .... Professor Jayashankar, Telangana State Agricultural University (PJTSAU) has officially released the notification to fill .... Professor Jayashankar Telangana State Agricultural University (PJTSAU) has released the official notification for recrui...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Teaching",
-      "skills": [],
-      "scraped_at": "2026-10-20T02:02:03.930444",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/iit-kanpur-notification-2026-apply-for-various-project-associate-i-posts/44845",
+      "last_verified": "2026-10-20T02:02:03.926590",
+      "status": "active"
     },
     {
       "id": "2f50a54121cc1ef24eb2c50053aa5b84",
@@ -357,62 +210,23 @@
       "important_dates": {
         "found_date": "30-10-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-20T02:02:03.930359",
-      "links": []
-    },
-    {
-      "id": "99c501e4184340d1c73a28502f9387b3",
-      "title": "IIT Delhi",
-      "url": "https://allgovernmentjobs.in/iit-delhi-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Indian Institute of Technology Delhi (IIT Delhi) has issued an official notification for the recruitment of various Juni .... Indian Institute of Technology Delhi (IIT Delhi) has declared the latest job notification for 2026. To fill up the vacan .... The Indian Institute of Technology Delhi (IIT Delhi) has officially released the notification to fill the vacancy for 01 .... Indian Institute of Technology Delhi (IIT Delhi) has issued an official notification for the recruitment of various Jun...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Engineering",
-      "skills": [],
-      "scraped_at": "2026-10-20T02:02:03.930457",
-      "links": []
-    },
-    {
-      "id": "43006eabc4c6e5b1ee7b258c97d92644",
-      "title": "IIT Guwahati",
-      "url": "https://allgovernmentjobs.in/iit-guwahati-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "The Indian Institute of Technology (IIT Guwahati) has declared the official notification for 2026. To fill up the variou .... Indian Institute of Technology (IIT) Guwahati has officially released a notification for 2026. To fill up the vacancies .... Indian Institute of Technology Guwahati (IIT Guwahati) has declared the official notification for 2026. Various vacancie .... Indian Institute of Technology Guwahati (IIT Guwahati) has declared the official notification for 2026. Various vacancie...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "IT",
-      "skills": [],
-      "scraped_at": "2026-10-20T02:02:03.930432",
-      "links": []
-    },
-    {
-      "id": "b82edb7236046fd5559748c114b6a5dc",
-      "title": "IISER",
-      "url": "https://allgovernmentjobs.in/iiser-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Indian Institute of Science Education and Research (IISER) Pune has declared the official notification for 2026. To fill .... Indian Institute of Science Education and Research (IISER) Tirupati has declared the official notification for the recru .... Indian Institute of Science Education and Research (IISER) Pune has declared the official notification for 2026. To fill .... Indian Institute of Science Education and Research (IISER) Bhopal has declared the official notification for 2026. Vari...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Teaching",
-      "skills": [],
-      "scraped_at": "2026-10-20T02:02:03.930495",
-      "links": []
-    },
-    {
-      "id": "ea6c3e62931d3d5b20697fddeab94337",
-      "title": "PGIMER",
-      "url": "https://allgovernmentjobs.in/pgimer-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Postgraduate Institute of Medical Education and Research (PGIMER) has announced the official notification for 2026. To f .... Postgraduate Institute of Medical Education and Research (PGIMER) has announced the official notification for 2026. To f .... Postgraduate Institute of Medical Education and Research (PGIMER) has announced the official notification for 2026. To f .... Postgraduate Institute of Medical Education and Research (PGIMER) has announced the official notification for 2026. To ...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-20T02:02:03.930535",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/csir-ncl-recruitment-2026-apply-online-for-various-project-associate-i-posts/44846",
+      "last_verified": "2026-10-20T02:02:03.930359",
+      "status": "active"
     },
     {
       "id": "dd7e4ebb471c9d229505695741d87614",
@@ -424,10 +238,23 @@
       "important_dates": {
         "found_date": "30-10-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-23T01:46:35.816532",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/nhm-chandigarh-notification-2026-walk-in-interview-for-various-consultant-posts/44865",
+      "last_verified": "2026-10-23T01:46:35.816532",
+      "status": "active"
     },
     {
       "id": "b8d23197e3aed2ad6f2c46bb64e3020e",
@@ -439,10 +266,23 @@
       "important_dates": {
         "found_date": "02-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-23T01:46:35.816490",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/tmc-notification-2026-walk-in-interview-for-various-project-manager-posts/44868",
+      "last_verified": "2026-10-23T01:46:35.816490",
+      "status": "active"
     },
     {
       "id": "cd1586b0c85f5c5b9e0877c598c4fd76",
@@ -454,10 +294,23 @@
       "important_dates": {
         "found_date": "28-10-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-23T01:46:35.816504",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/pau-notification-2026-apply-offline-for-tractor-operator-posts/44867",
+      "last_verified": "2026-10-23T01:46:35.816504",
+      "status": "active"
     },
     {
       "id": "b31b1bb1068d9352cebfb1d8ff3c9884",
@@ -469,10 +322,23 @@
       "important_dates": {
         "found_date": "28-10-2026"
       },
-      "category": "Banking",
+      "category": "Engineering",
       "skills": [],
       "scraped_at": "2026-10-23T01:46:35.816470",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/pgimer-notification-2026-apply-online-for-02-project-research-scientist-i-and-project-technical-support-ii-posts/44869",
+      "last_verified": "2026-10-23T01:46:35.816470",
+      "status": "active"
     },
     {
       "id": "7922bf9783f07328410b4fc24a876906",
@@ -484,10 +350,23 @@
       "important_dates": {
         "found_date": "02-12-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-23T01:46:35.816520",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/rites-notification-2026-apply-online-for-various-group-general-manager-general-manager-posts/44866",
+      "last_verified": "2026-10-23T01:46:35.816520",
+      "status": "active"
     },
     {
       "id": "b97feb8bf935ef6605e58eac20df74b5",
@@ -499,10 +378,23 @@
       "important_dates": {
         "found_date": "30-10-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-23T01:46:35.816566",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/nit-delhi-notification-2026-walk-in-interview-for-02-project-associate-and-research-associate-posts/44862",
+      "last_verified": "2026-10-23T01:46:35.816566",
+      "status": "active"
     },
     {
       "id": "1f8e602738f5f5675914d7197d5ba9aa",
@@ -514,10 +406,23 @@
       "important_dates": {
         "found_date": "26-10-2026"
       },
-      "category": "Banking",
+      "category": "Administrative",
       "skills": [],
       "scraped_at": "2026-10-23T01:46:35.816554",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/iit-kharagpur-notification-2026-apply-online-for-various-project-assistant-posts/44863",
+      "last_verified": "2026-10-23T01:46:35.816554",
+      "status": "active"
     },
     {
       "id": "436e4ac862a2a320155adeb824de9f51",
@@ -529,10 +434,23 @@
       "important_dates": {
         "found_date": "11-11-2026"
       },
-      "category": "Banking",
+      "category": "Engineering",
       "skills": [],
       "scraped_at": "2026-10-23T01:46:35.816577",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/iiit-delhi-notification-2026-apply-online-for-various-project-engineer-and-estate-officer-posts/44861",
+      "last_verified": "2026-10-23T01:46:35.816577",
+      "status": "active"
     },
     {
       "id": "6c50c4a8195b2ccc926d340962c4a981",
@@ -544,23 +462,23 @@
       "important_dates": {
         "found_date": "29-10-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [],
       "scraped_at": "2026-10-23T01:46:35.820590",
-      "links": []
-    },
-    {
-      "id": "9b118b272d2177073b8911a3bd9da6cb",
-      "title": "IIT Roorkee",
-      "url": "https://allgovernmentjobs.in/iit-roorkee-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Indian Institute of Technology Roorkee has released the Official notification for the recruitment of 02 Junior Research .... Indian Institute of Technology Roorkee has released the Official notification for the recruitment of various Research Fe .... Indian Institute of Technology Roorkee has released the Official notification for the recruitment of various Research As .... The Indian Institute of Technology, Roorkee (IIT Roorkee) has officially released the notification to fill the vacancies...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "IT",
-      "skills": [],
-      "scraped_at": "2026-10-23T01:46:35.820707",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/actrec-recruitment-2026-walk-in-interview-for-various-staff-nurse-posts/44860",
+      "last_verified": "2026-10-23T01:46:35.820590",
+      "status": "active"
     },
     {
       "id": "b9384b81b68ab1658ba4138ebb9b2a91",
@@ -573,10 +491,23 @@
         "last_date": "05-11-2026",
         "found_date": "05-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-24T01:49:51.594280",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/nims-notification-2026-apply-offline-for-clinical-research-coordinator-posts/44889",
+      "last_verified": "2026-10-24T01:49:51.594280",
+      "status": "active"
     },
     {
       "id": "13aea1b561b3ba26bbd33fabfbfe8ea7",
@@ -588,10 +519,23 @@
       "important_dates": {
         "found_date": "30-10-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-24T01:49:51.594327",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/esic-notification-2026-walk-in-interview-04-senior-resident-posts/44886",
+      "last_verified": "2026-10-24T01:49:51.594327",
+      "status": "active"
     },
     {
       "id": "bf3aa646a7eaa4bf86b685eb37a583ce",
@@ -603,10 +547,23 @@
       "important_dates": {
         "found_date": "02-11-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [],
       "scraped_at": "2026-10-24T01:49:51.594306",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/aiims-jodhpur-notification-2026-walk-in-interview-for-various-project-nurse-iii-posts/44887",
+      "last_verified": "2026-10-24T01:49:51.594306",
+      "status": "active"
     },
     {
       "id": "eda4c69957e0d51aa6ab698c9209c752",
@@ -618,10 +575,23 @@
       "important_dates": {
         "found_date": "07-11-2026"
       },
-      "category": "Banking",
+      "category": "Administrative",
       "skills": [],
       "scraped_at": "2026-10-24T01:49:51.594346",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/wcd-korba-notification-2026-apply-offline-for-02-assistant-cum-night-watchman-and-paramedical-staff-posts/44884",
+      "last_verified": "2026-10-24T01:49:51.594346",
+      "status": "active"
     },
     {
       "id": "66bc03d7531ecba5123c872827f672e6",
@@ -633,10 +603,23 @@
       "important_dates": {
         "found_date": "03-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-24T01:49:51.594387",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/esic-delhi-notification-2026-walk-in-interview-for-40-senior-resident-specialist-and-other-posts/44882",
+      "last_verified": "2026-10-24T01:49:51.594387",
+      "status": "active"
     },
     {
       "id": "2296b8a0c024a53276c30553630d20fa",
@@ -648,10 +631,23 @@
       "important_dates": {
         "found_date": "05-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-24T01:49:51.594426",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/iit-gandhinagar-notification-2026-apply-online-for-senior-research-fellow-posts/44880",
+      "last_verified": "2026-10-24T01:49:51.594426",
+      "status": "active"
     },
     {
       "id": "c8b82f56456f1588f81523bd59014c51",
@@ -663,10 +659,23 @@
       "important_dates": {
         "found_date": "20-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-24T01:49:51.594406",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/dlsa-palamau-notification-2026-apply-offline-for-various-driver-posts/44881",
+      "last_verified": "2026-10-24T01:49:51.594406",
+      "status": "active"
     },
     {
       "id": "debb5654718dedc677f0d27864573f65",
@@ -678,10 +687,23 @@
       "important_dates": {
         "found_date": "26-10-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-24T01:49:51.599314",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/iit-indore-recruitment-2026-apply-offline-for-various-junior-research-fellow-posts/44885",
+      "last_verified": "2026-10-24T01:49:51.599314",
+      "status": "active"
     },
     {
       "id": "d5314015ce478f7bc8e4473ecbb1d1c6",
@@ -693,23 +715,23 @@
       "important_dates": {
         "found_date": "02-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-24T01:49:51.599290",
-      "links": []
-    },
-    {
-      "id": "754099e2e3e530b794337aba3897ee57",
-      "title": "IIT Gandhinagar",
-      "url": "https://allgovernmentjobs.in/iit-gandhinagar-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Indian Institute of Technology Gandhinagar (IIT Gandhinagar) has declared the latest job notification for the recruitmen .... The Indian Institute of Technology Gandhinagar (IIT Gandhinagar) has declared the official notification for 2026. To fil .... The Indian Institute of Technology Gandhinagar (IIT Gandhinagar) has declared the official notification for 2026. To fil .... Indian Institute of Technology Gandhinagar (IIT Gandhinagar) has declared the official notification for the recruitment...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "IT",
-      "skills": [],
-      "scraped_at": "2026-10-24T01:49:51.599407",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/iit-roorkee-recruitment-2026-apply-for-04-project-fellow-and-research-associate-posts/44888",
+      "last_verified": "2026-10-24T01:49:51.599290",
+      "status": "active"
     },
     {
       "id": "496e4c08ab360e573fe3650352da5160",
@@ -722,10 +744,23 @@
         "last_date": "06-11-2026",
         "found_date": "06-11-2026"
       },
-      "category": "Banking",
+      "category": "Engineering",
       "skills": [],
       "scraped_at": "2026-10-25T01:26:46.119385",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/moil-notification-2026-apply-offline-for-07-project-engineer-and-senior-project-engineer-posts/44902",
+      "last_verified": "2026-10-25T01:26:46.119385",
+      "status": "active"
     },
     {
       "id": "48bd58542fb915c3f5ae161b5c7c8183",
@@ -738,10 +773,23 @@
         "last_date": "06-12-2026",
         "found_date": "24-10-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-25T01:26:46.119357",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/rgnau-notification-2026-apply-online-for-10-professional-trainee-posts/44903",
+      "last_verified": "2026-10-25T01:26:46.119357",
+      "status": "active"
     },
     {
       "id": "1f1f2762a5a0c3141dcb18f5b837a5c2",
@@ -753,10 +801,23 @@
       "important_dates": {
         "found_date": "10-11-2026"
       },
-      "category": "Banking",
+      "category": "SSC",
       "skills": [],
       "scraped_at": "2026-10-25T01:26:46.119344",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/tiss-notification-2026-apply-for-03-cleaner-cum-hostel-attendant-mts-posts/44905",
+      "last_verified": "2026-10-25T01:26:46.119344",
+      "status": "active"
     },
     {
       "id": "06df37d66cb8fb7561f5b45b3c61e77d",
@@ -768,10 +829,23 @@
       "important_dates": {
         "found_date": "02-11-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [],
       "scraped_at": "2026-10-25T01:26:46.119327",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/nirdpr-notification-2026-walk-in-interview-for-various-staff-nurse-posts/44908",
+      "last_verified": "2026-10-25T01:26:46.119327",
+      "status": "active"
     },
     {
       "id": "3f74dc71d790eafeabbcfac8c684d469",
@@ -783,10 +857,23 @@
       "important_dates": {
         "found_date": "06-11-2026"
       },
-      "category": "Banking",
+      "category": "Teaching",
       "skills": [],
       "scraped_at": "2026-10-25T01:26:46.119296",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/sainik-school-kodagu-notification-2026-apply-offline-for-07-pgt-tgt-nursing-sister-and-other-posts/44909",
+      "last_verified": "2026-10-25T01:26:46.119296",
+      "status": "active"
     },
     {
       "id": "a62921aba95f878290f4ae5fa2d33ed8",
@@ -798,10 +885,23 @@
       "important_dates": {
         "found_date": "30-10-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-25T01:26:46.123577",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/diat-recruitment-2026-walk-in-interview-for-various-research-associate-posts/44904",
+      "last_verified": "2026-10-25T01:26:46.123577",
+      "status": "active"
     },
     {
       "id": "c6ede6d187de65ffc4298e871f9f6be6",
@@ -813,10 +913,23 @@
       "important_dates": {
         "found_date": "02-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-25T01:26:46.123560",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/bits-pilani-recruitment-2026-apply-for-project-research-scientist-i-posts/44906",
+      "last_verified": "2026-10-25T01:26:46.123560",
+      "status": "active"
     },
     {
       "id": "2130fae530f23dedc6318e33b4b763c7",
@@ -828,10 +941,23 @@
       "important_dates": {
         "found_date": "09-11-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [],
       "scraped_at": "2026-10-25T01:26:46.123516",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/jipmer-recruitment-2026-apply-online-for-05-project-nurse-project-technical-support-posts/44910",
+      "last_verified": "2026-10-25T01:26:46.123516",
+      "status": "active"
     },
     {
       "id": "c384e7ae72594cd49ee512315ffadf23",
@@ -843,10 +969,23 @@
       "important_dates": {
         "found_date": "02-11-2026"
       },
-      "category": "Banking",
+      "category": "Administrative",
       "skills": [],
       "scraped_at": "2026-10-25T01:26:46.123541",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/bmc-recruitment-2026-walk-in-interview-for-03-resident-officer-posts/44907",
+      "last_verified": "2026-10-25T01:26:46.123541",
+      "status": "active"
     },
     {
       "id": "cef9d540b168f1a57b42d16ad35bb463",
@@ -858,75 +997,23 @@
       "important_dates": {
         "found_date": "05-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-25T01:26:46.123596",
-      "links": []
-    },
-    {
-      "id": "fb9f1d796e91366f4fb21016a3ff430b",
-      "title": "JIPMER",
-      "url": "https://allgovernmentjobs.in/jipmer-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Jawaharlal Institute of Postgraduate Medical Education and Research (JIPMER) has declared an official notification for 2 .... The Jawaharlal Institute of Postgraduate Medical Education and Research (JIPMER) has officially released the notificatio .... Jawaharlal Institute of Postgraduate Medical Education and Research (JIPMER) has declared the latest job notification fo .... The Jawaharlal Institute of Postgraduate Medical Education and Research (JIPMER) has officially released the notificati...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-25T01:26:46.123621",
-      "links": []
-    },
-    {
-      "id": "01d9cf5f866e9cd395bd5547f92360f6",
-      "title": "Sainik School",
-      "url": "https://allgovernmentjobs.in/sainik-school-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Sainik School Kodagu has announced the official notification for 2026. To fill the vacancies for 07 PGT, TGT, Nursing Si .... Sainik School Bijapur has declared the official notification for the recruitment of 17 PGT, TGT, Nursing Assistant, .... Sainik School Balachadi has announced the official notification for 2026. To fill the vacancies for 16 TGT, Medical .... Sainik School Satara has announced the official notification for the recruitment of various Nursing Assistant/ Nurs ....",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Teaching",
-      "skills": [],
-      "scraped_at": "2026-10-25T01:26:46.123645",
-      "links": []
-    },
-    {
-      "id": "020a63a046010dd609db47bf71d839e2",
-      "title": "UPPSC",
-      "url": "https://allgovernmentjobs.in/uppsc-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "The Rajiv Gandhi National Aviation University (RGNAU) has officially released the notification to fill the vacancies for .... The Rajiv Gandhi National Aviation University (RGNAU) has officially released the notification to fill the vacancies for .... The Rajiv Gandhi National Aviation University (RGNAU) has officially released the notification to fill the vacancies of ....",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "IT",
-      "skills": [],
-      "scraped_at": "2026-10-25T01:26:46.123736",
-      "links": []
-    },
-    {
-      "id": "e00e623fc1b31ef4eaa1ec6ba2bd4b23",
-      "title": "NIRDPR",
-      "url": "https://allgovernmentjobs.in/nirdpr-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "National Institute of Rural Development & Panchayati Raj (NIRDPR) has declared the official notification for 2026 to ....",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "IT",
-      "skills": [],
-      "scraped_at": "2026-10-25T01:26:46.123666",
-      "links": []
-    },
-    {
-      "id": "20a20e01a9a0f0ca7399b115d4ae3c81",
-      "title": "AIIMS Delhi",
-      "url": "https://allgovernmentjobs.in/aiims-delhi-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "All India Institute of Medical Sciences, Delhi (AIIMS Delhi) has released the latest job notification for 2026. To fill .... All India Institute of Medical Sciences, Delhi (AIIMS Delhi) has released the latest job notification for 2026. To fill .... All India Institute of Medical Sciences, Delhi (AIIMS Delhi) has declared the official notification for the recruitment .... All India Institute of Medical Sciences, Delhi (AIIMS Delhi) has released the latest job notification for 2026. To fill .....",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Medical",
-      "skills": [],
-      "scraped_at": "2026-10-26T01:30:21.985450",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/iit-gandhinagar-recruitment-2026-apply-online-for-senior-research-fellow-posts/44901",
+      "last_verified": "2026-10-25T01:26:46.123596",
+      "status": "active"
     },
     {
       "id": "db5f7d93f72672af8f20a60aab26e7ae",
@@ -938,10 +1025,23 @@
       "important_dates": {
         "found_date": "13-11-2026"
       },
-      "category": "Banking",
+      "category": "Engineering",
       "skills": [],
       "scraped_at": "2026-10-27T02:19:12.860106",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/railtel-notification-2026-apply-offline-for-03-consultant-engineer-posts/44926",
+      "last_verified": "2026-10-27T02:19:12.860106",
+      "status": "active"
     },
     {
       "id": "c5865e86bd6e1e92f9a258208b23ca86",
@@ -953,10 +1053,23 @@
       "important_dates": {
         "found_date": "02-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-27T02:19:12.860120",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/csir-crri-notification-2026-walk-in-interview-for-various-senior-project-associate-posts/44925",
+      "last_verified": "2026-10-27T02:19:12.860120",
+      "status": "active"
     },
     {
       "id": "97dc4d1da4149aa2a8a34717c02ed528",
@@ -968,10 +1081,23 @@
       "important_dates": {
         "found_date": "12-11-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [],
       "scraped_at": "2026-10-27T02:19:12.860081",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/aiims-mangalagiri-notification-2026-walk-in-interview-for-various-physiotherapist-posts/44929",
+      "last_verified": "2026-10-27T02:19:12.860081",
+      "status": "active"
     },
     {
       "id": "08e03563307ce2269c73503a3192cb9f",
@@ -983,10 +1109,23 @@
       "important_dates": {
         "found_date": "31-10-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-27T02:19:12.860062",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/igdtuw-notification-2026-apply-online-for-project-research-scientist-i-posts/44930",
+      "last_verified": "2026-10-27T02:19:12.860062",
+      "status": "active"
     },
     {
       "id": "4da71c21cea81ee50763b9074c95c007",
@@ -998,10 +1137,23 @@
       "important_dates": {
         "found_date": "08-11-2026"
       },
-      "category": "Banking",
+      "category": "IT",
       "skills": [],
       "scraped_at": "2026-10-27T02:19:12.860094",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/nit-warangal-notification-2026-apply-online-for-02-programmer-posts/44928",
+      "last_verified": "2026-10-27T02:19:12.860094",
+      "status": "active"
     },
     {
       "id": "485a725b217c62c077c1e7a6d20ddc28",
@@ -1013,23 +1165,23 @@
       "important_dates": {
         "found_date": "04-11-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [],
       "scraped_at": "2026-10-27T02:19:12.863769",
-      "links": []
-    },
-    {
-      "id": "6ad02791a4ad18b4ff235e6409063321",
-      "title": "NIT Warangal",
-      "url": "https://allgovernmentjobs.in/nit-warangal-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "National Institute of Technology Warangal (NIT Warangal) has declared the official notification for 2026. To fill the va .... National Institute of Technology Warangal (NIT Warangal) has declared the official notification for 2026. To fill vacanc .... National Institute of Technology Warangal (NIT Warangal) has declared the official notification for 2026. To fill vacanc .... National Institute of Technology Warangal (NIT Warangal) has declared the official notification for 2026. To fill the v...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "IT",
-      "skills": [],
-      "scraped_at": "2026-10-27T02:19:12.863816",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/oil-india-recruitment-2026-walk-in-interview-for-02-doctor-posts/44922",
+      "last_verified": "2026-10-27T02:19:12.863769",
+      "status": "active"
     },
     {
       "id": "47a3b5e793e4e5579c2b26c2a609ea0a",
@@ -1041,10 +1193,23 @@
       "important_dates": {
         "found_date": "30-10-2026"
       },
-      "category": "Banking",
+      "category": "Administrative",
       "skills": [],
       "scraped_at": "2026-10-27T02:19:12.863738",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/actrec-recruitment-2026-walk-in-interview-for-various-scientific-officer-posts/44931",
+      "last_verified": "2026-10-27T02:19:12.863738",
+      "status": "active"
     },
     {
       "id": "43c25fd34e63a1e55bf6ecbe0a3ff031",
@@ -1056,36 +1221,23 @@
       "important_dates": {
         "found_date": "06-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-27T02:19:12.863757",
-      "links": []
-    },
-    {
-      "id": "f4320ca3f06879933fd5f54ffcf03b37",
-      "title": "RAILTEL",
-      "url": "https://allgovernmentjobs.in/railtel-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "The RailTel Corporation of India (RailTel) has officially released the notification to fill the vacancies for 03 Consult .... The RailTel Corporation of India (RailTel) has officially released the notification to fill the vacancies for Civil Engi .... The RailTel Corporation of India (RailTel) has officially released the notification to fill the vacancy for 40 Graduate ....",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-27T02:19:12.863843",
-      "links": []
-    },
-    {
-      "id": "84099683de7bb3102bfb6cb759235bc7",
-      "title": "Oil India Limited",
-      "url": "https://allgovernmentjobs.in/oil-india-limited-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Oil India has announced the official notification for the recruitment of 02 Doctor Jobs. Candidates who have qualified i .... Oil India has released the official notification for the recruitment of 07 Finance Officers, Legal Officers, Civil .... Oil India Limited has officially released the notification to fill the vacancy for 01 Consultant job. Interested and eli .... Oil India has released the official notification for the recruitment of 07 Pharmacist and Paramedical Hospital Technicia .......",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Medical",
-      "skills": [],
-      "scraped_at": "2026-10-27T02:19:12.863874",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/diat-recruitment-2026-apply-for-various-junior-research-fellow-posts/44923",
+      "last_verified": "2026-10-27T02:19:12.863757",
+      "status": "active"
     },
     {
       "id": "8fc3f5f5fe84664b277eccefd2e5fe7d",
@@ -1095,23 +1247,23 @@
       "description": "RRB NTPC Notification 2026 - Apply Online for 3,548 Chief Commercial Cum Ticket Supervisor, Goods Train Manager and Other Posts",
       "pdf_link": null,
       "important_dates": {},
-      "category": "Banking",
+      "category": "Railway",
       "skills": [],
       "scraped_at": "2026-10-27T02:19:12.860134",
-      "links": []
-    },
-    {
-      "id": "ddcdde800a6906afa529b635b4a2b41e",
-      "title": "AIIMS Jodhpur",
-      "url": "https://allgovernmentjobs.in/aiims-jodhpur-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "All India Institute of Medical Sciences, Jodhpur (AIIMS Jodhpur) has declared the official notification for the recruitm .... All India Institute of Medical Sciences, Jodhpur (AIIMS Jodhpur) has declared the official notification for the recruitm .... All India Institute of Medical Sciences, Jodhpur (AIIMS Jodhpur) has declared the official notification for 2026. To fil .... All India Institute of Medical Sciences, Jodhpur (AIIMS Jodhpur) has declared the official notification for the recruit...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Medical",
-      "skills": [],
-      "scraped_at": "2026-10-27T02:19:12.863924",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/rrb-ntpc-notification-2026-apply-online-for-3-548-chief-commercial-cum-ticket-supervisor-goods-train-manager-and-other-posts/44924",
+      "last_verified": "2026-10-27T02:19:12.860134",
+      "status": "active"
     },
     {
       "id": "bb6bad552a9b718163b7ca80223a6a6d",
@@ -1123,10 +1275,23 @@
       "important_dates": {
         "found_date": "02-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-28T02:31:25.344037",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/iit-gandhinagar-notification-2026-apply-online-for-project-associate-i-posts/44948",
+      "last_verified": "2026-10-28T02:31:25.344037",
+      "status": "active"
     },
     {
       "id": "a644c8683c6b3cb4738e9b69e810db40",
@@ -1138,10 +1303,23 @@
       "important_dates": {
         "found_date": "29-10-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-28T02:31:25.343991",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/nfsu-notification-2026-apply-online-for-junior-research-fellow-posts/44952",
+      "last_verified": "2026-10-28T02:31:25.343991",
+      "status": "active"
     },
     {
       "id": "74517d41db89e2e3784522e10b933e06",
@@ -1153,10 +1331,23 @@
       "important_dates": {
         "found_date": "05-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-28T02:31:25.344017",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/pgimer-notification-2026-walk-in-interview-for-05-senior-resident-posts/44951",
+      "last_verified": "2026-10-28T02:31:25.344017",
+      "status": "active"
     },
     {
       "id": "f3a556db660d41447483e3e75cd3237a",
@@ -1168,10 +1359,23 @@
       "important_dates": {
         "found_date": "10-11-2026"
       },
-      "category": "Banking",
+      "category": "Administrative",
       "skills": [],
       "scraped_at": "2026-10-28T02:31:25.344079",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/iit-kharagpur-notification-2026-apply-online-for-various-project-assistant-posts/44945",
+      "last_verified": "2026-10-28T02:31:25.344079",
+      "status": "active"
     },
     {
       "id": "78ad1469eaa17f323b9ddabbe8c96937",
@@ -1184,10 +1388,23 @@
         "last_date": "06-11-2026",
         "found_date": "24-10-2026"
       },
-      "category": "Banking",
+      "category": "Engineering",
       "skills": [],
       "scraped_at": "2026-10-28T02:31:25.344057",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/cmd-kerala-notification-2026-apply-online-for-02-public-relations-officer-and-executive-engineer-posts/44947",
+      "last_verified": "2026-10-28T02:31:25.344057",
+      "status": "active"
     },
     {
       "id": "c20d59f6e4b56e715c5a457ea322806f",
@@ -1199,10 +1416,23 @@
       "important_dates": {
         "found_date": "31-10-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [],
       "scraped_at": "2026-10-28T02:31:25.348992",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/mulugu-district-recruitment-2026-apply-offline-for-07-pharmacist-yoga-professional-and-other-posts/44950",
+      "last_verified": "2026-10-28T02:31:25.348992",
+      "status": "active"
     },
     {
       "id": "3dc459904bd6499a952ad3ff66a78530",
@@ -1219,7 +1449,20 @@
         "Word"
       ],
       "scraped_at": "2026-10-28T02:31:25.349057",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/uco-bank-recruitment-2026-apply-online-for-530-apprentice-posts/44943",
+      "last_verified": "2026-10-28T02:31:25.349057",
+      "status": "active"
     },
     {
       "id": "102b5d67004eea0a598ecf384ce9b4b2",
@@ -1231,10 +1474,23 @@
       "important_dates": {
         "found_date": "05-11-2026"
       },
-      "category": "Banking",
+      "category": "Engineering",
       "skills": [],
       "scraped_at": "2026-10-28T02:31:25.349039",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/iit-kanpur-recruitment-2026-apply-online-for-various-project-engineer-posts/44946",
+      "last_verified": "2026-10-28T02:31:25.349039",
+      "status": "active"
     },
     {
       "id": "e4f813f357c0236d2d20eb9750d179f8",
@@ -1246,10 +1502,23 @@
       "important_dates": {
         "found_date": "28-10-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [],
       "scraped_at": "2026-10-28T02:31:25.349019",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/aiims-recruitment-2026-apply-online-for-senior-consultant-posts/44949",
+      "last_verified": "2026-10-28T02:31:25.349019",
+      "status": "active"
     },
     {
       "id": "1945a6ed85c1e7304e2c05ef9c4bd18d",
@@ -1261,49 +1530,23 @@
       "important_dates": {
         "found_date": "29-10-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-28T02:31:25.344098",
-      "links": []
-    },
-    {
-      "id": "9f9bf58aa79ac7b8139b36046762069b",
-      "title": "ACTREC",
-      "url": "https://allgovernmentjobs.in/actrec-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "The Advanced Centre for Treatment, Research and Education in Cancer (ACTREC) has announced the official notification for .... The Advanced Centre for Treatment, Research and Education in Cancer (ACTREC) has announced the official notification for .... The Advanced Centre for Treatment, Research and Education in Cancer (ACTREC) has declared the latest job notification fo .... The Advanced Centre for Treatment, Research and Education in Cancer (ACTREC) has issued the official notification for 2...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Teaching",
-      "skills": [],
-      "scraped_at": "2026-10-28T02:31:25.349140",
-      "links": []
-    },
-    {
-      "id": "9fbfde9859a8aec650f9d4a357c724f7",
-      "title": "Department of Science & Technology",
-      "url": "https://allgovernmentjobs.in/department-of-science-technology-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "The North Eastern Regional Institute of Science and Technology (NERIST) has officially released the vacancies for variou .... Jawaharlal Nehru Centre for Advanced Scientific Research (JNCASR) has announced the official notification for the recrui .... Indian Institute of Engineering Science & Technology Shibpur (IIEST Shibpur) has declared the official notification .... Jawaharlal Nehru Centre for Advanced Scientific Research (JNCASR) has announced the official notification for the recrui ......",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Engineering",
-      "skills": [],
-      "scraped_at": "2026-10-28T02:31:25.349238",
-      "links": []
-    },
-    {
-      "id": "0eccec97898c83684ab9474d5192a3c5",
-      "title": "IASST",
-      "url": "https://allgovernmentjobs.in/iasst-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Institute of Advanced Study in Science and Technology (IASST) has declared the official notification for 2026. To fill u ....",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "UPSC",
-      "skills": [],
-      "scraped_at": "2026-10-28T02:31:25.349276",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/pgimer-notification-2026-walk-in-interview-for-various-project-research-scientist-i-posts/44944",
+      "last_verified": "2026-10-28T02:31:25.344098",
+      "status": "active"
     },
     {
       "id": "c4aa8a9c57728ff391f58ed35d3c21e8",
@@ -1315,10 +1558,23 @@
       "important_dates": {
         "found_date": "07-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-29T02:40:32.192356",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/iit-hyderabad-notification-2026-apply-online-for-various-research-associate-i-posts/44974",
+      "last_verified": "2026-10-29T02:40:32.192356",
+      "status": "active"
     },
     {
       "id": "89c39a847a183dda6ce5e70f8d6ac26d",
@@ -1330,12 +1586,25 @@
       "important_dates": {
         "found_date": "20-11-2026"
       },
-      "category": "Banking",
+      "category": "Administrative",
       "skills": [
         "Cloud"
       ],
       "scraped_at": "2026-10-29T02:40:32.192407",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/nmpa-notification-2026-apply-offline-for-various-assistant-manager-posts/44971",
+      "last_verified": "2026-10-29T02:40:32.192407",
+      "status": "active"
     },
     {
       "id": "87b68cb2fc7f008edaae5ac99f863262",
@@ -1348,12 +1617,25 @@
         "last_date": "11-11-2026",
         "found_date": "28-10-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [
         "Cloud"
       ],
       "scraped_at": "2026-10-29T02:40:32.192420",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/nhsrc-notification-2026-apply-online-for-consultant-posts/44969",
+      "last_verified": "2026-10-29T02:40:32.192420",
+      "status": "active"
     },
     {
       "id": "0c5687cc4837478d2474029bbf7f3d6a",
@@ -1366,10 +1648,23 @@
         "last_date": "23-11-2026",
         "found_date": "23-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-29T02:40:32.192390",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/dll-notification-2026-apply-offline-for-various-technician-posts/44972",
+      "last_verified": "2026-10-29T02:40:32.192390",
+      "status": "active"
     },
     {
       "id": "5bd65044c23dcc496cce7bbebe42c242",
@@ -1381,10 +1676,23 @@
       "important_dates": {
         "found_date": "10-11-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [],
       "scraped_at": "2026-10-29T02:40:32.192376",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/aiims-delhi-notification-2026-apply-online-for-project-technical-support-iii-posts/44973",
+      "last_verified": "2026-10-29T02:40:32.192376",
+      "status": "active"
     },
     {
       "id": "449ac6186ffb5db06e96a83e79ae6427",
@@ -1396,10 +1704,23 @@
       "important_dates": {
         "found_date": "07-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-29T02:40:32.196661",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/nam-kerala-recruitment-2026-apply-offline-for-yoga-instructor-posts/44970",
+      "last_verified": "2026-10-29T02:40:32.196661",
+      "status": "active"
     },
     {
       "id": "5f84dda92148f8d38f1b9e7eb8877949",
@@ -1411,10 +1732,23 @@
       "important_dates": {
         "found_date": "12-11-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [],
       "scraped_at": "2026-10-29T02:40:32.192449",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/actrec-notification-2026-walk-in-interview-for-04-health-worker-posts/44966",
+      "last_verified": "2026-10-29T02:40:32.192449",
+      "status": "active"
     },
     {
       "id": "8f5ede529cb575401a4aeb001316dc3b",
@@ -1426,10 +1760,23 @@
       "important_dates": {
         "found_date": "12-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-29T02:40:32.192432",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/nibmg-notification-2026-apply-for-various-research-associate-i-posts/44967",
+      "last_verified": "2026-10-29T02:40:32.192432",
+      "status": "active"
     },
     {
       "id": "5a24eedf2084b89c260c48fbe7b53908",
@@ -1441,10 +1788,23 @@
       "important_dates": {
         "found_date": "03-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-29T02:40:32.192460",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/csir-notification-2026-apply-online-for-various-project-associate-i-posts/44965",
+      "last_verified": "2026-10-29T02:40:32.192460",
+      "status": "active"
     },
     {
       "id": "f4982965090951de990a41d3719b0d61",
@@ -1456,62 +1816,23 @@
       "important_dates": {
         "found_date": "05-11-2026"
       },
-      "category": "Banking",
+      "category": "Engineering",
       "skills": [],
       "scraped_at": "2026-10-29T02:40:32.196681",
-      "links": []
-    },
-    {
-      "id": "6bb55eed4b2605753b31329a414251bc",
-      "title": "IIT Hyderabad",
-      "url": "https://allgovernmentjobs.in/iit-hyderabad-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "The Indian Institute of Technology (IIT Hyderabad) has declared the official notification for the recruitment of various .... Indian Institute of Technology (IIT) Hyderabad has announced the official notification for 2026. To fill the vacancies f .... Indian Institute of Technology (IIT) Hyderabad has declared the official notification for 2026. To fill 03 vacancies for .... Indian Institute of Technology Hyderabad (IIT Hyderabad) has declared the official notification for the recruitment of ...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "IT",
-      "skills": [],
-      "scraped_at": "2026-10-29T02:40:32.196699",
-      "links": []
-    },
-    {
-      "id": "7c3f4a5026ae14169474c5b1f0dc2024",
-      "title": "SGPGIMS",
-      "url": "https://allgovernmentjobs.in/sgpgims-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Sanjay Gandhi Post Graduate Institute of Medical Sciences (SGPGIMS) has announced the latest job notification for the re .... Sanjay Gandhi Post Graduate Institute of Medical Sciences (SGPGIMS) has announced the latest job notification for the re .... The Sanjay Gandhi Postgraduate Institute of Medical Sciences (SGPGIMS) has officially released the notification to fill .... The Sanjay Gandhi Post Graduate Institute of Medical Sciences, Lucknow (SGPGIMS Lucknow) has officially released the not...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-29T02:40:32.196786",
-      "links": []
-    },
-    {
-      "id": "afa2b2b0c97e3bbf1404ad5493e443ef",
-      "title": "AIIMS Bhubaneswar",
-      "url": "https://allgovernmentjobs.in/aiims-bhubaneswar-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "The All India Institute of Medical Sciences, Bhubaneswar (AIIMS Bhubaneswar) has declared the official notification for .... The All India Institute of Medical Sciences, Bhubaneswar (AIIMS Bhubaneswar) has declared the official notification for .... The All India Institute of Medical Sciences, Bhubaneswar (AIIMS Bhubaneswar) has declared the official notification for .... All India Institute of Medical Sciences ( AIIMS Bhubaneswar) has released the official notification for 2026. To fill 03 ....",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Medical",
-      "skills": [],
-      "scraped_at": "2026-10-29T02:40:32.196819",
-      "links": []
-    },
-    {
-      "id": "3f99175db81f2d4bf8294da0b26f46bf",
-      "title": "Ministry of AYUSH",
-      "url": "https://allgovernmentjobs.in/ministry-of-ayush-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "National Ayush Mission Kerala (NAM Kerala) has declared the official notification for 2026. To fill up the vacancies for .... National Ayush Mission Kerala (NAM Kerala) has declared the official notification for 2026. To fill up the vacancies for .... National Ayush Mission Kerala (NAM Kerala) has declared the official notification for 2026. To fill up the vacancies for .... The National Ayush Mission, Kasaragod (NAM Kasaragod) has officially released the notification to fill the vacancy for ...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "General",
-      "skills": [],
-      "scraped_at": "2026-10-29T02:40:32.196735",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/jipmer-recruitment-2026-apply-online-for-06-project-research-scientist-project-technical-support-and-other-posts/44968",
+      "last_verified": "2026-10-29T02:40:32.196681",
+      "status": "active"
     },
     {
       "id": "a228651d31898b8b3b96894ac534062c",
@@ -1523,10 +1844,23 @@
       "important_dates": {
         "found_date": "13-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-30T02:48:41.271025",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/nimhans-notification-2026-walk-in-interview-for-various-junior-research-fellow-posts/44994",
+      "last_verified": "2026-10-30T02:48:41.271025",
+      "status": "active"
     },
     {
       "id": "7864e83e117ae11f9de63d806f19fa61",
@@ -1538,10 +1872,23 @@
       "important_dates": {
         "found_date": "27-11-2026"
       },
-      "category": "Banking",
+      "category": "Engineering",
       "skills": [],
       "scraped_at": "2026-10-30T02:48:41.270999",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/deendayal-port-trust-notification-2026-apply-online-for-deputy-chief-engineer-posts/44995",
+      "last_verified": "2026-10-30T02:48:41.270999",
+      "status": "active"
     },
     {
       "id": "eda68923a81633be8f3917113aad3994",
@@ -1553,10 +1900,23 @@
       "important_dates": {
         "found_date": "04-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-30T02:48:41.271064",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/tmc-notification-2026-walk-in-interview-for-trial-coordinator-posts/44990",
+      "last_verified": "2026-10-30T02:48:41.271064",
+      "status": "active"
     },
     {
       "id": "1760d35103bd8e9daf92cdbe42df3156",
@@ -1568,10 +1928,23 @@
       "important_dates": {
         "found_date": "11-11-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [],
       "scraped_at": "2026-10-30T02:48:41.271045",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/aiims-delhi-notification-2026-apply-online-for-various-project-research-scientist-iii-posts/44993",
+      "last_verified": "2026-10-30T02:48:41.271045",
+      "status": "active"
     },
     {
       "id": "443068bd7e03441083d88703343f6969",
@@ -1583,10 +1956,23 @@
       "important_dates": {
         "found_date": "16-11-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [],
       "scraped_at": "2026-10-30T02:48:41.271099",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/nit-raipur-notification-2026-apply-online-for-junior-research-fellow-staff-nurse-posts/44988",
+      "last_verified": "2026-10-30T02:48:41.271099",
+      "status": "active"
     },
     {
       "id": "a303b0c123196aead3ec92ad222789c9",
@@ -1598,10 +1984,23 @@
       "important_dates": {
         "found_date": "23-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-30T02:48:41.275863",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/iari-recruitment-2026-apply-online-for-various-junior-research-fellow-posts/44991",
+      "last_verified": "2026-10-30T02:48:41.275863",
+      "status": "active"
     },
     {
       "id": "66ca19c7d2a19d980c3e3bdfdba4a6a0",
@@ -1613,10 +2012,23 @@
       "important_dates": {
         "found_date": "10-11-2026"
       },
-      "category": "Banking",
+      "category": "Engineering",
       "skills": [],
       "scraped_at": "2026-10-30T02:48:41.275840",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/sctimst-recruitment-2026-walk-in-interview-for-senior-project-engineer-posts/44992",
+      "last_verified": "2026-10-30T02:48:41.275840",
+      "status": "active"
     },
     {
       "id": "3ae08eb3dff16932974d128f61beff06",
@@ -1629,10 +2041,23 @@
         "last_date": "17-11-2026",
         "found_date": "17-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-30T02:48:41.275882",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/bob-recruitment-2026-apply-online-for-11-senior-manager-and-manager-posts/44987",
+      "last_verified": "2026-10-30T02:48:41.275882",
+      "status": "active"
     },
     {
       "id": "2d870b61ba0c8b2035654cfcaba7c399",
@@ -1645,49 +2070,23 @@
         "last_date": "25-11-2026",
         "found_date": "27-10-2026"
       },
-      "category": "Banking",
+      "category": "Railway",
       "skills": [],
       "scraped_at": "2026-10-30T02:48:41.275901",
-      "links": []
-    },
-    {
-      "id": "39fdc487f3bd910560430a79ed0b6aab",
-      "title": "Andhra Pradesh APPSC",
-      "url": "https://allgovernmentjobs.in/andhra-pradesh-appsc-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Andhra Pradesh Home Guards (AP Home Guards) has officially released a notification for the recruitment of 17 Assistant S .... Amrita Vishwa Vidyapeetham has invited applications for Various Resident Staff Nurse Positions. Candidates who have qual .... Andhra Pradesh Home Guards (AP Home Guards) has officially released a notification for the recruitment of 503 Assistant .... Andhra Pradesh Home Guards (AP Home Guards) has officially released a notification for the recruitment of 23 Forest Beat...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-30T02:48:41.275927",
-      "links": []
-    },
-    {
-      "id": "0413460c37428a696e3e4e0d1a0899f9",
-      "title": "Deendayal Port Trust",
-      "url": "https://allgovernmentjobs.in/deendayal-port-trust-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Deendayal Port Authority has released the official notification for the recruitment of  Deputy Chief Engineer posts ....",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-30T02:48:41.275949",
-      "links": []
-    },
-    {
-      "id": "461983809455c6ef97056b7b3b17fb3b",
-      "title": "GIPMER",
-      "url": "https://allgovernmentjobs.in/gipmer-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Govind Ballabh Pant Institute of Postgraduate Medical Education and Research (GIPMER) has declared the official notifica .... Govind Ballabh Pant Institute of Postgraduate Medical Education and Research (GIPMER) has declared the official notifica .... The Govind Ballabhi Pant Institute of Postgraduate Medical Education & Research  (GIPMER) has officially releas .... Govind Ballabh Pant Institute of Postgraduate Medical Education and Research (GIPMER) has declared the official notifica ....",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-30T02:48:41.276084",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/rrb-recruitment-2026-apply-online-for-1215-station-master-posts/44986",
+      "last_verified": "2026-10-30T02:48:41.275901",
+      "status": "active"
     },
     {
       "id": "bc76243ee5daec3d61c037c0d951cfcd",
@@ -1699,10 +2098,23 @@
       "important_dates": {
         "found_date": "20-11-2026"
       },
-      "category": "Banking",
+      "category": "Administrative",
       "skills": [],
       "scraped_at": "2026-10-31T02:39:39.525026",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/rites-notification-2026-apply-online-for-27-assistant-manager-posts/45015",
+      "last_verified": "2026-10-31T02:39:39.525026",
+      "status": "active"
     },
     {
       "id": "204fe56fb4eafb7152a14372223923f3",
@@ -1714,10 +2126,23 @@
       "important_dates": {
         "found_date": "31-10-2026"
       },
-      "category": "Banking",
+      "category": "Administrative",
       "skills": [],
       "scraped_at": "2026-10-31T02:39:39.525043",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/iit-kharagpur-notification-2026-apply-online-for-project-assistant-posts/45014",
+      "last_verified": "2026-10-31T02:39:39.525043",
+      "status": "active"
     },
     {
       "id": "0fd70246ab304e1045debdd6183356bf",
@@ -1730,10 +2155,23 @@
         "last_date": "05-11-2026",
         "found_date": "05-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-10-31T02:39:39.524956",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/cmho-south-bastar-dantewada-notification-2026-apply-online-for-paediatric-specialist-posts/45017",
+      "last_verified": "2026-10-31T02:39:39.524956",
+      "status": "active"
     },
     {
       "id": "45552d20088f44a332d3bc75df2efc3e",
@@ -1745,10 +2183,23 @@
       "important_dates": {
         "found_date": "20-11-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [],
       "scraped_at": "2026-10-31T02:39:39.525006",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/sail-notification-2026-walk-in-interview-for-general-duty-medical-officer-posts/45016",
+      "last_verified": "2026-10-31T02:39:39.525006",
+      "status": "active"
     },
     {
       "id": "1ca4cbcfe8cde41fff6cf7cf73b6843c",
@@ -1760,10 +2211,23 @@
       "important_dates": {
         "found_date": "08-11-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [],
       "scraped_at": "2026-10-31T02:39:39.524984",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/aiims-bhubaneswar-notification-2026-apply-online-for-02-project-research-scientist-project-technical-support-posts/44957",
+      "last_verified": "2026-10-31T02:39:39.524984",
+      "status": "active"
     },
     {
       "id": "1786c5154624c916997ff7f20f82ebaa",
@@ -1776,10 +2240,23 @@
         "last_date": "11-11-2026",
         "found_date": "11-11-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [],
       "scraped_at": "2026-10-31T02:39:39.525061",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/pgimer-notification-2026-apply-online-for-various-project-nurse-ii-posts/45013",
+      "last_verified": "2026-10-31T02:39:39.525061",
+      "status": "active"
     },
     {
       "id": "836a43c7518ddbef64a280853f0d5533",
@@ -1791,10 +2268,23 @@
       "important_dates": {
         "found_date": "19-11-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [],
       "scraped_at": "2026-10-31T02:39:39.530142",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/aiims-bhopal-recruitment-2026-walk-in-interview-for-07-office-helper-project-technical-support-and-other-posts/45009",
+      "last_verified": "2026-10-31T02:39:39.530142",
+      "status": "active"
     },
     {
       "id": "b5324a7e16088ff28bcaca37190dff6b",
@@ -1806,10 +2296,23 @@
       "important_dates": {
         "found_date": "10-11-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [],
       "scraped_at": "2026-10-31T02:39:39.525098",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/echs-notification-2026-apply-offline-for-03-dental-officer-dental-technical-assistant-hygienist-and-lab-technician-posts/45010",
+      "last_verified": "2026-10-31T02:39:39.525098",
+      "status": "active"
     },
     {
       "id": "c71bf53ceab309217ae95e35dbda357e",
@@ -1821,10 +2324,23 @@
       "important_dates": {
         "found_date": "02-11-2026"
       },
-      "category": "Banking",
+      "category": "Engineering",
       "skills": [],
       "scraped_at": "2026-10-31T02:39:39.525080",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/iit-guwahati-notification-2026-apply-online-for-assistant-project-engineer-posts/45011",
+      "last_verified": "2026-10-31T02:39:39.525080",
+      "status": "active"
     },
     {
       "id": "26a1b83cc18011669444592f4b61a584",
@@ -1836,114 +2352,23 @@
       "important_dates": {
         "found_date": "15-11-2026"
       },
-      "category": "Banking",
+      "category": "Administrative",
       "skills": [],
       "scraped_at": "2026-10-31T02:39:39.530117",
-      "links": []
-    },
-    {
-      "id": "fbe8a2bf1996d3ab2b43bd4eafe20ce2",
-      "title": "RITES",
-      "url": "https://allgovernmentjobs.in/rites-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Rail India Technical and Economic Service (RITES) has declared the latest job notification for 2026. To fill the vacanci .... Rail India Technical and Economic Service (RITES) has issued the official notification for the recruitment of 01 Group G .... Rail India Technical and Economic Service (RITES) has declared the latest job notification for 2026. To fill the vacanci .... Rail India Technical and Economic Service (RITES) has issued the official notification for the recruitment of 27 Indivi...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Engineering",
-      "skills": [],
-      "scraped_at": "2026-10-31T02:39:39.530193",
-      "links": []
-    },
-    {
-      "id": "b888c2df0d98dd8a08ea110957809ad9",
-      "title": "IIT Kharagpur",
-      "url": "https://allgovernmentjobs.in/iit-kharagpur-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Indian Institute of Technology Kharagpur (IIT Kharagpur) has declared the latest job notification for 2026. To fill the .... Indian Institute of Technology Kharagpur (IIT Kharagpur) has declared the latest job notification for 2026. To fill the .... Indian Institute of Technology Kharagpur (IIT Kharagpur) has officially released the latest job notification for 2026. T .... Indian Institute of Technology Kharagpur (IIT Kharagpur) has declared the latest job notification for 2026. To fill the ....",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "IT",
-      "skills": [],
-      "scraped_at": "2026-10-31T02:39:39.530212",
-      "links": []
-    },
-    {
-      "id": "d5715c208f417155c67c699b708fbfbb",
-      "title": "CURAJ",
-      "url": "https://allgovernmentjobs.in/curaj-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Central University of Rajasthan (CURAJ) has declared the official notification for 2026. To fill up the vacancies for va .... Central University of Rajasthan (CURAJ) has declared the official notification for 2026. To fill up the vacancies for va .... Central University of Rajasthan (CURAJ) has declared the official notification for 2026. To fill up the vacancies for va .... Central University of Rajasthan (CURAJ) has declared the official notification for 2026. To fill up the vacancies for v...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "IT",
-      "skills": [],
-      "scraped_at": "2026-10-31T02:39:39.530273",
-      "links": []
-    },
-    {
-      "id": "6b94a488e0735138cd95ca79ac0dad8f",
-      "title": "Metro Railway",
-      "url": "https://allgovernmentjobs.in/metro-railway-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "The Delhi Metro International Limited (DMIL) has declared the official notification for the recruitment of various Techn .... Noida Metro Rail Corporation (NMRC) has released the official notification for the recruitment of 34 Senior Section .... The Madhya Pradesh Metro Rail Corporation (MPMRCL) has officially released the notification to fill the vacancy of 01 Ge .... The Madhya Pradesh Metro Rail Corporation (MPMRCL) has officially released the notification to fill the vacancy of 02 Ge ....",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-31T02:39:39.530333",
-      "links": []
-    },
-    {
-      "id": "54f79a7d2f61414148080f7178110c7c",
-      "title": "AIIMS Bhopal",
-      "url": "https://allgovernmentjobs.in/aiims-bhopal-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "All India Institute of Medical Sciences Bhopal (AIIMS Bhopal) has declared the official notification for the recruitment .... All India Institute of Medical Sciences Bhopal (AIIMS Bhopal) has officially released the notification for the recruitme .... All India Institute of Medical Sciences Bhopal (AIIMS Bhopal) has declared the official notification for the recruitment .... All India Institute of Medical Sciences Bhopal (AIIMS Bhopal) has announced the official notification for 2026. To fill...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Medical",
-      "skills": [],
-      "scraped_at": "2026-10-31T02:39:39.530314",
-      "links": []
-    },
-    {
-      "id": "48e450474aa9f499104e313ae9c54160",
-      "title": "MNNIT Allahabad",
-      "url": "https://allgovernmentjobs.in/mnnit-allahabad-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Motilal Nehru National Institute of Technology Allahabad (MNNIT Allahabad) has declaredthe latest job notification for t .... Motilal Nehru National Institute of Technology Allahabad (MNNIT Allahabad) has declaredthe latest job notification for t .... Motilal Nehru National Institute of Technology Allahabad (MNNIT Allahabad) has declaredthe latest job notification for t .... The MOTILAL NEHRU NATIONAL INSTITUTE OF TECHNOLOGY, ALLAHABAD (MNNIT Allahabad) has officially released the notificatio...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "IT",
-      "skills": [],
-      "scraped_at": "2026-10-31T02:39:39.530372",
-      "links": []
-    },
-    {
-      "id": "13767e2f775fcf83bac575659ec1b8b9",
-      "title": "GBPUAT",
-      "url": "https://allgovernmentjobs.in/gbpuat-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "G. B. Pant University of Agriculture & Technology (GBPUAT) has declared the official notification for 2026. To fill .... G. B. Pant University of Agriculture & Technology (GBPUAT) has declared the official notification for 2026. To fill .... G. B. Pant University of Agriculture & Technology (GBPUAT) has declared the official notification for 2026. To fill .... The Gobind Ballabh Pant University of Agriculture and Technology (GBPUAT) has officially released the notification to fi .... Gobind B...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "IT",
-      "skills": [],
-      "scraped_at": "2026-10-31T02:39:39.530392",
-      "links": []
-    },
-    {
-      "id": "485f4fe8d68e0abc6622c76707406f53",
-      "title": "E-courts",
-      "url": "https://allgovernmentjobs.in/e-courts-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "The District Legal Services Authority (DLSA Bhojpur) has announced the official notification for the recruitment of 140 .... Mulugu District has issued an official notification for the recruitment of 07 Ayush Medical Officers, Pharmacists, .... The District Legal Services Authority (DLSA Palamau) has announced the official notification for the recruitment of 01 D .... The District Legal Services Authority (DLSA Jalore) has announced the official notification for the recruitment of 26 Pa .... ...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-10-31T02:39:39.530351",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/curaj-recruitment-2026-apply-online-for-03-project-coordinator-and-project-assistant-and-office-assistant-posts/45012",
+      "last_verified": "2026-10-31T02:39:39.530117",
+      "status": "active"
     },
     {
       "id": "84ffd4db700f07dacd325ad905d89ee9",
@@ -1956,10 +2381,23 @@
         "last_date": "21-11-2026",
         "found_date": "29-10-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [],
       "scraped_at": "2026-11-01T02:27:35.736965",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/aiims-mangalagiri-notification-2026-apply-online-for-02-tutor-demonstrator-posts/45036",
+      "last_verified": "2026-11-01T02:27:35.736965",
+      "status": "active"
     },
     {
       "id": "9ed3cc8d0ce01d74f8ea4793f0d30300",
@@ -1971,10 +2409,23 @@
       "important_dates": {
         "found_date": "09-11-2026"
       },
-      "category": "Banking",
+      "category": "Administrative",
       "skills": [],
       "scraped_at": "2026-11-01T02:27:35.736948",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/pjtsau-notification-2026-walk-in-interview-for-02-project-assistant-and-field-assistant-posts/45037",
+      "last_verified": "2026-11-01T02:27:35.736948",
+      "status": "active"
     },
     {
       "id": "e822969c63823140668406f3cafffb20",
@@ -1986,10 +2437,23 @@
       "important_dates": {
         "found_date": "02-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-11-01T02:27:35.736930",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/pjtsau-notification-2026-walk-in-interview-for-various-physical-director-posts/45038",
+      "last_verified": "2026-11-01T02:27:35.736930",
+      "status": "active"
     },
     {
       "id": "31ab62390931b5f339cb2e6c24e7c13c",
@@ -2001,10 +2465,23 @@
       "important_dates": {
         "found_date": "07-11-2026"
       },
-      "category": "Banking",
+      "category": "Teaching",
       "skills": [],
       "scraped_at": "2026-11-01T02:27:35.736904",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/pjtsau-notification-2026-walk-in-interview-for-various-graduate-teaching-assistant-posts/45039",
+      "last_verified": "2026-11-01T02:27:35.736904",
+      "status": "active"
     },
     {
       "id": "dbeb2ba1554e07014d07a72eb970ecd5",
@@ -2016,10 +2493,23 @@
       "important_dates": {
         "found_date": "02-11-2026"
       },
-      "category": "Banking",
+      "category": "Teaching",
       "skills": [],
       "scraped_at": "2026-11-01T02:27:35.736877",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/pjtsau-notification-2026-walk-in-interview-for-09-graduate-teaching-assistant-posts/45040",
+      "last_verified": "2026-11-01T02:27:35.736877",
+      "status": "active"
     },
     {
       "id": "ccf6e61330b36084da4665a3c58941a3",
@@ -2031,10 +2521,23 @@
       "important_dates": {
         "found_date": "08-11-2026"
       },
-      "category": "Banking",
+      "category": "Engineering",
       "skills": [],
       "scraped_at": "2026-11-01T02:27:35.736983",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/cmd-kerala-notification-2026-apply-for-various-project-engineer-posts/45035",
+      "last_verified": "2026-11-01T02:27:35.736983",
+      "status": "active"
     },
     {
       "id": "3313e9bce510d14c00d0e3ad2dda0eb3",
@@ -2047,10 +2550,23 @@
         "last_date": "11-11-2026",
         "found_date": "28-10-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-11-01T02:27:35.737039",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/nhsrc-notification-2026-apply-online-for-consultant-posts/45031",
+      "last_verified": "2026-11-01T02:27:35.737039",
+      "status": "active"
     },
     {
       "id": "dc87eb776c84ae6aed129b3c4c6a6714",
@@ -2062,10 +2578,23 @@
       "important_dates": {
         "found_date": "07-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-11-01T02:27:35.737003",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/pgimer-notification-2026-walk-in-interview-for-06-senior-resident-posts/45033",
+      "last_verified": "2026-11-01T02:27:35.737003",
+      "status": "active"
     },
     {
       "id": "dc8efb3329a712f525be1e9a8398b998",
@@ -2077,10 +2606,23 @@
       "important_dates": {
         "found_date": "09-11-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [],
       "scraped_at": "2026-11-01T02:27:35.737021",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/aiims-nagpur-notification-2026-apply-online-for-project-technical-support-ii-posts/45032",
+      "last_verified": "2026-11-01T02:27:35.737021",
+      "status": "active"
     },
     {
       "id": "c42fe7c026c761def2d88ad71a538449",
@@ -2092,75 +2634,23 @@
       "important_dates": {
         "found_date": "20-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-11-01T02:27:35.742003",
-      "links": []
-    },
-    {
-      "id": "169d5b434aa76b09e9409f8be8600f52",
-      "title": "AIIMS",
-      "url": "https://allgovernmentjobs.in/aiims-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "All India Institute of Medical Sciences (AIIMS) Mangalagiri has declared the latest job notification for 02 Tutor/ Demon .... All India Institute of Medical Sciences Nagpur (AIIMS Nagpur) has declared the latest job notification for 2026. To fill .... The National Brain Research Centre (NBRC) has declared the official notification for 2026. To fill the vacancies for var .... All India Institute of Medical Sciences Bhopal (AIIMS Bhopal) has recently published the official notification for the ...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Medical",
-      "skills": [],
-      "scraped_at": "2026-11-01T02:27:35.742071",
-      "links": []
-    },
-    {
-      "id": "d58ad18cb0952c0914d73fcd521209f1",
-      "title": "IIT Dhanbad",
-      "url": "https://allgovernmentjobs.in/iit-dhanbad-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Indian Institute of Technology (Indian School of Mines) Dhanbad (IIT(ISM) Dhanbad) has declared the official notificatio .... Indian Institute of Technology (Indian School of Mines) Dhanbad (IIT(ISM) Dhanbad) has declared the official notificatio .... Indian Institute of Technology, Indian School of Mines, Dhanbad (IIT ISM Dhanbad) has declared the latest job notificati .... Indian Institute of Technology (Indian School of Mines) Dhanbad (IIT(ISM) Dhanbad) has declared the official notificati...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Teaching",
-      "skills": [],
-      "scraped_at": "2026-11-01T02:27:35.742148",
-      "links": []
-    },
-    {
-      "id": "339d7c88ae6728574c02222aca0c4225",
-      "title": "CMD Kerala",
-      "url": "https://allgovernmentjobs.in/cmd-kerala-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Centre for Management Development Kerala (CMD Kerala) has declared the official notification for the recruitment of vari .... Centre for Management Development Kerala (CMD Kerala) has released the official notification for 2026. To fill up the va .... Centre for Management Development Kerala (CMD Kerala) has declared the official notification for the recruitment of 02 C .... Centre for Management Development Kerala (CMD Kerala) has declared the official notification for the recruitment of 02 ...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "IT",
-      "skills": [],
-      "scraped_at": "2026-11-01T02:27:35.742090",
-      "links": []
-    },
-    {
-      "id": "e59bf68ed06238db8bb3c589d41136ba",
-      "title": "AIIMS Nagpur",
-      "url": "https://allgovernmentjobs.in/aiims-nagpur-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "All India Institute of Medical Sciences Nagpur (AIIMS Nagpur) has declared the latest job notification for 2026. To fill .... All India Institute of Medical Sciences Nagpur (AIIMS Nagpur)  has released an official notification for the recrui .... All India Institute of Medical Sciences Nagpur (AIIMS Nagpur)  has released an official notification for the recrui .... All India Institute of Medical Sciences Nagpur (AIIMS Nagpur) has declared the latest job notification for 2026. To fill .... All...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Medical",
-      "skills": [],
-      "scraped_at": "2026-11-01T02:27:35.742128",
-      "links": []
-    },
-    {
-      "id": "21a9160ba8c847080e3d3930c2e1bc95",
-      "title": "NIT Calicut",
-      "url": "https://allgovernmentjobs.in/nit-calicut-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "National Institute of Technology Calicut (NIT Calicut) has declared the official notification for 2026. To fill vacancie .... National Institute of Technology Calicut (NIT Calicut) has declared the official notification for 2026. To fill vacancie .... National Institute of Technology Calicut (NIT Calicut) has declared the official notification for 2026. To fill vacancie .... National Institute of Technology Calicut (NIT Calicut) has declared the latest notification for the recruitment of vari...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "IT",
-      "skills": [],
-      "scraped_at": "2026-11-01T02:27:35.742166",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/ongc-recruitment-2026-apply-online-for-3047-apprentice-posts/45034",
+      "last_verified": "2026-11-01T02:27:35.742003",
+      "status": "active"
     },
     {
       "id": "0391907b17306af3a84c2e946d954daa",
@@ -2172,12 +2662,25 @@
       "important_dates": {
         "found_date": "10-11-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [
         "Data Entry"
       ],
       "scraped_at": "2026-11-03T04:00:07.873163",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/aiims-delhi-notification-2026-apply-for-various-project-nurse-ii-posts/45061",
+      "last_verified": "2026-11-03T04:00:07.873163",
+      "status": "active"
     },
     {
       "id": "92fc44afc5a6012af5ec0c59ea699dc2",
@@ -2189,12 +2692,25 @@
       "important_dates": {
         "found_date": "10-11-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [
         "Data Entry"
       ],
       "scraped_at": "2026-11-03T04:00:07.873182",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/aiims-jodhpur-notification-2026-walk-in-interview-for-various-project-staff-nurse-posts/45059",
+      "last_verified": "2026-11-03T04:00:07.873182",
+      "status": "active"
     },
     {
       "id": "8e594f02a2b57fc36d433f5aa5dad64e",
@@ -2206,10 +2722,23 @@
       "important_dates": {
         "found_date": "07-11-2026"
       },
-      "category": "Banking",
+      "category": "Teaching",
       "skills": [],
       "scraped_at": "2026-11-03T04:00:07.873153",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/angrau-notification-2026-walk-in-interview-for-teaching-associate-posts/45062",
+      "last_verified": "2026-11-03T04:00:07.873153",
+      "status": "active"
     },
     {
       "id": "9db540c20540945247e79bace37fecf1",
@@ -2221,12 +2750,25 @@
       "important_dates": {
         "found_date": "16-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [
         "Data Entry"
       ],
       "scraped_at": "2026-11-03T04:00:07.873140",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/jipmer-notification-2026-apply-online-for-09-senior-resident-posts/45063",
+      "last_verified": "2026-11-03T04:00:07.873140",
+      "status": "active"
     },
     {
       "id": "ffcce4dccdebd7ee5b7beb4e4f2af93c",
@@ -2238,12 +2780,25 @@
       "important_dates": {
         "found_date": "11-11-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [
         "Data Entry"
       ],
       "scraped_at": "2026-11-03T04:00:07.873172",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/pgimer-notification-2026-apply-online-for-various-project-nurse-iii-posts/45060",
+      "last_verified": "2026-11-03T04:00:07.873172",
+      "status": "active"
     },
     {
       "id": "69faca454fc71cd1bd44d42875d1c8d8",
@@ -2256,12 +2811,25 @@
         "last_date": "27-11-2026",
         "found_date": "27-11-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [
         "Data Entry"
       ],
       "scraped_at": "2026-11-03T04:00:07.873218",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/echs-notification-2026-apply-offline-for-36-medical-officer-dental-officer-nursing-assistant-and-other-posts/45055",
+      "last_verified": "2026-11-03T04:00:07.873218",
+      "status": "active"
     },
     {
       "id": "f59b9473ec55e60fa676e8903d610698",
@@ -2273,10 +2841,23 @@
       "important_dates": {
         "found_date": "23-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-11-03T04:00:07.873208",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/icar-nbpgr-notification-2026-apply-for-various-young-professional-ii-posts/45056",
+      "last_verified": "2026-11-03T04:00:07.873208",
+      "status": "active"
     },
     {
       "id": "3afb3987544c4291fd0598045ea2428b",
@@ -2289,12 +2870,25 @@
         "last_date": "22-11-2026",
         "found_date": "02-11-2026"
       },
-      "category": "Banking",
+      "category": "Teaching",
       "skills": [
         "Data Entry"
       ],
       "scraped_at": "2026-11-03T04:00:07.873197",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/aees-notification-2026-apply-online-for-254-tgt-pgt-principal-librarian-and-other-posts/45058",
+      "last_verified": "2026-11-03T04:00:07.873197",
+      "status": "active"
     },
     {
       "id": "4ffd1ae622f6874f57abe489efa41539",
@@ -2306,23 +2900,23 @@
       "important_dates": {
         "found_date": "10-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-11-03T04:00:07.873227",
-      "links": []
-    },
-    {
-      "id": "d09ff0699fab45e292bce6a1905744f3",
-      "title": "National Chemical Laboratory",
-      "url": "https://allgovernmentjobs.in/national-chemicallaboratory-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "CSIR National Chemical Laboratory (CSIR NCL) has issued the official notification for 2026. To fill the vacancies for Va .... CSIR National Chemical Laboratory (CSIR NCL) has issued the official notification for 2026. To fill the vacancies for Va .... CSIR National Chemical Laboratory (CSIR NCL) has published the official notification for recruitment 2026. To fill up th .... CSIR National Chemical Laboratory (CSIR NCL) has officially released the notification for recruitment 2026. To fill the...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "IT",
-      "skills": [],
-      "scraped_at": "2026-11-03T04:00:07.875839",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/csir-ncl-notification-2026-apply-online-for-various-project-associate-i-posts/45054",
+      "last_verified": "2026-11-03T04:00:07.873227",
+      "status": "active"
     },
     {
       "id": "c63b8532eff45ea0cb9ab2953f624357",
@@ -2335,51 +2929,25 @@
         "last_date": "15-11-2026",
         "found_date": "31-10-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [
         "Data Entry"
       ],
       "scraped_at": "2026-11-03T04:00:07.875768",
-      "links": []
-    },
-    {
-      "id": "c0e52afa9a539814985b791e7c01c420",
-      "title": "SCTIMST",
-      "url": "https://allgovernmentjobs.in/sctimst-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Sree Chitra Tirunal Institute for Medical Sciences and Technology (SCTIMST) has declared the official notification for 2 .... Sree Chitra Tirunal Institute for Medical Sciences and Technology (SCTIMST) has announced the official notification for .... Sree Chitra Tirunal Institute for Medical Sciences and Technology (SCTIMST) has announced the official notification for .... Sree Chitra Tirunal Institute for Medical Sciences and Technology (SCTIMST) has announced the official notification for ....",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Medical",
-      "skills": [],
-      "scraped_at": "2026-11-03T04:00:07.875861",
-      "links": []
-    },
-    {
-      "id": "af7158d54d7ebb42902f650af2cae9e9",
-      "title": "Kochi Metro Rail Limited",
-      "url": "https://allgovernmentjobs.in/kochi-metro-rail-limited-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Kochi Metro Rail Limited (KMRL) has declared the official notification for the recruitment of 70 Apprenticeship Job ....",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "IT",
-      "skills": [],
-      "scraped_at": "2026-11-03T04:00:07.875851",
-      "links": []
-    },
-    {
-      "id": "ac8056695ac9c7f71e3d48ddbcd7bcc2",
-      "title": "Bank Jobs",
-      "url": "https://allgovernmentjobs.in/bank-jobs-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Dhanlaxmi Bank Ltd has officially released the notification for the recruitment of various Information System Auditor Jo .... Bank of Baroda (BOB) has announced the latest job notification for the recruitment of 11 Senior Manager, Manager, a .... The Bank of Baroda (BOB) has declared the official notification for 2026. To fill up the vacancies for 04 Deputy Chief T .... UCO Bank has officially released the notification for 2026. 530 vacancies have been allocated for Apprentice Positi .... Res...",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-11-03T04:00:07.875879",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/bmrcl-recruitment-2026-apply-online-for-general-manager-posts/45057",
+      "last_verified": "2026-11-03T04:00:07.875768",
+      "status": "active"
     },
     {
       "id": "3e2a878fa29364eca960ef8deeb76d5b",
@@ -2391,12 +2959,25 @@
       "important_dates": {
         "found_date": "14-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [
         "Data Entry"
       ],
       "scraped_at": "2026-11-03T14:22:16.598633",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/iit-kharagpur-notification-2026-apply-offline-for-various-research-associate-posts/45068",
+      "last_verified": "2026-11-03T14:22:16.598633",
+      "status": "active"
     },
     {
       "id": "39ca67afafad5358be3cc488b65cd6fa",
@@ -2409,10 +2990,23 @@
         "last_date": "18-11-2026",
         "found_date": "29-10-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-11-03T14:22:16.598600",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/npcil-notification-2026-apply-online-for-80-apprenticeship-posts/45072",
+      "last_verified": "2026-11-03T14:22:16.598600",
+      "status": "active"
     },
     {
       "id": "b533c3b7fbe7be7ef17020306e6db72e",
@@ -2424,12 +3018,25 @@
       "important_dates": {
         "found_date": "22-11-2026"
       },
-      "category": "Banking",
+      "category": "Engineering",
       "skills": [
         "Data Entry"
       ],
       "scraped_at": "2026-11-03T14:22:16.598617",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/iit-kharagpur-notification-2026-apply-online-for-31-senior-technical-assistant-posts/45069",
+      "last_verified": "2026-11-03T14:22:16.598617",
+      "status": "active"
     },
     {
       "id": "1eed147e51f8e035a34e5bebb3345e90",
@@ -2441,12 +3048,25 @@
       "important_dates": {
         "found_date": "10-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [
         "Data Entry"
       ],
       "scraped_at": "2026-11-03T14:22:16.598647",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/dlsa-sangrur-notification-2026-apply-offline-for-various-para-legal-volunteer-posts/45067",
+      "last_verified": "2026-11-03T14:22:16.598647",
+      "status": "active"
     },
     {
       "id": "d4d0e1eb7d18071bf913deb2f26fcd12",
@@ -2458,10 +3078,23 @@
       "important_dates": {
         "found_date": "17-11-2026"
       },
-      "category": "Banking",
+      "category": "Administrative",
       "skills": [],
       "scraped_at": "2026-11-03T14:22:16.598576",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/nimhans-notification-2026-walk-in-interview-for-04-field-officer-posts/45073",
+      "last_verified": "2026-11-03T14:22:16.598576",
+      "status": "active"
     },
     {
       "id": "39d006fb62baf61b999952b377d626fe",
@@ -2473,12 +3106,25 @@
       "important_dates": {
         "found_date": "30-11-2026"
       },
-      "category": "Banking",
+      "category": "Administrative",
       "skills": [
         "Data Entry"
       ],
       "scraped_at": "2026-11-03T14:22:16.598677",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/echs-notification-2026-apply-offline-for-03-nursing-assistant-deo-clerk-and-office-in-charge-posts/45065",
+      "last_verified": "2026-11-03T14:22:16.598677",
+      "status": "active"
     },
     {
       "id": "9339ee490e6a62cb40225d0246954759",
@@ -2491,12 +3137,25 @@
         "last_date": "09-11-2026",
         "found_date": "19-10-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [
         "Word"
       ],
       "scraped_at": "2026-11-03T14:22:16.598662",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/irel-notification-2026-apply-online-for-131-tradesman-trainee-posts/45066",
+      "last_verified": "2026-11-03T14:22:16.598662",
+      "status": "active"
     },
     {
       "id": "e1c64176189deab580a7afd5cd8551c9",
@@ -2508,10 +3167,23 @@
       "important_dates": {
         "found_date": "13-11-2026"
       },
-      "category": "Banking",
+      "category": "General",
       "skills": [],
       "scraped_at": "2026-11-03T14:22:16.603394",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/csir-ncl-recruitment-2026-apply-online-for-various-project-associate-i-posts/45074",
+      "last_verified": "2026-11-03T14:22:16.603394",
+      "status": "active"
     },
     {
       "id": "d5ad4f8c6074883ca50b1e5b85b6ff4a",
@@ -2523,51 +3195,87 @@
       "important_dates": {
         "found_date": "17-11-2026"
       },
-      "category": "Banking",
+      "category": "Medical",
       "skills": [
         "Data Entry"
       ],
       "scraped_at": "2026-11-03T14:22:16.603423",
-      "links": []
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/aiims-delhi-recruitment-2026-apply-offline-for-research-associate-iii-posts/45071",
+      "last_verified": "2026-11-03T14:22:16.603423",
+      "status": "active"
     },
     {
-      "id": "c409ba57a5c5da6ab33f2e974d5d1b1c",
-      "title": "NIMHANS",
-      "url": "https://allgovernmentjobs.in/nimhans-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "National Institute of Mental Health and Neuro Sciences (NIMHANS) has released the official notification for 2026. To fil .... The National Institute of Mental Health and Neuro Sciences, Bangalore (NIMHANS) has issued the official notification for .... National Institute of Mental Health and Neuro Sciences (NIMHANS) has announced the official notification for 2026. To fi .... National Institute of Mental Health and Neuro Sciences (NIMHANS) has announced the official notification for 2026. 02 v...",
+      "id": "en_e720d528a5699f9ac7d3cf27f799ce9c",
+      "title": "TGT (COMPUTER SCIENCE) & OTHERS - SAINIK SCHOOL NAGROTA, SAINIK SCHOOLS SOCIETY, MINISTRY OF DEFENCE",
+      "organization": "SAINIK SCHOOL NAGROTA, SAINIK SCHOOLS SOCIETY, MINISTRY OF DEFENCE",
+      "url": "https://employmentnews.gov.in/newemp/AllJobs.aspx?k=All#en-e720d528a5699f9ac7d3cf27f799ce9c",
+      "source": "employmentnews.gov.in",
+      "description": "Employment News (Government of India) listing: TGT (COMPUTER SCIENCE) & OTHERS at SAINIK SCHOOL NAGROTA, SAINIK SCHOOLS SOCIETY, MINISTRY OF DEFENCE. Method of appointment: Recruitment. Issued: 02-11-2026. Last date: 21-11-2026.",
       "pdf_link": null,
-      "important_dates": {},
-      "category": "Medical",
+      "important_dates": {
+        "found_date": "02-11-2026",
+        "last_date": "21-11-2026"
+      },
+      "published_date": "02-11-2026",
+      "category": "General",
       "skills": [],
-      "scraped_at": "2026-11-03T14:22:16.603482",
-      "links": []
+      "scraped_at": "2026-11-03T17:07:44.942330",
+      "links": [
+        "https://employmentnews.gov.in/newemp/AllJobs.aspx?k=All"
+      ],
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "original_source_url": "https://employmentnews.gov.in/newemp/AllJobs.aspx?k=All#en-e720d528a5699f9ac7d3cf27f799ce9c",
+      "last_verified": "2026-11-03T17:07:44.942330",
+      "status": "active"
     },
     {
-      "id": "c35daf7bc426a345f857f8147d294147",
-      "title": "NPCIL",
-      "url": "https://allgovernmentjobs.in/npcil-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "The Nuclear Power Corporation of India Limited (NPCIL) has officially released the notification to fill the vacancies fo .... Nuclear Power Corporation of India Limited (NPCIL) has declared the official notification for 2026. To fill the vacancie ....",
+      "id": "en_214e74070f15cf22b137f10a8019fbe1",
+      "title": "LOWER DIVISION CLERK - INSTITUTE OF HOTEL MANAGEMENT AND CATERING TECHNOLOGY, MINISTRY OF TOURISM",
+      "organization": "INSTITUTE OF HOTEL MANAGEMENT AND CATERING TECHNOLOGY, MINISTRY OF TOURISM",
+      "url": "https://employmentnews.gov.in/newemp/AllJobs.aspx?k=All#en-214e74070f15cf22b137f10a8019fbe1",
+      "source": "employmentnews.gov.in",
+      "description": "Employment News (Government of India) listing: LOWER DIVISION CLERK at INSTITUTE OF HOTEL MANAGEMENT AND CATERING TECHNOLOGY, MINISTRY OF TOURISM. Method of appointment: Recruitment. Issued: 02-11-2026. Last date: 30-11-2026.",
       "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
+      "important_dates": {
+        "found_date": "02-11-2026",
+        "last_date": "30-11-2026"
+      },
+      "published_date": "02-11-2026",
+      "category": "General",
       "skills": [],
-      "scraped_at": "2026-11-03T14:22:16.603498",
-      "links": []
-    },
-    {
-      "id": "79b91ffa0518a23115dba81f836157ac",
-      "title": "BMRCL",
-      "url": "https://allgovernmentjobs.in/bmrcl-recruitment",
-      "source": "allgovernmentjobs.in",
-      "description": "Bangalore Metro Rail Corporation has released a recruitment notification for 01 General Manager position. Those candidat .... Bangalore Metro Rail Corporation has released a recruitment notification for 50 Assistant Security Officer Jobs. Those c ....",
-      "pdf_link": null,
-      "important_dates": {},
-      "category": "Banking",
-      "skills": [],
-      "scraped_at": "2026-11-03T14:22:16.603623",
-      "links": []
+      "scraped_at": "2026-11-03T17:07:44.942330",
+      "links": [
+        "https://employmentnews.gov.in/newemp/AllJobs.aspx?k=All"
+      ],
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "original_source_url": "https://employmentnews.gov.in/newemp/AllJobs.aspx?k=All#en-214e74070f15cf22b137f10a8019fbe1",
+      "last_verified": "2026-11-03T17:07:44.942330",
+      "status": "active"
     }
   ]
 }
