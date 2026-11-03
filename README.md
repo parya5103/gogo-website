@@ -42,11 +42,39 @@ How updates propagate:
   (06:15 IST daily) copies that published site into `/sarkari-sarthi/`,
   so job data stays current.
 - The sync also runs manually: Actions tab -> "Sync product apps" ->
-  "Run workflow". After the first merge of the workflow, run it once
-  manually to publish the three directories.
+  "Run workflow".
 - The product repositories remain the single source of truth; nothing is
   hand-edited inside `/arrowout/`, `/crystalquest/` or `/sarkari-sarthi/`
   (edits there would be overwritten by the next sync).
+
+## AdSense readiness (NOT yet active)
+
+The site is technically ready for Google AdSense, but advertising is
+currently OFF. Nothing loads and no ad requests are made while the
+publisher ID is empty.
+
+- `assets/js/ads.js` - central, shared integration. Config at the top:
+  `publisherId` (empty = fully off), `cmpReady` (EEA/UK/CH gate) and
+  per-slot IDs. Guarded against duplicate script injection.
+- `assets/css/ads.css` - ad unit styles; every ad is labelled
+  "Advertisement" and visually separated from content.
+- Ad slots exist only on informational pages (homepage mid-content,
+  about-page bottom). The games never load ads.js - no ads inside games
+  or near game controls, and ads are never styled as job listings.
+- EEA / UK / Switzerland: ads stay disabled for those regions until a
+  Google-certified CMP (e.g. Funding Choices) handles consent. Set
+  `cmpReady: true` only after that works.
+- `ads.txt.example` documents the ads.txt format. Do NOT add a real
+  `ads.txt` at the root until the owner's verified publisher ID exists.
+
+Activation checklist for the owner (after AdSense approval):
+
+1. Put the verified publisher ID in `assets/js/ads.js` (`publisherId`)
+   and create the ad units in AdSense; put their slot IDs in `CONFIG.slots`.
+2. Copy `ads.txt.example` to `ads.txt` at the repository root with the
+   real publisher ID and commit.
+3. Set up a Google-certified CMP before enabling ads for EEA/UK/CH
+   traffic, then set `cmpReady: true`.
 
 ## Other pages
 
