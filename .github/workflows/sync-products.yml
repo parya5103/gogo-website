@@ -1,0 +1,105 @@
+name: Sync product apps
+
+on:
+  schedule:
+    - cron: '45 0 * * *'  # 06:15 IST daily - after Sarkari-Sarthi's 05:00 IST update
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sync-products.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-products
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout central site
+        uses: actions/checkout@v4
+
+      - name: Checkout Arrow Out source (Fletch_Game)
+        uses: actions/checkout@v4
+        with:
+          repository: parya5103/Fletch_Game
+          ref: main
+          path: src-arrowout
+
+      - name: Checkout Crystal Quest source (crystal-quest-web)
+        uses: actions/checkout@v4
+        with:
+          repository: parya5103/crystal-quest-web
+          ref: main
+          path: src-crystalquest
+
+      - name: Checkout Sarkari Sarthi published site (gh-pages branch)
+        uses: actions/checkout@v4
+        with:
+          repository: parya5103/Sarkari-Sarthi
+          ref: gh-pages
+          path: src-sarkari
+
+      - name: Publish Arrow Out into /arrowout/
+        run: |
+          mkdir -p arrowout
+          rsync -a --delete --delete-excluded \
+            --exclude '.github' \
+            --exclude 'android' \
+            --exclude 'audit' \
+            --exclude 'scripts' \
+            --exclude 'tests' \
+            --exclude 'README.md' \
+            --exclude 'LICENSE' \
+            --exclude 'SECURITY.md' \
+            --exclude '.gitignore' \
+            src-arrowout/ arrowout/
+
+      - name: Publish Crystal Quest into /crystalquest/
+        run: |
+          mkdir -p crystalquest
+          rsync -a --delete --delete-excluded \
+            --exclude '.github' \
+            --exclude 'android' \
+            --exclude 'dev' \
+            --exclude 'tests' \
+            --exclude 'README.md' \
+            --exclude 'KNOWLEDGE.md' \
+            --exclude '.gitignore' \
+            src-crystalquest/ crystalquest/
+
+      - name: Publish Sarkari Sarthi into /sarkari-sarthi/
+        run: |
+          mkdir -p sarkari-sarthi
+          rsync -a --delete --delete-excluded \
+            --exclude '.github' \
+            --exclude '.gitignore' \
+            --exclude '.nojekyll' \
+            --exclude '.jules' \
+            --exclude '.vercelignore' \
+            --exclude 'AGENTS.md' \
+            --exclude 'LICENSE' \
+            --exclude 'daily_review.md' \
+            --exclude 'package.json' \
+            --exclude 'package-lock.json' \
+            --exclude 'pnpm-lock.yaml' \
+            --exclude 'vercel.json' \
+            --exclude 'tests' \
+            --exclude 'CNAME' \
+            src-sarkari/ sarkari-sarthi/
+
+      - name: Commit synced apps if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add arrowout crystalquest sarkari-sarthi
+          if git diff --cached --quiet; then
+            echo "No product changes to publish."
+          else
+            git commit -m "sync: refresh product apps from source repositories"
+            git push
+          fi
