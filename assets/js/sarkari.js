@@ -1,7 +1,11 @@
 /* GoGo Company - Sarkari Sarthi renderer.
    Data comes from SARKARI_LISTINGS (curated, official sources) plus the
-   Sarkari-Sarthi scraper manifest. Tries a live fetch of MANIFEST_URL and
-   falls back to the SARKARI_SNAPSHOT embedded in sarkari-data.js. */
+   Sarkari-Sarthi scraper manifest. The live manifest (MANIFEST_URL) is
+   fetched on every page load; SARKARI_SNAPSHOT (in sarkari-data.js) is the
+   offline fallback baked in at build time.
+
+   States handled: loading, success (live), degraded (fallback snapshot),
+   error (fetch failed -> retry button), empty (no search matches). */
 
 (function () {
   "use strict";
@@ -26,11 +30,12 @@
   var searchEl = document.getElementById("sarkari-search");
   var statusEl = document.getElementById("sarkari-status");
   var emptyEl = document.getElementById("sarkari-empty");
+  var errorEl = document.getElementById("sarkari-error");
+  var retryBtn = document.getElementById("sarkari-retry");
 
-  var state = { tab: "all", query: "" };
+  var state = { tab: "all", query: "", source: "loading" };
   var curated = [];
   var scraped = [];
-  var expiredHidden = 0;
 
   function esc(s) {
     return String(s == null ? "" : s)
@@ -51,6 +56,12 @@
     var p = parseDmy(s);
     if (!p) return esc(s || "See official notification");
     return p.d + " " + MON[p.m - 1] + " " + p.y;
+  }
+
+  function fmtIso(iso) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})/.exec(String(iso || ""));
+    if (!m) return "";
+    return m[3] + " " + MON[+m[2] - 1] + " " + m[1] + ", " + m[4] + ":" + m[5] + " UTC";
   }
 
   function isExpired(l) {
@@ -191,6 +202,22 @@
     );
   }
 
+  function setStatus(msg) {
+    if (statusEl) statusEl.textContent = msg;
+  }
+
+  function showError(msg) {
+    if (errorEl) {
+      errorEl.hidden = false;
+      var m = errorEl.querySelector(".sarkari-error-msg");
+      if (m) m.textContent = msg;
+    }
+  }
+
+  function hideError() {
+    if (errorEl) errorEl.hidden = true;
+  }
+
   function render() {
     var c = counts();
     if (tabsEl) {
@@ -207,19 +234,9 @@
     var list = filtered();
     grid.innerHTML = list.map(card).join("");
     if (emptyEl) emptyEl.hidden = list.length !== 0;
-    if (statusEl && !statusEl.dataset.liveDone) {
-      statusEl.textContent = allListings().length + " listings shown. Live scraper data loading...";
-    }
   }
 
-  function setStatus(msg) {
-    if (statusEl) {
-      statusEl.textContent = msg;
-      statusEl.dataset.liveDone = "1";
-    }
-  }
-
-  function expireFilter(list) {
+  function applyScraped(list, source, updatedLabel) {
     var keep = [];
     var expired = 0;
     for (var i = 0; i < list.length; i++) {
@@ -227,42 +244,49 @@
       if (isExpired(n)) expired++;
       else keep.push(n);
     }
-    return { keep: keep, expired: expired };
-  }
-
-  function applyScraped(list, label) {
-    var r = expireFilter(list);
-    scraped = r.keep;
-    expiredHidden = r.expired;
+    scraped = keep;
+    state.source = source;
+    hideError();
     render();
     setStatus(
-      label +
-        ": " + (curated.length + scraped.length) + " listings live" +
-        (r.expired ? " (" + r.expired + " expired hidden)" : "") + "."
+      (curated.length + scraped.length) + " listings" +
+      (updatedLabel ? " - scraper data updated " + updatedLabel : "") +
+      (source === "fallback" ? " - showing embedded snapshot (live fetch failed)" : "") +
+      (expired ? " (" + expired + " expired hidden)" : "") + "."
     );
   }
 
   function loadSnapshot() {
     if (typeof SARKARI_SNAPSHOT !== "undefined" && SARKARI_SNAPSHOT.length) {
-      applyScraped(SARKARI_SNAPSHOT, "Fallback snapshot");
+      applyScraped(SARKARI_SNAPSHOT, "fallback", null);
     } else {
+      state.source = "curated-only";
       render();
       setStatus(curated.length + " curated listings shown.");
     }
   }
 
   function loadManifest() {
-    if (typeof MANIFEST_URL === "undefined" || !window.fetch) { loadSnapshot(); return; }
-    fetch(MANIFEST_URL)
+    if (typeof MANIFEST_URL === "undefined" || !window.fetch) {
+      state.source = "fallback";
+      loadSnapshot();
+      if (errorEl) showError("This browser does not support live data fetch.");
+      return;
+    }
+    window
+      .fetch(MANIFEST_URL)
       .then(function (r) {
         if (!r.ok) throw new Error("HTTP " + r.status);
         return r.json();
       })
       .then(function (manifest) {
-        applyScraped(normManifest(manifest), "Live Sarkari-Sarthi data (updated " + String(manifest.last_updated || "recently").slice(0, 10) + ")");
+        var updatedLabel = fmtIso(manifest.last_updated);
+        applyScraped(normManifest(manifest), "live", updatedLabel);
       })
-      .catch(function () {
-        /* snapshot already rendered by loadSnapshot; keep it. */
+      .catch(function (err) {
+        /* Keep whatever the snapshot already rendered; surface a retry. */
+        if (state.source !== "fallback") loadSnapshot();
+        showError("Live job data could not be fetched right now (" + (err && err.message ? err.message : "network error") + "). Showing fallback data.");
       });
   }
 
@@ -270,6 +294,8 @@
     curated = SARKARI_LISTINGS.filter(function (l) { return !isExpired(l); }).map(normCurated);
   }
 
+  state.source = "loading";
+  setStatus("Loading listings...");
   render();
   loadSnapshot();
   loadManifest();
@@ -285,4 +311,10 @@
     state.query = searchEl.value;
     render();
   });
+
+  if (retryBtn) {
+    retryBtn.addEventListener("click", function () {
+      loadManifest();
+    });
+  }
 })();
