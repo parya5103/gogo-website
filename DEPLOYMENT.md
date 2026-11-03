@@ -38,6 +38,26 @@ hours. GitHub then redirects www -> apex domain automatically.
   it manually from the Actions tab). See README.md for how updates
   propagate from each product repository.
 
+## TWA assetlinks.json (Arrow Out! Android app)
+
+The Arrow Out! Android app (TWA) verifies itself against
+`https://gogocompany.in/.well-known/assetlinks.json`. That file must
+contain the real SHA-256 fingerprint of the app signing key - never a
+guessed or copied value.
+
+1. In `parya5103/Fletch_Game`, run the "TWA APK build" workflow and
+   download the `assetlinks.json` file from the build artifact.
+2. In THIS repository, add the file at path
+   `.well-known/assetlinks.json` with exactly the generated contents
+   and commit to `main`.
+3. Verify `https://gogocompany.in/.well-known/assetlinks.json` opens
+   in a browser.
+
+Until this file exists the APK still runs, but Chrome shows the browser
+URL bar instead of the full-screen app. Also set the Play Store listing's
+developer website to `https://gogocompany.in/` so app-ads.txt is
+findable there.
+
 ## Verification checklist after deploy
 
 - https://gogocompany.in loads the homepage.
