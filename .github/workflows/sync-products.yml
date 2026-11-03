@@ -95,6 +95,29 @@ jobs:
             --exclude 'CNAME' \
             src-sarkari/ sarkari-sarthi/
 
+      - name: Verify synced product files (fail instead of publishing broken apps)
+        run: |
+          set -e
+          test -f arrowout/index.html
+          test -f arrowout/manifest.webmanifest
+          test -f arrowout/sw.js
+          test -f arrowout/js/game.js
+          test -f arrowout/js/main.js
+          test -f arrowout/css/styles.css
+          test -f arrowout/icons/icon-192.png
+          test -f crystalquest/index.html
+          test -f crystalquest/manifest.json
+          test -f crystalquest/sw.js
+          test -f crystalquest/js/engine.js
+          test -f crystalquest/js/main.js
+          test -f crystalquest/styles.css
+          test -f crystalquest/icon.svg
+          test -f sarkari-sarthi/index.html
+          test -f sarkari-sarthi/script.js
+          test -f sarkari-sarthi/style.css
+          test -f sarkari-sarthi/jobs/job_manifest.json
+          echo "All key product files verified."
+
       - name: Commit synced apps if changed
         run: |
           git config user.name "github-actions[bot]"
