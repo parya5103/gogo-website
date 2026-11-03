@@ -1,10 +1,9 @@
 # ads.txt for https://gogocompany.in/
 #
-# HOW TO ACTIVATE (owner only, after AdSense approval):
-# 1. Replace pub-0000000000000000 with your VERIFIED AdSense publisher ID.
-# 2. Rename this file to ads.txt (repo root) and commit.
+# The live ads.txt is committed at the repository root with the
+# owner-verified publisher ID (see /ads.txt). This example file is
+# kept only to document the format for future updates.
 #
-# Do NOT publish ads.txt with a placeholder or invented publisher ID -
-# Google reads this file and a wrong entry can affect ad serving.
+# Format: <exchange domain>, <publisher ID>, <DIRECT or RESELLER>, <cert authority ID>
 
-google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
+google.com, pub-2895136878543415, DIRECT, f08c47fec0942fa0
