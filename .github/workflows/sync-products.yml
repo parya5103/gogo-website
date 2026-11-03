@@ -48,6 +48,7 @@ jobs:
         run: |
           mkdir -p arrowout
           rsync -a --delete --delete-excluded \
+            --exclude '.git' \
             --exclude '.github' \
             --exclude 'android' \
             --exclude 'audit' \
@@ -63,6 +64,7 @@ jobs:
         run: |
           mkdir -p crystalquest
           rsync -a --delete --delete-excluded \
+            --exclude '.git' \
             --exclude '.github' \
             --exclude 'android' \
             --exclude 'dev' \
@@ -76,6 +78,7 @@ jobs:
         run: |
           mkdir -p sarkari-sarthi
           rsync -a --delete --delete-excluded \
+            --exclude '.git' \
             --exclude '.github' \
             --exclude '.gitignore' \
             --exclude '.nojekyll' \
