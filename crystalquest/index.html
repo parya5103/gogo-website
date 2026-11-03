@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0f2a" />
+  <meta name="description" content="Crystal Quest: Gem Legends — an original mobile-first match-3 puzzle adventure with 27 handcrafted levels, cascades, special gems, Crystal Resonance veins, a daily challenge and synthesized audio." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title>Crystal Quest: Gem Legends</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.json" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- ============ HOME ============ -->
+    <section id="screen-home" class="screen is-active" aria-label="Main menu">
+      <div class="bg-layer bg-home" aria-hidden="true"></div>
+      <div class="home-inner">
+        <div class="logo">
+          <svg class="logo-gem" viewBox="0 0 120 120" aria-hidden="true">
+            <defs>
+              <linearGradient id="lgA" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#7ff5ea"/><stop offset="0.5" stop-color="#35e0d0"/><stop offset="1" stop-color="#1a8fa8"/>
+              </linearGradient>
+              <linearGradient id="lgB" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ff8fc4"/><stop offset="1" stop-color="#ff4d9d"/>
+              </linearGradient>
+            </defs>
+            <polygon points="60,6 108,40 90,104 30,104 12,40" fill="url(#lgA)" stroke="#0b0f2a" stroke-width="4" stroke-linejoin="round"/>
+            <polygon points="60,6 108,40 60,52 12,40" fill="#ffffff" opacity="0.28"/>
+            <polygon points="60,52 90,104 30,104" fill="url(#lgB)" opacity="0.85"/>
+            <polygon points="60,52 60,6 12,40" fill="#ffffff" opacity="0.14"/>
+          </svg>
+          <h1 class="logo-title">CRYSTAL<span>QUEST</span></h1>
+          <p class="logo-sub">GEM LEGENDS</p>
+        </div>
+
+        <div class="home-progress" id="home-progress" aria-label="Adventure progress">
+          <span>Level <strong id="home-level">1</strong></span>
+          <span class="hp-sep" aria-hidden="true"></span>
+          <span class="hp-stars"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.5 6.1 20.6l1.2-6.5L2.5 9.5l6.6-.9z" fill="currentColor"/></svg><strong id="home-stars">0</strong> / 81</span>
+        </div>
+
+        <div class="home-actions">
+          <button id="btn-play" class="btn btn-primary btn-lg btn-play" type="button">Play</button>
+          <button id="btn-continue" class="btn btn-ghost btn-lg" type="button" hidden>Continue</button>
+          <div class="home-grid">
+            <button id="btn-world" class="btn btn-ghost" type="button">Crystal Forest</button>
+            <button id="btn-daily" class="btn btn-ghost" type="button">Daily Challenge</button>
+            <button id="btn-relics" class="btn btn-ghost" type="button">Relics</button>
+            <button id="btn-help" class="btn btn-ghost" type="button">How to Play</button>
+            <button id="btn-settings" class="btn btn-ghost" type="button">Settings</button>
+            <button id="btn-install" class="btn btn-ghost" type="button" hidden>Install App</button>
+          </div>
+        </div>
+
+        <p class="home-foot">Original game &middot; v1.0 &middot; Progress saved on this device</p>
+      </div>
+    </section>
+
+    <!-- ============ LEVEL MAP ============ -->
+    <section id="screen-map" class="screen" aria-label="Level select">
+      <div class="bg-layer bg-map" aria-hidden="true"></div>
+      <header class="topbar">
+        <button id="btn-map-back" class="icon-btn" type="button" aria-label="Back to main menu">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <h2 class="topbar-title">Crystal Path</h2>
+        <div class="star-pill" title="Total stars earned">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.5 6.1 20.6l1.2-6.5L2.5 9.5l6.6-.9z" fill="currentColor"/></svg>
+          <span id="map-stars">0</span>
+        </div>
+      </header>
+      <div id="level-scroll" class="level-scroll">
+        <div id="level-grid" class="level-grid"></div>
+      </div>
+    </section>
+
+    <!-- ============ WORLD: CRYSTAL FOREST ============ -->
+    <section id="screen-world" class="screen" aria-label="Crystal Forest restoration">
+      <div class="bg-layer bg-game" aria-hidden="true"></div>
+      <header class="topbar">
+        <button id="btn-world-back" class="icon-btn" type="button" aria-label="Back">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <h2 class="topbar-title">Crystal Forest</h2>
+        <div class="star-pill" title="Forest star crystals">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 5 14h5l-2 8 9-13h-5l1-7z" fill="currentColor"/></svg>
+          <span id="world-star-count">0</span>
+        </div>
+      </header>
+      <div id="world-scroll" class="world-scroll">
+        <div class="world-scene">
+          <svg viewBox="0 0 360 200" class="world-svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="wfSky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#0d1630"/><stop offset="1" stop-color="#0a2a2e"/>
+              </linearGradient>
+              <linearGradient id="wfHeart" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#7ff5ea"/><stop offset="0.5" stop-color="#35e0d0"/><stop offset="1" stop-color="#1a8fa8"/>
+              </linearGradient>
+            </defs>
+            <rect width="360" height="200" fill="url(#wfSky)"/>
+            <circle cx="38" cy="28" r="1.6" fill="#dfe6ff" opacity=".8"/>
+            <circle cx="120" cy="18" r="1.2" fill="#dfe6ff" opacity=".6"/>
+            <circle cx="200" cy="34" r="1.4" fill="#dfe6ff" opacity=".7"/>
+            <circle cx="258" cy="14" r="1.2" fill="#dfe6ff" opacity=".5"/>
+            <circle cx="316" cy="30" r="14" fill="#dfe6ff" opacity=".85"/>
+            <path d="M0 150 Q90 128 180 142 T360 138 V200 H0 Z" fill="#0c2431"/>
+            <path d="M0 170 Q120 152 240 164 T360 160 V200 H0 Z" fill="#091b26"/>
+            <path d="M52 150 l6 -60 -3 -6 9 0 -2 8 8 58 Z" fill="#14303f"/>
+            <path d="M296 150 l8 -70 -4 -6 10 0 -3 7 6 69 Z" fill="#14303f"/>
+            <path d="M180 148 l6 -76 -3 -5 8 0 -2 6 5 75 Z" fill="#122a37"/>
+            <g id="wf-spark" class="wf-layer">
+              <circle cx="70" cy="92" r="2.6" fill="#ffe98a"/>
+              <circle cx="92" cy="118" r="2" fill="#9ff5ff"/>
+              <circle cx="130" cy="96" r="2.3" fill="#ffe98a"/>
+              <circle cx="250" cy="104" r="2" fill="#9ff5ff"/>
+              <circle cx="212" cy="70" r="2.6" fill="#ffe98a"/>
+              <circle cx="40" cy="122" r="2" fill="#9ff5ff"/>
+              <polygon points="316,120 324,140 308,140" fill="#ffe98a" opacity=".9"/>
+            </g>
+            <g id="wf-saplings" class="wf-layer">
+              <circle cx="58" cy="84" r="16" fill="#1d7a5f"/>
+              <circle cx="74" cy="94" r="12" fill="#26a374"/>
+              <circle cx="300" cy="72" r="18" fill="#1d7a5f"/>
+              <circle cx="286" cy="86" r="12" fill="#26a374"/>
+              <circle cx="122" cy="72" r="10" fill="#26a374"/>
+            </g>
+            <g id="wf-stream" class="wf-layer">
+              <path d="M0 192 Q80 180 150 188 T360 182" stroke="#5ad7f0" stroke-width="9" fill="none" stroke-linecap="round" opacity=".9"/>
+              <path d="M10 191 Q70 183 140 189" stroke="#bdf3ff" stroke-width="2" fill="none" opacity=".8"/>
+            </g>
+            <g id="wf-bloom" class="wf-layer">
+              <circle cx="84" cy="152" r="3.4" fill="#ff8fc4"/>
+              <circle cx="132" cy="160" r="3" fill="#ff8fc4"/>
+              <circle cx="230" cy="154" r="3.4" fill="#c58cff"/>
+              <circle cx="272" cy="162" r="3" fill="#ff8fc4"/>
+              <circle cx="192" cy="166" r="3" fill="#ffd98a"/>
+            </g>
+            <g id="wf-heart" class="wf-layer">
+              <polygon points="180,54 208,94 180,146 152,94" fill="url(#wfHeart)" stroke="#eafffb" stroke-width="2"/>
+              <polygon points="180,54 208,94 152,94" fill="#ffffff" opacity=".22"/>
+            </g>
+          </svg>
+        </div>
+        <div class="world-progress">
+          <div class="world-progress-bar"><div id="world-progress-fill"></div></div>
+          <p id="world-progress-text" class="world-progress-text">0 / 30 star crystals restored</p>
+        </div>
+        <p class="world-note">Star crystals earned in levels 1–10 restore the forest. Every milestone awakens another part of it.</p>
+        <div id="world-stories" class="world-stories"></div>
+      </div>
+    </section>
+
+    <!-- ============ RELICS ============ -->
+    <section id="screen-relics" class="screen" aria-label="Relic collection">
+      <div class="bg-layer bg-game" aria-hidden="true"></div>
+      <header class="topbar">
+        <button id="btn-relics-back" class="icon-btn" type="button" aria-label="Back">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <h2 class="topbar-title">Relic Vault</h2>
+        <div class="star-pill" title="Relics recovered">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 4v6c0 5.2-3.4 8.6-8 10-4.6-1.4-8-4.8-8-10V6z" fill="currentColor"/></svg>
+          <span id="relic-count">0</span>
+        </div>
+      </header>
+      <div id="relic-scroll" class="world-scroll">
+        <div id="relic-list" class="relic-list"></div>
+        <p class="world-note">Relics recover themselves as your legend grows. Each one remembers a piece of the forest's oldest mystery.</p>
+      </div>
+    </section>
+
+    <!-- ============ GAME ============ -->
+    <section id="screen-game" class="screen" aria-label="Game board">
+      <div class="bg-layer bg-game" aria-hidden="true"></div>
+
+      <header class="hud">
+        <div class="hud-left">
+          <div class="hud-level">Level <span id="hud-level">1</span></div>
+          <div class="hud-level-name" id="hud-level-name">Crystal Gate</div>
+        </div>
+        <div class="hud-moves" id="hud-moves-wrap">
+          <span class="hud-moves-num" id="hud-moves">20</span>
+          <span class="hud-moves-label">moves</span>
+        </div>
+        <div class="hud-right">
+          <div class="hud-score-label">Score</div>
+          <div class="hud-score" id="hud-score">0</div>
+        </div>
+        <button id="btn-pause" class="icon-btn hud-pause" type="button" aria-label="Pause game">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1.4" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1.4" fill="currentColor"/></svg>
+        </button>
+      </header>
+
+      <div class="objective-bar" id="objectives" aria-label="Level objectives"></div>
+
+      <div class="board-area">
+        <div class="board-wrap" id="board-wrap">
+          <canvas id="board-canvas" tabindex="0" role="application"
+                  aria-label="Match-3 board. Use arrow keys to move the cursor, Space to pick up or drop a gem."></canvas>
+          <div class="combo-banner" id="combo-banner" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <div class="game-controls">
+        <button id="btn-hint" class="ctrl-btn" type="button" aria-label="Show a hint">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 00-3.5 10.9V16a1.5 1.5 0 001.5 1.5h4A1.5 1.5 0 0015.5 16v-2.1A6 6 0 0012 3z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M10 20.5h4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+          <span>Hint</span>
+        </button>
+        <button id="btn-shuffle" class="ctrl-btn" type="button" aria-label="Shuffle the board, costs one move">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h4l3 4M4 17h4l8-10h4M20 7l-2.5-2.5M20 7l-2.5 2.5M20 17l-2.5-2.5M20 17l-2.5 2.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Shuffle</span>
+        </button>
+      </div>
+
+      <p id="live-region" class="sr-only" role="status" aria-live="polite"></p>
+    </section>
+
+    <!-- ============ MODALS ============ -->
+    <div id="modal-pause" class="modal" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="pause-title">
+        <h3 id="pause-title" class="modal-title">Paused</h3>
+        <div class="modal-actions">
+          <button id="btn-resume" class="btn btn-primary" type="button">Resume</button>
+          <button id="btn-restart" class="btn btn-ghost" type="button">Restart Level</button>
+          <button id="btn-pause-settings" class="btn btn-ghost" type="button">Settings</button>
+          <button id="btn-quit" class="btn btn-ghost" type="button">Quit to Map</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-win" class="modal" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="win-title">
+        <h3 id="win-title" class="modal-title">Level Cleared!</h3>
+        <div class="stars-row" id="win-stars" aria-label="Stars earned"></div>
+        <div class="new-best" id="win-newbest" hidden>New Best Score</div>
+        <div class="result-rows">
+          <div class="result-row"><span>Score</span><strong id="win-score">0</strong></div>
+          <div class="result-row"><span>Best</span><strong id="win-best">0</strong></div>
+          <div class="result-row"><span>Moves left</span><strong id="win-moves">0</strong></div>
+        </div>
+        <div class="modal-actions">
+          <button id="btn-next" class="btn btn-primary" type="button">Next Level</button>
+          <button id="btn-replay" class="btn btn-ghost" type="button">Replay</button>
+          <button id="btn-win-map" class="btn btn-ghost" type="button">Level Map</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-lose" class="modal" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="lose-title">
+        <h3 id="lose-title" class="modal-title">Out of Moves</h3>
+        <p class="modal-text" id="lose-text">The crystals slipped away this time.</p>
+        <div class="result-rows">
+          <div class="result-row"><span>Score</span><strong id="lose-score">0</strong></div>
+          <div class="result-row"><span>Best</span><strong id="lose-best">0</strong></div>
+        </div>
+        <div class="modal-actions">
+          <button id="btn-ad-revive" class="btn btn-ghost" type="button" hidden>Watch ad for +5 moves</button>
+          <button id="btn-retry" class="btn btn-primary" type="button">Try Again</button>
+          <button id="btn-lose-map" class="btn btn-ghost" type="button">Level Map</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-settings" class="modal" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+        <h3 id="settings-title" class="modal-title">Settings</h3>
+        <div class="setting-list">
+          <label class="setting-row">
+            <span>Sound effects</span>
+            <input type="checkbox" id="set-sfx" class="switch" />
+          </label>
+          <label class="setting-row">
+            <span>Music</span>
+            <input type="checkbox" id="set-music" class="switch" />
+          </label>
+          <label class="setting-row">
+            <span>Reduced motion</span>
+            <input type="checkbox" id="set-motion" class="switch" />
+          </label>
+          <label class="setting-row">
+            <span>Colorblind symbols</span>
+            <input type="checkbox" id="set-symbols" class="switch" />
+          </label>
+        </div>
+        <div class="save-io">
+          <div class="save-io-btns">
+            <button id="btn-save-export" class="btn btn-ghost" type="button">Export save code</button>
+            <button id="btn-save-import" class="btn btn-ghost" type="button">Import save code</button>
+          </div>
+          <textarea id="save-code" class="save-code" rows="3" spellcheck="false" placeholder="Your save code appears here — copy it to back up progress. To restore, paste a code and press Import." aria-label="Save code"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button id="btn-settings-close" class="btn btn-primary" type="button">Done</button>
+          <button id="btn-reset" class="btn btn-danger" type="button">Reset Progress</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-story" class="modal" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="story-title">
+        <h3 id="story-title" class="modal-title">Story</h3>
+        <div class="help-body">
+          <div class="story-portrait" id="story-portrait" aria-hidden="true"></div>
+          <div class="story-speaker" id="story-speaker"></div>
+          <p class="story-text" id="story-text"></p>
+        </div>
+        <div class="modal-actions">
+          <button id="btn-story-next" class="btn btn-primary" type="button">Continue</button>
+        </div>
+      </div>
+    </div>
+    <div id="modal-help" class="modal" hidden>
+      <div class="modal-card modal-card-wide" role="dialog" aria-modal="true" aria-labelledby="help-title">
+        <h3 id="help-title" class="modal-title">How to Play</h3>
+        <div class="help-body">
+          <p><strong>Swap</strong> two neighbouring gems to line up <strong>3 or more</strong> of the same kind. Drag a gem, or tap one gem then tap its neighbour.</p>
+          <p><strong>Match 4</strong> in a line to forge a <strong>Line Blaster</strong> — it clears a whole row or column.</p>
+          <p><strong>Match 5</strong> in a line to forge a <strong>Prism Core</strong> — it clears every gem of one colour.</p>
+          <p><strong>Match in an L or T</strong> to forge a <strong>Star Bomb</strong> — it blasts a 3&times;3 area.</p>
+          <p>Swap two special gems together for a much bigger blast. Cascades raise your combo multiplier.</p>
+          <p><strong>Stone blocks</strong> cannot be swapped — clear them by matching gems next to them.</p>
+          <p><strong>Resonance:</strong> some levels have glowing <strong>energy veins</strong>. Match a crystal on a vein and energy travels along it, shattering every crystal it reaches. Stone blocks absorb the energy and stop it.</p>
+          <p>Finish the objectives before you run out of moves. Fewer moves used means more stars.</p>
+          <p><strong>Privacy:</strong> this game runs entirely on your device. Progress is stored only in this browser, no accounts, no tracking, no network requests. Ads are off by default; if ever enabled they will be optional and rewarded-only.</p>
+        </div>
+        <div class="modal-actions">
+          <button id="btn-help-close" class="btn btn-primary" type="button">Got it</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" hidden></div>
+
+    <div id="loading" class="loading">
+      <div class="loading-gem"></div>
+      <p>Polishing crystals…</p>
+    </div>
+  </div>
+
+  <script src="js/audio.js"></script>
+  <script src="js/levels.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/ads.js"></script>
+  <script src="js/story.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    /* Dev-only local debug tool: ?debug=1 loads the seeded bot + stats panel.
+       No network beyond these same-site files; nothing loads without the flag. */
+    if (/[?&]debug=1\b/.test(window.location.search)) {
+      (function () {
+        function load(src, next) {
+          var s = document.createElement("script");
+          s.src = src;
+          s.onload = next;
+          document.body.appendChild(s);
+        }
+        load("dev/bot.js", function () { load("dev/debug.js", function () { CQDev.debug.init(); }); });
+      })();
+    }
+  </script>
+  <script>
+    /* PWA: register the offline service worker on secure contexts only. */
+    try {
+      if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('sw.js').then(function (reg) {
+            if (!reg) return;
+            reg.addEventListener('updatefound', function () {
+              var nw = reg.installing;
+              if (!nw) return;
+              nw.addEventListener('statechange', function () {
+                if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+                  window.CQUI && window.CQUI.toast && window.CQUI.toast('A new version is ready - installing...');
+                  nw.postMessage({ type: 'SKIP_WAITING' });
+                }
+              });
+            });
+          }).catch(function () { /* offline cache unavailable - the game still runs */ });
+          var cqReloading = false;
+          navigator.serviceWorker.addEventListener('controllerchange', function () {
+            if (cqReloading) return;
+            cqReloading = true;
+            location.reload();
+          });
+        });
+      }
+    } catch (e) { /* older browsers: game runs without offline support */ }
+  </script>
+</body>
+</html>

@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Arrow Out! &mdash; A premium tap-away arrow puzzle game. Tap arrows to send them flying off the board. Clear every arrow to win." />
+  <meta name="theme-color" content="#0d1230" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Arrow Out!" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self' data:; connect-src 'self' https://usszcnaaylbsgqaehsgp.supabase.co; object-src 'none'; base-uri 'none'" />
+  <title>Arrow Out! &mdash; Premium Arrow Puzzle</title>
+  
+  <!-- Preload critical resources -->
+  <link rel="preload" href="css/styles.css" as="style" />
+  <link rel="preload" href="js/game.js" as="script" />
+  <link rel="preload" href="js/render.js" as="script" />
+  <link rel="preload" href="js/audio.js" as="script" />
+  <link rel="preload" href="js/haptics.js" as="script" />
+  <link rel="preload" href="js/bgfx.js" as="script" />
+  <link rel="preload" href="js/storage.js" as="script" />
+  <link rel="preload" href="js/pwa.js" as="script" />
+  <link rel="preload" href="js/ui.js" as="script" />
+  <link rel="preload" href="js/main.js" as="script" />
+  
+  <!-- Load styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- Real PWA manifest + SVG favicon (required for Chrome install) -->
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
+  
+  <!-- Inline critical CSS for faster loading -->
+  <style>
+    /* Critical above-the-fold styles */
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; height: 100%; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(180deg, #1b2550 0%, #0d1230 55%, #090d20 100%);
+      color: #e8ecff;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+      overscroll-behavior: none;
+      touch-action: manipulation;
+      font-size: 16px;
+    }
+    #app {
+      position: fixed; inset: 0;
+      display: flex; flex-direction: column;
+      height: 100vh; max-width: 100vw; overflow: hidden;
+    }
+    @supports (height: 100dvh) { #app { height: 100dvh; } }
+    
+    header#hud {
+      flex: 0 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 8px;
+      padding: calc(8px + env(safe-area-inset-top, 0px)) 12px 6px;
+    }
+    #hud-title { text-align: center; min-width: 0; flex: 1; line-height: 1.25; }
+    #hud-title .t1 { font-weight: 800; font-size: 15px; letter-spacing: .01em; }
+    #hud-title .t2 { font-size: 12px; color: #93a0c8; }
+    #hearts { display: flex; gap: 3px; align-items: center; min-width: 66px; justify-content: flex-end; }
+    #hearts svg { width: 20px; height: 20px; }
+    #hearts .lost { opacity: .25; }
+    
+    #board-wrap {
+      flex: 1 1 auto; min-height: 0; min-width: 0;
+      display: flex; align-items: center; justify-content: center;
+      padding: 8px;
+    }
+    #board { display: block; touch-action: none; }
+    
+    footer {
+      flex: 0 0 auto;
+      padding: 8px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    #actions { display: flex; gap: 8px; }
+    #actions .btn { flex: 1 1 0; min-width: 0; }
+    
+    /* Basic button styles for critical rendering */
+    .btn {
+      appearance: none;
+      border: 1px solid #2a3564;
+      background: #1a2348;
+      color: #e8ecff;
+      border-radius: 14px;
+      min-height: 48px; min-width: 48px;
+      padding: 8px 12px;
+      font: inherit; font-weight: 700; font-size: 15px;
+      cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      touch-action: manipulation;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+      transition: transform .06s ease, background .15s ease;
+    }
+    .btn:active { transform: scale(.96); background: #232e5c; }
+    .btn[disabled] { opacity: .4; pointer-events: none; }
+    .btn.icon { padding: 8px; }
+    .btn.primary { background: #748ffc; border-color: #748ffc; color: #0b1026; }
+    .btn.primary:active { background: #91a7ff; }
+    
+    /* Toast for immediate feedback */
+    #toast {
+      position: fixed; left: 50%; bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+      transform: translate(-50%, 12px);
+      background: #1b2550; color: #e8ecff;
+      padding: 10px 16px; border-radius: 999px; font-size: 14px; z-index: 50;
+      opacity: 0; pointer-events: none; transition: opacity .18s ease, transform .18s ease;
+      max-width: min(88vw, 360px); text-align: center;
+      border: 1px solid #2a3564;
+    }
+    #toast.show { opacity: 1; transform: translate(-50%, 0); }
+    
+    /* Overlays - basic structure */
+    .overlay {
+      position: fixed; inset: 0;
+      background: rgba(4, 8, 24, .74);
+      display: none; align-items: center; justify-content: center;
+      padding: calc(16px + env(safe-area-inset-top, 0px)) 16px calc(16px + env(safe-area-inset-bottom, 0px));
+      z-index: 30; overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .overlay.show { display: flex; }
+    .card {
+      position: relative;
+      background: #141b3d; border: 1px solid #2a3564; color: #e8ecff;
+      border-radius: 20px;
+      width: 100%; max-width: 420px; max-height: 100%;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 20px;
+      user-select: text; -webkit-user-select: text;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, .55);
+    }
+    .card h2 { margin: 0 0 4px; font-size: 20px; color: #e8ecff; }
+    .card .sub { margin: 0 0 16px; color: #93a0c8; font-size: 14px; }
+    .card .stack { display: flex; flex-direction: column; gap: 10px; }
+    .card .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .close-x { position: absolute; top: 10px; right: 10px; min-width: 40px; min-height: 40px; width: 40px; height: 40px; border-radius: 12px; box-shadow: none; }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .btn, #toast, .switch .track, .switch .track::after { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- HEADER / HUD -->
+    <header id="hud">
+      <button class="btn icon" id="btn-menu" type="button" aria-label="Open menu" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <div id="hud-title">
+        <div class="t1" id="hud-level">Arrow Out!</div>
+        <div class="t2" id="hud-left">Loading...</div>
+      </div>
+      <div id="hearts" role="img" aria-label="3 hearts remaining"></div>
+      <button class="btn icon" id="btn-sound" type="button" aria-label="Toggle sound" aria-pressed="true">
+        <svg id="ic-sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z" fill="currentColor" stroke="none"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/></svg>
+        <svg id="ic-sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none"><path d="M11 5 6 9H3v6h3l5 4V5z" fill="currentColor" stroke="none"/><path d="M22 9l-6 6M16 9l6 6"/></svg>
+      </button>
+    </header>
+
+    <!-- Level progress bar -->
+    <div id="progress-wrap" role="progressbar" aria-label="Level progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div id="progress-fill"></div>
+    </div>
+
+    <!-- MAIN GAME BOARD -->
+    <div id="board-tools" aria-label="Board view controls">
+      <span id="board-view-label" aria-live="polite">Tap an arrow · drag to pan</span>
+      <button id="btn-zoom-out" class="btn" aria-label="Zoom out">−</button>
+      <button id="btn-zoom-in" class="btn" aria-label="Zoom in">+</button>
+      <button id="btn-board-fit" class="btn" aria-label="Show whole board">Fit</button>
+    </div>
+    <!-- Timed bonus objective banner -->
+    <div id="bonus-banner" role="status" aria-live="polite" aria-hidden="true">
+      <span class="bb-coin" id="bonus-coins">+25</span>
+      <span class="bb-label">bonus</span>
+      <span class="bb-time" id="bonus-time">0:30</span>
+    </div>
+    <main id="board-wrap">
+      <canvas id="board" role="img" aria-label="Arrow puzzle board. Tap an arrow with a clear path to send it off the board."></canvas>
+      <div id="combo-badge" aria-hidden="true"></div>
+    </main>
+
+    <!-- FOOTER / ACTIONS -->
+    <footer>
+      <div id="actions">
+        <button class="btn" id="btn-undo" type="button" aria-label="Undo last move">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg>
+          Undo
+        </button>
+        <button class="btn" id="btn-hint" type="button" aria-label="Show a hint">
+          <span id="hint-count" class="hint-count">3</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a7 7 0 0 0-4 12.7V18h8v-2.3A7 7 0 0 0 12 3z"/><path d="M10 21h4"/></svg>
+          Hint
+        </button>
+        <button class="btn" id="btn-restart" type="button" aria-label="Restart level">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+          Restart
+        </button>
+      </div>
+      <!-- Advertising-ready slot -->
+      <div id="ad-slot" aria-hidden="true">Ad space</div>
+    </footer>
+
+    <!-- Level intro banner -->
+    <div id="level-banner" aria-hidden="true"></div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <!-- INSTALL BANNER -->
+  <div id="install-banner" role="region" aria-label="Install app">
+    <div class="ib-text" id="ib-text"></div>
+    <div class="ib-actions">
+      <button class="btn small primary" id="btn-banner-install" type="button">Install</button>
+      <button class="btn iconx" id="btn-banner-close" type="button" aria-label="Dismiss install banner">&times;</button>
+    </div>
+  </div>
+
+
+  <!-- UPDATE BANNER: shown when a newer version of the game is ready -->
+  <div id="update-banner" role="region" aria-label="Game update available">
+    <div class="ub-text" id="ub-text">Game update ready &mdash; refresh to get the latest version.</div>
+    <div class="ub-actions">
+      <button class="btn small primary" id="btn-update-reload" type="button">Refresh</button>
+      <button class="btn iconx" id="btn-update-close" type="button" aria-label="Dismiss update notification">&times;</button>
+    </div>
+  </div>
+  <!-- ===== HOME SCREEN ===== -->
+  <div id="dlg-home" class="screen" role="dialog" aria-modal="true" aria-labelledby="home-title">
+    <canvas id="bgfx" aria-hidden="true"></canvas>
+    <div class="home-inner">
+
+      <header class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" width="76" height="76" focusable="false">
+            <defs>
+              <linearGradient id="lg-brand" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#38bdf8"/>
+                <stop offset="0.55" stop-color="#818cf8"/>
+                <stop offset="1" stop-color="#c084fc"/>
+              </linearGradient>
+            </defs>
+            <rect x="4" y="4" width="56" height="56" rx="16" fill="rgba(129,140,248,0.10)" stroke="url(#lg-brand)" stroke-width="3"/>
+            <path d="M15 32h22" stroke="url(#lg-brand)" stroke-width="5" stroke-linecap="round"/>
+            <path d="m31 21 11 11-11 11" stroke="url(#lg-brand)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="15" cy="32" r="4.5" fill="#38bdf8"/>
+            <circle cx="50" cy="20" r="2" fill="#c084fc"/>
+            <circle cx="46" cy="46" r="1.5" fill="#2dd4bf"/>
+          </svg>
+        </div>
+        <h1 id="home-title" class="brand-name">ARROW OUT!</h1>
+        <p class="brand-tag">Tap arrows away &middot; clear the board &middot; 1000 levels</p>
+      </header>
+
+      <div class="home-chips">
+        <div class="chip" id="home-progress" aria-live="polite">Loading progress...</div>
+      </div>
+
+      <div class="home-primary">
+        <button class="btn primary btn-hero" id="btn-continue" type="button">Continue</button>
+        <button class="btn btn-hero" id="btn-play-home" type="button">Play</button>
+      </div>
+
+      <nav class="home-hub" aria-label="Game menu">
+        <button class="btn" id="btn-levels" type="button"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Levels</span></button>
+        <button class="btn" id="btn-map" type="button"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><line x1="9" y1="4" x2="9" y2="20"/><line x1="15" y1="6" x2="15" y2="22"/></svg><span>World Map</span></button>
+        <button class="btn" id="btn-daily" type="button"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><span>Daily Challenge</span></button>
+        <button class="btn" id="btn-shop" type="button"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span>Shop</span></button>
+        <button class="btn" id="btn-achievements" type="button"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg><span>Achievements</span></button>
+        <button class="btn" id="btn-stats-menu" type="button"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg><span>Statistics</span></button>
+        <button class="btn" id="btn-settings" type="button"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></svg><span>Settings</span></button>
+        <button class="btn" id="btn-install-home" type="button"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="3" x2="12" y2="15"/></svg><span>Install App</span></button>
+      </nav>
+
+      <div class="home-stats">
+        <div class="home-stat">
+          <div class="home-stat-value" id="home-stat-levels">0</div>
+          <div class="home-stat-label">Levels</div>
+        </div>
+        <div class="home-stat">
+          <div class="home-stat-value" id="home-stat-stars">0</div>
+          <div class="home-stat-label">Stars</div>
+        </div>
+        <div class="home-stat">
+          <div class="home-stat-value" id="home-stat-streak">0</div>
+          <div class="home-stat-label">Streak</div>
+        </div>
+      </div>
+
+      <div class="home-daily" id="home-daily" aria-live="polite"></div>
+
+      <nav class="site-links" aria-label="Site links" style="display:flex; gap:16px; justify-content:center; font-size:13px; margin-top:14px;">
+        <a href="about.html" style="color:#748ffc;">About</a>
+        <a href="contact.html" style="color:#748ffc;">Contact</a>
+        <a href="privacy.html" style="color:#748ffc;">Privacy Policy</a>
+      </nav>
+    </div>
+  </div>
+  <aside id="reminder-banner" class="reminder-banner" role="status" aria-live="polite" hidden>
+    <p>Your puzzle is waiting. Return whenever you are ready.</p>
+    <button class="btn small" id="btn-reminder-dismiss" type="button">Dismiss reminder</button>
+  </aside>
+  <!-- ===== MAIN MENU ===== -->
+  <div class="overlay" id="dlg-menu" role="dialog" aria-modal="true" aria-labelledby="menu-title">
+    <div class="card">
+      <h2 id="menu-title"><svg class="ic" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg> Paused</h2>
+      <p class="sub">Take a breather. Your progress is saved.</p>
+      <div class="stack">
+        <button class="btn primary" id="btn-resume" type="button">Resume</button>
+        <button class="btn" id="btn-home" type="button"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21V12h6v9"/></svg> Main Menu</button>
+        <button class="btn" id="btn-play" type="button">Play &middot; Level 1</button>
+        <button class="btn" id="btn-levels-menu" type="button"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Levels</button>
+        <button class="btn" id="btn-map-menu" type="button"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><line x1="9" y1="4" x2="9" y2="20"/><line x1="15" y1="6" x2="15" y2="22"/></svg> World Map</button>
+        <button class="btn" id="btn-stats-menu-2" type="button"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> Stats</button>
+        <button class="btn" id="btn-achievements-menu" type="button"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> Achievements</button>
+        <button class="btn" id="btn-daily-menu" type="button"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg> Daily Challenge</button>
+        <button class="btn" id="btn-howto" type="button"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> How to play</button>
+        <button class="btn" id="btn-install-menu" type="button"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Install app</button>
+        <button class="btn" id="btn-share-menu" type="button"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share the game</button>
+        <button class="btn" id="btn-settings-menu" type="button"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Settings</button>
+        <button class="btn" id="btn-shop-menu" type="button"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg> Shop</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="dlg-reminders" role="dialog" aria-modal="true" aria-labelledby="reminders-title">
+    <div class="card">
+      <button class="btn icon close-x" data-close type="button" aria-label="Close reminder settings">&times;</button>
+      <h2 id="reminders-title">Notifications &amp; reminders</h2>
+      <p class="sub">Local reminders plus optional daily push. No account needed.</p>
+      <p id="reminder-limit">Local reminder checks run only while this game page can execute; a closed browser cannot schedule them. The Daily push reminders below use real Web Push and reach you roughly five times a day even when the game is closed.</p>
+      <div class="stack">
+        <label class="row" for="chk-notifs">Enable in-game reminders <input type="checkbox" id="chk-notifs" aria-describedby="reminder-limit" /></label>
+        <label for="reminder-minutes">Remind me after no interaction for</label>
+        <select id="reminder-minutes">
+          <option value="60">1 hour</option><option value="90">1½ hours</option><option value="120">2 hours</option>
+        </select>
+        <p id="system-reminder-help">Optional system notifications can alert you while this tab is in the background and still running. Your browser needs permission to display them. Android/OS restrictions may suppress or delay display; some browsers require an installed PWA. No closed-browser delivery is promised.</p>
+        <button class="btn" id="btn-notif-permission" type="button" aria-describedby="system-reminder-help">Allow system notifications</button>
+        <label class="row" for="chk-system-notifs">Also use system notifications <input type="checkbox" id="chk-system-notifs" aria-describedby="system-reminder-help" /></label>
+        <p id="reminder-permission"></p>
+        <p id="push-help">Daily push reminders are delivered by Web Push roughly five times a day, even when the game is closed. Your browser keeps the subscription; the game saves it to the developer's free delivery roster. Toggling off removes this device from that roster immediately.</p>
+        <label class="row" for="chk-push">Daily push reminders <input type="checkbox" id="chk-push" aria-describedby="push-help" /></label>
+        <p id="push-status" role="status" aria-live="polite"></p>
+        <p id="reminder-status" role="status" aria-live="polite"></p>
+        <button class="btn small" id="btn-notif-test" type="button">Send test notification</button>
+        <p id="reminder-test-status" role="status" aria-live="polite"></p>
+      </div>
+      <p>At most one reminder per inactivity period. Interacting starts a new period; system tests are limited to one per minute. Permission is requested only by explicit buttons; a dismissed prompt can be asked again by the same button. Disabling reminders closes local notifications; toggling off daily push removes this device from the delivery roster.</p>
+    </div>
+  </div>
+
+  <!-- ===== LEVEL SELECT ===== -->
+  <div class="overlay" id="dlg-levels" role="dialog" aria-modal="true" aria-labelledby="lv-title">
+    <div class="card">
+      <button class="btn icon close-x" data-close type="button" aria-label="Close levels">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <h2 id="lv-title">Levels</h2>
+      <p class="sub">1000 levels &middot; &#9733;&#9733;&#9733; = no mistakes, no hints &middot; best stars save automatically.</p>
+      <div id="lv-grid"></div>
+      <div class="stack" style="margin-top:12px;">
+        <button class="btn" id="btn-levels-map" type="button">Open World Map</button>
+      </div>
+    </div>
+  </div>
+
+    <!-- ===== WORLD STORY CUTSCENE ===== -->
+  <div id="dlg-story" class="overlay" role="dialog" aria-modal="true" aria-labelledby="story-world-title">
+    <div class="card story-card">
+      <div class="story-head">
+        <div id="story-portrait" class="story-portrait" aria-hidden="true"></div>
+        <div class="story-titles">
+          <h2 id="story-world-title">World 1</h2>
+          <p id="story-guardian-name">Guardian</p>
+        </div>
+      </div>
+      <p id="story-act-num" class="story-act-num">Act 1 of 3</p>
+      <p id="story-act-text" class="story-act-text"></p>
+      <div class="story-actions">
+        <button id="story-skip" type="button" class="btn">Skip</button>
+        <button id="story-continue" type="button" class="btn primary">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MAGICAL WORLD MAP ===== -->
+  <div class="overlay" id="dlg-map" role="dialog" aria-modal="true" aria-labelledby="map-title">
+    <div class="card map-card">
+      <button class="btn icon close-x" data-close type="button" aria-label="Close world map">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <h2 id="map-title">World Map</h2>
+      <div id="map-banner">
+        <button class="btn icon" id="map-prev" type="button" aria-label="Previous world">&#8249;</button>
+        <div id="map-banner-mid">
+          <div id="map-chapter-row">
+            <span id="map-chapter-num">World 1 / 8</span>
+            <span id="map-chapter-name">Whisperwind Meadow</span>
+          </div>
+          <p id="map-chapter-sub" class="sub"></p>
+          <div id="map-progress-track"><div id="map-progress-fill"></div></div>
+          <p id="map-progress-text">0 / 125 cleared</p>
+        </div>
+        <button class="btn icon" id="map-next" type="button" aria-label="Next world">&#8250;</button>
+      </div>
+      <div id="map-guardian" class="map-guardian" hidden>
+        <span id="map-guardian-art" class="map-guardian-art" aria-hidden="true"></span>
+        <span id="map-guardian-name" class="map-guardian-name"></span>
+      </div>
+      <div id="map-worlds" class="map-worlds" aria-label="Worlds"></div>
+      <div id="map-viewport">
+        <div id="map-canvas">
+          <canvas id="map-ambient-canvas" aria-hidden="true"></canvas>
+          <svg id="map-svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="map-road-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#34d399"/><stop offset="0.5" stop-color="#fbbf24"/><stop offset="1" stop-color="#f59e0b"/>
+              </linearGradient>
+            </defs>
+            <path id="map-path-outer" d="" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path id="map-path-inner" d="" fill="none" stroke-linecap="round" stroke-dasharray="1 22"/>
+            <path id="map-path-done" d="" fill="none" stroke="url(#map-road-grad)" stroke-linecap="round"/>
+          </svg>
+          <div id="map-landmarks"></div>
+          <div id="map-nodes"></div>
+          <div id="map-avatar" aria-hidden="true"></div>
+        </div>
+      </div>
+      <div id="map-tools">
+        <input id="map-jump" type="number" min="1" max="1000" inputmode="numeric" aria-label="Jump to level number" />
+        <button class="btn" id="map-jump-go" type="button">Go</button>
+        <button class="btn" id="map-grid" type="button">Grid view</button>
+        <button class="btn" id="map-continue" type="button">Continue</button>
+        <button class="btn" id="map-story" type="button">Story</button>
+        <button class="btn" id="map-chest" type="button" hidden>Claim Star Chest</button>
+      </div>
+      <div id="map-preview" hidden>
+        <button class="btn icon close-x" id="map-preview-close" type="button" aria-label="Close preview">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+        <div id="map-preview-head">
+          <span id="map-preview-chapter" class="map-pill"></span>
+          <span id="map-preview-zone" class="map-pill"></span>
+        </div>
+        <h3 id="map-preview-title">Level 1</h3>
+        <p id="map-preview-info" class="sub"></p>
+        <div id="map-preview-stars" aria-hidden="true"></div>
+        <button class="btn primary" id="map-preview-play" type="button">Play</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HOW TO PLAY ===== -->
+  <div class="overlay" id="dlg-howto" role="dialog" aria-modal="true" aria-labelledby="how-title">
+    <div class="card">
+      <button class="btn icon close-x" data-close type="button" aria-label="Close help">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <h2 id="how-title">How to play</h2>
+      <ul>
+        <li>On dense boards, tap the overview or use <b>+</b> to zoom. Drag to pan, pinch to zoom, and use <b>Fit</b> to see the whole puzzle. Hints bring a clear arrow into view.</li>
+        <li><b>Tap an arrow</b> &mdash; it flies off the board in the direction it points.</li>
+        <li>It only leaves if its <b>path to the edge is clear</b>. Another arrow in the way blocks it.</li>
+        <li>A blocked tap <b>costs one heart</b> (&#9829;&#9829;&#9829;). Lose all three and the level restarts.</li>
+        <li>Clear <b>every arrow</b> to finish the level. Order is everything!</li>
+        <li>Stars: &#9733;&#9733;&#9733; = no mistakes & no hints &middot; &#9733;&#9733; = up to 2 mistakes & 1 hint &middot; &#9733; = cleared.</li>
+        <li><b>3 free hints</b> per level &mdash; after that, watch a short ad to reveal another hint.</li>
+        <li><b>Hint</b> glows a free arrow &middot; <b>Undo</b> brings the last arrow back &middot; <b>Restart</b> resets.</li>
+        <li>Your progress saves automatically &mdash; come back any time.</li>
+      </ul>
+      <p style="font-size:12.5px;color:#8a97b8;">No timer, no pressure. Take your time and untangle the board.</p>
+      <p style="font-size:13px;color:#93a0c8;margin-bottom:0;"><a href="about.html" style="color:#748ffc;">More about the game &rarr;</a></p>
+    </div>
+  </div>
+
+  <!-- ===== SETTINGS ===== -->
+  <div class="overlay" id="dlg-settings" role="dialog" aria-modal="true" aria-labelledby="set-title">
+    <div class="card">
+      <button class="btn icon close-x" data-close type="button" aria-label="Close settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <h2 id="set-title">Settings</h2>
+      
+      <div class="stack">
+        <div class="row">
+          <span style="font-size:15px;">Sound effects</span>
+          <label class="switch" aria-label="Sound effects">
+            <input type="checkbox" id="chk-sound" checked />
+            <span class="track"></span>
+          </label>
+        </div>
+        
+        <div class="row">
+          <span style="font-size:15px;">Vibration</span>
+          <label class="switch" aria-label="Vibration">
+            <input type="checkbox" id="chk-vibrate" checked />
+            <span class="track"></span>
+          </label>
+        </div>
+        
+        <div class="row">
+          <span style="font-size:15px;">Dark Theme</span>
+          <label class="switch" aria-label="Dark Theme">
+            <input type="checkbox" id="chk-theme" checked />
+            <span class="track"></span>
+          </label>
+        </div>
+        
+        <div class="row">
+          <span style="font-size:15px;">Background music</span>
+          <label class="switch" aria-label="Background music">
+            <input type="checkbox" id="chk-music" />
+            <span class="track"></span>
+          </label>
+        </div>
+
+        <button class="btn" id="btn-reminders" type="button">Notification &amp; reminder settings</button>
+      </div>
+      
+      <div class="status-list">
+        <div><span>Running mode</span><span id="st-mode">&mdash;</span></div>
+        <div><span>Offline caching</span><span id="st-sw">&mdash;</span></div>
+        <div><span>Install prompt</span><span id="st-install">&mdash;</span></div>
+        <div><span>Saved progress</span><span id="st-storage">&mdash;</span></div>
+        <div><span>Notifications</span><span id="st-notif">&mdash;</span></div>
+        <div><span>Game version</span><span id="st-version">&mdash;</span></div>
+      </div>
+      
+      <p style="font-size:12.5px; color:#8a97b8; margin-bottom:10px;">
+        Arrow Out! works fully offline once installed. When a game update is ready, tap <b>Refresh</b> on the update banner &mdash; your progress, coins and streaks are saved automatically and never deleted.
+      </p>
+      
+      <p style="font-size:13px; margin-bottom:12px;">
+        <a href="privacy.html" style="color:#748ffc;">Privacy policy</a> &nbsp;&middot;&nbsp;
+        <a href="about.html" style="color:#748ffc;">About &amp; how to play</a> &nbsp;&middot;&nbsp;
+        <a href="contact.html" style="color:#748ffc;">Contact us</a>
+      </p>
+      
+      <div class="stack">
+        <button class="btn small" id="btn-copy-sw" type="button">Copy service worker code</button>
+        <button class="btn small danger" id="btn-reset" type="button">Reset all progress</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== WIN DIALOG ===== -->
+  <div class="overlay" id="dlg-win" role="alertdialog" aria-modal="true" aria-labelledby="win-title">
+    <div class="card" style="text-align:center;">
+      <div class="big-emoji" aria-hidden="true"><svg class="ic" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></div>
+      <h2 id="win-title">Board cleared!</h2>
+      <div id="win-stars" aria-hidden="true"></div>
+      <p id="win-sub"></p>
+      <div class="stack">
+        <button class="btn primary" id="btn-next" type="button">Next level</button>
+        <div style="display:flex; gap:8px;">
+          <button class="btn" id="btn-replay" type="button" style="flex:1;">Replay</button>
+          <button class="btn" id="btn-win-levels" type="button" style="flex:1;">Levels</button>
+          <button class="btn" id="btn-share-win" type="button" style="flex:1;" aria-label="Share your result"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== OUT OF HEARTS ===== -->
+  <div class="overlay" id="dlg-fail" role="alertdialog" aria-modal="true" aria-labelledby="fail-title">
+    <div class="card" style="text-align:center;">
+      <div class="big-emoji" aria-hidden="true"><svg class="ic" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 12.6 12 20l-7.5-7.4a5.2 5.2 0 1 1 7.5-7.2 5.2 5.2 0 1 1 7.5 7.2Z"/><path d="M12 5.5 10.5 9l3 1.8L12 14"/></svg></div>
+      <h2 id="fail-title">Out of hearts</h2>
+      <p style="margin-bottom:16px;">Three blocked taps &mdash; take a fresh look and try again.</p>
+      <div class="stack">
+        <button class="btn primary" id="btn-retry" type="button">Retry level</button>
+        <button class="btn" id="btn-fail-levels" type="button">Levels</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STATS ===== -->
+  <div class="overlay" id="dlg-stats" role="dialog" aria-modal="true" aria-labelledby="stats-title">
+    <div class="card">
+      <button class="btn icon close-x" data-close type="button" aria-label="Close stats">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <h2 id="stats-title">Your stats</h2>
+      <p class="sub">Saved privately on this device.</p>
+      <div class="status-list">
+        <div><span>Current level</span><span id="stat-current">&mdash;</span></div>
+        <div><span>Levels cleared</span><span id="stat-levels">&mdash;</span></div>
+        <div><span>Total stars</span><span id="stat-stars">&mdash;</span></div>
+        <div><span>Total plays</span><span id="stat-plays">&mdash;</span></div>
+        <div><span>Hints used</span><span id="stat-hints">&mdash;</span></div>
+        <div><span>Mistakes</span><span id="stat-mistakes">&mdash;</span></div>
+        <div><span>Coins</span><span id="stat-coins">&mdash;</span></div>
+        <div><span>Current streak</span><span id="stat-streaks">&mdash;</span></div>
+      </div>
+      <p style="font-size:12.5px;color:#93a0c8;">
+        All progress (stars, plays, current level) saves privately on this device and restores
+        automatically &mdash; no account needed, works fully offline.
+      </p>
+    </div>
+  </div>
+
+  <!-- ===== ACHIEVEMENTS ===== -->
+  <div class="overlay" id="dlg-achievements" role="dialog" aria-modal="true" aria-labelledby="achievements-title">
+    <div class="card">
+      <button class="btn icon close-x" data-close type="button" aria-label="Close achievements">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <h2 id="achievements-title">Achievements</h2>
+      <p class="sub">Unlock them all!</p>
+      <div id="achievements-grid"></div>
+    </div>
+  </div>
+
+  <!-- ===== OUT OF FREE HINTS ===== -->
+  <div class="overlay" id="dlg-adhint" role="dialog" aria-modal="true" aria-labelledby="adhint-title">
+    <div class="card" style="text-align:center;">
+      <div class="big-emoji" aria-hidden="true"><svg class="ic" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5a6 6 0 0 0-12 0c0 1.3.5 2.6 1.5 3.5.8.8 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></div>
+      <h2 id="adhint-title">Out of free hints</h2>
+      <p style="margin-bottom:16px;">You get <b>3 free hints</b> per level. Watch a short ad to reveal one more.</p>
+      <div class="stack">
+        <button class="btn primary" id="btn-adhint-watch" type="button"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg> Watch ad for a hint</button>
+        <button class="btn" id="btn-adhint-close" type="button">No thanks</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DEMO AD ===== -->
+  <div class="overlay" id="dlg-ad" role="dialog" aria-modal="true" aria-labelledby="ad-title">
+    <div class="card" style="text-align:center;">
+      <h2 id="ad-title">Demo ad</h2>
+      <p style="font-size:12.5px;color:#8a97b8;margin-bottom:14px;">A real ad plays here once an ad provider is connected.</p>
+      <div class="ad-box" aria-hidden="true">Ad space</div>
+      <p id="ad-count" style="font-size:14px;font-weight:700;margin:12px 0 0;">Demo ad &mdash; hint in 5s&hellip;</p>
+    </div>
+  </div>
+
+  <!-- ===== iOS INSTALL INSTRUCTIONS ===== -->
+  <div class="overlay" id="dlg-ios" role="dialog" aria-modal="true" aria-labelledby="ios-title">
+    <div class="card">
+      <button class="btn icon close-x" data-close type="button" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <h2 id="ios-title">Add to Home Screen</h2>
+      <p>On iPhone / iPad Safari:</p>
+      <ul>
+        <li>Tap the <b>Share</b> button <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg> in the toolbar.</li>
+        <li>Scroll and tap <b>Add to Home Screen</b>.</li>
+        <li>Tap <b>Add</b> &mdash; Arrow Out! will open full-screen from your home screen.</li>
+      </ul>
+      <p style="font-size:12.5px;color:#8a97b8;">This is the standard way to install web apps on iOS.</p>
+    </div>
+  </div>
+
+  <!-- ===== INSTALL STATUS ===== -->
+  <div class="overlay" id="dlg-install" role="dialog" aria-modal="true" aria-labelledby="inst-title">
+    <div class="card">
+      <button class="btn icon close-x" data-close type="button" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <h2 id="inst-title">Install app</h2>
+      <p id="inst-status"></p>
+    </div>
+  </div>
+
+  <!-- ===== SHOP (coins + skins) ===== -->
+  <div class="overlay" id="dlg-shop" role="dialog" aria-modal="true" aria-labelledby="shop-title">
+    <div class="card">
+      <button class="btn icon close-x" data-close type="button" aria-label="Close shop">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <h2 id="shop-title">Style your game</h2>
+      <p class="sub">Earn coins by playing. Preview freely, then buy with game coins.</p>
+      <div id="shop-coins" class="shop-coins" aria-live="polite"></div>
+      <div class="shop-tabs" role="tablist" aria-label="Cosmetic category">
+        <button id="shop-tab-boards" class="btn" role="tab" aria-selected="true" aria-controls="shop-grid">Board Skins</button>
+        <button id="shop-tab-arrows" class="btn" role="tab" aria-selected="false" aria-controls="shop-grid" tabindex="-1">Arrow Skins</button>
+      </div>
+      <canvas id="shop-preview" width="540" height="288" role="img" aria-label="Selected cosmetic preview"></canvas>
+      <p id="shop-preview-label" tabindex="-1" aria-live="polite"></p>
+      <div id="shop-grid" role="tabpanel" aria-labelledby="shop-tab-boards"></div>
+    </div>
+  </div>
+
+  <!-- ===== DAILY LOGIN REWARD ===== -->
+  <div class="overlay" id="dlg-reward" role="dialog" aria-modal="true" aria-labelledby="reward-title">
+    <div class="card" style="text-align:center;">
+      <div class="big-emoji" aria-hidden="true"><svg class="ic" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7Z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7Z"/></svg></div>
+      <h2 id="reward-title">Daily reward!</h2>
+      <p style="margin-bottom:14px;">Come back every day for bonus coins. Keep the streak alive for bigger rewards!</p>
+      <div id="reward-grid"></div>
+      <div class="stack" style="margin-top:14px;">
+        <button class="btn primary" id="btn-reward-claim" type="button">Claim</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load scripts in dependency order -->
+  <script src="js/game.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/haptics.js"></script>
+  <script src="js/bgfx.js"></script>
+  <script src="js/pwa.js"></script>
+  <script src="js/story.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/reminders.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SarkariSarthi 2.0 - Smart Indian Sarkari Job Portal</title>
+    <link rel="canonical" href="https://gogocompany.in/sarkari-sarthi/">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="SarkariSarthi 2.0 - independent Indian government job information portal. Find latest sarkari naukri, government jobs, SSC, banking, railway and UPSC notifications with instant Telegram and WhatsApp alerts.">
+    <meta name="keywords" content="sarkari job, government jobs, sarkari naukri, indian government jobs, job portal, banking, project, walk, interview, research, assistant, associate, offline, aiims, it, medical, senior, engineer, nurse, delhi">
+    <meta name="author" content="SarkariSarthi Team">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="SarkariSarthi 2.0 - Smart Indian Sarkari Job Portal">
+    <meta property="og:description" content="Independent Indian government job information portal with search, filters and instant Telegram and WhatsApp alerts.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://gogocompany.in/sarkari-sarthi/">
+    <meta property="og:image" content="https://gogocompany.in/sarkari-sarthi/hero-bg.jpg">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SarkariSarthi 2.0 - Smart Indian Sarkari Job Portal">
+    <meta name="twitter:description" content="Independent Indian government job information portal with search, filters and instant Telegram and WhatsApp alerts.">
+    <meta name="twitter:image" content="https://gogocompany.in/sarkari-sarthi/hero-bg.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="notification-icon.png">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "SarkariSarthi 2.0",
+        "description": "Independent smart Indian government job information portal",
+        "url": "https://gogocompany.in/sarkari-sarthi/"
+    }
+    </script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <img src="ai-powered-icon.png" alt="SarkariSarthi logo" class="logo-icon">
+                    <span class="logo-text">SarkariSarthi 2.0</span>
+                </div>
+                <div class="nav-menu">
+                    <a href="#home" class="nav-link">Home</a>
+                    <a href="#jobs" class="nav-link">Jobs</a>
+                    <a href="#categories" class="nav-link">Categories</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                    <button class="telegram-btn desktop-only" id="telegramBtn">
+                        <img src="notification-icon.png" alt="Telegram" class="btn-icon">
+                        Join Telegram
+                    </button>
+                    <button class="whatsapp-btn desktop-only" id="whatsappBtn">
+                        <img src="notification-icon.png" alt="WhatsApp" class="btn-icon">
+                        Join WhatsApp
+                    </button>
+                </div>
+                <div class="mobile-menu-toggle" id="mobileMenuToggle" role="button" tabindex="0" aria-label="Toggle mobile menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-background">
+            <img src="hero-bg.jpg" alt="Modern Indian Government Building" class="hero-bg-image">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    Smart
+                    <span class="highlight">Sarkari Job Portal</span>
+                </h1>
+                <p class="hero-description">
+                    Discover the latest government job opportunities across India, organized in one place. 
+                    Get instant Telegram and WhatsApp alerts when new notifications are added, and never miss your dream sarkari naukri.
+                </p>
+                <p style="margin: 12px 0 0; font-size: 0.85rem; opacity: 0.9; max-width: 640px;">
+                    Sarkari Sarthi is an independent information portal run by GoGo Company. It is not a government
+                    website and is not affiliated with any government body. Always verify details on the official
+                    websites linked in each notification.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-container">
+                <div class="search-box">
+                    <img src="job-search-icon.png" alt="Search Jobs" class="search-icon">
+                    <input type="text" id="jobSearch" aria-label="Search for jobs, departments, or locations" placeholder="Search for government jobs, departments, or locations..." class="search-input">
+                    <button class="search-btn" id="searchBtn">Search Jobs</button>
+                </div>
+                <div class="search-filters">
+                    <select id="categoryFilter" aria-label="Filter jobs by category" class="filter-select">
+                        <option value="">All Categories</option>
+                        <option value="Banking">Banking</option>
+                        <option value="SSC">SSC</option>
+                        <option value="Railway">Railway</option>
+                        <option value="Police">Police</option>
+                        <option value="Defence">Defence</option>
+                        <option value="Teaching">Teaching</option>
+                        <option value="UPSC">UPSC</option>
+                        <option value="General">General</option>
+                    </select>
+                    <select id="sortFilter" aria-label="Sort jobs" class="filter-select">
+                        <option value="latest">Latest First</option>
+                        <option value="deadline">Deadline Soon</option>
+                        <option value="category">By Category</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Job Categories -->
+    <section class="categories" id="categories">
+        <div class="container">
+            <h2 class="section-title">Popular Job Categories</h2>
+            <div class="categories-grid">
+                <div class="category-card" role="button" tabindex="0" data-category="Banking">
+                    <div class="category-icon">🏦</div>
+                    <h3 class="category-title">Banking</h3>
+                    <p class="category-count">Jobs</p>
+                </div>
+                <div class="category-card" role="button" tabindex="0" data-category="SSC">
+                    <div class="category-icon">📋</div>
+                    <h3 class="category-title">SSC</h3>
+                    <p class="category-count">Jobs</p>
+                </div>
+                <div class="category-card" role="button" tabindex="0" data-category="Railway">
+                    <div class="category-icon">🚂</div>
+                    <h3 class="category-title">Railway</h3>
+                    <p class="category-count">Jobs</p>
+                </div>
+                <div class="category-card" role="button" tabindex="0" data-category="Police">
+                    <div class="category-icon">👮</div>
+                    <h3 class="category-title">Police</h3>
+                    <p class="category-count">Jobs</p>
+                </div>
+                <div class="category-card" role="button" tabindex="0" data-category="Defence">
+                    <div class="category-icon">🛡️</div>
+                    <h3 class="category-title">Defence</h3>
+                    <p class="category-count">Jobs</p>
+                </div>
+                <div class="category-card" role="button" tabindex="0" data-category="Teaching">
+                    <div class="category-icon">👨‍🏫</div>
+                    <h3 class="category-title">Teaching</h3>
+                    <p class="category-count">Jobs</p>
+                </div>
+                <div class="category-card" role="button" tabindex="0" data-category="UPSC">
+                    <div class="category-icon">🏛️</div>
+                    <h3 class="category-title">UPSC</h3>
+                    <p class="category-count">Jobs</p>
+                </div>
+                <div class="category-card" role="button" tabindex="0" data-category="General">
+                    <div class="category-icon">📄</div>
+                    <h3 class="category-title">General</h3>
+                    <p class="category-count">Jobs</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Jobs Section -->
+    <section class="jobs-section" id="jobs">
+        <div class="container">
+            <h2 class="section-title">Latest Government Jobs</h2>
+            <div class="jobs-grid" id="jobsGrid">
+                <!-- Jobs will be dynamically loaded here -->
+                <div class="loading-spinner" id="loadingSpinner">
+                    <div class="spinner"></div>
+                    <p>Loading latest jobs...</p>
+                </div>
+            </div>
+            <div class="load-more-container">
+                <button class="load-more-btn" id="loadMoreBtn">Load More Jobs</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose SarkariSarthi 2.0?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <img src="ai-powered-icon.png" alt="Smart job discovery" class="feature-icon">
+                    <h3 class="feature-title">Smart Job Discovery</h3>
+                    <p class="feature-description">Job notifications are collected from official sources and organized with search, category filters and sorting, so you can find relevant openings quickly.</p>
+                </div>
+                <div class="feature-card">
+                    <img src="notification-icon.png" alt="Instant Notifications" class="feature-icon">
+                    <h3 class="feature-title">Instant Notifications</h3>
+                    <p class="feature-description">Get alerts on Telegram and WhatsApp when new job postings are added. Never miss an opportunity again.</p>
+                </div>
+                <div class="feature-card">
+                    <img src="job-search-icon.png" alt="Smart Search" class="feature-icon">
+                    <h3 class="feature-title">Smart Search & Filters</h3>
+                    <p class="feature-description">Advanced search capabilities with intelligent filters to help you find exactly what you're looking for quickly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="ai-powered-icon.png" alt="SarkariSarthi logo" class="footer-logo-icon">
+                        <span class="footer-logo-text">SarkariSarthi 2.0</span>
+                    </div>
+                    <p class="footer-description">
+                        Your smart companion for finding the best government job opportunities across India.
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#jobs">Latest Jobs</a></li>
+                        <li><a href="#categories">Categories</a></li>
+                        <li><a href="#about">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Job Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" data-category="Banking">Banking Jobs</a></li>
+                        <li><a href="#" data-category="SSC">SSC Jobs</a></li>
+                        <li><a href="#" data-category="Railway">Railway Jobs</a></li>
+                        <li><a href="#" data-category="UPSC">UPSC Jobs</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Connect With Us</h4>
+                    <div class="social-links">
+                        <button class="social-link telegram-link" id="footerTelegramBtn">
+                            <img src="notification-icon.png" alt="Telegram" class="social-icon">
+                            Join Telegram Channel
+                        </button>
+                        <button class="social-link whatsapp-link" id="footerWhatsappBtn">
+                            <img src="notification-icon.png" alt="WhatsApp" class="social-icon">
+                            Join WhatsApp Group
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 SarkariSarthi 2.0. All rights reserved.</p>
+                <p style="margin-top: 6px; font-size: 0.8rem; opacity: 0.85;">
+                    Sarkari Sarthi is an independent information portal run by GoGo Company (gogocompany.in).
+                    It is not a government website and is not affiliated with any government body.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Job Detail Modal -->
+    <div class="modal" id="jobModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Job Title</h3>
+                <button class="modal-close" id="modalClose" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Job details will be populated here -->
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn secondary" id="modalClose2">Close</button>
+                <a href="#" class="modal-btn primary" id="modalApplyBtn" target="_blank" rel="noopener noreferrer">Apply Now</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
