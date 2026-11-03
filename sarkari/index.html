@@ -17,20 +17,29 @@
   <main>
     <section class="hero">
       <div class="container">
+        <p class="back-link-row"><a class="back-link" href="../index.html">&larr; GoGo Company home</a></p>
         <p class="kicker">Sarkari Sarthi</p>
         <h1>Latest Government <span class="accent">Job Updates</span></h1>
-        <p class="lead">Curated listings from official government websites - jobs, admit cards, results, answer keys, syllabus and notifications. Data is refreshed from our automated Sarkari-Sarthi scraper.</p>
+        <p class="lead">Curated listings from official government websites - jobs, admit cards, results, answer keys, syllabus and notifications. Live data is refreshed from the automated Sarkari-Sarthi scraper (daily at 5 AM IST).</p>
         <div class="disclaimer-box">
           Disclaimer: Sarkari Sarthi is an information aggregator and is NOT a government website. Always verify
           details (dates, vacancies, eligibility, fees) on the official notification linked with each listing before
           applying.
         </div>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://parya5103.github.io/Sarkari-Sarthi/" target="_blank" rel="noopener noreferrer">Open full Sarkari Sarthi portal <span class="external-hint">(opens in a new tab)</span></a>
+          <a class="btn btn-ghost" href="../contact/index.html">Report a listing error</a>
+        </div>
         <div class="sarkari-bar">
-          <label class="visually-hidden" for="sarkari-search" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Search listings</label>
+          <label for="sarkari-search" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Search listings</label>
           <input type="search" id="sarkari-search" placeholder="Search by post, exam or organisation (e.g. RRB, SSC, teacher)...">
         </div>
         <div class="s-tabs" id="sarkari-tabs" role="tablist" aria-label="Listing categories"></div>
         <p id="sarkari-status" role="status" aria-live="polite">Loading listings...</p>
+        <div id="sarkari-error" class="fetch-error" hidden>
+          <p class="sarkari-error-msg" role="alert"></p>
+          <button type="button" id="sarkari-retry" class="btn btn-ghost">Retry live fetch</button>
+        </div>
         <div class="s-grid" id="sarkari-grid"></div>
         <p id="sarkari-empty" hidden>No listings match your search. Try a different keyword or category.</p>
       </div>
@@ -43,7 +52,7 @@
             <h3>How listings are sourced</h3>
             <ul class="feature-list">
               <li>Curated entries checked against official sites (SSC, RRB, UPSC, IBPS, state boards)</li>
-              <li>Bulk listings from our open-source Sarkari-Sarthi scraper</li>
+              <li>Bulk listings from the open-source Sarkari-Sarthi scraper (github.com/parya5103/Sarkari-Sarthi)</li>
               <li>Every card links the official source</li>
             </ul>
           </article>
@@ -57,7 +66,7 @@
           </article>
           <article class="card">
             <h3>Data freshness</h3>
-            <p>Listing data goes stale as deadlines pass. The status line above shows whether live scraper data loaded. Expired listings are hidden automatically.</p>
+            <p>The status line above shows when scraper data was last updated. If the live fetch fails, the page falls back to an embedded snapshot and shows a retry button. Expired listings are hidden automatically.</p>
           </article>
         </div>
       </div>

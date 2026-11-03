@@ -69,7 +69,7 @@ body {
 img { max-width: 100%; height: auto; display: block; }
 a { color: var(--link); }
 a:hover { color: var(--accent); }
-h1, h2, h3 { line-height: 1.25; }
+h1, h2, h3 { line-height: 1.25; overflow-wrap: break-word; }
 h1 { font-size: clamp(1.8rem, 4.5vw, 2.7rem); }
 h2 { font-size: clamp(1.4rem, 3.5vw, 1.9rem); }
 h3 { font-size: 1.15rem; }
@@ -109,7 +109,6 @@ main { flex: 1; }
   background: linear-gradient(135deg, var(--primary), var(--primary-2));
   color: #fff;
 }
-body.theme-sarkari .btn-primary { color: #fff; }
 .btn-primary:hover { color: #fff; box-shadow: var(--shadow); }
 .btn-ghost {
   background: transparent;
@@ -117,6 +116,20 @@ body.theme-sarkari .btn-primary { color: #fff; }
   border-color: var(--border);
 }
 .btn-ghost:hover { color: var(--accent); border-color: var(--accent); }
+.external-hint {
+  display: block;
+  width: 100%;
+  font-size: 0.72rem;
+  font-weight: 600;
+  opacity: 0.85;
+  line-height: 1.2;
+}
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
 
 /* ---------- Header ---------- */
 .site-header {
@@ -164,7 +177,6 @@ body.theme-sarkari .btn-primary { color: #fff; }
 }
 .nav-list a:hover { color: var(--text); background: var(--card-soft); }
 .nav-list a[aria-current="page"] { color: #fff; background: linear-gradient(135deg, var(--primary), var(--primary-2)); }
-body.theme-sarkari .nav-list a[aria-current="page"] { color: #fff; }
 
 .nav-toggle {
   display: none;
@@ -197,6 +209,23 @@ body.theme-sarkari .nav-list a[aria-current="page"] { color: #fff; }
   .nav-list { flex-direction: column; padding: 8px 0 12px; }
 }
 
+/* ---------- Back link ---------- */
+.back-link-row { margin: 0 0 18px; }
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding: 8px 16px 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--text-dim);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.back-link:hover { color: var(--accent); border-color: var(--accent); }
+
 /* ---------- Hero ---------- */
 .hero {
   background:
@@ -204,7 +233,7 @@ body.theme-sarkari .nav-list a[aria-current="page"] { color: #fff; }
     radial-gradient(700px 320px at 0% 110%, color-mix(in srgb, var(--primary-2) 22%, transparent), transparent),
     var(--bg-soft);
   border-bottom: 1px solid var(--border);
-  padding: 64px 0;
+  padding: 48px 0 64px;
 }
 .hero-inner { max-width: 720px; }
 .hero .kicker {
@@ -237,6 +266,8 @@ body.theme-sarkari .nav-list a[aria-current="page"] { color: #fff; }
   border-radius: var(--radius);
   padding: 24px;
   box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
 }
 .card h3 { margin-top: 0; }
 .card p { color: var(--text-dim); }
@@ -252,6 +283,8 @@ body.theme-sarkari .nav-list a[aria-current="page"] { color: #fff; }
   font-weight: 800;
   margin-bottom: 14px;
 }
+.card .btn { margin-top: 18px; align-self: flex-start; }
+.card-actions .btn { margin-top: 0; }
 .feature-list { list-style: none; padding: 0; margin: 0; color: var(--text-dim); }
 .feature-list li { padding: 6px 0 6px 26px; position: relative; }
 .feature-list li::before {
@@ -335,7 +368,22 @@ body.theme-sarkari .nav-list a[aria-current="page"] { color: #fff; }
   font-size: 0.85rem;
   text-align: center;
 }
-#sarkari-status { color: var(--text-dim); font-size: 0.95rem; margin: 6px 0 18px; }
+#sarkari-status { color: var(--text-dim); font-size: 0.95rem; margin: 6px 0 12px; }
+.fetch-error {
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  border-left: 4px solid #e11d48;
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  margin: 0 0 18px;
+  color: #881337;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.fetch-error p { margin: 0; font-size: 0.95rem; font-weight: 600; flex: 1 1 240px; }
+.fetch-error .btn { min-height: 40px; padding: 6px 14px; font-size: 0.9rem; }
 .s-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -363,7 +411,7 @@ body.theme-sarkari .nav-list a[aria-current="page"] { color: #fff; }
   font-weight: 700;
 }
 .chip-urgent { background: #dc2626; border-color: #dc2626; color: #fff; }
-.s-title { margin: 2px 0 0; font-size: 1.05rem; }
+.s-title { margin: 2px 0 0; font-size: 1.05rem; overflow-wrap: anywhere; }
 .s-dept { margin: 0; color: var(--text-dim); font-weight: 700; font-size: 0.9rem; }
 .s-card p span {
   display: inline-block;
@@ -375,7 +423,7 @@ body.theme-sarkari .nav-list a[aria-current="page"] { color: #fff; }
   letter-spacing: 0.4px;
 }
 .s-last { color: var(--text); font-weight: 700; }
-.s-found, .s-elig, .s-fee, .s-vac { margin: 0; font-size: 0.95rem; }
+.s-found, .s-elig, .s-fee, .s-vac { margin: 0; font-size: 0.95rem; overflow-wrap: anywhere; }
 .s-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto; padding-top: 10px; }
 .s-actions .btn { padding: 8px 16px; font-size: 0.95rem; }
 #sarkari-empty {
@@ -399,8 +447,11 @@ body.theme-sarkari .nav-list a[aria-current="page"] { color: #fff; }
 
 @media (max-width: 720px) {
   .contact-grid { grid-template-columns: 1fr; }
-  .hero { padding: 44px 0; }
   .section { padding: 40px 0; }
+  .card .btn, .card-actions .btn { flex: 1 1 100%; }
+  .back-link { align-self: flex-start; }
+  .hero { padding: 32px 0 44px; }
+  .hero-actions .btn { flex: 1 1 auto; }
 }
 
 /* ---------- Footer ---------- */
