@@ -1,7 +1,10 @@
 /* GoGo Company - shared site chrome.
    Header and footer are injected here so nav links live in ONE place.
    Pages set: <html data-root="./"> (root pages) or "../" (nested pages),
-   and <body data-page="home|sarkari|arrow-out|crystal-quest|about|contact|...">.
+   and <body data-page="home|about|contact|...">.
+   Product apps live under /arrowout/, /crystalquest/ and /sarkari-sarthi/
+   (published from their own source repositories by the sync workflow -
+   see .github/workflows/sync-products.yml).
    Edit NAV_LINKS / FOOTER_COLS below to change the whole site. */
 
 (function () {
@@ -20,9 +23,9 @@
 
   var NAV_LINKS = [
     { href: "index.html", label: "Home", page: "home" },
-    { href: "sarkari/index.html", label: "Sarkari Sarthi", page: "sarkari" },
-    { href: "arrow-out/index.html", label: "Arrow Out!", page: "arrow-out" },
-    { href: "crystal-quest/index.html", label: "Crystal Quest", page: "crystal-quest" },
+    { href: "sarkari-sarthi/", label: "Sarkari Sarthi", page: "sarkari" },
+    { href: "arrowout/", label: "Arrow Out!", page: "arrow-out" },
+    { href: "crystalquest/", label: "Crystal Quest", page: "crystal-quest" },
     { href: "about/index.html", label: "About", page: "about" },
     { href: "contact/index.html", label: "Contact", page: "contact" }
   ];
@@ -38,9 +41,9 @@
     {
       heading: "Products",
       links: [
-        { href: "arrow-out/index.html", label: "Arrow Out!" },
-        { href: "crystal-quest/index.html", label: "Crystal Quest" },
-        { href: "sarkari/index.html", label: "Sarkari Sarthi" }
+        { href: "arrowout/", label: "Arrow Out!" },
+        { href: "crystalquest/", label: "Crystal Quest" },
+        { href: "sarkari-sarthi/", label: "Sarkari Sarthi" }
       ]
     },
     {

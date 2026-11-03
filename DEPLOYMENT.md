@@ -31,17 +31,24 @@ hours. GitHub then redirects www -> apex domain automatically.
 
 ## Updating the site
 
-Every push to `main` redeploys automatically (1-3 minutes). Check the
-Actions tab or Settings -> Pages build status.
+- Site pages (homepage, legal pages, redirects): every push to `main`
+  redeploys automatically (1-3 minutes).
+- Product apps (`/arrowout/`, `/crystalquest/`, `/sarkari-sarthi/`):
+  published by the "Sync product apps" workflow (daily 06:15 IST, or run
+  it manually from the Actions tab). See README.md for how updates
+  propagate from each product repository.
 
 ## Verification checklist after deploy
 
 - https://gogocompany.in loads the homepage.
 - https://www.gogocompany.in redirects to the apex domain.
 - Header/footer render with working nav on every page (JS enabled).
-- Game Play Now buttons open:
-  - https://parya5103.github.io/Fletch_Game/
-  - https://parya5103.github.io/crystal-quest-web/
-- Sarkari Sarthi status line shows "Live Sarkari-Sarthi data" (not just
-  the fallback snapshot).
+- Product buttons open (in a new tab, same domain):
+  - https://gogocompany.in/arrowout/
+  - https://gogocompany.in/crystalquest/
+  - https://gogocompany.in/sarkari-sarthi/
+- Old URLs redirect: /arrow-out/ -> /arrowout/, /crystal-quest/ ->
+  /crystalquest/, /sarkari/ -> /sarkari-sarthi/.
+- After the first sync run, the games install as PWAs from the new paths
+  and work offline; the Sarkari portal shows current job data.
 - Lock icon / HTTPS works with no mixed-content warnings.
