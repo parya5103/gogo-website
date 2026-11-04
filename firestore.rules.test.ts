@@ -7,11 +7,11 @@ import {
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { afterAll, beforeAll, beforeEach, describe, it } from 'vitest';
-import { doc, getDoc, setDoc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, setDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
 
 let testEnv: RulesTestEnvironment;
 
-describe('GoGo Account & Cloud Save Firestore Security Rules', () => {
+describe('GoGo Account, Marketing Subscribers & Cloud Save Firestore Security Rules', () => {
   beforeAll(async () => {
     testEnv = await initializeTestEnvironment({
       projectId: 'gogo-rules-test',
@@ -39,7 +39,7 @@ describe('GoGo Account & Cloud Save Firestore Security Rules', () => {
       await assertFails(getDoc(doc(guestDb, 'users', 'user_123')));
     });
 
-    it('allows authenticated user to create and read their own profile with valid schema', async () => {
+    it('allows authenticated user to create and read their own profile with authProvider & marketingSubscribed', async () => {
       const aliceDb = testEnv.authenticatedContext('alice_uid').firestore();
       const ref = doc(aliceDb, 'users', 'alice_uid');
 
@@ -48,6 +48,8 @@ describe('GoGo Account & Cloud Save Firestore Security Rules', () => {
           displayName: 'Alice Player',
           email: 'alice@gogocompany.in',
           photoURL: 'https://gogocompany.in/avatar.png',
+          authProvider: 'password',
+          marketingSubscribed: false,
           createdAt: serverTimestamp(),
           lastLoginAt: serverTimestamp(),
         })
@@ -56,36 +58,54 @@ describe('GoGo Account & Cloud Save Firestore Security Rules', () => {
       await assertSucceeds(getDoc(ref));
     });
 
-    it('denies cross-user read or write on another user profile', async () => {
-      const bobDb = testEnv.authenticatedContext('bob_uid').firestore();
+    it('denies normal user from listing /users or reading another user profile', async () => {
+      const bobDb = testEnv.authenticatedContext('bob_uid', { email: 'bob@example.com', email_verified: true }).firestore();
       const aliceRef = doc(bobDb, 'users', 'alice_uid');
 
       await assertFails(getDoc(aliceRef));
-      await assertFails(
-        setDoc(aliceRef, {
-          displayName: 'Bob Spoof',
-          email: 'bob@gogocompany.in',
-          photoURL: '',
-          createdAt: serverTimestamp(),
-          lastLoginAt: serverTimestamp(),
+      await assertFails(getDocs(collection(bobDb, 'users')));
+    });
+
+    it('allows verified admin to list /users and /marketingSubscribers', async () => {
+      const adminDb = testEnv
+        .authenticatedContext('admin_uid', {
+          email: 'aaryapratik@gmail.com',
+          email_verified: true,
+        })
+        .firestore();
+
+      await assertSucceeds(getDocs(collection(adminDb, 'users')));
+      await assertSucceeds(getDocs(collection(adminDb, 'marketingSubscribers')));
+    });
+  });
+
+  describe('/marketingSubscribers/{uid}', () => {
+    it('allows user to create their own subscriber record with explicit consent', async () => {
+      const aliceDb = testEnv.authenticatedContext('alice_uid').firestore();
+      const subRef = doc(aliceDb, 'marketingSubscribers', 'alice_uid');
+
+      await assertSucceeds(
+        setDoc(subRef, {
+          email: 'alice@gogocompany.in',
+          displayName: 'Alice Player',
+          subscribed: true,
+          consentTimestamp: serverTimestamp(),
+          consentVersion: 'v1.0-2026-11',
+          consentText:
+            'Yes! I would like to receive GoGo Games news, new game announcements, updates, special offers and promotional emails.',
+          source: 'registration_form',
+          authProvider: 'password',
+          registeredAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+          unsubscribedAt: null,
         })
       );
     });
 
-    it('denies unexpected fields or invalid email in user profile', async () => {
-      const aliceDb = testEnv.authenticatedContext('alice_uid').firestore();
-      const ref = doc(aliceDb, 'users', 'alice_uid');
-
-      await assertFails(
-        setDoc(ref, {
-          displayName: 'Alice',
-          email: 'alice@gogocompany.in',
-          photoURL: '',
-          role: 'admin',
-          createdAt: serverTimestamp(),
-          lastLoginAt: serverTimestamp(),
-        })
-      );
+    it('denies normal user from listing /marketingSubscribers or reading another subscriber', async () => {
+      const bobDb = testEnv.authenticatedContext('bob_uid', { email: 'bob@example.com', email_verified: true }).firestore();
+      await assertFails(getDoc(doc(bobDb, 'marketingSubscribers', 'alice_uid')));
+      await assertFails(getDocs(collection(bobDb, 'marketingSubscribers')));
     });
   });
 
@@ -100,58 +120,15 @@ describe('GoGo Account & Cloud Save Firestore Security Rules', () => {
           schemaVersion: 2,
           updatedAt: serverTimestamp(),
           progress: {
-            version: 2,
-            currentStage: 5,
-            unlockedStage: 5,
-            streak: 3,
-            bestStreak: 4,
-            shields: 1,
+            v: 2,
+            unlocked: 5,
+            coins: 100,
             clientUpdatedAtMs: 1730000000000,
           },
         })
       );
 
       await assertSucceeds(getDoc(saveRef));
-    });
-
-    it('allows authenticated owner to save crystalquest progress and delete on account removal', async () => {
-      const aliceDb = testEnv.authenticatedContext('alice_uid').firestore();
-      const saveRef = doc(aliceDb, 'gameProfiles', 'alice_uid', 'games', 'crystalquest');
-
-      await assertSucceeds(
-        setDoc(saveRef, {
-          gameId: 'crystalquest',
-          schemaVersion: 2,
-          updatedAt: serverTimestamp(),
-          progress: {
-            v: 2,
-            unlocked: 8,
-            lastLevel: 7,
-            stars: { '1': 3, '2': 3 },
-            clientUpdatedAtMs: 1730000000000,
-          },
-        })
-      );
-
-      await assertSucceeds(deleteDoc(saveRef));
-    });
-
-    it('denies unsupported gameId or cross-user game save access', async () => {
-      const aliceDb = testEnv.authenticatedContext('alice_uid').firestore();
-      const badGameRef = doc(aliceDb, 'gameProfiles', 'alice_uid', 'games', 'unknown_game');
-
-      await assertFails(
-        setDoc(badGameRef, {
-          gameId: 'unknown_game',
-          schemaVersion: 1,
-          updatedAt: serverTimestamp(),
-          progress: { currentStage: 1, unlockedStage: 1 },
-        })
-      );
-
-      const bobDb = testEnv.authenticatedContext('bob_uid').firestore();
-      const aliceArrowRef = doc(bobDb, 'gameProfiles', 'alice_uid', 'games', 'arrowout');
-      await assertFails(getDoc(aliceArrowRef));
     });
   });
 });

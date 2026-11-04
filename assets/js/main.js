@@ -37,7 +37,8 @@
       links: [
         { href: "about/index.html", label: "About Us" },
         { href: "contact/index.html", label: "Contact" },
-        { href: "account/index.html", label: "GoGo Account" }
+        { href: "account/index.html", label: "GoGo Account" },
+        { href: "admin/index.html", label: "Admin Dashboard" }
       ]
     },
     {
@@ -53,7 +54,8 @@
       links: [
         { href: "privacy-policy/index.html", label: "Privacy Policy" },
         { href: "terms-and-conditions/index.html", label: "Terms & Conditions" },
-        { href: "disclaimer/index.html", label: "Disclaimer" }
+        { href: "disclaimer/index.html", label: "Disclaimer" },
+        { href: "unsubscribe/index.html", label: "Email Unsubscribe" }
       ]
     }
   ];

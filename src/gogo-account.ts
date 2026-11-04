@@ -21,8 +21,10 @@ import {
 } from 'firebase/auth';
 import {
   getFirestore,
+  collection,
   doc,
   getDoc,
+  getDocs,
   getDocFromServer,
   setDoc,
   deleteDoc,
@@ -93,7 +95,208 @@ export interface ConflictComparison {
 }
 
 // =========================================================
-// 2. Constants & Storage Keys
+// 2. Marketing Consent & Admin Constants + Pure Functions
+// =========================================================
+
+export const MARKETING_CONSENT_VERSION = 'v1.0-2026-11';
+export const MARKETING_CONSENT_TEXT =
+  'Yes! I would like to receive GoGo Games news, new game announcements, updates, special offers and promotional emails.';
+
+export const AUTHORIZED_ADMIN_EMAILS = ['aaryapratik@gmail.com', 'officialgogocompany@gmail.com'];
+
+export interface SubscriberRecordInput {
+  email: string;
+  displayName: string;
+  subscribed: boolean;
+  consentTimestampMs: number | null;
+  consentVersion: string;
+  consentText: string;
+  source: string;
+  authProvider: 'password' | 'google.com';
+  registeredAtMs: number;
+  updatedAtMs: number;
+  unsubscribedAtMs: number | null;
+}
+
+export interface AdminDirectoryEntry {
+  uid: string;
+  email: string;
+  displayName: string;
+  authProvider: 'password' | 'google.com';
+  registeredAtMs: number;
+  lastLoginAtMs: number;
+  subscribed: boolean;
+  consentTimestampMs: number | null;
+  consentVersion: string;
+  consentText: string;
+  source: string;
+  unsubscribedAtMs: number | null;
+}
+
+export function isAuthorizedAdminUser(
+  user: { email?: string | null; emailVerified?: boolean } | null | undefined,
+  hasAdminDoc = false
+): boolean {
+  if (!user) return false;
+  if (hasAdminDoc) return true;
+  const email = (user.email || '').trim().toLowerCase();
+  return Boolean(user.emailVerified && AUTHORIZED_ADMIN_EMAILS.includes(email));
+}
+
+export function detectCurrentSourceSurface(): string {
+  if (typeof window === 'undefined') return 'registration_form';
+  const path = window.location.pathname || '/';
+  if (path.includes('/arrowout')) return 'arrowout';
+  if (path.includes('/crystalquest')) return 'crystalquest';
+  if (path.includes('/unsubscribe')) return 'unsubscribe_page';
+  if (path.includes('/account')) return 'account_page';
+  return 'gogo_website';
+}
+
+export function buildInitialMarketingRecord(params: {
+  email: string;
+  displayName: string;
+  marketingOptIn: boolean;
+  authProvider: 'password' | 'google.com';
+  source: string;
+  nowMs?: number;
+}): SubscriberRecordInput {
+  const now = params.nowMs ?? Date.now();
+  // Never automatically subscribe Google sign-in users unless explicitly opted in
+  const subscribed = params.authProvider === 'google.com' ? false : Boolean(params.marketingOptIn);
+  return {
+    email: params.email.trim().slice(0, 254),
+    displayName: (params.displayName.trim() || 'GoGo Player').slice(0, 100),
+    subscribed,
+    consentTimestampMs: subscribed ? now : null,
+    consentVersion: subscribed ? MARKETING_CONSENT_VERSION : '',
+    consentText: subscribed ? MARKETING_CONSENT_TEXT : '',
+    source: (params.source || 'registration_form').slice(0, 64),
+    authProvider: params.authProvider,
+    registeredAtMs: now,
+    updatedAtMs: now,
+    unsubscribedAtMs: null,
+  };
+}
+
+export function applyUnsubscribeToRecord(
+  existing: SubscriberRecordInput,
+  source = 'unsubscribe_page',
+  nowMs = Date.now()
+): SubscriberRecordInput {
+  return {
+    ...existing,
+    subscribed: false,
+    source: source.slice(0, 64),
+    updatedAtMs: nowMs,
+    unsubscribedAtMs: nowMs,
+    // Keep prior consentTimestampMs, consentVersion, and consentText for audit accountability
+  };
+}
+
+export function applyOptInToRecord(
+  existing: SubscriberRecordInput,
+  source = 'account_profile',
+  nowMs = Date.now()
+): SubscriberRecordInput {
+  return {
+    ...existing,
+    subscribed: true,
+    consentTimestampMs: nowMs,
+    consentVersion: MARKETING_CONSENT_VERSION,
+    consentText: MARKETING_CONSENT_TEXT,
+    source: source.slice(0, 64),
+    updatedAtMs: nowMs,
+    unsubscribedAtMs: null,
+  };
+}
+
+export function escapeCsvCell(value: unknown): string {
+  const raw = String(value ?? '');
+  // Prevent CSV formula injection when opened in Excel / Google Sheets
+  const safe = /^[=+\-@]/.test(raw) ? `'${raw}` : raw;
+  if (/[",\r\n]/.test(safe)) {
+    return `"${safe.replace(/"/g, '""')}"`;
+  }
+  return safe;
+}
+
+export function formatIsoDateForCsv(ms: number | null | undefined): string {
+  if (!ms || ms <= 0 || !Number.isFinite(ms)) return '';
+  try {
+    return new Date(ms).toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
+  } catch {
+    return '';
+  }
+}
+
+export const CSV_HEADER_COLUMNS = [
+  'Email',
+  'Display Name',
+  'Registration Date',
+  'Marketing Consent',
+  'Consent Date',
+  'Source',
+];
+
+/**
+ * Generates the Promotional Marketing Subscribers CSV.
+ * STRICT REQUIREMENT: Only exports users who have explicitly subscribed (subscribed === true)
+ * and have NOT unsubscribed.
+ */
+export function generateMarketingSubscribersCsv(entries: AdminDirectoryEntry[]): string {
+  const subscribedOnly = entries.filter((e) => e.subscribed === true && !e.unsubscribedAtMs);
+  const rows: string[] = [CSV_HEADER_COLUMNS.map(escapeCsvCell).join(',')];
+
+  for (const item of subscribedOnly) {
+    rows.push(
+      [
+        item.email,
+        item.displayName,
+        formatIsoDateForCsv(item.registeredAtMs),
+        'Yes',
+        formatIsoDateForCsv(item.consentTimestampMs),
+        item.source || 'registration_form',
+      ]
+        .map(escapeCsvCell)
+        .join(',')
+    );
+  }
+
+  return '\uFEFF' + rows.join('\r\n');
+}
+
+/**
+ * Generates the All Registered Accounts CSV (for account administration only).
+ */
+export function generateAllRegisteredAccountsCsv(entries: AdminDirectoryEntry[]): string {
+  const rows: string[] = [CSV_HEADER_COLUMNS.map(escapeCsvCell).join(',')];
+
+  for (const item of entries) {
+    const consentStatus = item.subscribed
+      ? 'Yes'
+      : item.unsubscribedAtMs
+      ? 'No (Unsubscribed)'
+      : 'No';
+    rows.push(
+      [
+        item.email,
+        item.displayName,
+        formatIsoDateForCsv(item.registeredAtMs),
+        consentStatus,
+        formatIsoDateForCsv(item.consentTimestampMs),
+        item.source || item.authProvider,
+      ]
+        .map(escapeCsvCell)
+        .join(',')
+    );
+  }
+
+  return '\uFEFF' + rows.join('\r\n');
+}
+
+// =========================================================
+// 3. Constants & Storage Keys for Game Cloud Saves
 // =========================================================
 
 const CLOUD_META_STORAGE_KEY = 'gogo.cloudSyncMeta.v1';
@@ -103,7 +306,7 @@ const CRYSTAL_STORAGE_KEY = 'crystal-quest-save-v1';
 const CRYSTAL_META_KEY = 'crystal-quest-cloud-meta-v1';
 
 // =========================================================
-// 3. Pure Validation, Summary, Conflict & Merge Logic
+// 4. Pure Validation, Summary, Conflict & Merge Logic
 // =========================================================
 
 function clampInt(val: unknown, min: number, max: number, fallback: number): number {
@@ -346,9 +549,10 @@ export function summarizeProgress(
 
   if (gameId === 'arrowout') {
     const unlocked = clampInt(rawSave.unlocked ?? rawSave.unlockedStage ?? rawSave.currentStage, 1, 10000, 1);
-    const bestObj = (rawSave.best ?? rawSave.completed) && typeof (rawSave.best ?? rawSave.completed) === 'object'
-      ? (rawSave.best ?? rawSave.completed)
-      : {};
+    const bestObj =
+      (rawSave.best ?? rawSave.completed) && typeof (rawSave.best ?? rawSave.completed) === 'object'
+        ? rawSave.best ?? rawSave.completed
+        : {};
     let completedCount = 0;
     let totalStars = 0;
     for (const v of Object.values(bestObj)) {
@@ -563,7 +767,6 @@ export function detectSaveConflict(
     };
   }
 
-  // Both local and cloud have non-empty progress.
   const sameMetric = localSummary.scoreMetric === cloudSummary.scoreMetric;
   const sameHeadline = localSummary.headline === cloudSummary.headline && localSummary.subline === cloudSummary.subline;
   const timeDiffMs = Math.abs((localSummary.updatedAtMs || 0) - (cloudSummary.updatedAtMs || 0));
@@ -607,7 +810,7 @@ export function detectSaveConflict(
 }
 
 // =========================================================
-// 4. Default LocalStorage Game Adapters (Works on /, /account/, /arrowout/, /crystalquest/)
+// 5. Default LocalStorage Game Adapters
 // =========================================================
 
 interface CloudSyncMetaStore {
@@ -747,7 +950,7 @@ function createDefaultAdapters(): Record<SupportedGameId, GameAdapter> {
 }
 
 // =========================================================
-// 5. Firebase Service & GoGo Account Controller
+// 6. Firebase Service & GoGo Account + Marketing + Admin Controller
 // =========================================================
 
 class GoGoAccountManager {
@@ -756,7 +959,11 @@ class GoGoAccountManager {
   public db!: Firestore;
   public currentUser: User | null = null;
   public userProfile: Record<string, any> | null = null;
-  public cloudSaves: Partial<Record<SupportedGameId, { progress: Record<string, any>; updatedAtMs: number; schemaVersion: number }>> = {};
+  public subscriberProfile: Record<string, any> | null = null;
+  public hasAdminDoc = false;
+  public cloudSaves: Partial<
+    Record<SupportedGameId, { progress: Record<string, any>; updatedAtMs: number; schemaVersion: number }>
+  > = {};
   public conflictQueue: Array<{
     gameId: SupportedGameId;
     comparison: ConflictComparison;
@@ -768,6 +975,14 @@ class GoGoAccountManager {
     crystalquest: 'idle',
   };
 
+  // Admin dashboard state
+  public adminLoading = false;
+  public adminError: string | null = null;
+  public adminEntries: AdminDirectoryEntry[] = [];
+  public adminActiveView: 'subscribers' | 'accounts' = 'subscribers';
+  public adminFilterStatus: 'all' | 'subscribed' | 'unsubscribed' | 'no_consent' = 'subscribed';
+  public adminSearchQuery = '';
+
   private adapters: Record<SupportedGameId, GameAdapter> = createDefaultAdapters();
   private activeModalTab: 'login' | 'register' | 'forgot' | 'profile' | 'conflict' | 'delete' = 'login';
   private isModalOpen = false;
@@ -776,6 +991,7 @@ class GoGoAccountManager {
   private pendingOfflineSync: Set<SupportedGameId> = new Set();
   private listeners: Array<(user: User | null) => void> = [];
   private isInitialized = false;
+  private pendingRegistrationConsent: boolean | null = null;
 
   public init() {
     if (this.isInitialized) return;
@@ -786,29 +1002,37 @@ class GoGoAccountManager {
     this.auth = getAuth(this.app);
     this.db = getFirestore(this.app, runtimeConfig.firestoreDatabaseId);
 
-    // Configure persistent cross-application session storage on same origin
-    setPersistence(this.auth, indexedDBLocalPersistence).catch(() => {
-      return setPersistence(this.auth, browserLocalPersistence);
-    }).catch((err) => {
-      console.warn('[GoGoAccount] Auth persistence fallback warning:', err);
-    });
+    setPersistence(this.auth, indexedDBLocalPersistence)
+      .catch(() => setPersistence(this.auth, browserLocalPersistence))
+      .catch((err) => {
+        console.warn('[GoGoAccount] Auth persistence fallback warning:', err);
+      });
 
-    // Mandatory connection test per Firebase guidelines
     this.testConnection();
 
-    // Listen to auth state changes
     onAuthStateChanged(this.auth, async (user) => {
       this.currentUser = user;
       if (user) {
         if (this.activeModalTab === 'login' || this.activeModalTab === 'register' || this.activeModalTab === 'forgot') {
           this.activeModalTab = 'profile';
         }
-        await this.ensureUserProfile(user);
+        const initialOptIn = this.pendingRegistrationConsent;
+        this.pendingRegistrationConsent = null;
+        await this.ensureUserProfileAndSubscriber(user, undefined, initialOptIn);
+        await this.checkAdminRole(user);
         await this.syncAllGamesOnLogin();
+        if (typeof document !== 'undefined' && document.getElementById('gogo-admin-page-root')) {
+          if (this.isAdmin()) {
+            await this.loadAdminDirectory();
+          }
+        }
       } else {
         this.userProfile = null;
+        this.subscriberProfile = null;
+        this.hasAdminDoc = false;
         this.cloudSaves = {};
         this.conflictQueue = [];
+        this.adminEntries = [];
         this.syncStatus = { arrowout: 'idle', crystalquest: 'idle' };
         if (this.activeModalTab === 'profile' || this.activeModalTab === 'delete' || this.activeModalTab === 'conflict') {
           this.activeModalTab = 'login';
@@ -818,7 +1042,6 @@ class GoGoAccountManager {
       this.renderAllUI();
     });
 
-    // Listen for online reconnection to flush queued cloud saves
     window.addEventListener('online', () => {
       if (this.currentUser && this.isCloudBackupEnabled()) {
         for (const gameId of Array.from(this.pendingOfflineSync)) {
@@ -874,10 +1097,28 @@ class GoGoAccountManager {
     throw new Error(JSON.stringify(errInfo));
   }
 
+  public isAdmin(): boolean {
+    return isAuthorizedAdminUser(this.currentUser, this.hasAdminDoc);
+  }
+
+  private async checkAdminRole(user: User) {
+    if (!navigator.onLine) return;
+    if (isAuthorizedAdminUser(user, false)) {
+      this.hasAdminDoc = true;
+      return;
+    }
+    try {
+      const adminSnap = await getDoc(doc(this.db, 'admins', user.uid));
+      this.hasAdminDoc = adminSnap.exists();
+    } catch {
+      this.hasAdminDoc = false;
+    }
+  }
+
   public isCloudBackupEnabled(): boolean {
     try {
       const val = localStorage.getItem(CLOUD_ENABLED_STORAGE_KEY);
-      if (val === null) return true; // Enabled by default for logged-in users
+      if (val === null) return true;
       return val === 'true';
     } catch {
       return true;
@@ -913,7 +1154,6 @@ class GoGoAccountManager {
       this.renderAllUI();
       return;
     }
-    // Do not overwrite cloud automatically if there is an unresolved conflict for this game
     if (this.conflictQueue.some((c) => c.gameId === gameId)) {
       this.renderAllUI();
       return;
@@ -942,65 +1182,360 @@ class GoGoAccountManager {
   }
 
   // =========================================================
-  // 6. User Profile Firestore Operations (/users/{uid})
+  // 7. User Profile & Marketing Subscriber Firestore Operations
+  //    (/users/{uid} and /marketingSubscribers/{uid})
   // =========================================================
 
-  public async ensureUserProfile(user: User, customDisplayName?: string) {
+  private getPrimaryAuthProvider(user: User): 'password' | 'google.com' {
+    const isGoogle = user.providerData.some((p) => p.providerId === 'google.com');
+    return isGoogle ? 'google.com' : 'password';
+  }
+
+  public async ensureUserProfileAndSubscriber(
+    user: User,
+    customDisplayName?: string,
+    explicitMarketingOptIn?: boolean | null
+  ) {
     if (!navigator.onLine) return;
-    const path = `users/${user.uid}`;
+
+    const authProvider = this.getPrimaryAuthProvider(user);
+    const userPath = `users/${user.uid}`;
+    const subPath = `marketingSubscribers/${user.uid}`;
     const userRef = doc(this.db, 'users', user.uid);
+    const subRef = doc(this.db, 'marketingSubscribers', user.uid);
 
     try {
-      const snap = await getDoc(userRef);
-      const displayName = (
-        customDisplayName ||
-        user.displayName ||
-        (snap.exists() ? snap.data().displayName : '') ||
-        (user.email ? user.email.split('@')[0] : 'GoGo Player')
-      )
-        .trim()
-        .slice(0, 100) || 'GoGo Player';
+      const [userSnap, subSnap] = await Promise.all([getDoc(userRef), getDoc(subRef)]);
 
-      const email = (user.email || (snap.exists() ? snap.data().email : '') || 'player@gogocompany.in')
+      const displayName =
+        (
+          customDisplayName ||
+          user.displayName ||
+          (userSnap.exists() ? userSnap.data().displayName : '') ||
+          (user.email ? user.email.split('@')[0] : 'GoGo Player')
+        )
+          .trim()
+          .slice(0, 100) || 'GoGo Player';
+
+      const email = (user.email || (userSnap.exists() ? userSnap.data().email : '') || 'player@gogocompany.in')
         .trim()
         .slice(0, 254);
 
-      const rawPhoto = user.photoURL || (snap.exists() ? snap.data().photoURL : '') || '';
+      const rawPhoto = user.photoURL || (userSnap.exists() ? userSnap.data().photoURL : '') || '';
       const photoURL = /^https?:\/\//i.test(rawPhoto) ? rawPhoto.slice(0, 2048) : '';
 
-      if (!snap.exists()) {
-        const createPayload = {
+      // Determine marketing subscription status:
+      // 1. If subscriber record already exists, NEVER overwrite their existing choice on login!
+      // 2. If new registration, only subscribe if explicitMarketingOptIn === true AND provider !== google.com auto-login
+      let currentSubscribed = false;
+      if (subSnap.exists()) {
+        currentSubscribed = Boolean(subSnap.data().subscribed);
+        this.subscriberProfile = subSnap.data();
+        // If displayName changed, sync displayName while preserving consent/unsubscribe fields
+        if (customDisplayName && subSnap.data().displayName !== displayName) {
+          const prevSub = subSnap.data();
+          const updatedSub = {
+            email: prevSub.email || email,
+            displayName,
+            subscribed: Boolean(prevSub.subscribed),
+            consentTimestamp: prevSub.consentTimestamp ?? null,
+            consentVersion: prevSub.consentVersion || '',
+            consentText: prevSub.consentText || '',
+            source: prevSub.source || detectCurrentSourceSurface(),
+            authProvider: prevSub.authProvider || authProvider,
+            registeredAt: prevSub.registeredAt,
+            updatedAt: serverTimestamp(),
+            unsubscribedAt: prevSub.unsubscribedAt ?? null,
+          };
+          await setDoc(subRef, updatedSub);
+          this.subscriberProfile = { ...prevSub, ...updatedSub, updatedAt: Timestamp.now() };
+        }
+      } else {
+        // Creating initial marketingSubscribers/{uid} record
+        // Google Sign-In is NEVER auto-subscribed. Email registration is ONLY subscribed if checkbox was checked.
+        const optedIn = authProvider === 'google.com' ? false : Boolean(explicitMarketingOptIn === true);
+        currentSubscribed = optedIn;
+        const sourceSurface =
+          authProvider === 'google.com'
+            ? `google_signin_${detectCurrentSourceSurface()}`
+            : `registration_${detectCurrentSourceSurface()}`;
+
+        const createSubPayload = {
+          email,
+          displayName,
+          subscribed: optedIn,
+          consentTimestamp: optedIn ? serverTimestamp() : null,
+          consentVersion: optedIn ? MARKETING_CONSENT_VERSION : '',
+          consentText: optedIn ? MARKETING_CONSENT_TEXT : '',
+          source: sourceSurface.slice(0, 64),
+          authProvider,
+          registeredAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+          unsubscribedAt: null,
+        };
+        await setDoc(subRef, createSubPayload);
+        this.subscriberProfile = {
+          ...createSubPayload,
+          consentTimestamp: optedIn ? Timestamp.now() : null,
+          registeredAt: Timestamp.now(),
+          updatedAt: Timestamp.now(),
+        };
+      }
+
+      // Sync /users/{uid}
+      if (!userSnap.exists()) {
+        const createUserPayload = {
           displayName,
           email,
           photoURL,
+          authProvider,
+          marketingSubscribed: currentSubscribed,
           createdAt: serverTimestamp(),
           lastLoginAt: serverTimestamp(),
         };
-        await setDoc(userRef, createPayload);
-        this.userProfile = { ...createPayload, createdAt: Timestamp.now(), lastLoginAt: Timestamp.now() };
+        await setDoc(userRef, createUserPayload);
+        this.userProfile = { ...createUserPayload, createdAt: Timestamp.now(), lastLoginAt: Timestamp.now() };
       } else {
-        const prev = snap.data();
-        const updatePayload = {
+        const prevUser = userSnap.data();
+        const updateUserPayload = {
           displayName,
           email,
           photoURL,
-          createdAt: prev.createdAt,
+          authProvider: prevUser.authProvider || authProvider,
+          marketingSubscribed: currentSubscribed,
+          createdAt: prevUser.createdAt,
           lastLoginAt: serverTimestamp(),
         };
-        await setDoc(userRef, updatePayload);
-        this.userProfile = { ...prev, ...updatePayload, lastLoginAt: Timestamp.now() };
+        await setDoc(userRef, updateUserPayload);
+        this.userProfile = { ...prevUser, ...updateUserPayload, lastLoginAt: Timestamp.now() };
       }
     } catch (error) {
       try {
-        this.handleFirestoreError(error, OperationType.WRITE, path);
+        this.handleFirestoreError(error, OperationType.WRITE, `${userPath} | ${subPath}`);
       } catch {
-        // Logged structured JSON error; continue gracefully
+        // Structured error logged
+      }
+    }
+  }
+
+  public async updateMarketingPreference(subscribe: boolean, source = detectCurrentSourceSurface()) {
+    if (!this.currentUser) {
+      this.setStatus('error', 'Please sign in to manage your email preferences.');
+      return;
+    }
+    if (!navigator.onLine) {
+      this.setStatus('error', 'You are currently offline. Please reconnect to update email preferences.');
+      return;
+    }
+
+    const user = this.currentUser;
+    const uid = user.uid;
+    const subRef = doc(this.db, 'marketingSubscribers', uid);
+    const userRef = doc(this.db, 'users', uid);
+    const authProvider = this.getPrimaryAuthProvider(user);
+
+    try {
+      const [subSnap, userSnap] = await Promise.all([getDoc(subRef), getDoc(userRef)]);
+      const displayName =
+        (user.displayName || (userSnap.exists() ? userSnap.data().displayName : '') || 'GoGo Player')
+          .trim()
+          .slice(0, 100);
+      const email = (user.email || (userSnap.exists() ? userSnap.data().email : '') || 'player@gogocompany.in')
+        .trim()
+        .slice(0, 254);
+
+      if (!subSnap.exists()) {
+        const payload = {
+          email,
+          displayName,
+          subscribed: subscribe,
+          consentTimestamp: subscribe ? serverTimestamp() : null,
+          consentVersion: subscribe ? MARKETING_CONSENT_VERSION : '',
+          consentText: subscribe ? MARKETING_CONSENT_TEXT : '',
+          source: source.slice(0, 64),
+          authProvider,
+          registeredAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+          unsubscribedAt: subscribe ? null : serverTimestamp(),
+        };
+        await setDoc(subRef, payload);
+        this.subscriberProfile = {
+          ...payload,
+          consentTimestamp: subscribe ? Timestamp.now() : null,
+          registeredAt: Timestamp.now(),
+          updatedAt: Timestamp.now(),
+          unsubscribedAt: subscribe ? null : Timestamp.now(),
+        };
+      } else {
+        const prev = subSnap.data();
+        const payload = {
+          email: prev.email || email,
+          displayName: prev.displayName || displayName,
+          subscribed: subscribe,
+          // Preserve prior consentTimestamp/Version/Text on unsubscribe for accountability; set fresh on opt-in
+          consentTimestamp: subscribe ? serverTimestamp() : prev.consentTimestamp ?? null,
+          consentVersion: subscribe ? MARKETING_CONSENT_VERSION : prev.consentVersion || '',
+          consentText: subscribe ? MARKETING_CONSENT_TEXT : prev.consentText || '',
+          source: source.slice(0, 64),
+          authProvider: prev.authProvider || authProvider,
+          registeredAt: prev.registeredAt,
+          updatedAt: serverTimestamp(),
+          unsubscribedAt: subscribe ? null : serverTimestamp(),
+        };
+        await setDoc(subRef, payload);
+        this.subscriberProfile = {
+          ...prev,
+          ...payload,
+          consentTimestamp: subscribe ? Timestamp.now() : prev.consentTimestamp ?? null,
+          updatedAt: Timestamp.now(),
+          unsubscribedAt: subscribe ? null : Timestamp.now(),
+        };
+      }
+
+      if (userSnap.exists()) {
+        const prevUser = userSnap.data();
+        await setDoc(userRef, {
+          displayName: prevUser.displayName || displayName,
+          email: prevUser.email || email,
+          photoURL: prevUser.photoURL || '',
+          authProvider: prevUser.authProvider || authProvider,
+          marketingSubscribed: subscribe,
+          createdAt: prevUser.createdAt,
+          lastLoginAt: serverTimestamp(),
+        });
+        this.userProfile = { ...prevUser, marketingSubscribed: subscribe };
+      }
+
+      this.setStatus(
+        'success',
+        subscribe
+          ? 'You are now subscribed to GoGo Games updates and promotional emails.'
+          : 'You have been unsubscribed from GoGo promotional emails immediately.'
+      );
+      this.renderAllUI();
+    } catch (error) {
+      this.setStatus('error', 'Could not update your marketing subscription preference.');
+      try {
+        this.handleFirestoreError(error, OperationType.WRITE, `marketingSubscribers/${uid}`);
+      } catch {
+        // Logged
       }
     }
   }
 
   // =========================================================
-  // 7. Cloud Save Sync & Conflict Resolution (/gameProfiles/{uid}/games/{gameId})
+  // 8. Admin Directory & CSV Export Operations (/admin/)
+  // =========================================================
+
+  public async loadAdminDirectory() {
+    if (!this.currentUser || !this.isAdmin()) {
+      this.adminError = 'Access Denied: Only authorized GoGo Administrators can access customer & subscriber data.';
+      this.renderAllUI();
+      return;
+    }
+
+    this.adminLoading = true;
+    this.adminError = null;
+    this.renderAllUI();
+
+    try {
+      const [usersSnap, subsSnap] = await Promise.all([
+        getDocs(collection(this.db, 'users')),
+        getDocs(collection(this.db, 'marketingSubscribers')),
+      ]);
+
+      const usersMap = new Map<string, Record<string, any>>();
+      usersSnap.forEach((d) => usersMap.set(d.id, d.data()));
+
+      const subsMap = new Map<string, Record<string, any>>();
+      subsSnap.forEach((d) => subsMap.set(d.id, d.data()));
+
+      const allUids = new Set<string>([...usersMap.keys(), ...subsMap.keys()]);
+      const combined: AdminDirectoryEntry[] = [];
+
+      for (const uid of allUids) {
+        const u = usersMap.get(uid);
+        const s = subsMap.get(uid);
+
+        const toMs = (t: any): number => {
+          if (!t) return 0;
+          if (t instanceof Timestamp) return t.toMillis();
+          if (typeof t.toMillis === 'function') return t.toMillis();
+          if (typeof t.seconds === 'number') return t.seconds * 1000;
+          if (typeof t === 'number') return t;
+          return 0;
+        };
+
+        const registeredAtMs = toMs(s?.registeredAt) || toMs(u?.createdAt) || 0;
+        const lastLoginAtMs = toMs(u?.lastLoginAt) || toMs(s?.updatedAt) || registeredAtMs;
+        const subscribed = s ? Boolean(s.subscribed) : Boolean(u?.marketingSubscribed);
+        const consentTimestampMs = toMs(s?.consentTimestamp) || null;
+        const unsubscribedAtMs = toMs(s?.unsubscribedAt) || null;
+        const authProvider: 'password' | 'google.com' =
+          (s?.authProvider || u?.authProvider) === 'google.com' ? 'google.com' : 'password';
+
+        combined.push({
+          uid,
+          email: String(s?.email || u?.email || ''),
+          displayName: String(s?.displayName || u?.displayName || 'GoGo Player'),
+          authProvider,
+          registeredAtMs,
+          lastLoginAtMs,
+          subscribed,
+          consentTimestampMs,
+          consentVersion: String(s?.consentVersion || ''),
+          consentText: String(s?.consentText || ''),
+          source: String(s?.source || (u ? 'account_registration' : '')),
+          unsubscribedAtMs,
+        });
+      }
+
+      combined.sort((a, b) => b.registeredAtMs - a.registeredAtMs);
+      this.adminEntries = combined;
+      this.adminLoading = false;
+      this.renderAllUI();
+    } catch (error) {
+      this.adminLoading = false;
+      this.adminError = 'Permission denied by Firestore Security Rules or network error.';
+      this.renderAllUI();
+      try {
+        this.handleFirestoreError(error, OperationType.LIST, 'users | marketingSubscribers');
+      } catch {
+        // Logged
+      }
+    }
+  }
+
+  public downloadAdminCsv(mode: 'marketing_only' | 'all_accounts') {
+    if (!this.currentUser || !this.isAdmin()) {
+      this.setStatus('error', 'Unauthorized: Only an administrator can export CSV files.');
+      return;
+    }
+
+    const csvContent =
+      mode === 'marketing_only'
+        ? generateMarketingSubscribersCsv(this.adminEntries)
+        : generateAllRegisteredAccountsCsv(this.adminEntries);
+
+    const dateTag = new Date().toISOString().slice(0, 10);
+    const filename =
+      mode === 'marketing_only'
+        ? `gogo-marketing-subscribers-${dateTag}.csv`
+        : `gogo-all-registered-accounts-${dateTag}.csv`;
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+  }
+
+  // =========================================================
+  // 9. Cloud Save Sync & Conflict Resolution (/gameProfiles/{uid}/games/{gameId})
   // =========================================================
 
   public async syncAllGamesOnLogin() {
@@ -1229,7 +1764,7 @@ class GoGoAccountManager {
   }
 
   // =========================================================
-  // 8. Authentication Actions (Register, Login, Google, Reset, Logout, Delete)
+  // 10. Authentication Actions (Register, Login, Google, Reset, Logout, Delete)
   // =========================================================
 
   private formatAuthError(err: any): string {
@@ -1262,7 +1797,12 @@ class GoGoAccountManager {
     }
   }
 
-  public async registerWithEmail(displayName: string, email: string, password: string) {
+  public async registerWithEmail(
+    displayName: string,
+    email: string,
+    password: string,
+    marketingOptIn = false
+  ) {
     const cleanName = displayName.trim();
     const cleanEmail = email.trim();
     if (!cleanName || cleanName.length > 100) {
@@ -1274,14 +1814,21 @@ class GoGoAccountManager {
       return;
     }
     this.setStatus('info', 'Creating your GoGo Account...');
+    this.pendingRegistrationConsent = Boolean(marketingOptIn);
     try {
       const cred = await createUserWithEmailAndPassword(this.auth, cleanEmail, password);
       await updateProfile(cred.user, { displayName: cleanName });
-      await this.ensureUserProfile(cred.user, cleanName);
+      await this.ensureUserProfileAndSubscriber(cred.user, cleanName, Boolean(marketingOptIn));
       this.activeModalTab = 'profile';
-      this.setStatus('success', `Welcome to GoGo, ${cleanName}! Your account is ready.`);
+      this.setStatus(
+        'success',
+        `Welcome to GoGo, ${cleanName}! Your account is ready.${
+          marketingOptIn ? ' You are subscribed to GoGo Games updates.' : ''
+        }`
+      );
       this.renderAllUI();
     } catch (err) {
+      this.pendingRegistrationConsent = null;
       this.setStatus('error', this.formatAuthError(err));
     }
   }
@@ -1304,7 +1851,8 @@ class GoGoAccountManager {
       const provider = new GoogleAuthProvider();
       provider.setCustomParameters({ prompt: 'select_account' });
       const cred = await signInWithPopup(this.auth, provider);
-      await this.ensureUserProfile(cred.user);
+      // Google sign-in NEVER auto-subscribes the user to marketing
+      await this.ensureUserProfileAndSubscriber(cred.user, undefined, false);
       this.activeModalTab = 'profile';
       this.setStatus('success', `Signed in as ${cred.user.displayName || cred.user.email}!`);
       this.renderAllUI();
@@ -1337,7 +1885,7 @@ class GoGoAccountManager {
     }
     try {
       await updateProfile(this.currentUser, { displayName: clean });
-      await this.ensureUserProfile(this.currentUser, clean);
+      await this.ensureUserProfileAndSubscriber(this.currentUser, clean);
       this.setStatus('success', 'Display name updated!');
       this.renderAllUI();
     } catch (err) {
@@ -1361,7 +1909,7 @@ class GoGoAccountManager {
     if (!user) return;
     const uid = user.uid;
 
-    this.setStatus('info', 'Deleting your cloud saves and GoGo Account...');
+    this.setStatus('info', 'Deleting your cloud saves, subscriber record, and GoGo Account...');
     try {
       if (reauthPassword && user.email) {
         const credential = EmailAuthProvider.credential(user.email, reauthPassword);
@@ -1382,7 +1930,19 @@ class GoGoAccountManager {
         }
       }
 
-      // 2. Delete User Profile Document
+      // 2. Delete Marketing Subscriber Record
+      const subRef = doc(this.db, 'marketingSubscribers', uid);
+      try {
+        await deleteDoc(subRef);
+      } catch (err) {
+        try {
+          this.handleFirestoreError(err, OperationType.DELETE, `marketingSubscribers/${uid}`);
+        } catch {
+          // Continue cleanup
+        }
+      }
+
+      // 3. Delete User Profile Document
       const userRef = doc(this.db, 'users', uid);
       try {
         await deleteDoc(userRef);
@@ -1394,11 +1954,12 @@ class GoGoAccountManager {
         }
       }
 
-      // 3. Delete Firebase Auth User
+      // 4. Delete Firebase Auth User
       await deleteUser(user);
 
       this.currentUser = null;
       this.userProfile = null;
+      this.subscriberProfile = null;
       this.cloudSaves = {};
       this.activeModalTab = 'login';
       this.setStatus(
@@ -1425,7 +1986,7 @@ class GoGoAccountManager {
   }
 
   // =========================================================
-  // 9. UI Rendering (Header Pill, Modal Dialog, Dedicated /account/ Page, Game Settings Cards)
+  // 11. UI Rendering (Modal, /account/, /unsubscribe/, /admin/)
   // =========================================================
 
   public setStatus(type: 'info' | 'success' | 'error', text: string) {
@@ -1454,16 +2015,6 @@ class GoGoAccountManager {
   }
 
   private mountDOM() {
-    // 1. Inject GoGo Account button into main website navbar if present
-    const navLinks = document.querySelector('.navbar .nav-links');
-    if (navLinks && !document.getElementById('gogo-nav-account-item')) {
-      const li = document.createElement('li');
-      li.id = 'gogo-nav-account-item';
-      li.innerHTML = `<button type="button" class="gogo-account-trigger" data-gogo-open-account="true"></button>`;
-      navLinks.appendChild(li);
-    }
-
-    // 2. Ensure modal root exists on every page
     if (!document.getElementById('gogo-account-modal-backdrop')) {
       const backdrop = document.createElement('div');
       backdrop.id = 'gogo-account-modal-backdrop';
@@ -1475,7 +2026,6 @@ class GoGoAccountManager {
       document.body.appendChild(backdrop);
     }
 
-    // 3. Global delegated click & submit handlers for GoGo Account controls
     document.addEventListener('click', (e) => {
       const target = (e.target as HTMLElement)?.closest<HTMLElement>(
         '[data-gogo-open-account], [data-gogo-action], [data-gogo-tab]'
@@ -1519,6 +2069,42 @@ class GoGoAccountManager {
         case 'toggle-cloud':
           this.setCloudBackupEnabled(!this.isCloudBackupEnabled());
           break;
+        case 'subscribe-marketing': {
+          const src = target.getAttribute('data-source') || detectCurrentSourceSurface();
+          this.updateMarketingPreference(true, src);
+          break;
+        }
+        case 'unsubscribe-marketing': {
+          const src = target.getAttribute('data-source') || detectCurrentSourceSurface();
+          this.updateMarketingPreference(false, src);
+          break;
+        }
+        case 'admin-switch-view': {
+          const v = target.getAttribute('data-view') as 'subscribers' | 'accounts';
+          if (v) {
+            this.adminActiveView = v;
+            this.adminFilterStatus = v === 'subscribers' ? 'subscribed' : 'all';
+            this.renderAllUI();
+          }
+          break;
+        }
+        case 'admin-filter-status': {
+          const st = target.getAttribute('data-status') as any;
+          if (st) {
+            this.adminFilterStatus = st;
+            this.renderAllUI();
+          }
+          break;
+        }
+        case 'admin-refresh':
+          this.loadAdminDirectory();
+          break;
+        case 'admin-export-marketing-csv':
+          this.downloadAdminCsv('marketing_only');
+          break;
+        case 'admin-export-accounts-csv':
+          this.downloadAdminCsv('all_accounts');
+          break;
         case 'sync-game': {
           const gId = target.getAttribute('data-game-id') as SupportedGameId;
           if (gId) this.syncGame(gId, { silent: false });
@@ -1538,6 +2124,14 @@ class GoGoAccountManager {
       }
     });
 
+    document.addEventListener('input', (e) => {
+      const input = e.target as HTMLInputElement;
+      if (input && input.id === 'gogo-admin-search-input') {
+        this.adminSearchQuery = input.value;
+        this.renderAdminTableOnly();
+      }
+    });
+
     document.addEventListener('submit', (e) => {
       const form = (e.target as HTMLElement)?.closest<HTMLFormElement>('form[data-gogo-form]');
       if (!form) return;
@@ -1548,10 +2142,12 @@ class GoGoAccountManager {
       if (formType === 'login') {
         this.loginWithEmail(String(fd.get('email') || ''), String(fd.get('password') || ''));
       } else if (formType === 'register') {
+        const marketingConsent = fd.get('marketingConsent') === 'yes';
         this.registerWithEmail(
           String(fd.get('displayName') || ''),
           String(fd.get('email') || ''),
-          String(fd.get('password') || '')
+          String(fd.get('password') || ''),
+          marketingConsent
         );
       } else if (formType === 'forgot') {
         this.sendPasswordReset(String(fd.get('email') || ''));
@@ -1578,6 +2174,7 @@ class GoGoAccountManager {
     if (!ms || ms <= 0) return 'Never';
     try {
       return new Date(ms).toLocaleString(undefined, {
+        year: 'numeric',
         month: 'short',
         day: 'numeric',
         hour: '2-digit',
@@ -1666,6 +2263,10 @@ class GoGoAccountManager {
                 <span>Password (6+ characters)</span>
                 <input type="password" name="password" required autocomplete="new-password" minlength="6" placeholder="Create a strong password" />
               </label>
+              <label class="gogo-consent-checkbox">
+                <input type="checkbox" name="marketingConsent" value="yes" />
+                <span>${this.escapeHtml(MARKETING_CONSENT_TEXT)} <em>(Optional)</em></span>
+              </label>
               <button type="submit" class="gogo-btn gogo-btn-primary">Create GoGo Account</button>
             </form>
           `
@@ -1693,17 +2294,18 @@ class GoGoAccountManager {
           </button>
 
           <p class="gogo-guest-note">
-            Playing as a guest? Your local progress is always saved on this device and can be backed up whenever you sign in.
+            Google sign-in never subscribes you to promotional emails automatically. Guest gameplay always works offline.
           </p>
         </div>
       `;
     }
 
-    // Authenticated View: Conflict Resolution, Delete Confirmation, or Profile Dashboard
-    const displayName = user.displayName || this.userProfile?.displayName || user.email?.split('@')[0] || 'GoGo Player';
+    const displayName =
+      user.displayName || this.userProfile?.displayName || user.email?.split('@')[0] || 'GoGo Player';
     const email = user.email || this.userProfile?.email || '';
     const initial = displayName.charAt(0).toUpperCase();
     const cloudEnabled = this.isCloudBackupEnabled();
+    const isMarketingSubscribed = Boolean(this.subscriberProfile?.subscribed);
 
     if (this.activeModalTab === 'conflict' && this.conflictQueue.length > 0) {
       const conflict = this.conflictQueue[0];
@@ -1782,7 +2384,7 @@ class GoGoAccountManager {
           <p class="gogo-account-subtitle">
             This will permanently delete your GoGo Account profile (<strong>${this.escapeHtml(
               email
-            )}</strong>) and remove your cloud backups for Arrow Out and Crystal Quest from Firestore. Your local device saves will not be erased.
+            )}</strong>), marketing subscription record, and cloud backups for Arrow Out and Crystal Quest from Firestore. Your local device saves will not be erased.
           </p>
           ${statusHtml}
           <form data-gogo-form="delete-account" class="gogo-form">
@@ -1803,7 +2405,6 @@ class GoGoAccountManager {
       `;
     }
 
-    // Default authenticated tab: Profile & Cloud Saves
     const gameCardsHtml = (['arrowout', 'crystalquest'] as SupportedGameId[])
       .map((gameId) => {
         const adapter = this.adapters[gameId];
@@ -1871,6 +2472,18 @@ class GoGoAccountManager {
       })
       .join('');
 
+    const adminBannerHtml = this.isAdmin()
+      ? `
+      <div class="gogo-admin-shortcut">
+        <div>
+          <strong>GoGo Admin Access Verified</strong>
+          <span>Manage registered accounts, marketing subscribers &amp; CSV exports</span>
+        </div>
+        <a href="/admin/" class="gogo-btn gogo-btn-primary gogo-btn-sm">Open Admin Dashboard →</a>
+      </div>
+    `
+      : '';
+
     return `
       <div class="gogo-account-card ${isEmbeddedPage ? 'gogo-account-card-page' : ''}">
         <div class="gogo-account-header">
@@ -1891,6 +2504,7 @@ class GoGoAccountManager {
         </div>
 
         ${statusHtml}
+        ${adminBannerHtml}
 
         <form data-gogo-form="update-profile" class="gogo-inline-form">
           <input type="text" name="displayName" value="${this.escapeHtml(
@@ -1909,6 +2523,22 @@ class GoGoAccountManager {
           </button>
         </div>
 
+        <div class="gogo-cloud-toggle-row">
+          <div>
+            <strong>GoGo Games Promotional Emails</strong>
+            <p>${
+              isMarketingSubscribed
+                ? 'Subscribed to new game announcements, updates &amp; special offers.'
+                : 'Not subscribed to promotional emails. You can opt in or unsubscribe anytime.'
+            }</p>
+          </div>
+          ${
+            isMarketingSubscribed
+              ? `<button type="button" class="gogo-btn gogo-btn-ghost gogo-btn-sm" data-gogo-action="unsubscribe-marketing" data-source="account_profile">Unsubscribe</button>`
+              : `<button type="button" class="gogo-btn gogo-btn-secondary gogo-btn-sm" data-gogo-action="subscribe-marketing" data-source="account_profile">Subscribe</button>`
+          }
+        </div>
+
         <div class="gogo-games-section">
           <div class="gogo-section-header">
             <span>CONNECTED GAME PROGRESS</span>
@@ -1918,7 +2548,397 @@ class GoGoAccountManager {
         </div>
 
         <div class="gogo-account-footer">
+          <a href="/unsubscribe/" class="gogo-footer-subtle-link">Email Unsubscribe Center</a>
+          <span>·</span>
           <button type="button" class="gogo-danger-link" data-gogo-tab="delete">Delete Account &amp; Cloud Data...</button>
+        </div>
+      </div>
+    `;
+  }
+
+  private renderUnsubscribePageHtml(): string {
+    const user = this.currentUser;
+    const statusHtml = this.statusMessage
+      ? `<div class="gogo-alert gogo-alert-${this.statusMessage.type}" role="status">${this.escapeHtml(
+          this.statusMessage.text
+        )}</div>`
+      : '';
+
+    if (!user) {
+      return `
+        <div class="gogo-account-card gogo-account-card-page">
+          <h2 class="gogo-account-title">Manage Email Preferences &amp; Unsubscribe</h2>
+          <p class="gogo-account-subtitle">
+            Sign in to your GoGo Account to immediately unsubscribe from promotional emails or review your consent record.
+          </p>
+          ${statusHtml}
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
+            <button type="button" class="gogo-btn gogo-btn-primary" data-gogo-open-account="login" data-gogo-custom-label="true">
+              Sign In to Unsubscribe
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    const isSubscribed = Boolean(this.subscriberProfile?.subscribed);
+    const email = user.email || this.subscriberProfile?.email || '';
+
+    return `
+      <div class="gogo-account-card gogo-account-card-page">
+        <h2 class="gogo-account-title">GoGo Email Subscription Preferences</h2>
+        <p class="gogo-account-subtitle">
+          Account: <strong>${this.escapeHtml(email)}</strong> · Current Status: <strong>${
+      isSubscribed ? 'Subscribed (Opted-In)' : 'Unsubscribed (No Promotional Emails)'
+    }</strong>
+        </p>
+        ${statusHtml}
+        <div class="gogo-unsubscribe-box">
+          <p style="margin:0 0 14px;color:#cbd5e1;font-size:0.92rem;line-height:1.5;">
+            ${
+              isSubscribed
+                ? 'You are currently opted in to receive GoGo Games news, new game announcements, updates, and special offers. Click below to unsubscribe immediately.'
+                : 'You are not receiving promotional emails from GoGo Company. Your game saves and GoGo Account remain fully active.'
+            }
+          </p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            ${
+              isSubscribed
+                ? `<button type="button" class="gogo-btn gogo-btn-danger" data-gogo-action="unsubscribe-marketing" data-source="unsubscribe_page">Unsubscribe Immediately</button>`
+                : `<button type="button" class="gogo-btn gogo-btn-secondary" data-gogo-action="subscribe-marketing" data-source="unsubscribe_page">Opt In to GoGo Games Updates</button>`
+            }
+            <a href="/account/" class="gogo-btn gogo-btn-ghost">Back to GoGo Account</a>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  private getFilteredAdminEntries(): AdminDirectoryEntry[] {
+    const q = this.adminSearchQuery.trim().toLowerCase();
+    return this.adminEntries.filter((entry) => {
+      if (this.adminFilterStatus === 'subscribed' && !entry.subscribed) return false;
+      if (this.adminFilterStatus === 'unsubscribed' && (entry.subscribed || !entry.unsubscribedAtMs)) return false;
+      if (this.adminFilterStatus === 'no_consent' && (entry.subscribed || entry.unsubscribedAtMs)) return false;
+
+      if (q) {
+        const matchEmail = entry.email.toLowerCase().includes(q);
+        const matchName = entry.displayName.toLowerCase().includes(q);
+        const matchSource = (entry.source || '').toLowerCase().includes(q);
+        if (!matchEmail && !matchName && !matchSource) return false;
+      }
+      return true;
+    });
+  }
+
+  private renderAdminTableRowsHtml(): string {
+    const filtered = this.getFilteredAdminEntries();
+    if (filtered.length === 0) {
+      return `
+        <tr>
+          <td colspan="6" style="text-align:center;padding:28px;color:#94a3b8;">
+            No matching records found for the current filter.
+          </td>
+        </tr>
+      `;
+    }
+
+    return filtered
+      .map((item) => {
+        const statusText = item.subscribed
+          ? 'Yes (Subscribed)'
+          : item.unsubscribedAtMs
+          ? 'Unsubscribed'
+          : 'No Consent';
+        const statusClass = item.subscribed
+          ? 'gogo-admin-status-yes'
+          : item.unsubscribedAtMs
+          ? 'gogo-admin-status-unsub'
+          : 'gogo-admin-status-no';
+
+        return `
+          <tr>
+            <td class="gogo-mono-cell">${this.escapeHtml(item.email)}</td>
+            <td>${this.escapeHtml(item.displayName)}</td>
+            <td class="gogo-mono-cell">${this.escapeHtml(formatIsoDateForCsv(item.registeredAtMs) || '—')}</td>
+            <td><span class="${statusClass}">${this.escapeHtml(statusText)}</span></td>
+            <td class="gogo-mono-cell">${this.escapeHtml(
+              item.consentTimestampMs ? formatIsoDateForCsv(item.consentTimestampMs) : '—'
+            )}</td>
+            <td>${this.escapeHtml(item.source || item.authProvider)}</td>
+          </tr>
+        `;
+      })
+      .join('');
+  }
+
+  private renderAdminTableOnly() {
+    const tbody = document.getElementById('gogo-admin-table-body');
+    const countEl = document.getElementById('gogo-admin-filtered-count');
+    if (tbody) {
+      tbody.innerHTML = this.renderAdminTableRowsHtml();
+    }
+    if (countEl) {
+      countEl.textContent = `${this.getFilteredAdminEntries().length} records shown`;
+    }
+  }
+
+  private renderRegistrationTrendsHtml(): string {
+    const days = 7;
+    const now = new Date();
+    const buckets: Array<{ label: string; dateKey: string; total: number; subscribed: number }> = [];
+
+    for (let i = days - 1; i >= 0; i--) {
+      const d = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+      const dateKey = d.toISOString().slice(0, 10);
+      const label = d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+      buckets.push({ label, dateKey, total: 0, subscribed: 0 });
+    }
+
+    const bucketMap = new Map(buckets.map((b) => [b.dateKey, b]));
+    const sourceCounts = new Map<string, { total: number; subscribed: number }>();
+
+    for (const entry of this.adminEntries) {
+      if (entry.registeredAtMs > 0) {
+        const key = new Date(entry.registeredAtMs).toISOString().slice(0, 10);
+        const b = bucketMap.get(key);
+        if (b) {
+          b.total += 1;
+          if (entry.subscribed) b.subscribed += 1;
+        }
+      }
+      const src = entry.source || entry.authProvider || 'direct';
+      const prev = sourceCounts.get(src) || { total: 0, subscribed: 0 };
+      prev.total += 1;
+      if (entry.subscribed) prev.subscribed += 1;
+      sourceCounts.set(src, prev);
+    }
+
+    const maxDaily = Math.max(1, ...buckets.map((b) => b.total));
+    const barsHtml = buckets
+      .map((b) => {
+        const totalPct = Math.max(6, Math.round((b.total / maxDaily) * 100));
+        const subPct = b.total > 0 ? Math.round((b.subscribed / maxDaily) * 100) : 0;
+        return `
+          <div class="gogo-trend-col" title="${this.escapeHtml(
+            `${b.label}: ${b.total} registered (${b.subscribed} subscribed)`
+          )}">
+            <div class="gogo-trend-bar-track">
+              <div class="gogo-trend-bar-total" style="height:${totalPct}%"></div>
+              ${
+                subPct > 0
+                  ? `<div class="gogo-trend-bar-sub" style="height:${subPct}%"></div>`
+                  : ''
+              }
+            </div>
+            <strong class="gogo-trend-val">${b.total}</strong>
+            <span class="gogo-trend-lbl">${this.escapeHtml(b.label)}</span>
+          </div>
+        `;
+      })
+      .join('');
+
+    const topSources = Array.from(sourceCounts.entries())
+      .sort((a, b) => b[1].total - a[1].total)
+      .slice(0, 4);
+
+    const sourcesHtml =
+      topSources.length === 0
+        ? `<p class="gogo-trend-empty">No registration sources recorded yet.</p>`
+        : topSources
+            .map(
+              ([src, stats]) => `
+            <div class="gogo-source-row">
+              <span class="gogo-mono-cell">${this.escapeHtml(src)}</span>
+              <span><strong>${stats.subscribed}</strong> opt-in / ${stats.total} total</span>
+            </div>
+          `
+            )
+            .join('');
+
+    return `
+      <div class="gogo-admin-trends-grid">
+        <div class="gogo-admin-trend-card">
+          <div class="gogo-admin-trend-head">
+            <strong>Registration Trends (Last 7 Days)</strong>
+            <span>Total Signups vs. Marketing Opt-Ins</span>
+          </div>
+          <div class="gogo-trend-bars">${barsHtml}</div>
+        </div>
+        <div class="gogo-admin-trend-card">
+          <div class="gogo-admin-trend-head">
+            <strong>Acquisition &amp; Consent by Source</strong>
+            <span>Where subscribers registered</span>
+          </div>
+          <div class="gogo-source-list">${sourcesHtml}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  private renderAdminPageHtml(): string {
+    const user = this.currentUser;
+    if (!user) {
+      return `
+        <div class="gogo-account-card gogo-account-card-page">
+          <h2 class="gogo-account-title">GoGo Admin Authorization Required</h2>
+          <p class="gogo-account-subtitle">
+            This dashboard is restricted to the authorized GoGo Company administrator (<strong>aaryapratik@gmail.com</strong>). Please sign in to verify your identity.
+          </p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
+            <button type="button" class="gogo-btn gogo-btn-primary" data-gogo-action="google-login">
+              Sign In with Admin Google Account
+            </button>
+            <button type="button" class="gogo-btn gogo-btn-ghost" data-gogo-open-account="login" data-gogo-custom-label="true">
+              Sign In with Email
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    if (!this.isAdmin()) {
+      return `
+        <div class="gogo-account-card gogo-account-card-page">
+          <h2 class="gogo-account-title">403 — Administrator Access Denied</h2>
+          <p class="gogo-account-subtitle">
+            Signed in as <strong>${this.escapeHtml(
+              user.email
+            )}</strong>. Customer email lists and subscriber exports are strictly restricted to the authorized GoGo Administrator and protected by Cloud Firestore Security Rules.
+          </p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
+            <a href="/account/" class="gogo-btn gogo-btn-secondary">Return to Player Account</a>
+            <button type="button" class="gogo-btn gogo-btn-ghost" data-gogo-action="logout">Sign Out</button>
+          </div>
+        </div>
+      `;
+    }
+
+    const totalUsers = this.adminEntries.length;
+    const totalSubscribed = this.adminEntries.filter((e) => e.subscribed).length;
+    const totalUnsubscribed = this.adminEntries.filter((e) => !e.subscribed && e.unsubscribedAtMs).length;
+    const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+    const newLast7Days = this.adminEntries.filter((e) => e.registeredAtMs >= sevenDaysAgo).length;
+    const optInRate = totalUsers > 0 ? Math.round((totalSubscribed / totalUsers) * 100) : 0;
+
+    return `
+      <div class="gogo-admin-shell">
+        <div class="gogo-admin-topbar">
+          <div>
+            <h2>GoGo Customer &amp; Marketing Subscriber Directory</h2>
+            <p>Verified Admin: <strong>${this.escapeHtml(user.email)}</strong> · Firestore Rules Enforced</p>
+          </div>
+          <div class="gogo-admin-export-bar">
+            <button type="button" class="gogo-btn gogo-btn-ghost gogo-btn-sm" data-gogo-action="admin-refresh">
+              ${this.adminLoading ? 'Refreshing...' : 'Refresh Data'}
+            </button>
+            <button type="button" class="gogo-btn gogo-btn-primary gogo-btn-sm" data-gogo-action="admin-export-marketing-csv">
+              Download Marketing Subscribers CSV (${totalSubscribed})
+            </button>
+            <button type="button" class="gogo-btn gogo-btn-secondary gogo-btn-sm" data-gogo-action="admin-export-accounts-csv">
+              Download All Registered Accounts CSV (${totalUsers})
+            </button>
+          </div>
+        </div>
+
+        ${
+          this.adminError
+            ? `<div class="gogo-alert gogo-alert-error">${this.escapeHtml(this.adminError)}</div>`
+            : ''
+        }
+
+        <div class="gogo-admin-kpi-grid">
+          <div class="gogo-admin-kpi">
+            <span>Total Registered Users</span>
+            <strong>${totalUsers}</strong>
+            <small>All GoGo accounts across games</small>
+          </div>
+          <div class="gogo-admin-kpi">
+            <span>Promotional Subscribers</span>
+            <strong>${totalSubscribed}</strong>
+            <small>${optInRate}% explicit marketing opt-in rate</small>
+          </div>
+          <div class="gogo-admin-kpi">
+            <span>Unsubscribed Users</span>
+            <strong>${totalUnsubscribed}</strong>
+            <small>Excluded from promotional CSV</small>
+          </div>
+          <div class="gogo-admin-kpi">
+            <span>New Registrations (7d)</span>
+            <strong>${newLast7Days}</strong>
+            <small>Joined in the last 7 days</small>
+          </div>
+        </div>
+
+        ${this.renderRegistrationTrendsHtml()}
+
+        <div class="gogo-admin-controls">
+          <div class="gogo-admin-view-tabs" role="tablist">
+            <button type="button" class="gogo-tab-btn ${
+              this.adminActiveView === 'subscribers' ? 'active' : ''
+            }" data-gogo-action="admin-switch-view" data-view="subscribers">
+              1. Promotional Marketing Subscribers (${totalSubscribed})
+            </button>
+            <button type="button" class="gogo-tab-btn ${
+              this.adminActiveView === 'accounts' ? 'active' : ''
+            }" data-gogo-action="admin-switch-view" data-view="accounts">
+              2. All Registered Accounts (${totalUsers})
+            </button>
+          </div>
+
+          <div class="gogo-admin-filter-row">
+            <input
+              type="search"
+              id="gogo-admin-search-input"
+              class="gogo-admin-search"
+              value="${this.escapeHtml(this.adminSearchQuery)}"
+              placeholder="Search by email, display name, or source..."
+              aria-label="Search subscribers by email"
+            />
+            <div class="gogo-admin-segmented">
+              <button type="button" class="gogo-seg-btn ${
+                this.adminFilterStatus === 'subscribed' ? 'active' : ''
+              }" data-gogo-action="admin-filter-status" data-status="subscribed">
+                Subscribed Only
+              </button>
+              <button type="button" class="gogo-seg-btn ${
+                this.adminFilterStatus === 'unsubscribed' ? 'active' : ''
+              }" data-gogo-action="admin-filter-status" data-status="unsubscribed">
+                Unsubscribed
+              </button>
+              <button type="button" class="gogo-seg-btn ${
+                this.adminFilterStatus === 'no_consent' ? 'active' : ''
+              }" data-gogo-action="admin-filter-status" data-status="no_consent">
+                No Consent
+              </button>
+              <button type="button" class="gogo-seg-btn ${
+                this.adminFilterStatus === 'all' ? 'active' : ''
+              }" data-gogo-action="admin-filter-status" data-status="all">
+                All Records
+              </button>
+            </div>
+            <span id="gogo-admin-filtered-count" class="gogo-admin-count">
+              ${this.getFilteredAdminEntries().length} records shown
+            </span>
+          </div>
+        </div>
+
+        <div class="gogo-admin-table-wrap">
+          <table class="gogo-admin-table">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Display Name</th>
+                <th>Registration Date</th>
+                <th>Marketing Consent</th>
+                <th>Consent Date</th>
+                <th>Source</th>
+              </tr>
+            </thead>
+            <tbody id="gogo-admin-table-body">
+              ${this.renderAdminTableRowsHtml()}
+            </tbody>
+          </table>
         </div>
       </div>
     `;
@@ -1971,7 +2991,19 @@ class GoGoAccountManager {
       pageRoot.innerHTML = this.renderDashboardHtml(true);
     }
 
-    // 4. Update in-game settings panels ([data-gogo-game-panel="arrowout" | "crystalquest"])
+    // 4. Update dedicated Unsubscribe Center mount (#gogo-unsubscribe-page-root) if on /unsubscribe/
+    const unsubRoot = document.getElementById('gogo-unsubscribe-page-root');
+    if (unsubRoot) {
+      unsubRoot.innerHTML = this.renderUnsubscribePageHtml();
+    }
+
+    // 5. Update dedicated Admin Dashboard mount (#gogo-admin-page-root) if on /admin/
+    const adminRoot = document.getElementById('gogo-admin-page-root');
+    if (adminRoot) {
+      adminRoot.innerHTML = this.renderAdminPageHtml();
+    }
+
+    // 6. Update in-game settings panels ([data-gogo-game-panel="arrowout" | "crystalquest"])
     const panels = document.querySelectorAll<HTMLElement>('[data-gogo-game-panel]');
     panels.forEach((panel) => {
       const gameId = panel.getAttribute('data-gogo-game-panel') as SupportedGameId;
@@ -2025,7 +3057,7 @@ class GoGoAccountManager {
 }
 
 // =========================================================
-// 10. Singleton Instance & Global Browser Export
+// 12. Singleton Instance & Global Browser Export
 // =========================================================
 
 export const gogoAccount = new GoGoAccountManager();
@@ -2041,10 +3073,20 @@ if (typeof window !== 'undefined') {
       gogoAccount.notifyLocalSaveModified(gameId, ts),
     syncGame: (gameId: SupportedGameId) => gogoAccount.syncGame(gameId),
     uploadLocalToCloud: (gameId: SupportedGameId) => gogoAccount.uploadLocalToCloud(gameId),
+    updateMarketingPreference: (subscribe: boolean, source?: string) =>
+      gogoAccount.updateMarketingPreference(subscribe, source),
+    loadAdminDirectory: () => gogoAccount.loadAdminDirectory(),
+    downloadAdminCsv: (mode: 'marketing_only' | 'all_accounts') => gogoAccount.downloadAdminCsv(mode),
     validateGameSave,
     summarizeProgress,
     mergeGameProgress,
     detectSaveConflict,
+    buildInitialMarketingRecord,
+    applyUnsubscribeToRecord,
+    applyOptInToRecord,
+    generateMarketingSubscribersCsv,
+    generateAllRegisteredAccountsCsv,
+    isAuthorizedAdminUser,
   };
   gogoAccount.init();
 }

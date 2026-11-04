@@ -696,3 +696,408 @@
     justify-content: flex-end;
   }
 }
+
+/* Marketing Consent Checkbox (Unchecked by Default) */
+.gogo-consent-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 13px;
+  border-radius: 12px;
+  background: rgba(30, 41, 59, 0.65);
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  cursor: pointer;
+  margin-top: 2px;
+  transition: border-color 0.16s ease, background 0.16s ease;
+}
+
+.gogo-consent-checkbox:hover {
+  border-color: rgba(99, 102, 241, 0.55);
+  background: rgba(30, 41, 59, 0.85);
+}
+
+.gogo-consent-checkbox input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: #6366f1;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.gogo-consent-checkbox span {
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: #cbd5e1;
+  font-weight: 500;
+}
+
+/* Admin Shortcut Banner inside Profile */
+.gogo-admin-shortcut {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.22), rgba(14, 165, 233, 0.16));
+  border: 1px solid rgba(99, 102, 241, 0.45);
+  margin-bottom: 14px;
+}
+
+.gogo-admin-shortcut strong {
+  display: block;
+  font-size: 0.85rem;
+  color: #e0e7ff;
+}
+
+.gogo-admin-shortcut span {
+  display: block;
+  font-size: 0.75rem;
+  color: #cbd5e1;
+  margin-top: 2px;
+}
+
+.gogo-footer-subtle-link {
+  color: #94a3b8;
+  font-size: 0.78rem;
+  text-decoration: underline;
+  margin-right: 6px;
+}
+
+.gogo-unsubscribe-box {
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(30, 41, 59, 0.65);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+/* Protected GoGo Admin Dashboard (/admin/) */
+.gogo-admin-shell {
+  width: 100%;
+  background: linear-gradient(165deg, #0f172a 0%, #111827 100%);
+  border: 1px solid rgba(99, 102, 241, 0.32);
+  border-radius: 20px;
+  padding: 24px;
+  color: #f8fafc;
+  box-shadow: 0 20px 50px rgba(2, 6, 23, 0.65);
+}
+
+.gogo-admin-topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+  margin-bottom: 20px;
+}
+
+.gogo-admin-topbar h2 {
+  margin: 0 0 4px;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.gogo-admin-topbar p {
+  margin: 0;
+  font-size: 0.84rem;
+  color: #94a3b8;
+}
+
+.gogo-admin-export-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.gogo-admin-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.gogo-admin-kpi {
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.gogo-admin-kpi span {
+  display: block;
+  font-size: 0.73rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #94a3b8;
+}
+
+.gogo-admin-kpi strong {
+  display: block;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 6px 0 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.gogo-admin-kpi small {
+  display: block;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+/* Registration Trends Panel */
+.gogo-admin-trends-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.gogo-admin-trend-card {
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.gogo-admin-trend-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.gogo-admin-trend-head strong {
+  font-size: 0.86rem;
+  color: #f8fafc;
+}
+
+.gogo-admin-trend-head span {
+  font-size: 0.74rem;
+  color: #94a3b8;
+}
+
+.gogo-trend-bars {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  align-items: end;
+  height: 110px;
+  padding-top: 8px;
+}
+
+.gogo-trend-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.gogo-trend-bar-track {
+  width: 100%;
+  max-width: 28px;
+  height: 68px;
+  background: rgba(15, 23, 42, 0.65);
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.gogo-trend-bar-total {
+  width: 100%;
+  background: rgba(99, 102, 241, 0.45);
+  border-radius: 4px 4px 0 0;
+}
+
+.gogo-trend-bar-sub {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #10b981;
+  border-radius: 4px 4px 0 0;
+}
+
+.gogo-trend-val {
+  font-size: 0.72rem;
+  color: #e2e8f0;
+  margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.gogo-trend-lbl {
+  font-size: 0.66rem;
+  color: #64748b;
+}
+
+.gogo-source-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gogo-source-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.55);
+  font-size: 0.78rem;
+  color: #cbd5e1;
+}
+
+.gogo-trend-empty {
+  margin: 16px 0;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+/* Controls & Filter Bar */
+.gogo-admin-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.gogo-admin-view-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 5px;
+  background: rgba(15, 23, 42, 0.85);
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.gogo-admin-filter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.gogo-admin-search {
+  flex: 1;
+  min-width: 220px;
+  padding: 9px 13px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  background: rgba(15, 23, 42, 0.85);
+  color: #f8fafc;
+  font-size: 0.86rem;
+}
+
+.gogo-admin-segmented {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  flex-wrap: wrap;
+}
+
+.gogo-seg-btn {
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.gogo-seg-btn.active {
+  background: rgba(99, 102, 241, 0.25);
+  color: #ffffff;
+}
+
+.gogo-admin-count {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Admin Directory Table */
+.gogo-admin-table-wrap {
+  overflow-x: auto;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(15, 23, 42, 0.65);
+}
+
+.gogo-admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.83rem;
+  text-align: left;
+}
+
+.gogo-admin-table th {
+  padding: 12px 14px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  background: rgba(30, 41, 59, 0.75);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+  white-space: nowrap;
+}
+
+.gogo-admin-table td {
+  padding: 11px 14px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+  color: #e2e8f0;
+  vertical-align: middle;
+}
+
+.gogo-admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.gogo-mono-cell {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.79rem;
+}
+
+.gogo-admin-status-yes {
+  color: #34d399;
+  font-weight: 700;
+}
+
+.gogo-admin-status-unsub {
+  color: #fbbf24;
+  font-weight: 700;
+}
+
+.gogo-admin-status-no {
+  color: #94a3b8;
+}
+
+@media (max-width: 860px) {
+  .gogo-admin-kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .gogo-admin-trends-grid {
+    grid-template-columns: 1fr;
+  }
+  .gogo-admin-view-tabs {
+    grid-template-columns: 1fr;
+  }
+}
+

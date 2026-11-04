@@ -19,6 +19,24 @@ service cloud.firestore {
       return isAuthenticated() && isValidId(uid) && request.auth.uid == uid;
     }
 
+    function isVerifiedAdminEmail() {
+      return isAuthenticated()
+        && ('email' in request.auth.token)
+        && ('email_verified' in request.auth.token)
+        && request.auth.token.email_verified == true
+        && (
+          request.auth.token.email == 'aaryapratik@gmail.com'
+          || request.auth.token.email == 'officialgogocompany@gmail.com'
+        );
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && (
+        isVerifiedAdminEmail()
+        || exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
     function isValidEmail(email) {
       return email is string
         && email.size() >= 3
@@ -32,6 +50,13 @@ service cloud.firestore {
         && (url.size() == 0 || url.matches('^https?://.*'));
     }
 
+    function isValidAuthProvider(provider) {
+      return provider is string
+        && provider.size() > 0
+        && provider.size() <= 32
+        && (provider == 'password' || provider == 'google.com');
+    }
+
     function isSupportedGameId(gameId) {
       return gameId is string
         && gameId.size() > 0
@@ -43,9 +68,10 @@ service cloud.firestore {
     // User Profile Validation (/users/{uid})
     // =========================================================
 
-    function hasExactUserFields(data) {
-      let allowed = ['displayName', 'email', 'photoURL', 'createdAt', 'lastLoginAt'];
-      return data.keys().hasAll(allowed) && data.keys().hasOnly(allowed);
+    function hasValidUserFields(data) {
+      let required = ['displayName', 'email', 'photoURL', 'createdAt', 'lastLoginAt'];
+      let allowed = ['displayName', 'email', 'photoURL', 'authProvider', 'marketingSubscribed', 'createdAt', 'lastLoginAt'];
+      return data.keys().hasAll(required) && data.keys().hasOnly(allowed);
     }
 
     function hasValidUserFieldTypes(data) {
@@ -54,22 +80,88 @@ service cloud.firestore {
         && data.displayName.size() <= 100
         && isValidEmail(data.email)
         && isValidOptionalPhotoUrl(data.photoURL)
+        && (!('authProvider' in data) || isValidAuthProvider(data.authProvider))
+        && (!('marketingSubscribed' in data) || data.marketingSubscribed is bool)
         && data.createdAt is timestamp
         && data.lastLoginAt is timestamp;
     }
 
     function isValidUserCreate(data) {
-      return hasExactUserFields(data)
+      return hasValidUserFields(data)
         && hasValidUserFieldTypes(data)
         && data.createdAt == request.time
         && data.lastLoginAt == request.time;
     }
 
     function isValidUserUpdate(data, prev) {
-      return hasExactUserFields(data)
+      return hasValidUserFields(data)
         && hasValidUserFieldTypes(data)
         && data.createdAt == prev.createdAt
         && data.lastLoginAt == request.time;
+    }
+
+    // =========================================================
+    // Marketing Subscriber Validation (/marketingSubscribers/{uid})
+    // =========================================================
+
+    function hasExactSubscriberFields(data) {
+      let allowed = [
+        'email',
+        'displayName',
+        'subscribed',
+        'consentTimestamp',
+        'consentVersion',
+        'consentText',
+        'source',
+        'authProvider',
+        'registeredAt',
+        'updatedAt',
+        'unsubscribedAt'
+      ];
+      return data.keys().hasAll(allowed) && data.keys().hasOnly(allowed);
+    }
+
+    function hasValidSubscriberFieldTypes(data) {
+      return isValidEmail(data.email)
+        && data.displayName is string
+        && data.displayName.size() >= 1
+        && data.displayName.size() <= 100
+        && data.subscribed is bool
+        && (data.consentTimestamp == null || data.consentTimestamp is timestamp)
+        && data.consentVersion is string
+        && data.consentVersion.size() <= 32
+        && data.consentText is string
+        && data.consentText.size() <= 500
+        && data.source is string
+        && data.source.size() >= 1
+        && data.source.size() <= 64
+        && isValidAuthProvider(data.authProvider)
+        && data.registeredAt is timestamp
+        && data.updatedAt is timestamp
+        && (data.unsubscribedAt == null || data.unsubscribedAt is timestamp);
+    }
+
+    function isValidSubscriberCreate(data) {
+      return hasExactSubscriberFields(data)
+        && hasValidSubscriberFieldTypes(data)
+        && data.registeredAt == request.time
+        && data.updatedAt == request.time
+        && (
+          (data.subscribed == true && data.consentTimestamp == request.time && data.consentVersion.size() > 0 && data.consentText.size() > 0 && data.unsubscribedAt == null)
+          || (data.subscribed == false && data.consentTimestamp == null)
+        );
+    }
+
+    function isValidSubscriberUpdate(data, prev) {
+      return hasExactSubscriberFields(data)
+        && hasValidSubscriberFieldTypes(data)
+        && data.registeredAt == prev.registeredAt
+        && data.updatedAt == request.time
+        && (
+          (data.subscribed == true && data.consentTimestamp is timestamp && data.consentVersion.size() > 0 && data.consentText.size() > 0 && data.unsubscribedAt == null)
+          || (data.subscribed == false && data.unsubscribedAt == request.time)
+          || (data.subscribed == false && prev.subscribed == false && data.consentTimestamp == prev.consentTimestamp)
+        );
     }
 
     // =========================================================
@@ -134,10 +226,25 @@ service cloud.firestore {
     // =========================================================
 
     match /users/{uid} {
-      allow get, list: if isOwner(uid);
+      allow get: if isOwner(uid) || isAdmin();
+      allow list: if isAdmin();
       allow create: if isOwner(uid) && isValidUserCreate(request.resource.data);
       allow update: if isOwner(uid) && isValidUserUpdate(request.resource.data, resource.data);
       allow delete: if isOwner(uid);
+    }
+
+    match /marketingSubscribers/{uid} {
+      allow get: if isOwner(uid) || isAdmin();
+      allow list: if isAdmin();
+      allow create: if isOwner(uid) && isValidSubscriberCreate(request.resource.data);
+      allow update: if isOwner(uid) && isValidSubscriberUpdate(request.resource.data, resource.data);
+      allow delete: if isOwner(uid);
+    }
+
+    match /admins/{uid} {
+      allow get: if isOwner(uid) || isAdmin();
+      allow list: if isAdmin();
+      allow create, update, delete: if false;
     }
 
     match /gameProfiles/{uid}/games/{gameId} {

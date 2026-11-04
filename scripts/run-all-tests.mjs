@@ -4,9 +4,16 @@ import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import {
   validateGameSave,
-  summarizeProgress,
   mergeGameProgress,
   detectSaveConflict,
+  MARKETING_CONSENT_VERSION,
+  MARKETING_CONSENT_TEXT,
+  isAuthorizedAdminUser,
+  buildInitialMarketingRecord,
+  applyUnsubscribeToRecord,
+  applyOptInToRecord,
+  generateMarketingSubscribersCsv,
+  generateAllRegisteredAccountsCsv,
 } from '../src/gogo-account.ts';
 
 const root = process.cwd();
@@ -154,37 +161,199 @@ runStep('Smart merges Arrow Out and Crystal Quest saves without losing stars, co
 });
 
 console.log('\n==========================================================');
-console.log('2. Firestore Security Rules Verification (ESLint + Structure)');
+console.log('2. GoGo Customer Email Database & Marketing Subscriber Tests');
+console.log('==========================================================');
+
+const noConsentUser = buildInitialMarketingRecord({
+  email: 'player1@example.com',
+  displayName: 'Player One',
+  authProvider: 'password',
+  marketingOptIn: false,
+  source: 'registration_website',
+  nowMs: 1730680000000,
+});
+
+const consentedUser = buildInitialMarketingRecord({
+  email: 'subscriber@example.com',
+  displayName: 'Aarya, "Pro" Gamer',
+  authProvider: 'password',
+  marketingOptIn: true,
+  source: 'registration_arrowout',
+  nowMs: 1730680100000,
+});
+
+const googleSignInUser = buildInitialMarketingRecord({
+  email: 'googleplayer@example.com',
+  displayName: 'Google Player',
+  authProvider: 'google.com',
+  marketingOptIn: true, // Even if true is passed, Google sign-in must NEVER auto-subscribe
+  source: 'google_signin_crystalquest',
+  nowMs: 1730680200000,
+});
+
+const previouslySubscribedUser = buildInitialMarketingRecord({
+  email: 'formerfan@example.com',
+  displayName: 'Former Subscriber',
+  authProvider: 'password',
+  marketingOptIn: true,
+  source: 'registration_website',
+  nowMs: 1730680300000,
+});
+
+const unsubscribedUser = applyUnsubscribeToRecord(
+  previouslySubscribedUser,
+  'unsubscribe_page',
+  1730690000000
+);
+
+runStep('Scenario 1: User registers WITHOUT marketing consent (unchecked by default)', () => {
+  assert.equal(noConsentUser.subscribed, false);
+  assert.equal(noConsentUser.consentTimestampMs, null);
+  assert.equal(noConsentUser.consentVersion, '');
+  assert.equal(noConsentUser.consentText, '');
+  assert.equal(noConsentUser.unsubscribedAtMs, null);
+});
+
+runStep('Scenario 2: User registers WITH explicit marketing consent', () => {
+  assert.equal(consentedUser.subscribed, true);
+  assert.equal(consentedUser.consentTimestampMs, 1730680100000);
+  assert.equal(consentedUser.consentVersion, MARKETING_CONSENT_VERSION);
+  assert.equal(consentedUser.consentText, MARKETING_CONSENT_TEXT);
+  assert.equal(consentedUser.source, 'registration_arrowout');
+  assert.equal(consentedUser.unsubscribedAtMs, null);
+});
+
+runStep('Scenario 3: Google Sign-In NEVER automatically subscribes user to marketing', () => {
+  assert.equal(googleSignInUser.subscribed, false);
+  assert.equal(googleSignInUser.consentTimestampMs, null);
+  assert.equal(googleSignInUser.consentVersion, '');
+  assert.equal(googleSignInUser.authProvider, 'google.com');
+});
+
+runStep('Scenario 4: User unsubscribes immediately while preserving prior consent audit record', () => {
+  assert.equal(unsubscribedUser.subscribed, false);
+  assert.equal(unsubscribedUser.unsubscribedAtMs, 1730690000000);
+  // Prior consent timestamp & version are preserved for accountability
+  assert.equal(unsubscribedUser.consentTimestampMs, 1730680300000);
+  assert.equal(unsubscribedUser.consentVersion, MARKETING_CONSENT_VERSION);
+
+  // User can also explicitly re-opt-in later if they choose
+  const reOpted = applyOptInToRecord(unsubscribedUser, 'account_profile', 1730700000000);
+  assert.equal(reOpted.subscribed, true);
+  assert.equal(reOpted.unsubscribedAtMs, null);
+  assert.equal(reOpted.consentTimestampMs, 1730700000000);
+});
+
+const directorySample = [
+  {
+    uid: 'u1',
+    ...noConsentUser,
+    lastLoginAtMs: 1730680000000,
+  },
+  {
+    uid: 'u2',
+    ...consentedUser,
+    lastLoginAtMs: 1730680100000,
+  },
+  {
+    uid: 'u3',
+    ...googleSignInUser,
+    lastLoginAtMs: 1730680200000,
+  },
+  {
+    uid: 'u4',
+    ...unsubscribedUser,
+    lastLoginAtMs: 1730690000000,
+  },
+];
+
+runStep('Scenario 5: Unsubscribed and non-consented users are EXCLUDED from Marketing CSV', () => {
+  const marketingCsv = generateMarketingSubscribersCsv(directorySample);
+  assert.ok(marketingCsv.includes('subscriber@example.com'));
+  assert.ok(!marketingCsv.includes('player1@example.com'), 'No-consent user must be excluded');
+  assert.ok(!marketingCsv.includes('googleplayer@example.com'), 'Google sign-in user must be excluded');
+  assert.ok(!marketingCsv.includes('formerfan@example.com'), 'Unsubscribed user must be excluded');
+});
+
+runStep('Scenario 6: Unauthorized users cannot access Admin Dashboard or export', () => {
+  assert.equal(isAuthorizedAdminUser(null), false);
+  assert.equal(isAuthorizedAdminUser({ email: 'random@example.com', emailVerified: true }), false);
+  assert.equal(isAuthorizedAdminUser({ email: 'aaryapratik@gmail.com', emailVerified: false }), false);
+  assert.equal(isAuthorizedAdminUser({ email: 'aaryapratik@gmail.com', emailVerified: true }), true);
+  assert.equal(isAuthorizedAdminUser({ email: 'customadmin@example.com', emailVerified: false }, true), true);
+});
+
+runStep('Scenario 7: CSV downloads format cleanly for Excel & Google Sheets (BOM, headers, RFC-4180 quotes)', () => {
+  const marketingCsv = generateMarketingSubscribersCsv(directorySample);
+  const allAccountsCsv = generateAllRegisteredAccountsCsv(directorySample);
+
+  // Must start with UTF-8 BOM for Excel compatibility
+  assert.ok(marketingCsv.startsWith('\uFEFF'));
+  assert.ok(allAccountsCsv.startsWith('\uFEFF'));
+
+  const marketingLines = marketingCsv.slice(1).trim().split('\r\n');
+  assert.equal(
+    marketingLines[0],
+    'Email,Display Name,Registration Date,Marketing Consent,Consent Date,Source'
+  );
+  // Only 1 header + 1 subscribed user row
+  assert.equal(marketingLines.length, 2);
+  // Display name with comma and quotes must be RFC-4180 escaped
+  assert.ok(marketingLines[1].includes('"Aarya, ""Pro"" Gamer"'));
+  assert.ok(marketingLines[1].includes(',Yes,'));
+
+  // All registered accounts CSV includes all 4 users with accurate consent states
+  const allLines = allAccountsCsv.slice(1).trim().split('\r\n');
+  assert.equal(allLines.length, 5);
+  assert.ok(allAccountsCsv.includes('Unsubscribed'));
+});
+
+console.log('\n==========================================================');
+console.log('3. Firestore Security Rules Verification (ESLint + RBAC)');
 console.log('==========================================================');
 
 runStep('ESLint @firebase/eslint-plugin-security-rules passes with 0 errors/warnings', () => {
   execSync('npx eslint firestore.rules', { cwd: root, stdio: 'pipe' });
 });
 
-runStep('Firestore rules enforce UID ownership, allowed fields, and supported games', () => {
+runStep('Firestore rules enforce UID ownership, admin-only listing, and marketingSubscribers schema', () => {
   const rulesText = readFileSync(resolve(root, 'firestore.rules'), 'utf8');
-  assert.ok(rulesText.includes('request.auth.uid == uid'));
-  assert.ok(rulesText.includes("let allowed = ['displayName', 'email', 'photoURL', 'createdAt', 'lastLoginAt'];"));
+  assert.ok(rulesText.includes('function isAdmin()'));
+  assert.ok(rulesText.includes("'aaryapratik@gmail.com'"));
+  assert.ok(rulesText.includes('allow list: if isAdmin();'));
+  assert.ok(rulesText.includes('match /marketingSubscribers/{uid}'));
+  assert.ok(
+    rulesText.includes(
+      "let allowed = ['displayName', 'email', 'photoURL', 'authProvider', 'marketingSubscribed', 'createdAt', 'lastLoginAt'];"
+    )
+  );
   assert.ok(rulesText.includes("let allowed = ['gameId', 'progress', 'updatedAt', 'schemaVersion'];"));
   assert.ok(rulesText.includes("gameId == 'arrowout' || gameId == 'crystalquest'"));
 });
 
 console.log('\n==========================================================');
-console.log('3. Cross-Application Asset & Integration Verification');
+console.log('4. Cross-Application Asset & Page Verification');
 console.log('==========================================================');
 
-runStep('Shared GoGo Account bundle & CSS exist across /, /account/, /arrowout/, and /crystalquest/', () => {
+runStep('Shared GoGo Account, Unsubscribe, Admin, Privacy Policy & Game bundles exist', () => {
   assert.ok(existsSync(resolve(root, 'assets/js/gogo-account.js')));
   assert.ok(existsSync(resolve(root, 'assets/css/gogo-account.css')));
   assert.ok(existsSync(resolve(root, 'account/index.html')));
+  assert.ok(existsSync(resolve(root, 'admin/index.html')));
+  assert.ok(existsSync(resolve(root, 'unsubscribe/index.html')));
+  assert.ok(existsSync(resolve(root, 'privacy-policy/index.html')));
   assert.ok(existsSync(resolve(root, 'arrowout/js/gogo-account.js')));
   assert.ok(existsSync(resolve(root, 'arrowout/css/gogo-account.css')));
   assert.ok(existsSync(resolve(root, 'crystalquest/js/gogo-account.js')));
   assert.ok(existsSync(resolve(root, 'crystalquest/gogo-account.css')));
+
+  const privacyHtml = readFileSync(resolve(root, 'privacy-policy/index.html'), 'utf8');
+  assert.ok(privacyHtml.includes('Optional Promotional Emails &amp; Marketing Subscribers'));
+  assert.ok(privacyHtml.includes('../unsubscribe/'));
 });
 
 console.log('\n==========================================================');
-console.log('4. Upstream Game Test Suites (Arrow Out & Crystal Quest)');
+console.log('5. Upstream Game Test Suites (Arrow Out & Crystal Quest)');
 console.log('==========================================================');
 
 if (existsSync('/tmp/Fletch_Game')) {

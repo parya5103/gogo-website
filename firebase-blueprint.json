@@ -18,6 +18,18 @@
           "type": "string",
           "description": "Optional profile avatar URL (empty string or valid http/https URL up to 2048 chars)"
         },
+        "authProvider": {
+          "type": "string",
+          "enum": [
+            "password",
+            "google.com"
+          ],
+          "description": "Authentication provider used by the user"
+        },
+        "marketingSubscribed": {
+          "type": "boolean",
+          "description": "Whether the user has currently opted in to optional GoGo marketing emails"
+        },
         "createdAt": {
           "type": "string",
           "format": "date-time",
@@ -35,6 +47,109 @@
         "photoURL",
         "createdAt",
         "lastLoginAt"
+      ]
+    },
+    "MarketingSubscriber": {
+      "title": "MarketingSubscriber",
+      "description": "Explicit marketing consent and subscription record stored under marketingSubscribers/{uid}",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Subscriber email address"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Subscriber display name"
+        },
+        "subscribed": {
+          "type": "boolean",
+          "description": "True only when the user explicitly opted in and has not unsubscribed"
+        },
+        "consentTimestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when explicit marketing consent was granted (or null if never consented)"
+        },
+        "consentVersion": {
+          "type": "string",
+          "description": "Version identifier of the marketing consent text shown to the user"
+        },
+        "consentText": {
+          "type": "string",
+          "description": "Exact marketing consent statement accepted by the user"
+        },
+        "source": {
+          "type": "string",
+          "description": "Origin surface where the record was created or updated (e.g. registration_form, account_profile, unsubscribe_page)"
+        },
+        "authProvider": {
+          "type": "string",
+          "enum": [
+            "password",
+            "google.com"
+          ],
+          "description": "Authentication provider used during registration"
+        },
+        "registeredAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the user registered (immutable)"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the subscription record was last updated"
+        },
+        "unsubscribedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the user unsubscribed (or null if active/never subscribed)"
+        }
+      },
+      "required": [
+        "email",
+        "displayName",
+        "subscribed",
+        "consentTimestamp",
+        "consentVersion",
+        "consentText",
+        "source",
+        "authProvider",
+        "registeredAt",
+        "updatedAt",
+        "unsubscribedAt"
+      ]
+    },
+    "AdminRecord": {
+      "title": "AdminRecord",
+      "description": "Authorized GoGo Administrator record stored under admins/{uid}",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Administrator email address"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "owner",
+            "admin"
+          ],
+          "description": "Administrator role"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when admin record was created"
+        }
+      },
+      "required": [
+        "email",
+        "role",
+        "createdAt"
       ]
     },
     "GameSaveProfile": {
@@ -77,7 +192,19 @@
       "schema": {
         "$ref": "#/entities/UserProfile"
       },
-      "description": "Private user account profile document accessible only by the authenticated owner {uid}"
+      "description": "User account profile document accessible by the authenticated owner {uid} or an authorized GoGo Administrator"
+    },
+    "/marketingSubscribers/{uid}": {
+      "schema": {
+        "$ref": "#/entities/MarketingSubscriber"
+      },
+      "description": "Marketing subscription and consent audit record accessible only by the authenticated owner {uid} or an authorized GoGo Administrator"
+    },
+    "/admins/{uid}": {
+      "schema": {
+        "$ref": "#/entities/AdminRecord"
+      },
+      "description": "Administrator role lookup collection readable by the authenticated owner or admin"
     },
     "/gameProfiles/{uid}/games/{gameId}": {
       "schema": {
