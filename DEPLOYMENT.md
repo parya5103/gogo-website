@@ -70,5 +70,5 @@ findable there.
 - Old URLs redirect: /arrow-out/ -> /arrowout/, /crystal-quest/ ->
   /crystalquest/, /sarkari/ -> /sarkari-sarthi/.
 - After the first sync run, the games install as PWAs from the new paths
-  and work offline; the Sarkari portal shows current job data.
+  and work offline; the Sarkari Sarthi portal shows current job data.
 - Lock icon / HTTPS works with no mixed-content warnings.
