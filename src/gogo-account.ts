@@ -28,11 +28,19 @@ import {
   getDoc,
   getDocs,
   getDocFromServer,
+  query,
+  orderBy,
+  limit,
+  startAfter,
+  where,
+  documentId,
   setDoc,
   deleteDoc,
   serverTimestamp,
   Timestamp,
   type Firestore,
+  type QueryDocumentSnapshot,
+  type DocumentData,
 } from 'firebase/firestore';
 import firebaseAppletConfig from '../firebase-applet-config.json' with { type: 'json' };
 
@@ -239,6 +247,53 @@ export function paginateEntries<T>(
     totalItems,
     startIndex,
     endIndex,
+  };
+}
+
+/**
+ * Pure helper for Firestore cursor-based pagination state transitions.
+ * Given `fetchedDocs` from a `limit(pageSize + 1)` query, slices to `pageSize`,
+ * determines `hasNextPage`, and records the last visible document cursor for `startAfter()`.
+ */
+export function advanceCursorPaginationState<TDoc>(params: {
+  direction: 'reset' | 'next' | 'prev';
+  currentPage: number;
+  pageSize: number;
+  cursors: TDoc[];
+  fetchedDocs: TDoc[];
+}): {
+  pageDocs: TDoc[];
+  currentPage: number;
+  cursors: TDoc[];
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+} {
+  const safeSize = Math.max(1, Math.floor(params.pageSize || 25));
+  let nextCursors = [...params.cursors];
+  let targetPage = params.currentPage;
+
+  if (params.direction === 'reset') {
+    targetPage = 1;
+    nextCursors = [];
+  } else if (params.direction === 'next') {
+    targetPage = params.currentPage + 1;
+  } else if (params.direction === 'prev') {
+    targetPage = Math.max(1, params.currentPage - 1);
+  }
+
+  const hasNextPage = params.fetchedDocs.length > safeSize;
+  const pageDocs = params.fetchedDocs.slice(0, safeSize);
+
+  if (pageDocs.length > 0) {
+    nextCursors[targetPage - 1] = pageDocs[pageDocs.length - 1];
+  }
+
+  return {
+    pageDocs,
+    currentPage: targetPage,
+    cursors: nextCursors,
+    hasNextPage,
+    hasPrevPage: targetPage > 1,
   };
 }
 
@@ -1085,10 +1140,13 @@ class GoGoAccountManager {
     crystalquest: 'idle',
   };
 
-  // Admin dashboard state
+  // Admin dashboard state (Firestore cursor-based pagination)
   public adminLoading = false;
   public adminError: string | null = null;
   public adminEntries: AdminDirectoryEntry[] = [];
+  public adminPageEntries: AdminDirectoryEntry[] = [];
+  public adminPageCursors: Array<QueryDocumentSnapshot<DocumentData>> = [];
+  public adminHasNextPage = false;
   public adminActiveView: 'subscribers' | 'accounts' = 'subscribers';
   public adminFilterStatus:
     | 'all'
@@ -1564,11 +1622,62 @@ class GoGoAccountManager {
 
   // =========================================================
   // 8. Admin Directory & CSV Export Operations (/admin/)
+  //    Uses Firestore cursor-based pagination (orderBy + startAfter + limit)
   // =========================================================
 
-  public async loadAdminDirectory() {
+  private mapRawDocsToAdminEntry(
+    uid: string,
+    u: Record<string, any> | undefined,
+    s: Record<string, any> | undefined
+  ): AdminDirectoryEntry {
+    const toMs = (t: any): number => {
+      if (!t) return 0;
+      if (t instanceof Timestamp) return t.toMillis();
+      if (typeof t.toMillis === 'function') return t.toMillis();
+      if (typeof t.seconds === 'number') return t.seconds * 1000;
+      if (typeof t === 'number') return t;
+      return 0;
+    };
+
+    const registeredAtMs = toMs(s?.registeredAt) || toMs(u?.createdAt) || 0;
+    const lastLoginAtMs = toMs(u?.lastLoginAt) || toMs(s?.updatedAt) || registeredAtMs;
+    const subscribed = s ? Boolean(s.subscribed) : Boolean(u?.marketingSubscribed);
+    const consentTimestampMs = toMs(s?.consentTimestamp) || null;
+    const unsubscribedAtMs = toMs(s?.unsubscribedAt) || null;
+    const authProvider: 'password' | 'google.com' =
+      (s?.authProvider || u?.authProvider) === 'google.com' ? 'google.com' : 'password';
+
+    const emailVerified =
+      typeof s?.emailVerified === 'boolean'
+        ? s.emailVerified
+        : typeof u?.emailVerified === 'boolean'
+        ? u.emailVerified
+        : authProvider === 'google.com';
+
+    return {
+      uid,
+      email: String(s?.email || u?.email || ''),
+      emailVerified,
+      displayName: String(s?.displayName || u?.displayName || 'GoGo Player'),
+      authProvider,
+      registeredAtMs,
+      lastLoginAtMs,
+      subscribed,
+      consentTimestampMs,
+      consentVersion: String(s?.consentVersion || ''),
+      consentText: String(s?.consentText || ''),
+      source: String(s?.source || (u ? 'account_registration' : '')),
+      unsubscribedAtMs,
+    };
+  }
+
+  /**
+   * Fetches a single page of records from Firestore using cursor-based pagination:
+   * `query(collection(this.db, 'marketingSubscribers'), orderBy('registeredAt', 'desc'), startAfter(cursor), limit(pageSize + 1))`
+   */
+  public async loadAdminPage(direction: 'reset' | 'next' | 'prev' = 'reset') {
     if (!this.currentUser || !this.isAdmin()) {
-      this.adminEntries = [];
+      this.adminPageEntries = [];
       this.adminError =
         'Access Denied: Only verified, authorized GoGo Administrators can access customer & subscriber data.';
       this.renderAllUI();
@@ -1580,72 +1689,143 @@ class GoGoAccountManager {
     this.renderAllUI();
 
     try {
-      const [usersSnap, subsSnap] = await Promise.all([
-        getDocs(collection(this.db, 'users')),
-        getDocs(collection(this.db, 'marketingSubscribers')),
-      ]);
+      const safeSize = Math.max(1, Math.floor(this.adminPageSize || 25));
+      let cursorDoc: QueryDocumentSnapshot<DocumentData> | undefined;
 
-      const usersMap = new Map<string, Record<string, any>>();
-      usersSnap.forEach((d) => usersMap.set(d.id, d.data()));
-
-      const subsMap = new Map<string, Record<string, any>>();
-      subsSnap.forEach((d) => subsMap.set(d.id, d.data()));
-
-      const allUids = new Set<string>([...usersMap.keys(), ...subsMap.keys()]);
-      const combined: AdminDirectoryEntry[] = [];
-
-      for (const uid of allUids) {
-        const u = usersMap.get(uid);
-        const s = subsMap.get(uid);
-
-        const toMs = (t: any): number => {
-          if (!t) return 0;
-          if (t instanceof Timestamp) return t.toMillis();
-          if (typeof t.toMillis === 'function') return t.toMillis();
-          if (typeof t.seconds === 'number') return t.seconds * 1000;
-          if (typeof t === 'number') return t;
-          return 0;
-        };
-
-        const registeredAtMs = toMs(s?.registeredAt) || toMs(u?.createdAt) || 0;
-        const lastLoginAtMs = toMs(u?.lastLoginAt) || toMs(s?.updatedAt) || registeredAtMs;
-        const subscribed = s ? Boolean(s.subscribed) : Boolean(u?.marketingSubscribed);
-        const consentTimestampMs = toMs(s?.consentTimestamp) || null;
-        const unsubscribedAtMs = toMs(s?.unsubscribedAt) || null;
-        const authProvider: 'password' | 'google.com' =
-          (s?.authProvider || u?.authProvider) === 'google.com' ? 'google.com' : 'password';
-
-        const emailVerified =
-          typeof s?.emailVerified === 'boolean'
-            ? s.emailVerified
-            : typeof u?.emailVerified === 'boolean'
-            ? u.emailVerified
-            : authProvider === 'google.com';
-
-        combined.push({
-          uid,
-          email: String(s?.email || u?.email || ''),
-          emailVerified,
-          displayName: String(s?.displayName || u?.displayName || 'GoGo Player'),
-          authProvider,
-          registeredAtMs,
-          lastLoginAtMs,
-          subscribed,
-          consentTimestampMs,
-          consentVersion: String(s?.consentVersion || ''),
-          consentText: String(s?.consentText || ''),
-          source: String(s?.source || (u ? 'account_registration' : '')),
-          unsubscribedAtMs,
-        });
+      if (direction === 'next') {
+        cursorDoc = this.adminPageCursors[this.adminPage - 1];
+      } else if (direction === 'prev' && this.adminPage > 2) {
+        cursorDoc = this.adminPageCursors[this.adminPage - 3];
       }
 
-      combined.sort((a, b) => b.registeredAtMs - a.registeredAtMs);
-      this.adminEntries = combined;
+      const subsCol = collection(this.db, 'marketingSubscribers');
+      const pageQuery = cursorDoc
+        ? query(subsCol, orderBy('registeredAt', 'desc'), startAfter(cursorDoc), limit(safeSize + 1))
+        : query(subsCol, orderBy('registeredAt', 'desc'), limit(safeSize + 1));
+
+      const subsPageSnap = await getDocs(pageQuery);
+
+      const cursorState = advanceCursorPaginationState({
+        direction,
+        currentPage: this.adminPage,
+        pageSize: safeSize,
+        cursors: this.adminPageCursors,
+        fetchedDocs: subsPageSnap.docs,
+      });
+
+      this.adminPage = cursorState.currentPage;
+      this.adminPageCursors = cursorState.cursors;
+      this.adminHasNextPage = cursorState.hasNextPage;
+
+      // Enrich the current page's UIDs with user profile fields via bounded documentId() 'in' queries (<= 30 per chunk)
+      const pageUids = cursorState.pageDocs.map((d) => d.id);
+      const usersMap = new Map<string, Record<string, any>>();
+      for (let i = 0; i < pageUids.length; i += 30) {
+        const chunk = pageUids.slice(i, i + 30);
+        if (chunk.length > 0) {
+          const uSnap = await getDocs(
+            query(collection(this.db, 'users'), where(documentId(), 'in', chunk), limit(30))
+          );
+          uSnap.forEach((docSnap) => usersMap.set(docSnap.id, docSnap.data()));
+        }
+      }
+
+      this.adminPageEntries = cursorState.pageDocs.map((docSnap) =>
+        this.mapRawDocsToAdminEntry(docSnap.id, usersMap.get(docSnap.id), docSnap.data())
+      );
+
+      this.adminLoading = false;
+      this.renderAllUI();
+    } catch (error) {
+      this.adminLoading = false;
+      this.adminPageEntries = [];
+      this.adminError = 'Permission denied by Firestore Security Rules or network error (fail closed).';
+      this.renderAllUI();
+      try {
+        this.handleFirestoreError(error, OperationType.LIST, 'marketingSubscribers');
+      } catch {
+        // Logged
+      }
+    }
+  }
+
+  /**
+   * Walks `marketingSubscribers` and `users` in cursor-paginated batches (`orderBy` + `startAfter` + `limit(batchSize)`)
+   * so that KPI summary counts and CSV exports never issue an unbounded `getDocs(collection(...))`.
+   */
+  private async fetchAllAdminEntriesCursorPaginated(batchSize = 100): Promise<AdminDirectoryEntry[]> {
+    const subsMap = new Map<string, Record<string, any>>();
+    let subCursor: QueryDocumentSnapshot<DocumentData> | undefined;
+    while (true) {
+      const qSubs = subCursor
+        ? query(
+            collection(this.db, 'marketingSubscribers'),
+            orderBy('registeredAt', 'desc'),
+            startAfter(subCursor),
+            limit(batchSize)
+          )
+        : query(
+            collection(this.db, 'marketingSubscribers'),
+            orderBy('registeredAt', 'desc'),
+            limit(batchSize)
+          );
+      const snap = await getDocs(qSubs);
+      snap.forEach((d) => subsMap.set(d.id, d.data()));
+      if (snap.docs.length < batchSize) break;
+      subCursor = snap.docs[snap.docs.length - 1];
+    }
+
+    const usersMap = new Map<string, Record<string, any>>();
+    let userCursor: QueryDocumentSnapshot<DocumentData> | undefined;
+    while (true) {
+      const qUsers = userCursor
+        ? query(
+            collection(this.db, 'users'),
+            orderBy('createdAt', 'desc'),
+            startAfter(userCursor),
+            limit(batchSize)
+          )
+        : query(collection(this.db, 'users'), orderBy('createdAt', 'desc'), limit(batchSize));
+      const snap = await getDocs(qUsers);
+      snap.forEach((d) => usersMap.set(d.id, d.data()));
+      if (snap.docs.length < batchSize) break;
+      userCursor = snap.docs[snap.docs.length - 1];
+    }
+
+    const allUids = new Set<string>([...subsMap.keys(), ...usersMap.keys()]);
+    const combined: AdminDirectoryEntry[] = [];
+    for (const uid of allUids) {
+      combined.push(this.mapRawDocsToAdminEntry(uid, usersMap.get(uid), subsMap.get(uid)));
+    }
+    combined.sort((a, b) => b.registeredAtMs - a.registeredAtMs);
+    return combined;
+  }
+
+  public async loadAdminDirectory() {
+    if (!this.currentUser || !this.isAdmin()) {
+      this.adminEntries = [];
+      this.adminPageEntries = [];
+      this.adminError =
+        'Access Denied: Only verified, authorized GoGo Administrators can access customer & subscriber data.';
+      this.renderAllUI();
+      return;
+    }
+
+    this.adminLoading = true;
+    this.adminError = null;
+    this.renderAllUI();
+
+    try {
+      // 1. Load first page via Firestore cursor query (orderBy + limit(pageSize + 1))
+      await this.loadAdminPage('reset');
+      // 2. Compute accurate KPIs & CSV dataset via cursor-paginated batch walker
+      this.adminEntries = await this.fetchAllAdminEntriesCursorPaginated(100);
       this.adminLoading = false;
       this.renderAllUI();
     } catch (error) {
       this.adminLoading = false;
       this.adminEntries = [];
+      this.adminPageEntries = [];
       this.adminError = 'Permission denied by Firestore Security Rules or network error (fail closed).';
       this.renderAllUI();
       try {
@@ -2310,14 +2490,20 @@ class GoGoAccountManager {
         }
         case 'admin-page-prev': {
           if (this.adminPage > 1) {
-            this.adminPage -= 1;
-            this.renderAdminTableOnly();
+            if (!this.adminSearchQuery.trim() && this.adminFilterStatus === 'all') {
+              this.loadAdminPage('prev');
+            } else {
+              this.adminPage -= 1;
+              this.renderAdminTableOnly();
+            }
           }
           break;
         }
         case 'admin-page-next': {
           const totalPages = Math.max(1, Math.ceil(this.getFilteredAdminEntries().length / this.adminPageSize));
-          if (this.adminPage < totalPages) {
+          if (!this.adminSearchQuery.trim() && this.adminFilterStatus === 'all' && this.adminHasNextPage) {
+            this.loadAdminPage('next');
+          } else if (this.adminPage < totalPages) {
             this.adminPage += 1;
             this.renderAdminTableOnly();
           }
@@ -2328,7 +2514,7 @@ class GoGoAccountManager {
           if ([25, 50, 100].includes(sz)) {
             this.adminPageSize = sz;
             this.adminPage = 1;
-            this.renderAllUI();
+            this.loadAdminPage('reset');
           }
           break;
         }
@@ -2931,8 +3117,10 @@ class GoGoAccountManager {
       `;
     }
 
+    const isUnfilteredCursorMode =
+      this.adminFilterStatus === 'all' && !this.adminSearchQuery.trim() && this.adminPageEntries.length > 0;
     const filtered = this.getFilteredAdminEntries();
-    if (filtered.length === 0) {
+    if (filtered.length === 0 && !isUnfilteredCursorMode) {
       return `
         <tr>
           <td colspan="8" style="text-align:center;padding:28px;color:#94a3b8;">
@@ -2944,8 +3132,9 @@ class GoGoAccountManager {
 
     const pageInfo = paginateEntries(filtered, this.adminPage, this.adminPageSize);
     this.adminPage = pageInfo.currentPage;
+    const itemsToRender = isUnfilteredCursorMode ? this.adminPageEntries : pageInfo.pageItems;
 
-    return pageInfo.pageItems
+    return itemsToRender
       .map((item) => {
         const isEligible = isEligibleMarketingSubscriber(item);
         const statusText = isEligible
@@ -3475,6 +3664,7 @@ if (typeof window !== 'undefined') {
     resendVerificationEmail: () => gogoAccount.resendVerificationEmail(),
     refreshEmailVerificationStatus: () => gogoAccount.refreshEmailVerificationStatus(),
     loadAdminDirectory: () => gogoAccount.loadAdminDirectory(),
+    loadAdminPage: (dir?: 'reset' | 'next' | 'prev') => gogoAccount.loadAdminPage(dir),
     downloadAdminCsv: (mode: 'marketing_only' | 'all_accounts') => gogoAccount.downloadAdminCsv(mode),
     validateGameSave,
     summarizeProgress,
@@ -3489,6 +3679,7 @@ if (typeof window !== 'undefined') {
     isEligibleMarketingSubscriber,
     computeAdminDashboardStats,
     paginateEntries,
+    advanceCursorPaginationState,
     escapeCsvCell,
   };
   gogoAccount.init();

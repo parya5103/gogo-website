@@ -302,6 +302,10 @@ service cloud.firestore {
     // Collection Rules
     // =========================================================
 
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
     match /users/{uid} {
       allow get: if isOwner(uid) || isAdmin();
       allow list: if isAdmin();

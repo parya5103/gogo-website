@@ -15,6 +15,7 @@ import {
   isEligibleMarketingSubscriber,
   computeAdminDashboardStats,
   paginateEntries,
+  advanceCursorPaginationState,
   escapeCsvCell,
   generateMarketingSubscribersCsv,
   generateAllRegisteredAccountsCsv,
@@ -311,7 +312,6 @@ runStep('Scenario 6: Unauthorized or unverified admins cannot access Admin Dashb
   assert.equal(isAuthorizedAdminUser({ email: 'random@example.com', emailVerified: true }), false);
   assert.equal(isAuthorizedAdminUser({ email: 'aaryapratik@gmail.com', emailVerified: false }), false);
   assert.equal(isAuthorizedAdminUser({ email: 'aaryapratik@gmail.com', emailVerified: true }), true);
-  // Even custom /admins/{uid} role holders must have a verified email
   assert.equal(isAuthorizedAdminUser({ email: 'customadmin@example.com', emailVerified: false }, true), false);
   assert.equal(isAuthorizedAdminUser({ email: 'customadmin@example.com', emailVerified: true }, true), true);
 });
@@ -339,11 +339,9 @@ runStep('Scenario 7: CSV downloads format cleanly, block formula injection, and 
   );
   // Header + stats.totalPromotionalSubscribers rows must match exactly
   assert.equal(marketingLines.length - 1, stats.totalPromotionalSubscribers);
-  // Display name with comma and quotes must be RFC-4180 escaped
   assert.ok(marketingLines[1].includes('"Aarya, ""Pro"" Gamer"'));
   assert.ok(marketingLines[1].includes(',Yes,'));
 
-  // All registered accounts CSV includes all 5 users with accurate consent states
   const allLines = allAccountsCsv.slice(1).trim().split('\r\n');
   assert.equal(
     allLines[0],
@@ -360,7 +358,7 @@ runStep('Scenario 7: CSV downloads format cleanly, block formula injection, and 
   assert.equal(escapeCsvCell('@IMPORTXML()'), "'@IMPORTXML()");
 });
 
-runStep('Scenario 8: Admin directory pagination slices entries accurately across page sizes', () => {
+runStep('Scenario 8: Admin directory pagination & Firestore cursor-based pagination state transitions', () => {
   const items = Array.from({ length: 60 }, (_, idx) => ({ id: idx + 1 }));
   const p1 = paginateEntries(items, 1, 25);
   assert.equal(p1.currentPage, 1);
@@ -369,23 +367,53 @@ runStep('Scenario 8: Admin directory pagination slices entries accurately across
   assert.equal(p1.endIndex, 25);
   assert.equal(p1.pageItems.length, 25);
 
-  const p3 = paginateEntries(items, 99, 25); // clamps to last page
+  const p3 = paginateEntries(items, 99, 25);
   assert.equal(p3.currentPage, 3);
   assert.equal(p3.startIndex, 50);
   assert.equal(p3.endIndex, 60);
   assert.equal(p3.pageItems.length, 10);
+
+  // Test Firestore cursor-based pagination (limit(pageSize + 1) -> cursor stack + hasNextPage)
+  const fakeDocsPage1 = Array.from({ length: 26 }, (_, idx) => ({ id: `doc_${idx + 1}` }));
+  const c1 = advanceCursorPaginationState({
+    direction: 'reset',
+    currentPage: 1,
+    pageSize: 25,
+    cursors: [],
+    fetchedDocs: fakeDocsPage1,
+  });
+  assert.equal(c1.currentPage, 1);
+  assert.equal(c1.pageDocs.length, 25);
+  assert.equal(c1.hasNextPage, true);
+  assert.equal(c1.hasPrevPage, false);
+  assert.equal(c1.cursors[0].id, 'doc_25');
+
+  const fakeDocsPage2 = Array.from({ length: 12 }, (_, idx) => ({ id: `doc_${idx + 26}` }));
+  const c2 = advanceCursorPaginationState({
+    direction: 'next',
+    currentPage: c1.currentPage,
+    pageSize: 25,
+    cursors: c1.cursors,
+    fetchedDocs: fakeDocsPage2,
+  });
+  assert.equal(c2.currentPage, 2);
+  assert.equal(c2.pageDocs.length, 12);
+  assert.equal(c2.hasNextPage, false);
+  assert.equal(c2.hasPrevPage, true);
+  assert.equal(c2.cursors[1].id, 'doc_37');
 });
 
 console.log('\n==========================================================');
-console.log('3. Firestore Security Rules Verification (ESLint + RBAC)');
+console.log('3. Firestore Security Rules & Cursor Pagination Audit');
 console.log('==========================================================');
 
 runStep('ESLint @firebase/eslint-plugin-security-rules passes with 0 errors/warnings', () => {
   execSync('npx eslint firestore.rules', { cwd: root, stdio: 'pipe' });
 });
 
-runStep('Firestore rules enforce UID ownership, verified admin-only listing, and email/verification consistency', () => {
+runStep('Firestore rules enforce default-deny, UID ownership, verified admin-only listing, and email consistency', () => {
   const rulesText = readFileSync(resolve(root, 'firestore.rules'), 'utf8');
+  assert.ok(rulesText.includes('match /{document=**} {\n      allow read, write: if false;\n    }'));
   assert.ok(rulesText.includes('function isAdmin()'));
   assert.ok(rulesText.includes('return isEmailVerifiedToken() && ('));
   assert.ok(rulesText.includes('function isConsistentAuthEmail(email)'));
@@ -398,11 +426,21 @@ runStep('Firestore rules enforce UID ownership, verified admin-only listing, and
   assert.ok(rulesText.includes("gameId == 'arrowout' || gameId == 'crystalquest'"));
 });
 
+runStep('src/gogo-account.ts uses Firestore cursor-based pagination (orderBy + startAfter + limit) and zero unbounded getDocs(collection(...))', () => {
+  const srcText = readFileSync(resolve(root, 'src/gogo-account.ts'), 'utf8');
+  assert.ok(srcText.includes("orderBy('registeredAt', 'desc')"));
+  assert.ok(srcText.includes('startAfter(cursorDoc)'));
+  assert.ok(srcText.includes('limit(safeSize + 1)'));
+  assert.ok(!srcText.includes("getDocs(collection(this.db, 'users'))"));
+  assert.ok(!srcText.includes("getDocs(collection(this.db, 'marketingSubscribers'))"));
+});
+
 console.log('\n==========================================================');
 console.log('4. Cross-Application Asset, Bundle & Legal Consistency Verification');
 console.log('==========================================================');
 
 runStep('Shared GoGo Account bundle, Unsubscribe, Admin, Legal pages & Game bundles are consistent', () => {
+  assert.ok(existsSync(resolve(root, 'firebase.json')));
   assert.ok(existsSync(resolve(root, 'assets/js/gogo-account.js')));
   assert.ok(existsSync(resolve(root, 'assets/css/gogo-account.css')));
   assert.ok(existsSync(resolve(root, 'account/index.html')));
@@ -414,15 +452,15 @@ runStep('Shared GoGo Account bundle, Unsubscribe, Admin, Legal pages & Game bund
   assert.ok(existsSync(resolve(root, 'arrowout/css/gogo-account.css')));
   assert.ok(existsSync(resolve(root, 'crystalquest/js/gogo-account.js')));
   assert.ok(existsSync(resolve(root, 'crystalquest/gogo-account.css')));
+  assert.ok(existsSync(resolve(root, 'scripts/push-upstream-prs.sh')));
 
-  // Verify built bundle matches newly added verification & pagination features
   const builtBundle = readFileSync(resolve(root, 'assets/js/gogo-account.js'), 'utf8');
   assert.ok(builtBundle.includes('resendVerificationEmail'));
   assert.ok(builtBundle.includes('refreshEmailVerificationStatus'));
   assert.ok(builtBundle.includes('isEligibleMarketingSubscriber'));
   assert.ok(builtBundle.includes('paginateEntries'));
+  assert.ok(builtBundle.includes('advanceCursorPaginationState'));
 
-  // Verify service workers include gogo-account assets for offline play
   const arrowSw = readFileSync(resolve(root, 'arrowout/sw.js'), 'utf8');
   assert.ok(arrowSw.includes('./css/gogo-account.css'));
   assert.ok(arrowSw.includes('./js/gogo-account.js'));
@@ -431,7 +469,6 @@ runStep('Shared GoGo Account bundle, Unsubscribe, Admin, Legal pages & Game bund
   assert.ok(cqSw.includes('gogo-account.css'));
   assert.ok(cqSw.includes('js/gogo-account.js'));
 
-  // Verify Privacy Policy, Terms, and README have no legacy contradictions
   const privacyHtml = readFileSync(resolve(root, 'privacy-policy/index.html'), 'utf8');
   assert.ok(privacyHtml.includes('Optional Promotional Emails &amp; Marketing Subscribers'));
   assert.ok(privacyHtml.includes('../unsubscribe/'));
@@ -448,10 +485,17 @@ runStep('Shared GoGo Account bundle, Unsubscribe, Admin, Legal pages & Game bund
 });
 
 console.log('\n==========================================================');
-console.log('5. Upstream Game Test Suites (Arrow Out & Crystal Quest)');
+console.log('5. Upstream Game Feature Branches &Test Suites (Arrow Out & Crystal Quest)');
 console.log('==========================================================');
 
 if (existsSync('/tmp/Fletch_Game')) {
+  runStep('Arrow Out feature branch feat/gogo-shared-account is isolated from main', () => {
+    const branch = execSync('git rev-parse --abbrev-ref HEAD', { cwd: '/tmp/Fletch_Game' }).toString().trim();
+    assert.equal(branch, 'feat/gogo-shared-account');
+    const mainHead = execSync('git rev-parse main', { cwd: '/tmp/Fletch_Game' }).toString().trim();
+    const originMainHead = execSync('git rev-parse origin/main', { cwd: '/tmp/Fletch_Game' }).toString().trim();
+    assert.equal(mainHead, originMainHead, 'main branch must have zero direct commits');
+  });
   runStep('Arrow Out ci-test.js passes', () => {
     execSync('node scripts/ci-test.js', { cwd: '/tmp/Fletch_Game', stdio: 'pipe' });
   });
@@ -464,10 +508,16 @@ if (existsSync('/tmp/Fletch_Game')) {
 }
 
 if (existsSync('/tmp/crystal-quest-web')) {
+  runStep('Crystal Quest feature branch feat/gogo-shared-account is isolated from main', () => {
+    const branch = execSync('git rev-parse --abbrev-ref HEAD', { cwd: '/tmp/crystal-quest-web' }).toString().trim();
+    assert.equal(branch, 'feat/gogo-shared-account');
+    const mainHead = execSync('git rev-parse main', { cwd: '/tmp/crystal-quest-web' }).toString().trim();
+    const originMainHead = execSync('git rev-parse origin/main', { cwd: '/tmp/crystal-quest-web' }).toString().trim();
+    assert.equal(mainHead, originMainHead, 'main branch must have zero direct commits');
+  });
   runStep('Crystal Quest tests/game.test.js passes', () => {
     execSync('node tests/game.test.js', { cwd: '/tmp/crystal-quest-web', stdio: 'pipe' });
   });
 }
 
 console.log(`\nALL ${totalPassed} TEST SUITES PASSED SUCCESSFULLY.`);
-

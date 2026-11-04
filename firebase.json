@@ -1,0 +1,8 @@
+{
+  "firestore": [
+    {
+      "database": "ai-studio-gogowebsite-4126d566-149d-4901-8c83-59ba041323ca",
+      "rules": "firestore.rules"
+    }
+  ]
+}

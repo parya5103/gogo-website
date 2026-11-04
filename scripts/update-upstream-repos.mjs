@@ -1,33 +1,39 @@
-import { readFileSync, writeFileSync, copyFileSync, mkdirSync, existsSync, cpSync, rmSync } from 'node:fs';
+import {
+  readFileSync,
+  writeFileSync,
+  copyFileSync,
+  mkdirSync,
+  existsSync,
+  cpSync,
+  rmSync,
+  chmodSync,
+} from 'node:fs';
 import { execSync } from 'node:child_process';
 import { resolve, basename } from 'node:path';
 
 const root = process.cwd();
 const fletchDir = '/tmp/Fletch_Game';
 const crystalDir = '/tmp/crystal-quest-web';
+const featureBranch = 'feat/gogo-shared-account';
 
 if (!existsSync(fletchDir)) {
-  try {
-    execSync('git clone --depth 1 https://github.com/parya5103/Fletch_Game.git /tmp/Fletch_Game', { stdio: 'pipe' });
-  } catch (e) {
-    console.warn('[update-upstream-repos] Could not clone Fletch_Game:', e.message);
-  }
+  execSync('git clone https://github.com/parya5103/Fletch_Game.git /tmp/Fletch_Game', { stdio: 'pipe' });
 }
 
 if (!existsSync(crystalDir)) {
-  try {
-    execSync('git clone --depth 1 https://github.com/parya5103/crystal-quest-web.git /tmp/crystal-quest-web', { stdio: 'pipe' });
-  } catch (e) {
-    console.warn('[update-upstream-repos] Could not clone crystal-quest-web:', e.message);
-  }
+  execSync('git clone https://github.com/parya5103/crystal-quest-web.git /tmp/crystal-quest-web', {
+    stdio: 'pipe',
+  });
 }
 
 // =========================================================
-// 1. Update Arrow Out (/tmp/Fletch_Game)
+// 1. Update Arrow Out (/tmp/Fletch_Game) on branch feat/gogo-shared-account
+//    (Never commit directly to main)
 // =========================================================
 if (existsSync(fletchDir)) {
-  // Reset any prior edits in /tmp/Fletch_Game before applying clean patch
-  execSync('git checkout -- .', { cwd: fletchDir });
+  execSync('git checkout -f main && git reset --hard origin/main && git clean -fd', { cwd: fletchDir });
+  execSync(`git checkout -B ${featureBranch} main`, { cwd: fletchDir });
+
   copyFileSync(resolve(root, 'assets/js/gogo-account.js'), resolve(fletchDir, 'js/gogo-account.js'));
   copyFileSync(resolve(root, 'assets/css/gogo-account.css'), resolve(fletchDir, 'css/gogo-account.css'));
 
@@ -120,7 +126,6 @@ if (existsSync(fletchDir)) {
   const indexHtmlPath = resolve(fletchDir, 'index.html');
   let indexHtml = readFileSync(indexHtmlPath, 'utf8');
 
-  // Update CSP to allow Firebase Auth & Firestore
   indexHtml = indexHtml.replace(
     `script-src 'self' https://pagead2.googlesyndication.com`,
     `script-src 'self' https://apis.google.com https://pagead2.googlesyndication.com`
@@ -134,25 +139,21 @@ if (existsSync(fletchDir)) {
     `frame-src https://*.firebaseapp.com https://accounts.google.com https://apis.google.com https://googleads.g.doubleclick.net`
   );
 
-  // Add gogo-account.css after styles.css
   indexHtml = indexHtml.replace(
     `<link rel="stylesheet" href="css/styles.css" />`,
     `<link rel="stylesheet" href="css/styles.css" />\n  <link rel="stylesheet" href="css/gogo-account.css" />`
   );
 
-  // Add GoGo Account trigger button in home-chips
   indexHtml = indexHtml.replace(
     `<div class="home-chips">\n        <div class="chip" id="home-progress" aria-live="polite">Loading progress...</div>\n      </div>`,
     `<div class="home-chips">\n        <div class="chip" id="home-progress" aria-live="polite">Loading progress...</div>\n        <button type="button" class="gogo-account-trigger" id="btn-gogo-account-home" data-gogo-open-account="true"><span class="gogo-trigger-dot"></span><span class="gogo-trigger-text">GoGo Account</span></button>\n      </div>`
   );
 
-  // Add GoGo Cloud Save panel inside #dlg-settings
   indexHtml = indexHtml.replace(
     `<h2 id="set-title">Settings</h2>`,
     `<h2 id="set-title">Settings</h2>\n      <div id="ao-gogo-cloud-panel" data-gogo-game-panel="arrowout"></div>`
   );
 
-  // Add js/gogo-account.js after js/main.js
   indexHtml = indexHtml.replace(
     `<script src="js/main.js"></script>`,
     `<script src="js/main.js"></script>\n  <script src="js/gogo-account.js"></script>`
@@ -171,14 +172,28 @@ if (existsSync(fletchDir)) {
     writeFileSync(swPath, swCode, 'utf8');
   }
 
-  console.log('[update-upstream-repos] Updated /tmp/Fletch_Game successfully.');
+  // Commit onto feat/gogo-shared-account (never main)
+  execSync('git config user.name "GoGo Developer" && git config user.email "officialgogocompany@gmail.com"', {
+    cwd: fletchDir,
+  });
+  execSync('git add index.html js/storage.js sw.js js/gogo-account.js css/gogo-account.css', {
+    cwd: fletchDir,
+  });
+  execSync('git commit -m "feat(account): integrate shared GoGo Account and Cloud Save"', {
+    cwd: fletchDir,
+  });
+
+  console.log(`[update-upstream-repos] Committed Arrow Out integration on branch ${featureBranch}.`);
 }
 
 // =========================================================
-// 2. Update Crystal Quest (/tmp/crystal-quest-web)
+// 2. Update Crystal Quest (/tmp/crystal-quest-web) on branch feat/gogo-shared-account
+//    (Never commit directly to main)
 // =========================================================
 if (existsSync(crystalDir)) {
-  execSync('git checkout -- .', { cwd: crystalDir });
+  execSync('git checkout -f main && git reset --hard origin/main && git clean -fd', { cwd: crystalDir });
+  execSync(`git checkout -B ${featureBranch} main`, { cwd: crystalDir });
+
   copyFileSync(resolve(root, 'assets/js/gogo-account.js'), resolve(crystalDir, 'js/gogo-account.js'));
   copyFileSync(resolve(root, 'assets/css/gogo-account.css'), resolve(crystalDir, 'gogo-account.css'));
 
@@ -186,7 +201,6 @@ if (existsSync(crystalDir)) {
   const uiPath = resolve(crystalDir, 'js/ui.js');
   let uiCode = readFileSync(uiPath, 'utf8');
 
-  // Add cloud save methods to Save object in js/ui.js
   const persistTarget = `persist:function(){try{return global.localStorage.setItem(SAVE_KEY,JSON.stringify(this.data)),!0}catch(err){return!1}},`;
   const persistReplacement = `persist:function(){try{var ok=(global.localStorage.setItem(SAVE_KEY,JSON.stringify(this.data)),!0);var ts=Date.now();global.localStorage.setItem("crystal-quest-cloud-meta-v1",JSON.stringify({updatedAtMs:ts}));global.GoGoAccount&&typeof global.GoGoAccount.notifyLocalSaveModified=="function"&&global.GoGoAccount.notifyLocalSaveModified("crystalquest",ts);return ok}catch(err){return!1}},getCloudSave:function(){try{return JSON.parse(JSON.stringify(this.data))}catch(e){return this.data}},getLocalUpdatedAt:function(){try{var r=global.localStorage.getItem("crystal-quest-cloud-meta-v1");if(r){var p=JSON.parse(r);if(p&&typeof p.updatedAtMs=="number")return p.updatedAtMs}}catch(e){}return 0},applyCloudSave:function(cloudData,updatedAtMs){if(!cloudData||typeof cloudData!="object")return!1;try{var d=this.defaults();this.absorb(d,cloudData);d.world=this.absorbWorld(cloudData.world);this.data=d;global.localStorage.setItem(SAVE_KEY,JSON.stringify(this.data));var ts=typeof updatedAtMs=="number"&&updatedAtMs>0?updatedAtMs:Date.now();global.localStorage.setItem("crystal-quest-cloud-meta-v1",JSON.stringify({updatedAtMs:ts}));UI&&UI.applySettings&&(UI.applySettings(),UI.buildMap(),UI.updateHome());return!0}catch(e){return!1}},`;
 
@@ -233,7 +247,18 @@ if (existsSync(crystalDir)) {
     writeFileSync(cqSwPath, cqSwCode, 'utf8');
   }
 
-  // 2d. Use cross-realm compatible node:assert in tests/game.test.js for Node 22 vm.createContext
+  // Commit onto feat/gogo-shared-account (never main)
+  execSync('git config user.name "GoGo Developer" && git config user.email "officialgogocompany@gmail.com"', {
+    cwd: crystalDir,
+  });
+  execSync('git add index.html js/ui.js sw.js js/gogo-account.js gogo-account.css', {
+    cwd: crystalDir,
+  });
+  execSync('git commit -m "feat(account): integrate shared GoGo Account and Cloud Save"', {
+    cwd: crystalDir,
+  });
+
+  // 2d. Use cross-realm compatible node:assert in tests/game.test.js for Node 22 vm.createContext test run
   const cqTestPath = resolve(crystalDir, 'tests/game.test.js');
   if (existsSync(cqTestPath)) {
     let cqTestCode = readFileSync(cqTestPath, 'utf8');
@@ -244,7 +269,7 @@ if (existsSync(crystalDir)) {
     writeFileSync(cqTestPath, cqTestCode, 'utf8');
   }
 
-  console.log('[update-upstream-repos] Updated /tmp/crystal-quest-web successfully.');
+  console.log(`[update-upstream-repos] Committed Crystal Quest integration on branch ${featureBranch}.`);
 }
 
 // =========================================================
@@ -252,6 +277,7 @@ if (existsSync(crystalDir)) {
 //    (Using the exact rsync rules from .github/workflows/sync-products.yml)
 // =========================================================
 function syncDir(srcDir, destDir, excludes) {
+  if (!existsSync(srcDir)) return;
   rmSync(destDir, { recursive: true, force: true });
   mkdirSync(destDir, { recursive: true });
   cpSync(srcDir, destDir, {
@@ -291,13 +317,82 @@ syncDir(crystalDir, resolve(root, 'crystalquest'), [
 console.log('[update-upstream-repos] Synced /tmp/Fletch_Game -> /arrowout/ and /tmp/crystal-quest-web -> /crystalquest/.');
 
 // =========================================================
-// 4. Export git patches into /upstream-patches/ for pushing to individual repos
+// 4. Export git patches, git bundles, and PR helper script into /upstream-patches/
 // =========================================================
 const patchDir = resolve(root, 'upstream-patches');
 mkdirSync(patchDir, { recursive: true });
-const fletchDiff = execSync('git diff index.html js/storage.js sw.js', { cwd: fletchDir }).toString();
-const crystalDiff = execSync('git diff index.html js/ui.js sw.js', { cwd: crystalDir }).toString();
+
+const fletchDiff = execSync(`git diff main..${featureBranch} -- index.html js/storage.js sw.js`, {
+  cwd: fletchDir,
+}).toString();
+const crystalDiff = execSync(`git diff main..${featureBranch} -- index.html js/ui.js sw.js`, {
+  cwd: crystalDir,
+}).toString();
+
 writeFileSync(resolve(patchDir, 'Fletch_Game.patch'), fletchDiff, 'utf8');
 writeFileSync(resolve(patchDir, 'crystal-quest-web.patch'), crystalDiff, 'utf8');
-console.log('[update-upstream-repos] Wrote upstream patches to /upstream-patches/.');
 
+execSync(
+  `git bundle create ${resolve(patchDir, 'Fletch_Game-feat-gogo-shared-account.bundle')} main..${featureBranch}`,
+  { cwd: fletchDir }
+);
+execSync(
+  `git bundle create ${resolve(
+    patchDir,
+    'crystal-quest-web-feat-gogo-shared-account.bundle'
+  )} main..${featureBranch}`,
+  { cwd: crystalDir }
+);
+
+const prScriptPath = resolve(root, 'scripts/push-upstream-prs.sh');
+const prScript = `#!/usr/bin/env bash
+# ==============================================================================
+# Push feature branches (feat/gogo-shared-account) and open separate PRs
+# for parya5103/Fletch_Game and parya5103/crystal-quest-web (NO auto-merge)
+# ==============================================================================
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "\${BASH_SOURCE[0]}")/.." && pwd)"
+BRANCH="feat/gogo-shared-account"
+
+echo "1. Preparing parya5103/Fletch_Game on branch \${BRANCH}..."
+WORK_AO="$(mktemp -d)"
+git clone https://github.com/parya5103/Fletch_Game.git "\${WORK_AO}"
+cd "\${WORK_AO}"
+git checkout -b "\${BRANCH}"
+git apply "\${ROOT_DIR}/upstream-patches/Fletch_Game.patch"
+cp "\${ROOT_DIR}/assets/js/gogo-account.js" js/gogo-account.js
+cp "\${ROOT_DIR}/assets/css/gogo-account.css" css/gogo-account.css
+git add index.html js/storage.js sw.js js/gogo-account.js css/gogo-account.css
+git commit -m "feat(account): integrate shared GoGo Account and Cloud Save"
+git push -u origin "\${BRANCH}"
+if command -v gh >/dev/null 2>&1; then
+  gh pr create --repo parya5103/Fletch_Game --base main --head "\${BRANCH}" \\
+    --title "feat(account): integrate shared GoGo Account and Cloud Save" \\
+    --body "Integrates the shared GoGo Account and Cloud Save system across gogocompany.in without altering local arrowOut.v2 saves or guest play."
+else
+  echo "Open PR at: https://github.com/parya5103/Fletch_Game/compare/main...\${BRANCH}?expand=1"
+fi
+
+echo "2. Preparing parya5103/crystal-quest-web on branch \${BRANCH}..."
+WORK_CQ="$(mktemp -d)"
+git clone https://github.com/parya5103/crystal-quest-web.git "\${WORK_CQ}"
+cd "\${WORK_CQ}"
+git checkout -b "\${BRANCH}"
+git apply "\${ROOT_DIR}/upstream-patches/crystal-quest-web.patch"
+cp "\${ROOT_DIR}/assets/js/gogo-account.js" js/gogo-account.js
+cp "\${ROOT_DIR}/assets/css/gogo-account.css" gogo-account.css
+git add index.html js/ui.js sw.js js/gogo-account.js gogo-account.css
+git commit -m "feat(account): integrate shared GoGo Account and Cloud Save"
+git push -u origin "\${BRANCH}"
+if command -v gh >/dev/null 2>&1; then
+  gh pr create --repo parya5103/crystal-quest-web --base main --head "\${BRANCH}" \\
+    --title "feat(account): integrate shared GoGo Account and Cloud Save" \\
+    --body "Integrates the shared GoGo Account and Cloud Save system across gogocompany.in without altering local crystal-quest-save-v2 saves or guest play."
+else
+  echo "Open PR at: https://github.com/parya5103/crystal-quest-web/compare/main...\${BRANCH}?expand=1"
+fi
+`;
+writeFileSync(prScriptPath, prScript, 'utf8');
+chmodSync(prScriptPath, 0o755);
+console.log('[update-upstream-repos] Wrote upstream patches, git bundles, and scripts/push-upstream-prs.sh.');
