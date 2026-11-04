@@ -1,0 +1,49 @@
+diff --git a/index.html b/index.html
+index c3db51f..1182779 100644
+--- a/index.html
++++ b/index.html
+@@ -32,6 +32,7 @@
+   }
+   </script>
+   <link rel="stylesheet" href="styles.css" />
++  <link rel="stylesheet" href="gogo-account.css" />
+   <link rel="manifest" href="manifest.json" />
+   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2895136878543415" crossorigin="anonymous"></script>
+ </head>
+@@ -68,6 +69,7 @@
+           <p class="logo-sub">GEM LEGENDS</p>
+         </div>
+ 
++        <div style="display:flex;justify-content:center;margin-bottom:10px;"><button type="button" class="gogo-account-trigger" id="btn-cq-gogo-account" data-gogo-open-account="true"><span class="gogo-trigger-dot"></span><span class="gogo-trigger-text">GoGo Account</span></button></div>
+         <div class="home-progress" id="home-progress" aria-label="Adventure progress">
+           <span>Level <strong id="home-level">1</strong></span>
+           <span class="hp-sep" aria-hidden="true"></span>
+@@ -306,6 +308,7 @@
+     <div id="modal-settings" class="modal" hidden>
+       <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+         <h3 id="settings-title" class="modal-title">Settings</h3>
++        <div id="cq-gogo-cloud-panel" data-gogo-game-panel="crystalquest"></div>
+         <div class="setting-list">
+           <label class="setting-row">
+             <span>Sound effects</span>
+@@ -387,6 +390,7 @@
+   <script src="js/story.js"></script>
+   <script src="js/ui.js"></script>
+   <script src="js/main.js"></script>
++  <script src="js/gogo-account.js"></script>
+   <script>
+     /* Dev-only local debug tool: ?debug=1 loads the seeded bot + stats panel.
+        No network beyond these same-site files; nothing loads without the flag. */
+diff --git a/js/ui.js b/js/ui.js
+index 5390b64..b4d1cc2 100644
+--- a/js/ui.js
++++ b/js/ui.js
+@@ -17,7 +17,7 @@ this.absorb(d,parsed),d.world=this.absorbWorld(parsed.world);
+ if(parsed.v!==SAVE_VERSION){try{global.localStorage.setItem(BACKUP_KEY,raw)}catch(e2){}d.v=SAVE_VERSION,this.data=d,this.persist();return d}}}}
+ catch(err){d=this.defaults();try{global.localStorage.removeItem(SAVE_KEY)}catch(e2){}}
+ return this.data=d,d},
+-persist:function(){try{return global.localStorage.setItem(SAVE_KEY,JSON.stringify(this.data)),!0}catch(err){return!1}},
++persist:function(){try{var ok=(global.localStorage.setItem(SAVE_KEY,JSON.stringify(this.data)),!0);var ts=Date.now();global.localStorage.setItem("crystal-quest-cloud-meta-v1",JSON.stringify({updatedAtMs:ts}));global.GoGoAccount&&typeof global.GoGoAccount.notifyLocalSaveModified=="function"&&global.GoGoAccount.notifyLocalSaveModified("crystalquest",ts);return ok}catch(err){return!1}},getCloudSave:function(){try{return JSON.parse(JSON.stringify(this.data))}catch(e){return this.data}},getLocalUpdatedAt:function(){try{var r=global.localStorage.getItem("crystal-quest-cloud-meta-v1");if(r){var p=JSON.parse(r);if(p&&typeof p.updatedAtMs=="number")return p.updatedAtMs}}catch(e){}return 0},applyCloudSave:function(cloudData,updatedAtMs){if(!cloudData||typeof cloudData!="object")return!1;try{var d=this.defaults();this.absorb(d,cloudData);d.world=this.absorbWorld(cloudData.world);this.data=d;global.localStorage.setItem(SAVE_KEY,JSON.stringify(this.data));var ts=typeof updatedAtMs=="number"&&updatedAtMs>0?updatedAtMs:Date.now();global.localStorage.setItem("crystal-quest-cloud-meta-v1",JSON.stringify({updatedAtMs:ts}));UI&&UI.applySettings&&(UI.applySettings(),UI.buildMap(),UI.updateHome());return!0}catch(e){return!1}},
+ exportCode:function(){return EXPORT_PREFIX+b64encode(JSON.stringify(this.data))},
+ importCode:function(code){code=String(code==null?"":code).replace(/^\s+|\s+$/g,"");if(code.indexOf(EXPORT_PREFIX)!==0)return!1;var parsed;try{parsed=JSON.parse(b64decode(code.substring(EXPORT_PREFIX.length)))}catch(err){return!1}if(!parsed||typeof parsed!="object"||parsed.v!==SAVE_VERSION)return!1;var d=this.defaults();this.absorb(d,parsed);d.world=this.absorbWorld(parsed.world);return this.data=d,this.persist()},
+ markForestSeen:function(){var w=this.data&&this.data.world;(!w||!w.forest||!w.forest.seen||typeof w.forest.seen.push!="function")&&(w={forest:{seen:[]},relics:w&&typeof w.relics=="object"&&w.relics||[]});var seen=w.forest.seen,changed=!1;World.reached(World.forestStars(this.data)).forEach(function(m){seen.indexOf(m.id)<0&&(seen.push(m.id),changed=!0)});return this.data.world=w,changed?this.persist():!0},

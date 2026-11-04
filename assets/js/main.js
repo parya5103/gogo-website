@@ -26,6 +26,7 @@
     { href: "sarkari-sarthi/", label: "Sarkari Sarthi", page: "sarkari" },
     { href: "arrowout/", label: "Arrow Out!", page: "arrow-out" },
     { href: "crystalquest/", label: "Crystal Quest", page: "crystal-quest" },
+    { href: "account/index.html", label: "Account", page: "account" },
     { href: "about/index.html", label: "About", page: "about" },
     { href: "contact/index.html", label: "Contact", page: "contact" }
   ];
@@ -35,7 +36,8 @@
       heading: "Company",
       links: [
         { href: "about/index.html", label: "About Us" },
-        { href: "contact/index.html", label: "Contact" }
+        { href: "contact/index.html", label: "Contact" },
+        { href: "account/index.html", label: "GoGo Account" }
       ]
     },
     {
@@ -84,6 +86,12 @@
         (current ? ' aria-current="page"' : "") +
         ">" + esc(l.label) + "</a></li>";
     }
+    nav +=
+      '<li id="gogo-nav-account-item">' +
+      '<button type="button" class="gogo-account-trigger" data-gogo-open-account="true">' +
+      '<span class="gogo-trigger-dot"></span>' +
+      '<span class="gogo-trigger-text">GoGo Account</span>' +
+      "</button></li>";
     return (
       '<header class="site-header">' +
       '<div class="container header-inner">' +
@@ -129,9 +137,29 @@
     );
   }
 
+  function ensureAccountAssets() {
+    var cssHref = ROOT + "assets/css/gogo-account.css";
+    if (!document.querySelector('link[href*="gogo-account.css"]')) {
+      var link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = cssHref;
+      document.head.appendChild(link);
+    }
+    var jsSrc = ROOT + "assets/js/gogo-account.js";
+    if (!document.querySelector('script[src*="gogo-account.js"]')) {
+      var s = document.createElement("script");
+      s.src = jsSrc;
+      s.defer = true;
+      document.head.appendChild(s);
+    } else if (window.GoGoAccount && typeof window.GoGoAccount.instance?.renderAllUI === "function") {
+      window.GoGoAccount.instance.renderAllUI();
+    }
+  }
+
   function init() {
     document.body.insertAdjacentHTML("afterbegin", buildHeader());
     document.body.insertAdjacentHTML("beforeend", buildFooter());
+    ensureAccountAssets();
 
     var year = document.getElementById("footer-year");
     if (year) year.textContent = String(new Date().getFullYear());

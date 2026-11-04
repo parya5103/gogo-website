@@ -1,0 +1,89 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Shared GoGo Account user profile stored under users/{uid}",
+      "type": "object",
+      "properties": {
+        "displayName": {
+          "type": "string",
+          "description": "User display name (1 to 100 characters)"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "User email address (up to 254 characters)"
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "Optional profile avatar URL (empty string or valid http/https URL up to 2048 chars)"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the GoGo account was created (immutable)"
+        },
+        "lastLoginAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the user last signed in or synced profile"
+        }
+      },
+      "required": [
+        "displayName",
+        "email",
+        "photoURL",
+        "createdAt",
+        "lastLoginAt"
+      ]
+    },
+    "GameSaveProfile": {
+      "title": "GameSaveProfile",
+      "description": "Per-game cloud save document stored under gameProfiles/{uid}/games/{gameId}",
+      "type": "object",
+      "properties": {
+        "gameId": {
+          "type": "string",
+          "enum": [
+            "arrowout",
+            "crystalquest"
+          ],
+          "description": "Supported GoGo game identifier matching the document ID"
+        },
+        "progress": {
+          "type": "object",
+          "description": "Validated game save payload containing stage/level progress, stars, streaks, and clientUpdatedAtMs"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the cloud save was written"
+        },
+        "schemaVersion": {
+          "type": "integer",
+          "description": "Save schema version integer (1 to 100)"
+        }
+      },
+      "required": [
+        "gameId",
+        "progress",
+        "updatedAt",
+        "schemaVersion"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "Private user account profile document accessible only by the authenticated owner {uid}"
+    },
+    "/gameProfiles/{uid}/games/{gameId}": {
+      "schema": {
+        "$ref": "#/entities/GameSaveProfile"
+      },
+      "description": "Private per-game cloud save document accessible only by the authenticated owner {uid} for supported games (arrowout, crystalquest)"
+    }
+  }
+}

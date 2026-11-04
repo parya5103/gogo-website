@@ -1,0 +1,123 @@
+diff --git a/index.html b/index.html
+index 2e7ac10..c17b8c0 100644
+--- a/index.html
++++ b/index.html
+@@ -9,7 +9,7 @@
+   <meta name="apple-mobile-web-app-capable" content="yes" />
+   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+   <meta name="apple-mobile-web-app-title" content="Arrow Out!" />
+-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://fundingchoicesmessages.google.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; media-src 'self' data:; connect-src 'self' https://usszcnaaylbsgqaehsgp.supabase.co https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google https://fundingchoicesmessages.google.com; frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://pagead2.googlesyndication.com https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google https://fundingchoicesmessages.google.com; object-src 'none'; base-uri 'none'" />
++  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://apis.google.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://fundingchoicesmessages.google.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; media-src 'self' data:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com https://usszcnaaylbsgqaehsgp.supabase.co https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google https://fundingchoicesmessages.google.com; frame-src https://*.firebaseapp.com https://accounts.google.com https://apis.google.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://pagead2.googlesyndication.com https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google https://fundingchoicesmessages.google.com; object-src 'none'; base-uri 'none'" />
+   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2895136878543415" crossorigin="anonymous"></script>
+   <title>Arrow Out! &mdash; Premium Arrow Puzzle</title>
+   <link rel="canonical" href="https://gogocompany.in/arrowout/" />
+@@ -49,6 +49,7 @@
+   
+   <!-- Load styles -->
+   <link rel="stylesheet" href="css/styles.css" />
++  <link rel="stylesheet" href="css/gogo-account.css" />
+ 
+   <!-- Real PWA manifest + SVG favicon (required for Chrome install) -->
+   <link rel="manifest" href="manifest.webmanifest" />
+@@ -295,6 +296,7 @@
+ 
+       <div class="home-chips">
+         <div class="chip" id="home-progress" aria-live="polite">Loading progress...</div>
++        <button type="button" class="gogo-account-trigger" id="btn-gogo-account-home" data-gogo-open-account="true"><span class="gogo-trigger-dot"></span><span class="gogo-trigger-text">GoGo Account</span></button>
+       </div>
+ 
+       <div class="home-primary">
+@@ -527,6 +529,7 @@
+         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+       </button>
+       <h2 id="set-title">Settings</h2>
++      <div id="ao-gogo-cloud-panel" data-gogo-game-panel="arrowout"></div>
+       
+       <div class="stack">
+         <div class="row">
+@@ -755,5 +758,6 @@
+   <script src="js/render.js"></script>
+   <script src="js/ads.js"></script>
+   <script src="js/main.js"></script>
++  <script src="js/gogo-account.js"></script>
+ </body>
+ </html>
+diff --git a/js/storage.js b/js/storage.js
+index 865b638..f7ab593 100644
+--- a/js/storage.js
++++ b/js/storage.js
+@@ -448,6 +448,13 @@ const Storage = (function() {
+       lastSyncedRaw = out;
+       lastSyncedRev = save.rev || 0;
+       storageOk = true;
++      try {
++        var nowTs = Date.now();
++        localStorage.setItem('arrowOut.cloudMeta.v1', JSON.stringify({ updatedAtMs: nowTs }));
++        if (typeof window !== 'undefined' && window.GoGoAccount && typeof window.GoGoAccount.notifyLocalSaveModified === 'function') {
++          window.GoGoAccount.notifyLocalSaveModified('arrowout', nowTs);
++        }
++      } catch (eMeta) {}
+       return true;
+     } catch (e) {
+       if (storageOk) {
+@@ -632,9 +639,51 @@ const Storage = (function() {
+   // Initialize on load
+   init();
+ 
+-  return {
++  function getCloudSave() {
++    try {
++      return JSON.parse(JSON.stringify(save));
++    } catch (e) {
++      return save;
++    }
++  }
++
++  function getLocalUpdatedAt() {
++    try {
++      var raw = localStorage.getItem('arrowOut.cloudMeta.v1');
++      if (raw) {
++        var parsed = JSON.parse(raw);
++        if (parsed && typeof parsed.updatedAtMs === 'number') return parsed.updatedAtMs;
++      }
++    } catch (e) {}
++    return 0;
++  }
++
++  function applyCloudSave(cloudData, updatedAtMs) {
++    if (!cloudData || typeof cloudData !== 'object') return false;
++    try {
++      save = normalizeSave(JSON.parse(JSON.stringify(cloudData)));
++      capturePrefBaseline();
++      var out = JSON.stringify(save);
++      localStorage.setItem(SAVE_KEY, out);
++      lastSyncedRaw = out;
++      lastSyncedRev = save.rev || 0;
++      var ts = typeof updatedAtMs === 'number' && updatedAtMs > 0 ? updatedAtMs : Date.now();
++      localStorage.setItem('arrowOut.cloudMeta.v1', JSON.stringify({ updatedAtMs: ts }));
++      if (typeof window !== 'undefined' && window.UI && typeof window.UI.refreshAll === 'function') {
++        window.UI.refreshAll();
++      }
++      return true;
++    } catch (e) {
++      return false;
++    }
++  }
++
++  var api = {
+     init: init,
+     getSave: getSave,
++    getCloudSave: getCloudSave,
++    getLocalUpdatedAt: getLocalUpdatedAt,
++    applyCloudSave: applyCloudSave,
+     updateSave: updateSave,
+     updateLevelBest: updateLevelBest,
+     updateDailyChallenge: updateDailyChallenge,
+@@ -649,5 +698,7 @@ const Storage = (function() {
+     persist: persist,
+     DESIGN_LEVELS: DESIGN_LEVELS
+   };
++  if (typeof window !== 'undefined') { window.ArrowStorage = api; }
++  return api;
+ })();
+ 

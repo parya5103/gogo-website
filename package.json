@@ -1,0 +1,24 @@
+{
+  "name": "gogo-website",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "node scripts/build-account-bundle.mjs",
+    "lint:rules": "eslint firestore.rules",
+    "test": "node --experimental-transform-types scripts/run-all-tests.mjs"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "firebase": "^11.4.0"
+  },
+  "devDependencies": {
+    "@firebase/eslint-plugin-security-rules": "latest",
+    "@firebase/rules-unit-testing": "^4.0.1",
+    "esbuild": "^0.25.0",
+    "eslint": "^9.21.0",
+    "vitest": "^3.0.7"
+  }
+}

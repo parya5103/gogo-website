@@ -1,0 +1,150 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // =========================================================
+    // Helper Functions
+    // =========================================================
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isOwner(uid) {
+      return isAuthenticated() && isValidId(uid) && request.auth.uid == uid;
+    }
+
+    function isValidEmail(email) {
+      return email is string
+        && email.size() >= 3
+        && email.size() <= 254
+        && email.matches('^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}$');
+    }
+
+    function isValidOptionalPhotoUrl(url) {
+      return url is string
+        && url.size() <= 2048
+        && (url.size() == 0 || url.matches('^https?://.*'));
+    }
+
+    function isSupportedGameId(gameId) {
+      return gameId is string
+        && gameId.size() > 0
+        && gameId.size() <= 32
+        && (gameId == 'arrowout' || gameId == 'crystalquest');
+    }
+
+    // =========================================================
+    // User Profile Validation (/users/{uid})
+    // =========================================================
+
+    function hasExactUserFields(data) {
+      let allowed = ['displayName', 'email', 'photoURL', 'createdAt', 'lastLoginAt'];
+      return data.keys().hasAll(allowed) && data.keys().hasOnly(allowed);
+    }
+
+    function hasValidUserFieldTypes(data) {
+      return data.displayName is string
+        && data.displayName.size() >= 1
+        && data.displayName.size() <= 100
+        && isValidEmail(data.email)
+        && isValidOptionalPhotoUrl(data.photoURL)
+        && data.createdAt is timestamp
+        && data.lastLoginAt is timestamp;
+    }
+
+    function isValidUserCreate(data) {
+      return hasExactUserFields(data)
+        && hasValidUserFieldTypes(data)
+        && data.createdAt == request.time
+        && data.lastLoginAt == request.time;
+    }
+
+    function isValidUserUpdate(data, prev) {
+      return hasExactUserFields(data)
+        && hasValidUserFieldTypes(data)
+        && data.createdAt == prev.createdAt
+        && data.lastLoginAt == request.time;
+    }
+
+    // =========================================================
+    // Game Save Validation (/gameProfiles/{uid}/games/{gameId})
+    // =========================================================
+
+    function hasExactGameSaveFields(data) {
+      let allowed = ['gameId', 'progress', 'updatedAt', 'schemaVersion'];
+      return data.keys().hasAll(allowed) && data.keys().hasOnly(allowed);
+    }
+
+    function isValidArrowOutProgress(progress) {
+      return ('unlocked' in progress && progress.unlocked is int && progress.unlocked >= 1 && progress.unlocked <= 10000)
+        || (
+          ('currentStage' in progress && progress.currentStage is int && progress.currentStage >= 1 && progress.currentStage <= 10000)
+          && ('unlockedStage' in progress && progress.unlockedStage is int && progress.unlockedStage >= 1 && progress.unlockedStage <= 10000)
+        );
+    }
+
+    function isValidCrystalQuestProgress(progress) {
+      return ('unlocked' in progress && progress.unlocked is int && progress.unlocked >= 1 && progress.unlocked <= 10000)
+        && ('lastLevel' in progress && progress.lastLevel is int && progress.lastLevel >= 1 && progress.lastLevel <= 10000);
+    }
+
+    function isValidGameProgressPayload(gameId, progress) {
+      return progress is map
+        && progress.keys().size() >= 1
+        && progress.keys().size() <= 50
+        && (
+          (gameId == 'arrowout' && isValidArrowOutProgress(progress))
+          || (gameId == 'crystalquest' && isValidCrystalQuestProgress(progress))
+        );
+    }
+
+    function hasValidGameSaveTypes(data, gameId) {
+      return data.gameId is string
+        && data.gameId.size() > 0
+        && data.gameId.size() <= 32
+        && data.gameId == gameId
+        && data.schemaVersion is int
+        && data.schemaVersion >= 1
+        && data.schemaVersion <= 100
+        && data.updatedAt is timestamp
+        && isValidGameProgressPayload(gameId, data.progress);
+    }
+
+    function isValidGameSaveCreate(data, gameId) {
+      return hasExactGameSaveFields(data)
+        && hasValidGameSaveTypes(data, gameId)
+        && data.updatedAt == request.time;
+    }
+
+    function isValidGameSaveUpdate(data, prev, gameId) {
+      return hasExactGameSaveFields(data)
+        && hasValidGameSaveTypes(data, gameId)
+        && data.gameId == prev.gameId
+        && data.updatedAt == request.time;
+    }
+
+    // =========================================================
+    // Collection Rules
+    // =========================================================
+
+    match /users/{uid} {
+      allow get, list: if isOwner(uid);
+      allow create: if isOwner(uid) && isValidUserCreate(request.resource.data);
+      allow update: if isOwner(uid) && isValidUserUpdate(request.resource.data, resource.data);
+      allow delete: if isOwner(uid);
+    }
+
+    match /gameProfiles/{uid}/games/{gameId} {
+      allow get, list: if isOwner(uid) && isSupportedGameId(gameId);
+      allow create: if isOwner(uid) && isSupportedGameId(gameId) && isValidGameSaveCreate(request.resource.data, gameId);
+      allow update: if isOwner(uid) && isSupportedGameId(gameId) && isValidGameSaveUpdate(request.resource.data, resource.data, gameId);
+      allow delete: if isOwner(uid) && isSupportedGameId(gameId);
+    }
+  }
+}

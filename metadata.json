@@ -1,0 +1,5 @@
+{
+  "name": "GoGo Games & Shared Account Platform",
+  "description": "Unified GoGo Account, Firebase Authentication, and Cloud Save system across GoGo Games, Arrow Out, and Crystal Quest.",
+  "requestFramePermissions": []
+}

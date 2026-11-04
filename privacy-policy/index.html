@@ -30,19 +30,20 @@
         </ul>
         <p>The games may display their own in-game privacy information. Where a game says something specific about its own features, that description also applies on this domain. We do not make privacy claims on behalf of any third-party site we link to.</p>
 
-        <h2>What we do not collect</h2>
+        <h2>Optional GoGo Account &amp; Cloud Save</h2>
         <ul>
-          <li>We do not require accounts or sign-ups anywhere on gogocompany.in.</li>
-          <li>We do not ask for your name, phone number or email unless you contact us first.</li>
+          <li><strong>Guest play by default:</strong> You never need an account to use gogocompany.in, play Arrow Out! or Crystal Quest, or browse Sarkari Sarthi.</li>
+          <li><strong>Optional GoGo Account:</strong> If you choose to create a GoGo Account (via Email/Password or Google Sign-In powered by Google Firebase Authentication), we store your display name, email address, optional profile photo URL, account creation/login timestamps, and your game cloud save progress for Arrow Out! and Crystal Quest in Google Cloud Firestore.</li>
+          <li><strong>Strict ownership &amp; deletion:</strong> Your cloud profile and game saves are accessible only to your authenticated account UID. You can delete your GoGo Account and all associated Cloud Firestore data at any time directly from the <a href="../account/">GoGo Account page</a> or in-game account menu.</li>
           <li>We run no third-party analytics or tracking scripts of our own on this website.</li>
           <li>The Sarkari Sarthi portal loads public job-data files in your browser; it sends us no personal data.</li>
         </ul>
 
         <h2>What is stored in your browser</h2>
         <ul>
-          <li><strong>Game progress:</strong> Arrow Out! and Crystal Quest store your progress, settings and saves in your own browser's local storage under gogocompany.in. This data never leaves your device and we cannot read it.</li>
+          <li><strong>Game progress:</strong> Arrow Out! and Crystal Quest store your progress, settings and saves in your own browser's local storage under gogocompany.in. For guest players, this data never leaves your device. Logged-in players who enable Cloud Backup also sync a copy of their game save to their private GoGo Account in Cloud Firestore.</li>
+          <li><strong>Authentication session:</strong> When you sign in to a GoGo Account, Firebase Authentication stores your session token locally in your browser (IndexedDB / local storage) so you stay signed in across gogocompany.in, /arrowout/, and /crystalquest/.</li>
           <li><strong>Offline files:</strong> the games install a service worker that caches game files on your device so the games work offline. You can remove all of it any time by clearing site data in your browser.</li>
-          <li><strong>No server-side profiles:</strong> we never combine your game data with anything else, because we never receive it.</li>
         </ul>
 
         <h2>Cookies and similar technologies</h2>

@@ -448,6 +448,13 @@ const Storage = (function() {
       lastSyncedRaw = out;
       lastSyncedRev = save.rev || 0;
       storageOk = true;
+      try {
+        var nowTs = Date.now();
+        localStorage.setItem('arrowOut.cloudMeta.v1', JSON.stringify({ updatedAtMs: nowTs }));
+        if (typeof window !== 'undefined' && window.GoGoAccount && typeof window.GoGoAccount.notifyLocalSaveModified === 'function') {
+          window.GoGoAccount.notifyLocalSaveModified('arrowout', nowTs);
+        }
+      } catch (eMeta) {}
       return true;
     } catch (e) {
       if (storageOk) {
@@ -632,9 +639,51 @@ const Storage = (function() {
   // Initialize on load
   init();
 
-  return {
+  function getCloudSave() {
+    try {
+      return JSON.parse(JSON.stringify(save));
+    } catch (e) {
+      return save;
+    }
+  }
+
+  function getLocalUpdatedAt() {
+    try {
+      var raw = localStorage.getItem('arrowOut.cloudMeta.v1');
+      if (raw) {
+        var parsed = JSON.parse(raw);
+        if (parsed && typeof parsed.updatedAtMs === 'number') return parsed.updatedAtMs;
+      }
+    } catch (e) {}
+    return 0;
+  }
+
+  function applyCloudSave(cloudData, updatedAtMs) {
+    if (!cloudData || typeof cloudData !== 'object') return false;
+    try {
+      save = normalizeSave(JSON.parse(JSON.stringify(cloudData)));
+      capturePrefBaseline();
+      var out = JSON.stringify(save);
+      localStorage.setItem(SAVE_KEY, out);
+      lastSyncedRaw = out;
+      lastSyncedRev = save.rev || 0;
+      var ts = typeof updatedAtMs === 'number' && updatedAtMs > 0 ? updatedAtMs : Date.now();
+      localStorage.setItem('arrowOut.cloudMeta.v1', JSON.stringify({ updatedAtMs: ts }));
+      if (typeof window !== 'undefined' && window.UI && typeof window.UI.refreshAll === 'function') {
+        window.UI.refreshAll();
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  var api = {
     init: init,
     getSave: getSave,
+    getCloudSave: getCloudSave,
+    getLocalUpdatedAt: getLocalUpdatedAt,
+    applyCloudSave: applyCloudSave,
     updateSave: updateSave,
     updateLevelBest: updateLevelBest,
     updateDailyChallenge: updateDailyChallenge,
@@ -649,5 +698,7 @@ const Storage = (function() {
     persist: persist,
     DESIGN_LEVELS: DESIGN_LEVELS
   };
+  if (typeof window !== 'undefined') { window.ArrowStorage = api; }
+  return api;
 })();
 
