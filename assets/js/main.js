@@ -84,14 +84,14 @@
       var l = NAV_LINKS[i];
       var current = l.page === page;
       nav +=
-        '<li><a href="' + attr(ROOT + l.href) + '"' +
+        '<li role="none"><a href="' + attr(ROOT + l.href) + '"' +
         (current ? ' aria-current="page"' : "") +
         ">" + esc(l.label) + "</a></li>";
     }
     nav +=
-      '<li id="gogo-nav-account-item">' +
-      '<button type="button" class="gogo-account-trigger" data-gogo-open-account="true">' +
-      '<span class="gogo-trigger-dot"></span>' +
+      '<li id="gogo-nav-account-item" role="none">' +
+      '<button type="button" class="gogo-account-trigger" data-gogo-open-account="true" aria-label="Open GoGo Account menu" aria-haspopup="true">' +
+      '<span class="gogo-trigger-dot" aria-hidden="true"></span>' +
       '<span class="gogo-trigger-text">GoGo Account</span>' +
       "</button></li>";
     return (
@@ -101,11 +101,11 @@
       LOGO_SVG +
       '<span class="brand-name"><span class="accent">GoGo</span> Company</span>' +
       "</a>" +
-      '<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle menu">' +
-      '<span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span>' +
+      '<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle main navigation menu">' +
+      '<span class="nav-toggle-bar" aria-hidden="true"></span><span class="nav-toggle-bar" aria-hidden="true"></span><span class="nav-toggle-bar" aria-hidden="true"></span>' +
       "</button>" +
-      '<nav id="site-nav" class="site-nav" aria-label="Main navigation">' +
-      '<ul class="nav-list">' + nav + "</ul>" +
+      '<nav id="site-nav" class="site-nav" aria-label="Main navigation" role="navigation">' +
+      '<ul class="nav-list" role="menubar">' + nav + "</ul>" +
       "</nav>" +
       "</div>" +
       "</header>"
@@ -119,20 +119,20 @@
       var links = "";
       for (var j = 0; j < c.links.length; j++) {
         links +=
-          '<li><a href="' + attr(ROOT + c.links[j].href) + '">' +
+          '<li role="none"><a href="' + attr(ROOT + c.links[j].href) + '">' +
           esc(c.links[j].label) + "</a></li>";
       }
-      cols += '<div class="footer-col"><h3>' + esc(c.heading) + '</h3><ul>' + links + "</ul></div>";
+      cols += '<div class="footer-col"><h3>' + esc(c.heading) + '</h3><ul role="list">' + links + "</ul></div>";
     }
     return (
-      '<footer class="site-footer">' +
+      '<footer class="site-footer" role="contentinfo">' +
       '<div class="container footer-inner">' +
       '<div class="footer-brand">' +
       LOGO_SVG +
       '<span><span class="accent">GoGo</span> Company</span></div>' +
       '<p class="footer-tag">Games and government exam updates from GoGo Company.</p>' +
       '<p class="footer-mail">Email: <a href="mailto:' + EMAIL + '">' + EMAIL + "</a></p>" +
-      '<div class="footer-cols">' + cols + "</div>" +
+      '<div class="footer-cols" role="navigation" aria-label="Footer navigation">' + cols + "</div>" +
       '<p class="footer-copy">&copy; <span id="footer-year">2026</span> GoGo Company. All rights reserved.</p>' +
       "</div>" +
       "</footer>"
@@ -158,7 +158,12 @@
     }
   }
 
+  function buildSkipLink() {
+    return '<a href="#main" class="skip-link">Skip to main content</a>';
+  }
+
   function init() {
+    document.body.insertAdjacentHTML("afterbegin", buildSkipLink());
     document.body.insertAdjacentHTML("afterbegin", buildHeader());
     document.body.insertAdjacentHTML("beforeend", buildFooter());
     ensureAccountAssets();
