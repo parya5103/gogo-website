@@ -12,7 +12,11 @@
         "email": {
           "type": "string",
           "format": "email",
-          "description": "User email address (up to 254 characters)"
+          "description": "User email address matching request.auth.token.email (up to 254 characters)"
+        },
+        "emailVerified": {
+          "type": "boolean",
+          "description": "Whether the user's email address has been verified in Firebase Authentication"
         },
         "photoURL": {
           "type": "string",
@@ -57,7 +61,11 @@
         "email": {
           "type": "string",
           "format": "email",
-          "description": "Subscriber email address"
+          "description": "Subscriber email address matching request.auth.token.email"
+        },
+        "emailVerified": {
+          "type": "boolean",
+          "description": "Whether the subscriber's email address is verified in Firebase Authentication"
         },
         "displayName": {
           "type": "string",
@@ -192,19 +200,19 @@
       "schema": {
         "$ref": "#/entities/UserProfile"
       },
-      "description": "User account profile document accessible by the authenticated owner {uid} or an authorized GoGo Administrator"
+      "description": "User account profile document accessible by the authenticated owner {uid} or a verified GoGo Administrator"
     },
     "/marketingSubscribers/{uid}": {
       "schema": {
         "$ref": "#/entities/MarketingSubscriber"
       },
-      "description": "Marketing subscription and consent audit record accessible only by the authenticated owner {uid} or an authorized GoGo Administrator"
+      "description": "Marketing subscription and consent audit record accessible only by the authenticated owner {uid} or a verified GoGo Administrator"
     },
     "/admins/{uid}": {
       "schema": {
         "$ref": "#/entities/AdminRecord"
       },
-      "description": "Administrator role lookup collection readable by the authenticated owner or admin"
+      "description": "Administrator role lookup collection readable by the authenticated owner or verified admin"
     },
     "/gameProfiles/{uid}/games/{gameId}": {
       "schema": {

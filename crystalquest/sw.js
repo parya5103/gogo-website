@@ -19,6 +19,8 @@ var PRECACHE = [
   'js/story.js',
   'js/ui.js',
   'js/main.js',
+  'gogo-account.css',
+  'js/gogo-account.js',
   'images/bg_cavern.jpg',
   'images/bg_map.jpg'
 ];

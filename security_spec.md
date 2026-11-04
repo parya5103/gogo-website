@@ -1,54 +1,36 @@
-# GoGo Shared Account, Cloud Save & Marketing Subscriber — Security Specification
+# Security Specification — GoGo Shared Account, Cloud Save & Marketing Subscriber Database
 
-## 1. Authentication & Authorization Model
-- **Authentication Providers**: Firebase Authentication with Email/Password and Google Sign-In (`google.com`).
-- **Administrator Authorization (`isAdmin()`)**:
-  - Verified server-side in Firestore Security Rules via the user's cryptographically signed Firebase Auth token (`request.auth.token.email_verified == true` and `request.auth.token.email in ['aaryapratik@gmail.com', 'officialgogocompany@gmail.com']`) or existence of `/databases/$(database)/documents/admins/$(request.auth.uid)`.
-  - Normal users can NEVER read, list, or export other users' profiles or email addresses.
+## 1. Authentication & Session Model
+- **Authentication Providers**: Email/Password (with verification email sent upon registration) and Google Sign-In via Firebase Authentication (`gen-lang-client-0566323659`).
+- **Database**: Named Cloud Firestore instance `ai-studio-gogowebsite-4126d566-149d-4901-8c83-59ba041323ca`.
+- **Guest Mode**: Unauthenticated users never read or write to Firestore; all guest gameplay uses browser `localStorage`.
 
-## 2. Firestore Collections & Ownership
+## 2. Role-Based Access Control (RBAC) & Data Paths
+- **Normal Player (`isOwner(uid)`)**:
+  - `request.auth != null && request.auth.uid == uid`
+  - Can `get`, `create`, `update`, and `delete` ONLY their own `/users/{uid}`, `/marketingSubscribers/{uid}`, and `/gameProfiles/{uid}/games/{gameId}` documents.
+  - **Cannot `list`** `/users` or `/marketingSubscribers`. Normal users can never read or export another user's email address or profile.
+- **Verified GoGo Administrator (`isAdmin()`)**:
+  - Requires `request.auth != null && request.auth.token.email_verified == true` AND either:
+    1. `request.auth.token.email in ['aaryapratik@gmail.com', 'officialgogocompany@gmail.com']`, OR
+    2. `exists(/databases/$(database)/documents/admins/$(request.auth.uid))`
+  - Unverified admin accounts are strictly rejected (`fail closed`).
+  - Can `get` and `list` `/users/{uid}` and `/marketingSubscribers/{uid}` to power the protected GoGo Admin Dashboard (`/admin/`) and CSV exports.
 
-### `/users/{uid}` (`UserProfile`)
-- **Access Control**:
-  - `get`: Owner (`isOwner(uid)`) OR Administrator (`isAdmin()`).
-  - `list`: Administrator (`isAdmin()`) ONLY. Normal users are strictly prohibited from listing `/users`.
-  - `create`: Owner (`isOwner(uid)`) with valid schema (`isValidUserCreate`).
-  - `update`: Owner (`isOwner(uid)`) with valid schema (`isValidUserUpdate`).
-  - `delete`: Owner (`isOwner(uid)`).
-- **Schema & Field Validation**:
-  - Required fields: `['displayName', 'email', 'photoURL', 'createdAt', 'lastLoginAt']`.
-  - Allowed fields: `['displayName', 'email', 'photoURL', 'authProvider', 'marketingSubscribed', 'createdAt', 'lastLoginAt']`.
-  - `authProvider` (optional): `'password'` or `'google.com'`.
-  - `marketingSubscribed` (optional): `bool`.
-
-### `/marketingSubscribers/{uid}` (`MarketingSubscriber`)
-- **Access Control**:
-  - `get`: Owner (`isOwner(uid)`) OR Administrator (`isAdmin()`).
-  - `list`: Administrator (`isAdmin()`) ONLY. Normal users can never list or export subscriber emails.
-  - `create`: Owner (`isOwner(uid)`) with valid schema (`isValidSubscriberCreate`).
-  - `update`: Owner (`isOwner(uid)`) with valid schema (`isValidSubscriberUpdate`).
-  - `delete`: Owner (`isOwner(uid)`).
-- **Schema & Field Validation**:
-  - Required & allowed fields (`hasAll` and `hasOnly`):
-    `['email', 'displayName', 'subscribed', 'consentTimestamp', 'consentVersion', 'consentText', 'source', 'authProvider', 'registeredAt', 'updatedAt', 'unsubscribedAt']`.
-  - `email`: valid email string (`3..254` chars).
-  - `displayName`: string (`1..100` chars).
-  - `subscribed`: `bool`.
-  - `consentTimestamp`: `timestamp` or `null` (when `subscribed == true` on create, `consentTimestamp == request.time`).
-  - `consentVersion`: string (`0..32` chars).
-  - `consentText`: string (`0..500` chars).
-  - `source`: string (`1..64` chars).
-  - `authProvider`: `'password'` or `'google.com'`.
-  - `registeredAt`: `timestamp` (`== request.time` on create, immutable on update).
-  - `updatedAt`: `timestamp` (`== request.time` on create and update).
-  - `unsubscribedAt`: `timestamp` or `null`.
-
-### `/admins/{uid}` (`AdminRecord`)
-- **Access Control**:
-  - `get`: Owner (`isOwner(uid)`) or `isAdmin()`.
-  - `list`: `isAdmin()`.
-  - `create`, `update`, `delete`: `false` (managed only via Firebase Console or primary owner rules).
-
-### `/gameProfiles/{uid}/games/{gameId}` (`GameSaveProfile`)
-- **Access Control**:
-  - `get`, `list`, `create`, `update`, `delete`: Strictly Owner (`isOwner(uid)`) for `gameId in ['arrowout', 'crystalquest']`.
+## 3. Strict Schema, Email Consistency & Consent Validation
+1. **Email & Verification Consistency**:
+   - When `request.auth.token.email` is present, `request.resource.data.email` in `/users/{uid}` and `/marketingSubscribers/{uid}` MUST equal `request.auth.token.email`. A user can never write another person's email into their document.
+   - When `emailVerified` is provided in `/users/{uid}` or `/marketingSubscribers/{uid}`, it MUST match `request.auth.token.email_verified == true`. A client cannot forge `emailVerified: true`.
+2. **Marketing Subscriber Consent & Unsubscribe Integrity (`/marketingSubscribers/{uid}`)**:
+   - **Create**:
+     - `registeredAt == request.time && updatedAt == request.time`
+     - If `subscribed == true`: requires `authProvider != 'google.com'` (Google Sign-In never auto-subscribes on initial creation), `consentTimestamp == request.time`, non-empty `consentVersion` and `consentText`, and `unsubscribedAt == null`.
+     - If `subscribed == false`: requires `consentTimestamp == null && unsubscribedAt == null`.
+   - **Update**:
+     - `registeredAt == resource.data.registeredAt` (immutable) and `updatedAt == request.time`.
+     - If `subscribed == true`: requires `unsubscribedAt == null`, valid `consentTimestamp`, and non-empty `consentVersion` & `consentText`.
+     - If transitioning from `subscribed == true` to `subscribed == false` (Unsubscribe): requires `unsubscribedAt == request.time` and preserves `consentTimestamp`, `consentVersion`, and `consentText` from `resource.data`.
+     - If updating metadata while `subscribed == false` and `resource.data.subscribed == false`: requires `unsubscribedAt == resource.data.unsubscribedAt` and `consentTimestamp == resource.data.consentTimestamp` so unsubscribed users are never silently altered.
+3. **Game Cloud Saves (`/gameProfiles/{uid}/games/{gameId}`)**:
+   - Only `gameId in ['arrowout', 'crystalquest']` is permitted.
+   - Validates `unlocked >= 1` (Arrow Out) and `unlocked >= 1 && lastLevel >= 1` (Crystal Quest), bounded map sizes (`<= 50` keys), and `updatedAt == request.time`.

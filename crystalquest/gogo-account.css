@@ -1090,7 +1090,8 @@
 }
 
 @media (max-width: 860px) {
-  .gogo-admin-kpi-grid {
+  .gogo-admin-kpi-grid,
+  .gogo-admin-kpi-grid-6 {
     grid-template-columns: repeat(2, 1fr);
   }
   .gogo-admin-trends-grid {
@@ -1101,3 +1102,130 @@
   }
 }
 
+/* Email Verification Banner & Pills */
+.gogo-verify-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 13px 15px;
+  border-radius: 14px;
+  background: rgba(245, 158, 11, 0.14);
+  border: 1px solid rgba(251, 191, 36, 0.45);
+  margin-bottom: 14px;
+}
+
+.gogo-verify-banner strong {
+  display: block;
+  font-size: 0.86rem;
+  color: #fde68a;
+  margin-bottom: 3px;
+}
+
+.gogo-verify-banner span {
+  display: block;
+  font-size: 0.77rem;
+  line-height: 1.45;
+  color: #fef3c7;
+}
+
+.gogo-verify-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.gogo-verify-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.gogo-verify-pill.verified {
+  background: rgba(16, 185, 129, 0.18);
+  color: #6ee7b7;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.gogo-verify-pill.unverified {
+  background: rgba(245, 158, 11, 0.18);
+  color: #fcd34d;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+/* 6-Card Admin KPI Grid */
+.gogo-admin-kpi-grid-6 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 640px) {
+  .gogo-admin-kpi-grid-6 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Administrative Export Confirmation Warning Box */
+.gogo-admin-export-warning {
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: rgba(127, 29, 29, 0.35);
+  border: 1px solid rgba(248, 113, 113, 0.55);
+  margin-bottom: 18px;
+}
+
+.gogo-admin-export-warning strong {
+  display: block;
+  font-size: 0.92rem;
+  color: #fecaca;
+  margin-bottom: 6px;
+}
+
+.gogo-admin-export-warning p {
+  margin: 0 0 12px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #fee2e2;
+}
+
+.gogo-admin-export-warn-btns {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Admin Directory Pagination */
+.gogo-admin-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.gogo-admin-page-size {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: #94a3b8;
+}
+
+.gogo-admin-page-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gogo-admin-page-indicator {
+  font-size: 0.8rem;
+  color: #cbd5e1;
+  font-variant-numeric: tabular-nums;
+}

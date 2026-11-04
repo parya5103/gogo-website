@@ -47,3 +47,16 @@ index 5390b64..b4d1cc2 100644
  exportCode:function(){return EXPORT_PREFIX+b64encode(JSON.stringify(this.data))},
  importCode:function(code){code=String(code==null?"":code).replace(/^\s+|\s+$/g,"");if(code.indexOf(EXPORT_PREFIX)!==0)return!1;var parsed;try{parsed=JSON.parse(b64decode(code.substring(EXPORT_PREFIX.length)))}catch(err){return!1}if(!parsed||typeof parsed!="object"||parsed.v!==SAVE_VERSION)return!1;var d=this.defaults();this.absorb(d,parsed);d.world=this.absorbWorld(parsed.world);return this.data=d,this.persist()},
  markForestSeen:function(){var w=this.data&&this.data.world;(!w||!w.forest||!w.forest.seen||typeof w.forest.seen.push!="function")&&(w={forest:{seen:[]},relics:w&&typeof w.relics=="object"&&w.relics||[]});var seen=w.forest.seen,changed=!1;World.reached(World.forestStars(this.data)).forEach(function(m){seen.indexOf(m.id)<0&&(seen.push(m.id),changed=!0)});return this.data.world=w,changed?this.persist():!0},
+diff --git a/sw.js b/sw.js
+index fa2701f..8ed5dfc 100644
+--- a/sw.js
++++ b/sw.js
+@@ -19,6 +19,8 @@ var PRECACHE = [
+   'js/story.js',
+   'js/ui.js',
+   'js/main.js',
++  'gogo-account.css',
++  'js/gogo-account.js',
+   'images/bg_cavern.jpg',
+   'images/bg_map.jpg'
+ ];

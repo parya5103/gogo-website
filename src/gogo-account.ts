@@ -10,6 +10,8 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   sendPasswordResetEmail,
+  sendEmailVerification,
+  reload,
   signOut,
   updateProfile,
   deleteUser,
@@ -106,6 +108,7 @@ export const AUTHORIZED_ADMIN_EMAILS = ['aaryapratik@gmail.com', 'officialgogoco
 
 export interface SubscriberRecordInput {
   email: string;
+  emailVerified: boolean;
   displayName: string;
   subscribed: boolean;
   consentTimestampMs: number | null;
@@ -121,6 +124,7 @@ export interface SubscriberRecordInput {
 export interface AdminDirectoryEntry {
   uid: string;
   email: string;
+  emailVerified: boolean;
   displayName: string;
   authProvider: 'password' | 'google.com';
   registeredAtMs: number;
@@ -133,14 +137,109 @@ export interface AdminDirectoryEntry {
   unsubscribedAtMs: number | null;
 }
 
+export interface AdminDashboardStats {
+  totalUsers: number;
+  totalVerifiedUsers: number;
+  totalPromotionalSubscribers: number;
+  totalPendingVerificationSubscribers: number;
+  totalUnsubscribed: number;
+  totalNoConsent: number;
+  newLast7Days: number;
+  optInRatePercent: number;
+}
+
+/**
+ * Verifies whether a user is an authorized GoGo Administrator.
+ * Fails closed: requires a verified email address on ALL admin paths.
+ */
 export function isAuthorizedAdminUser(
   user: { email?: string | null; emailVerified?: boolean } | null | undefined,
   hasAdminDoc = false
 ): boolean {
-  if (!user) return false;
+  if (!user || user.emailVerified !== true) return false;
   if (hasAdminDoc) return true;
   const email = (user.email || '').trim().toLowerCase();
-  return Boolean(user.emailVerified && AUTHORIZED_ADMIN_EMAILS.includes(email));
+  return AUTHORIZED_ADMIN_EMAILS.includes(email);
+}
+
+/**
+ * Canonical filter for promotional marketing subscribers.
+ * Strictly requires:
+ * 1. Explicit opt-in (subscribed === true)
+ * 2. Verified email address (emailVerified === true)
+ * 3. Not unsubscribed (!unsubscribedAtMs)
+ * 4. Valid consent timestamp and consent version
+ */
+export function isEligibleMarketingSubscriber(entry: AdminDirectoryEntry | SubscriberRecordInput): boolean {
+  if (!entry) return false;
+  return Boolean(
+    entry.subscribed === true &&
+      entry.emailVerified === true &&
+      !entry.unsubscribedAtMs &&
+      typeof entry.consentTimestampMs === 'number' &&
+      entry.consentTimestampMs > 0 &&
+      typeof entry.consentVersion === 'string' &&
+      entry.consentVersion.trim().length > 0 &&
+      typeof entry.email === 'string' &&
+      entry.email.includes('@')
+  );
+}
+
+export function computeAdminDashboardStats(
+  entries: AdminDirectoryEntry[],
+  nowMs = Date.now()
+): AdminDashboardStats {
+  const totalUsers = entries.length;
+  const totalVerifiedUsers = entries.filter((e) => e.emailVerified === true).length;
+  const totalPromotionalSubscribers = entries.filter((e) => isEligibleMarketingSubscriber(e)).length;
+  const totalPendingVerificationSubscribers = entries.filter(
+    (e) => e.subscribed === true && !e.unsubscribedAtMs && !e.emailVerified
+  ).length;
+  const totalUnsubscribed = entries.filter((e) => !e.subscribed && Boolean(e.unsubscribedAtMs)).length;
+  const totalNoConsent = entries.filter((e) => !e.subscribed && !e.unsubscribedAtMs).length;
+  const sevenDaysAgo = nowMs - 7 * 24 * 60 * 60 * 1000;
+  const newLast7Days = entries.filter((e) => e.registeredAtMs >= sevenDaysAgo).length;
+  const optInRatePercent =
+    totalUsers > 0 ? Math.round((totalPromotionalSubscribers / totalUsers) * 100) : 0;
+
+  return {
+    totalUsers,
+    totalVerifiedUsers,
+    totalPromotionalSubscribers,
+    totalPendingVerificationSubscribers,
+    totalUnsubscribed,
+    totalNoConsent,
+    newLast7Days,
+    optInRatePercent,
+  };
+}
+
+export function paginateEntries<T>(
+  items: T[],
+  page: number,
+  pageSize: number
+): {
+  pageItems: T[];
+  currentPage: number;
+  totalPages: number;
+  totalItems: number;
+  startIndex: number;
+  endIndex: number;
+} {
+  const safeSize = Math.max(1, Math.floor(pageSize || 25));
+  const totalItems = items.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / safeSize));
+  const currentPage = Math.max(1, Math.min(totalPages, Math.floor(page || 1)));
+  const startIndex = totalItems === 0 ? 0 : (currentPage - 1) * safeSize;
+  const endIndex = Math.min(totalItems, startIndex + safeSize);
+  return {
+    pageItems: items.slice(startIndex, endIndex),
+    currentPage,
+    totalPages,
+    totalItems,
+    startIndex,
+    endIndex,
+  };
 }
 
 export function detectCurrentSourceSurface(): string {
@@ -155,6 +254,7 @@ export function detectCurrentSourceSurface(): string {
 
 export function buildInitialMarketingRecord(params: {
   email: string;
+  emailVerified?: boolean;
   displayName: string;
   marketingOptIn: boolean;
   authProvider: 'password' | 'google.com';
@@ -164,8 +264,13 @@ export function buildInitialMarketingRecord(params: {
   const now = params.nowMs ?? Date.now();
   // Never automatically subscribe Google sign-in users unless explicitly opted in
   const subscribed = params.authProvider === 'google.com' ? false : Boolean(params.marketingOptIn);
+  const emailVerified =
+    params.emailVerified !== undefined
+      ? Boolean(params.emailVerified)
+      : params.authProvider === 'google.com';
   return {
     email: params.email.trim().slice(0, 254),
+    emailVerified,
     displayName: (params.displayName.trim() || 'GoGo Player').slice(0, 100),
     subscribed,
     consentTimestampMs: subscribed ? now : null,
@@ -213,8 +318,8 @@ export function applyOptInToRecord(
 
 export function escapeCsvCell(value: unknown): string {
   const raw = String(value ?? '');
-  // Prevent CSV formula injection when opened in Excel / Google Sheets
-  const safe = /^[=+\-@]/.test(raw) ? `'${raw}` : raw;
+  // Prevent CSV formula injection (including leading whitespace/tabs/CR/LF before =, +, -, @)
+  const safe = /^(?:[=+\-@\t\r]|[\s]+[=+\-@])/.test(raw) ? `'${raw}` : raw;
   if (/[",\r\n]/.test(safe)) {
     return `"${safe.replace(/"/g, '""')}"`;
   }
@@ -241,11 +346,14 @@ export const CSV_HEADER_COLUMNS = [
 
 /**
  * Generates the Promotional Marketing Subscribers CSV.
- * STRICT REQUIREMENT: Only exports users who have explicitly subscribed (subscribed === true)
- * and have NOT unsubscribed.
+ * STRICT REQUIREMENT: Only exports users who:
+ * - Explicitly opted in (subscribed === true)
+ * - Have verified email addresses (emailVerified === true)
+ * - Have not unsubscribed (!unsubscribedAtMs)
+ * - Have valid consent records (consentTimestampMs > 0 && consentVersion)
  */
 export function generateMarketingSubscribersCsv(entries: AdminDirectoryEntry[]): string {
-  const subscribedOnly = entries.filter((e) => e.subscribed === true && !e.unsubscribedAtMs);
+  const subscribedOnly = entries.filter((e) => isEligibleMarketingSubscriber(e));
   const rows: string[] = [CSV_HEADER_COLUMNS.map(escapeCsvCell).join(',')];
 
   for (const item of subscribedOnly) {
@@ -273,8 +381,10 @@ export function generateAllRegisteredAccountsCsv(entries: AdminDirectoryEntry[])
   const rows: string[] = [CSV_HEADER_COLUMNS.map(escapeCsvCell).join(',')];
 
   for (const item of entries) {
-    const consentStatus = item.subscribed
+    const consentStatus = isEligibleMarketingSubscriber(item)
       ? 'Yes'
+      : item.subscribed && !item.emailVerified
+      ? 'Pending Email Verification'
       : item.unsubscribedAtMs
       ? 'No (Unsubscribed)'
       : 'No';
@@ -980,8 +1090,16 @@ class GoGoAccountManager {
   public adminError: string | null = null;
   public adminEntries: AdminDirectoryEntry[] = [];
   public adminActiveView: 'subscribers' | 'accounts' = 'subscribers';
-  public adminFilterStatus: 'all' | 'subscribed' | 'unsubscribed' | 'no_consent' = 'subscribed';
+  public adminFilterStatus:
+    | 'all'
+    | 'subscribed'
+    | 'pending_verification'
+    | 'unsubscribed'
+    | 'no_consent' = 'subscribed';
   public adminSearchQuery = '';
+  public adminPage = 1;
+  public adminPageSize = 25;
+  public adminShowExportAllConfirm = false;
 
   private adapters: Record<SupportedGameId, GameAdapter> = createDefaultAdapters();
   private activeModalTab: 'login' | 'register' | 'forgot' | 'profile' | 'conflict' | 'delete' = 'login';
@@ -1102,7 +1220,10 @@ class GoGoAccountManager {
   }
 
   private async checkAdminRole(user: User) {
-    if (!navigator.onLine) return;
+    if (!navigator.onLine || user.emailVerified !== true) {
+      this.hasAdminDoc = false;
+      return;
+    }
     if (isAuthorizedAdminUser(user, false)) {
       this.hasAdminDoc = true;
       return;
@@ -1199,6 +1320,7 @@ class GoGoAccountManager {
     if (!navigator.onLine) return;
 
     const authProvider = this.getPrimaryAuthProvider(user);
+    const emailVerified = Boolean(user.emailVerified);
     const userPath = `users/${user.uid}`;
     const subPath = `marketingSubscribers/${user.uid}`;
     const userRef = doc(this.db, 'users', user.uid);
@@ -1217,6 +1339,7 @@ class GoGoAccountManager {
           .trim()
           .slice(0, 100) || 'GoGo Player';
 
+      // Always keep stored email strictly consistent with authenticated user.email
       const email = (user.email || (userSnap.exists() ? userSnap.data().email : '') || 'player@gogocompany.in')
         .trim()
         .slice(0, 254);
@@ -1229,13 +1352,20 @@ class GoGoAccountManager {
       // 2. If new registration, only subscribe if explicitMarketingOptIn === true AND provider !== google.com auto-login
       let currentSubscribed = false;
       if (subSnap.exists()) {
-        currentSubscribed = Boolean(subSnap.data().subscribed);
-        this.subscriberProfile = subSnap.data();
-        // If displayName changed, sync displayName while preserving consent/unsubscribe fields
-        if (customDisplayName && subSnap.data().displayName !== displayName) {
-          const prevSub = subSnap.data();
+        const prevSub = subSnap.data();
+        currentSubscribed = Boolean(prevSub.subscribed);
+        this.subscriberProfile = prevSub;
+
+        // Sync displayName, email, or emailVerified changes while preserving consent/unsubscribe history
+        const needsSubSync =
+          (customDisplayName && prevSub.displayName !== displayName) ||
+          prevSub.email !== email ||
+          prevSub.emailVerified !== emailVerified;
+
+        if (needsSubSync) {
           const updatedSub = {
-            email: prevSub.email || email,
+            email,
+            emailVerified,
             displayName,
             subscribed: Boolean(prevSub.subscribed),
             consentTimestamp: prevSub.consentTimestamp ?? null,
@@ -1262,6 +1392,7 @@ class GoGoAccountManager {
 
         const createSubPayload = {
           email,
+          emailVerified,
           displayName,
           subscribed: optedIn,
           consentTimestamp: optedIn ? serverTimestamp() : null,
@@ -1287,6 +1418,7 @@ class GoGoAccountManager {
         const createUserPayload = {
           displayName,
           email,
+          emailVerified,
           photoURL,
           authProvider,
           marketingSubscribed: currentSubscribed,
@@ -1300,6 +1432,7 @@ class GoGoAccountManager {
         const updateUserPayload = {
           displayName,
           email,
+          emailVerified,
           photoURL,
           authProvider: prevUser.authProvider || authProvider,
           marketingSubscribed: currentSubscribed,
@@ -1330,6 +1463,7 @@ class GoGoAccountManager {
 
     const user = this.currentUser;
     const uid = user.uid;
+    const emailVerified = Boolean(user.emailVerified);
     const subRef = doc(this.db, 'marketingSubscribers', uid);
     const userRef = doc(this.db, 'users', uid);
     const authProvider = this.getPrimaryAuthProvider(user);
@@ -1347,6 +1481,7 @@ class GoGoAccountManager {
       if (!subSnap.exists()) {
         const payload = {
           email,
+          emailVerified,
           displayName,
           subscribed: subscribe,
           consentTimestamp: subscribe ? serverTimestamp() : null,
@@ -1356,7 +1491,7 @@ class GoGoAccountManager {
           authProvider,
           registeredAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
-          unsubscribedAt: subscribe ? null : serverTimestamp(),
+          unsubscribedAt: null,
         };
         await setDoc(subRef, payload);
         this.subscriberProfile = {
@@ -1364,12 +1499,13 @@ class GoGoAccountManager {
           consentTimestamp: subscribe ? Timestamp.now() : null,
           registeredAt: Timestamp.now(),
           updatedAt: Timestamp.now(),
-          unsubscribedAt: subscribe ? null : Timestamp.now(),
+          unsubscribedAt: null,
         };
       } else {
         const prev = subSnap.data();
         const payload = {
-          email: prev.email || email,
+          email,
+          emailVerified,
           displayName: prev.displayName || displayName,
           subscribed: subscribe,
           // Preserve prior consentTimestamp/Version/Text on unsubscribe for accountability; set fresh on opt-in
@@ -1396,20 +1532,23 @@ class GoGoAccountManager {
         const prevUser = userSnap.data();
         await setDoc(userRef, {
           displayName: prevUser.displayName || displayName,
-          email: prevUser.email || email,
+          email,
+          emailVerified,
           photoURL: prevUser.photoURL || '',
           authProvider: prevUser.authProvider || authProvider,
           marketingSubscribed: subscribe,
           createdAt: prevUser.createdAt,
           lastLoginAt: serverTimestamp(),
         });
-        this.userProfile = { ...prevUser, marketingSubscribed: subscribe };
+        this.userProfile = { ...prevUser, emailVerified, marketingSubscribed: subscribe };
       }
 
       this.setStatus(
         'success',
         subscribe
-          ? 'You are now subscribed to GoGo Games updates and promotional emails.'
+          ? emailVerified
+            ? 'You are now subscribed to GoGo Games updates and promotional emails.'
+            : 'Marketing preference saved! Please verify your email address to receive GoGo Games updates.'
           : 'You have been unsubscribed from GoGo promotional emails immediately.'
       );
       this.renderAllUI();
@@ -1429,7 +1568,9 @@ class GoGoAccountManager {
 
   public async loadAdminDirectory() {
     if (!this.currentUser || !this.isAdmin()) {
-      this.adminError = 'Access Denied: Only authorized GoGo Administrators can access customer & subscriber data.';
+      this.adminEntries = [];
+      this.adminError =
+        'Access Denied: Only verified, authorized GoGo Administrators can access customer & subscriber data.';
       this.renderAllUI();
       return;
     }
@@ -1474,9 +1615,17 @@ class GoGoAccountManager {
         const authProvider: 'password' | 'google.com' =
           (s?.authProvider || u?.authProvider) === 'google.com' ? 'google.com' : 'password';
 
+        const emailVerified =
+          typeof s?.emailVerified === 'boolean'
+            ? s.emailVerified
+            : typeof u?.emailVerified === 'boolean'
+            ? u.emailVerified
+            : authProvider === 'google.com';
+
         combined.push({
           uid,
           email: String(s?.email || u?.email || ''),
+          emailVerified,
           displayName: String(s?.displayName || u?.displayName || 'GoGo Player'),
           authProvider,
           registeredAtMs,
@@ -1496,7 +1645,8 @@ class GoGoAccountManager {
       this.renderAllUI();
     } catch (error) {
       this.adminLoading = false;
-      this.adminError = 'Permission denied by Firestore Security Rules or network error.';
+      this.adminEntries = [];
+      this.adminError = 'Permission denied by Firestore Security Rules or network error (fail closed).';
       this.renderAllUI();
       try {
         this.handleFirestoreError(error, OperationType.LIST, 'users | marketingSubscribers');
@@ -1508,9 +1658,11 @@ class GoGoAccountManager {
 
   public downloadAdminCsv(mode: 'marketing_only' | 'all_accounts') {
     if (!this.currentUser || !this.isAdmin()) {
-      this.setStatus('error', 'Unauthorized: Only an administrator can export CSV files.');
+      this.setStatus('error', 'Unauthorized: Only a verified administrator can export CSV files.');
       return;
     }
+
+    this.adminShowExportAllConfirm = false;
 
     const csvContent =
       mode === 'marketing_only'
@@ -1532,6 +1684,7 @@ class GoGoAccountManager {
     a.click();
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 1500);
+    this.renderAllUI();
   }
 
   // =========================================================
@@ -1818,17 +1971,68 @@ class GoGoAccountManager {
     try {
       const cred = await createUserWithEmailAndPassword(this.auth, cleanEmail, password);
       await updateProfile(cred.user, { displayName: cleanName });
+      let verificationSent = false;
+      try {
+        await sendEmailVerification(cred.user);
+        verificationSent = true;
+      } catch (verifyErr) {
+        console.warn('[GoGoAccount] Could not send initial verification email:', verifyErr);
+      }
       await this.ensureUserProfileAndSubscriber(cred.user, cleanName, Boolean(marketingOptIn));
       this.activeModalTab = 'profile';
-      this.setStatus(
-        'success',
-        `Welcome to GoGo, ${cleanName}! Your account is ready.${
-          marketingOptIn ? ' You are subscribed to GoGo Games updates.' : ''
-        }`
-      );
+      const verifyMsg = verificationSent
+        ? ` We sent a verification link to ${cleanEmail} — please verify your email.`
+        : '';
+      const optInMsg = marketingOptIn
+        ? ' Your promotional email opt-in will become active as soon as your email is verified.'
+        : '';
+      this.setStatus('success', `Welcome to GoGo, ${cleanName}!${verifyMsg}${optInMsg}`);
       this.renderAllUI();
     } catch (err) {
       this.pendingRegistrationConsent = null;
+      this.setStatus('error', this.formatAuthError(err));
+    }
+  }
+
+  public async resendVerificationEmail() {
+    if (!this.currentUser) return;
+    if (this.currentUser.emailVerified) {
+      this.setStatus('info', 'Your email address is already verified.');
+      return;
+    }
+    this.setStatus('info', 'Sending verification email...');
+    try {
+      await sendEmailVerification(this.currentUser);
+      this.setStatus(
+        'success',
+        `Verification email sent to ${this.currentUser.email}. Check your inbox and spam folder, then click "I've Verified — Refresh".`
+      );
+    } catch (err) {
+      this.setStatus('error', this.formatAuthError(err));
+    }
+  }
+
+  public async refreshEmailVerificationStatus() {
+    if (!this.currentUser) return;
+    this.setStatus('info', 'Checking email verification status...');
+    try {
+      await reload(this.currentUser);
+      await this.currentUser.getIdToken(true);
+      this.currentUser = this.auth.currentUser;
+      if (this.currentUser) {
+        await this.ensureUserProfileAndSubscriber(this.currentUser);
+        await this.checkAdminRole(this.currentUser);
+        if (this.currentUser.emailVerified) {
+          this.setStatus('success', 'Your email address is now verified!');
+        } else {
+          this.setStatus(
+            'info',
+            'Email is still marked unverified. Please click the verification link in your email first.'
+          );
+        }
+      }
+      this.renderAllUI();
+    } catch (err) {
       this.setStatus('error', this.formatAuthError(err));
     }
   }
@@ -2066,6 +2270,12 @@ class GoGoAccountManager {
         case 'logout':
           this.logout();
           break;
+        case 'resend-verification':
+          this.resendVerificationEmail();
+          break;
+        case 'refresh-verification':
+          this.refreshEmailVerificationStatus();
+          break;
         case 'toggle-cloud':
           this.setCloudBackupEnabled(!this.isCloudBackupEnabled());
           break;
@@ -2084,6 +2294,7 @@ class GoGoAccountManager {
           if (v) {
             this.adminActiveView = v;
             this.adminFilterStatus = v === 'subscribers' ? 'subscribed' : 'all';
+            this.adminPage = 1;
             this.renderAllUI();
           }
           break;
@@ -2092,6 +2303,31 @@ class GoGoAccountManager {
           const st = target.getAttribute('data-status') as any;
           if (st) {
             this.adminFilterStatus = st;
+            this.adminPage = 1;
+            this.renderAllUI();
+          }
+          break;
+        }
+        case 'admin-page-prev': {
+          if (this.adminPage > 1) {
+            this.adminPage -= 1;
+            this.renderAdminTableOnly();
+          }
+          break;
+        }
+        case 'admin-page-next': {
+          const totalPages = Math.max(1, Math.ceil(this.getFilteredAdminEntries().length / this.adminPageSize));
+          if (this.adminPage < totalPages) {
+            this.adminPage += 1;
+            this.renderAdminTableOnly();
+          }
+          break;
+        }
+        case 'admin-page-size': {
+          const sz = parseInt(target.getAttribute('data-size') || '25', 10);
+          if ([25, 50, 100].includes(sz)) {
+            this.adminPageSize = sz;
+            this.adminPage = 1;
             this.renderAllUI();
           }
           break;
@@ -2101,6 +2337,14 @@ class GoGoAccountManager {
           break;
         case 'admin-export-marketing-csv':
           this.downloadAdminCsv('marketing_only');
+          break;
+        case 'admin-request-accounts-csv':
+          this.adminShowExportAllConfirm = true;
+          this.renderAllUI();
+          break;
+        case 'admin-cancel-accounts-csv':
+          this.adminShowExportAllConfirm = false;
+          this.renderAllUI();
           break;
         case 'admin-export-accounts-csv':
           this.downloadAdminCsv('all_accounts');
@@ -2128,6 +2372,7 @@ class GoGoAccountManager {
       const input = e.target as HTMLInputElement;
       if (input && input.id === 'gogo-admin-search-input') {
         this.adminSearchQuery = input.value;
+        this.adminPage = 1;
         this.renderAdminTableOnly();
       }
     });
@@ -2303,6 +2548,7 @@ class GoGoAccountManager {
     const displayName =
       user.displayName || this.userProfile?.displayName || user.email?.split('@')[0] || 'GoGo Player';
     const email = user.email || this.userProfile?.email || '';
+    const isEmailVerified = Boolean(user.emailVerified);
     const initial = displayName.charAt(0).toUpperCase();
     const cloudEnabled = this.isCloudBackupEnabled();
     const isMarketingSubscribed = Boolean(this.subscriberProfile?.subscribed);
@@ -2484,6 +2730,27 @@ class GoGoAccountManager {
     `
       : '';
 
+    const verificationBannerHtml = !isEmailVerified
+      ? `
+      <div class="gogo-verify-banner">
+        <div>
+          <strong>Email Verification Pending</strong>
+          <span>Verify <em>${this.escapeHtml(
+            email
+          )}</em> to activate promotional email delivery and full account verification.</span>
+        </div>
+        <div class="gogo-verify-actions">
+          <button type="button" class="gogo-btn gogo-btn-secondary gogo-btn-sm" data-gogo-action="resend-verification">
+            Resend Verification Email
+          </button>
+          <button type="button" class="gogo-btn gogo-btn-ghost gogo-btn-sm" data-gogo-action="refresh-verification">
+            I've Verified — Refresh
+          </button>
+        </div>
+      </div>
+    `
+      : '';
+
     return `
       <div class="gogo-account-card ${isEmbeddedPage ? 'gogo-account-card-page' : ''}">
         <div class="gogo-account-header">
@@ -2498,13 +2765,19 @@ class GoGoAccountManager {
           <div class="gogo-avatar">${this.escapeHtml(initial)}</div>
           <div class="gogo-profile-meta">
             <h3>${this.escapeHtml(displayName)}</h3>
-            <p>${this.escapeHtml(email)}</p>
+            <p>
+              ${this.escapeHtml(email)}
+              <span class="gogo-verify-pill ${isEmailVerified ? 'verified' : 'unverified'}">
+                ${isEmailVerified ? '✓ Verified' : 'Unverified'}
+              </span>
+            </p>
           </div>
           <button type="button" class="gogo-btn gogo-btn-ghost gogo-btn-sm" data-gogo-action="logout">Sign Out</button>
         </div>
 
         ${statusHtml}
         ${adminBannerHtml}
+        ${verificationBannerHtml}
 
         <form data-gogo-form="update-profile" class="gogo-inline-form">
           <input type="text" name="displayName" value="${this.escapeHtml(
@@ -2528,7 +2801,9 @@ class GoGoAccountManager {
             <strong>GoGo Games Promotional Emails</strong>
             <p>${
               isMarketingSubscribed
-                ? 'Subscribed to new game announcements, updates &amp; special offers.'
+                ? isEmailVerified
+                  ? 'Subscribed (Verified) to new game announcements, updates &amp; special offers.'
+                  : 'Opted in — please verify your email address above so promotional emails can be sent.'
                 : 'Not subscribed to promotional emails. You can opt in or unsubscribe anytime.'
             }</p>
           </div>
@@ -2572,10 +2847,18 @@ class GoGoAccountManager {
             Sign in to your GoGo Account to immediately unsubscribe from promotional emails or review your consent record.
           </p>
           ${statusHtml}
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
-            <button type="button" class="gogo-btn gogo-btn-primary" data-gogo-open-account="login" data-gogo-custom-label="true">
-              Sign In to Unsubscribe
-            </button>
+          <div class="gogo-unsubscribe-box" style="margin-bottom:14px;">
+            <p style="margin:0 0 10px;color:#cbd5e1;font-size:0.86rem;line-height:1.5;">
+              <strong>Security Note:</strong> Because GoGo Website is hosted statically on GitHub Pages without a paid backend server, subscription records in Cloud Firestore are protected by strict owner-only Security Rules (<code>request.auth.uid == uid</code>) so third parties can never forge an unsubscribe or opt-in request for your email address.
+            </p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+              <button type="button" class="gogo-btn gogo-btn-primary" data-gogo-open-account="login" data-gogo-custom-label="true">
+                Sign In to Unsubscribe Immediately
+              </button>
+              <button type="button" class="gogo-btn gogo-btn-ghost" data-gogo-action="google-login">
+                Continue with Google
+              </button>
+            </div>
           </div>
         </div>
       `;
@@ -2617,7 +2900,13 @@ class GoGoAccountManager {
   private getFilteredAdminEntries(): AdminDirectoryEntry[] {
     const q = this.adminSearchQuery.trim().toLowerCase();
     return this.adminEntries.filter((entry) => {
-      if (this.adminFilterStatus === 'subscribed' && !entry.subscribed) return false;
+      if (this.adminFilterStatus === 'subscribed' && !isEligibleMarketingSubscriber(entry)) return false;
+      if (
+        this.adminFilterStatus === 'pending_verification' &&
+        !(entry.subscribed && !entry.unsubscribedAtMs && !entry.emailVerified)
+      ) {
+        return false;
+      }
       if (this.adminFilterStatus === 'unsubscribed' && (entry.subscribed || !entry.unsubscribedAtMs)) return false;
       if (this.adminFilterStatus === 'no_consent' && (entry.subscribed || entry.unsubscribedAtMs)) return false;
 
@@ -2632,34 +2921,60 @@ class GoGoAccountManager {
   }
 
   private renderAdminTableRowsHtml(): string {
+    if (this.adminLoading) {
+      return `
+        <tr>
+          <td colspan="8" style="text-align:center;padding:32px;color:#93c5fd;">
+            Loading customer &amp; subscriber directory from Cloud Firestore...
+          </td>
+        </tr>
+      `;
+    }
+
     const filtered = this.getFilteredAdminEntries();
     if (filtered.length === 0) {
       return `
         <tr>
-          <td colspan="6" style="text-align:center;padding:28px;color:#94a3b8;">
+          <td colspan="8" style="text-align:center;padding:28px;color:#94a3b8;">
             No matching records found for the current filter.
           </td>
         </tr>
       `;
     }
 
-    return filtered
+    const pageInfo = paginateEntries(filtered, this.adminPage, this.adminPageSize);
+    this.adminPage = pageInfo.currentPage;
+
+    return pageInfo.pageItems
       .map((item) => {
-        const statusText = item.subscribed
-          ? 'Yes (Subscribed)'
+        const isEligible = isEligibleMarketingSubscriber(item);
+        const statusText = isEligible
+          ? 'Yes (Verified Opt-In)'
+          : item.subscribed && !item.emailVerified
+          ? 'Pending Email Verification'
           : item.unsubscribedAtMs
           ? 'Unsubscribed'
           : 'No Consent';
-        const statusClass = item.subscribed
+        const statusClass = isEligible
           ? 'gogo-admin-status-yes'
+          : item.subscribed && !item.emailVerified
+          ? 'gogo-admin-status-unsub'
           : item.unsubscribedAtMs
           ? 'gogo-admin-status-unsub'
           : 'gogo-admin-status-no';
+
+        const verifiedBadge = item.emailVerified
+          ? `<span class="gogo-verify-pill verified">Verified</span>`
+          : `<span class="gogo-verify-pill unverified">Unverified</span>`;
+
+        const providerLabel = item.authProvider === 'google.com' ? 'Google' : 'Email/Password';
 
         return `
           <tr>
             <td class="gogo-mono-cell">${this.escapeHtml(item.email)}</td>
             <td>${this.escapeHtml(item.displayName)}</td>
+            <td>${verifiedBadge}</td>
+            <td>${this.escapeHtml(providerLabel)}</td>
             <td class="gogo-mono-cell">${this.escapeHtml(formatIsoDateForCsv(item.registeredAtMs) || '—')}</td>
             <td><span class="${statusClass}">${this.escapeHtml(statusText)}</span></td>
             <td class="gogo-mono-cell">${this.escapeHtml(
@@ -2672,14 +2987,57 @@ class GoGoAccountManager {
       .join('');
   }
 
+  private renderAdminPaginationHtml(): string {
+    const filtered = this.getFilteredAdminEntries();
+    const pageInfo = paginateEntries(filtered, this.adminPage, this.adminPageSize);
+    const showingText =
+      pageInfo.totalItems === 0
+        ? '0 records'
+        : `Showing ${pageInfo.startIndex + 1}–${pageInfo.endIndex} of ${pageInfo.totalItems} records`;
+
+    return `
+      <div class="gogo-admin-pagination" id="gogo-admin-pagination-bar">
+        <span id="gogo-admin-filtered-count" class="gogo-admin-count">${this.escapeHtml(showingText)}</span>
+        <div class="gogo-admin-page-controls">
+          <span class="gogo-admin-count">Rows:</span>
+          ${[25, 50, 100]
+            .map(
+              (sz) =>
+                `<button type="button" class="gogo-seg-btn ${
+                  this.adminPageSize === sz ? 'active' : ''
+                }" data-gogo-action="admin-page-size" data-size="${sz}">${sz}</button>`
+            )
+            .join('')}
+          <button
+            type="button"
+            class="gogo-btn gogo-btn-ghost gogo-btn-sm"
+            data-gogo-action="admin-page-prev"
+            ${pageInfo.currentPage <= 1 ? 'disabled' : ''}
+          >
+            ← Prev
+          </button>
+          <span class="gogo-admin-count">Page ${pageInfo.currentPage} of ${pageInfo.totalPages}</span>
+          <button
+            type="button"
+            class="gogo-btn gogo-btn-ghost gogo-btn-sm"
+            data-gogo-action="admin-page-next"
+            ${pageInfo.currentPage >= pageInfo.totalPages ? 'disabled' : ''}
+          >
+            Next →
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
   private renderAdminTableOnly() {
     const tbody = document.getElementById('gogo-admin-table-body');
-    const countEl = document.getElementById('gogo-admin-filtered-count');
+    const paginationContainer = document.getElementById('gogo-admin-pagination-wrap');
     if (tbody) {
       tbody.innerHTML = this.renderAdminTableRowsHtml();
     }
-    if (countEl) {
-      countEl.textContent = `${this.getFilteredAdminEntries().length} records shown`;
+    if (paginationContainer) {
+      paginationContainer.innerHTML = this.renderAdminPaginationHtml();
     }
   }
 
@@ -2699,18 +3057,19 @@ class GoGoAccountManager {
     const sourceCounts = new Map<string, { total: number; subscribed: number }>();
 
     for (const entry of this.adminEntries) {
+      const isEligible = isEligibleMarketingSubscriber(entry);
       if (entry.registeredAtMs > 0) {
         const key = new Date(entry.registeredAtMs).toISOString().slice(0, 10);
         const b = bucketMap.get(key);
         if (b) {
           b.total += 1;
-          if (entry.subscribed) b.subscribed += 1;
+          if (isEligible) b.subscribed += 1;
         }
       }
       const src = entry.source || entry.authProvider || 'direct';
       const prev = sourceCounts.get(src) || { total: 0, subscribed: 0 };
       prev.total += 1;
-      if (entry.subscribed) prev.subscribed += 1;
+      if (isEligible) prev.subscribed += 1;
       sourceCounts.set(src, prev);
     }
 
@@ -2721,7 +3080,7 @@ class GoGoAccountManager {
         const subPct = b.total > 0 ? Math.round((b.subscribed / maxDaily) * 100) : 0;
         return `
           <div class="gogo-trend-col" title="${this.escapeHtml(
-            `${b.label}: ${b.total} registered (${b.subscribed} subscribed)`
+            `${b.label}: ${b.total} registered (${b.subscribed} verified opt-in)`
           )}">
             <div class="gogo-trend-bar-track">
               <div class="gogo-trend-bar-total" style="height:${totalPct}%"></div>
@@ -2750,7 +3109,7 @@ class GoGoAccountManager {
               ([src, stats]) => `
             <div class="gogo-source-row">
               <span class="gogo-mono-cell">${this.escapeHtml(src)}</span>
-              <span><strong>${stats.subscribed}</strong> opt-in / ${stats.total} total</span>
+              <span><strong>${stats.subscribed}</strong> verified opt-in / ${stats.total} total</span>
             </div>
           `
             )
@@ -2761,7 +3120,7 @@ class GoGoAccountManager {
         <div class="gogo-admin-trend-card">
           <div class="gogo-admin-trend-head">
             <strong>Registration Trends (Last 7 Days)</strong>
-            <span>Total Signups vs. Marketing Opt-Ins</span>
+            <span>Total Signups vs. Verified Marketing Opt-Ins</span>
           </div>
           <div class="gogo-trend-bars">${barsHtml}</div>
         </div>
@@ -2783,7 +3142,7 @@ class GoGoAccountManager {
         <div class="gogo-account-card gogo-account-card-page">
           <h2 class="gogo-account-title">GoGo Admin Authorization Required</h2>
           <p class="gogo-account-subtitle">
-            This dashboard is restricted to the authorized GoGo Company administrator (<strong>aaryapratik@gmail.com</strong>). Please sign in to verify your identity.
+            This dashboard is restricted to the verified GoGo Company administrator (<strong>aaryapratik@gmail.com</strong>). Please sign in to verify your identity.
           </p>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
             <button type="button" class="gogo-btn gogo-btn-primary" data-gogo-action="google-login">
@@ -2802,9 +3161,9 @@ class GoGoAccountManager {
         <div class="gogo-account-card gogo-account-card-page">
           <h2 class="gogo-account-title">403 — Administrator Access Denied</h2>
           <p class="gogo-account-subtitle">
-            Signed in as <strong>${this.escapeHtml(
-              user.email
-            )}</strong>. Customer email lists and subscriber exports are strictly restricted to the authorized GoGo Administrator and protected by Cloud Firestore Security Rules.
+            Signed in as <strong>${this.escapeHtml(user.email)}</strong> (${
+        user.emailVerified ? 'Verified' : 'Unverified Email'
+      }). Customer email lists and subscriber exports are strictly restricted to verified GoGo Administrators and enforced by Cloud Firestore Security Rules.
           </p>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
             <a href="/account/" class="gogo-btn gogo-btn-secondary">Return to Player Account</a>
@@ -2814,29 +3173,47 @@ class GoGoAccountManager {
       `;
     }
 
-    const totalUsers = this.adminEntries.length;
-    const totalSubscribed = this.adminEntries.filter((e) => e.subscribed).length;
-    const totalUnsubscribed = this.adminEntries.filter((e) => !e.subscribed && e.unsubscribedAtMs).length;
-    const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
-    const newLast7Days = this.adminEntries.filter((e) => e.registeredAtMs >= sevenDaysAgo).length;
-    const optInRate = totalUsers > 0 ? Math.round((totalSubscribed / totalUsers) * 100) : 0;
+    const stats = computeAdminDashboardStats(this.adminEntries);
+
+    const exportWarningModalHtml = this.adminShowExportAllConfirm
+      ? `
+        <div class="gogo-admin-export-warning" role="alertdialog" aria-labelledby="gogo-export-warn-title">
+          <div>
+            <strong id="gogo-export-warn-title">⚠️ Administrative Account Export Warning</strong>
+            <p>
+              You are about to export <strong>all ${stats.totalUsers} registered GoGo accounts</strong>, including <strong>${stats.totalNoConsent} users without marketing consent</strong> and <strong>${stats.totalUnsubscribed} unsubscribed users</strong>. This file is strictly for account administration and must <strong>never</strong> be used for promotional email campaigns.
+            </p>
+          </div>
+          <div class="gogo-admin-export-warn-btns">
+            <button type="button" class="gogo-btn gogo-btn-danger gogo-btn-sm" data-gogo-action="admin-export-accounts-csv">
+              Confirm Administrative CSV Export (${stats.totalUsers})
+            </button>
+            <button type="button" class="gogo-btn gogo-btn-ghost gogo-btn-sm" data-gogo-action="admin-cancel-accounts-csv">
+              Cancel
+            </button>
+          </div>
+        </div>
+      `
+      : '';
 
     return `
       <div class="gogo-admin-shell">
         <div class="gogo-admin-topbar">
           <div>
             <h2>GoGo Customer &amp; Marketing Subscriber Directory</h2>
-            <p>Verified Admin: <strong>${this.escapeHtml(user.email)}</strong> · Firestore Rules Enforced</p>
+            <p>Verified Admin: <strong>${this.escapeHtml(
+              user.email
+            )}</strong> · Firestore Rules Enforced · Named DB Connected</p>
           </div>
           <div class="gogo-admin-export-bar">
             <button type="button" class="gogo-btn gogo-btn-ghost gogo-btn-sm" data-gogo-action="admin-refresh">
               ${this.adminLoading ? 'Refreshing...' : 'Refresh Data'}
             </button>
             <button type="button" class="gogo-btn gogo-btn-primary gogo-btn-sm" data-gogo-action="admin-export-marketing-csv">
-              Download Marketing Subscribers CSV (${totalSubscribed})
+              Download Marketing Subscribers CSV (${stats.totalPromotionalSubscribers})
             </button>
-            <button type="button" class="gogo-btn gogo-btn-secondary gogo-btn-sm" data-gogo-action="admin-export-accounts-csv">
-              Download All Registered Accounts CSV (${totalUsers})
+            <button type="button" class="gogo-btn gogo-btn-secondary gogo-btn-sm" data-gogo-action="admin-request-accounts-csv">
+              Download All Registered Accounts CSV (${stats.totalUsers})
             </button>
           </div>
         </div>
@@ -2847,25 +3224,37 @@ class GoGoAccountManager {
             : ''
         }
 
-        <div class="gogo-admin-kpi-grid">
+        ${exportWarningModalHtml}
+
+        <div class="gogo-admin-kpi-grid gogo-admin-kpi-grid-6">
           <div class="gogo-admin-kpi">
             <span>Total Registered Users</span>
-            <strong>${totalUsers}</strong>
+            <strong>${stats.totalUsers}</strong>
             <small>All GoGo accounts across games</small>
           </div>
           <div class="gogo-admin-kpi">
+            <span>Verified Email Users</span>
+            <strong>${stats.totalVerifiedUsers}</strong>
+            <small>Confirmed via Google or Email link</small>
+          </div>
+          <div class="gogo-admin-kpi">
             <span>Promotional Subscribers</span>
-            <strong>${totalSubscribed}</strong>
-            <small>${optInRate}% explicit marketing opt-in rate</small>
+            <strong>${stats.totalPromotionalSubscribers}</strong>
+            <small>Verified + Explicit Opt-In (${stats.optInRatePercent}%)</small>
           </div>
           <div class="gogo-admin-kpi">
             <span>Unsubscribed Users</span>
-            <strong>${totalUnsubscribed}</strong>
+            <strong>${stats.totalUnsubscribed}</strong>
             <small>Excluded from promotional CSV</small>
           </div>
           <div class="gogo-admin-kpi">
+            <span>No Marketing Consent</span>
+            <strong>${stats.totalNoConsent}</strong>
+            <small>Never opted in to marketing</small>
+          </div>
+          <div class="gogo-admin-kpi">
             <span>New Registrations (7d)</span>
-            <strong>${newLast7Days}</strong>
+            <strong>${stats.newLast7Days}</strong>
             <small>Joined in the last 7 days</small>
           </div>
         </div>
@@ -2877,12 +3266,12 @@ class GoGoAccountManager {
             <button type="button" class="gogo-tab-btn ${
               this.adminActiveView === 'subscribers' ? 'active' : ''
             }" data-gogo-action="admin-switch-view" data-view="subscribers">
-              1. Promotional Marketing Subscribers (${totalSubscribed})
+              1. Promotional Marketing Subscribers (${stats.totalPromotionalSubscribers})
             </button>
             <button type="button" class="gogo-tab-btn ${
               this.adminActiveView === 'accounts' ? 'active' : ''
             }" data-gogo-action="admin-switch-view" data-view="accounts">
-              2. All Registered Accounts (${totalUsers})
+              2. All Registered Accounts (${stats.totalUsers})
             </button>
           </div>
 
@@ -2899,27 +3288,29 @@ class GoGoAccountManager {
               <button type="button" class="gogo-seg-btn ${
                 this.adminFilterStatus === 'subscribed' ? 'active' : ''
               }" data-gogo-action="admin-filter-status" data-status="subscribed">
-                Subscribed Only
+                Verified Subscribed (${stats.totalPromotionalSubscribers})
+              </button>
+              <button type="button" class="gogo-seg-btn ${
+                this.adminFilterStatus === 'pending_verification' ? 'active' : ''
+              }" data-gogo-action="admin-filter-status" data-status="pending_verification">
+                Pending Verify (${stats.totalPendingVerificationSubscribers})
               </button>
               <button type="button" class="gogo-seg-btn ${
                 this.adminFilterStatus === 'unsubscribed' ? 'active' : ''
               }" data-gogo-action="admin-filter-status" data-status="unsubscribed">
-                Unsubscribed
+                Unsubscribed (${stats.totalUnsubscribed})
               </button>
               <button type="button" class="gogo-seg-btn ${
                 this.adminFilterStatus === 'no_consent' ? 'active' : ''
               }" data-gogo-action="admin-filter-status" data-status="no_consent">
-                No Consent
+                No Consent (${stats.totalNoConsent})
               </button>
               <button type="button" class="gogo-seg-btn ${
                 this.adminFilterStatus === 'all' ? 'active' : ''
               }" data-gogo-action="admin-filter-status" data-status="all">
-                All Records
+                All Records (${stats.totalUsers})
               </button>
             </div>
-            <span id="gogo-admin-filtered-count" class="gogo-admin-count">
-              ${this.getFilteredAdminEntries().length} records shown
-            </span>
           </div>
         </div>
 
@@ -2929,6 +3320,8 @@ class GoGoAccountManager {
               <tr>
                 <th>Email</th>
                 <th>Display Name</th>
+                <th>Email Status</th>
+                <th>Auth Provider</th>
                 <th>Registration Date</th>
                 <th>Marketing Consent</th>
                 <th>Consent Date</th>
@@ -2939,6 +3332,10 @@ class GoGoAccountManager {
               ${this.renderAdminTableRowsHtml()}
             </tbody>
           </table>
+        </div>
+
+        <div id="gogo-admin-pagination-wrap">
+          ${this.renderAdminPaginationHtml()}
         </div>
       </div>
     `;
@@ -3075,6 +3472,8 @@ if (typeof window !== 'undefined') {
     uploadLocalToCloud: (gameId: SupportedGameId) => gogoAccount.uploadLocalToCloud(gameId),
     updateMarketingPreference: (subscribe: boolean, source?: string) =>
       gogoAccount.updateMarketingPreference(subscribe, source),
+    resendVerificationEmail: () => gogoAccount.resendVerificationEmail(),
+    refreshEmailVerificationStatus: () => gogoAccount.refreshEmailVerificationStatus(),
     loadAdminDirectory: () => gogoAccount.loadAdminDirectory(),
     downloadAdminCsv: (mode: 'marketing_only' | 'all_accounts') => gogoAccount.downloadAdminCsv(mode),
     validateGameSave,
@@ -3087,6 +3486,10 @@ if (typeof window !== 'undefined') {
     generateMarketingSubscribersCsv,
     generateAllRegisteredAccountsCsv,
     isAuthorizedAdminUser,
+    isEligibleMarketingSubscriber,
+    computeAdminDashboardStats,
+    paginateEntries,
+    escapeCsvCell,
   };
   gogoAccount.init();
 }

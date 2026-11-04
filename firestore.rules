@@ -19,11 +19,15 @@ service cloud.firestore {
       return isAuthenticated() && isValidId(uid) && request.auth.uid == uid;
     }
 
-    function isVerifiedAdminEmail() {
+    function isEmailVerifiedToken() {
       return isAuthenticated()
-        && ('email' in request.auth.token)
         && ('email_verified' in request.auth.token)
-        && request.auth.token.email_verified == true
+        && request.auth.token.email_verified == true;
+    }
+
+    function isVerifiedAdminEmail() {
+      return isEmailVerifiedToken()
+        && ('email' in request.auth.token)
         && (
           request.auth.token.email == 'aaryapratik@gmail.com'
           || request.auth.token.email == 'officialgogocompany@gmail.com'
@@ -31,7 +35,7 @@ service cloud.firestore {
     }
 
     function isAdmin() {
-      return isAuthenticated() && (
+      return isEmailVerifiedToken() && (
         isVerifiedAdminEmail()
         || exists(/databases/$(database)/documents/admins/$(request.auth.uid))
       );
@@ -42,6 +46,23 @@ service cloud.firestore {
         && email.size() >= 3
         && email.size() <= 254
         && email.matches('^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}$');
+    }
+
+    function isConsistentAuthEmail(email) {
+      return isValidEmail(email)
+        && (
+          !('email' in request.auth.token)
+          || request.auth.token.email == null
+          || email == request.auth.token.email
+        );
+    }
+
+    function isConsistentEmailVerifiedField(data) {
+      return !('emailVerified' in data)
+        || (
+          data.emailVerified is bool
+          && data.emailVerified == isEmailVerifiedToken()
+        );
     }
 
     function isValidOptionalPhotoUrl(url) {
@@ -70,7 +91,16 @@ service cloud.firestore {
 
     function hasValidUserFields(data) {
       let required = ['displayName', 'email', 'photoURL', 'createdAt', 'lastLoginAt'];
-      let allowed = ['displayName', 'email', 'photoURL', 'authProvider', 'marketingSubscribed', 'createdAt', 'lastLoginAt'];
+      let allowed = [
+        'displayName',
+        'email',
+        'emailVerified',
+        'photoURL',
+        'authProvider',
+        'marketingSubscribed',
+        'createdAt',
+        'lastLoginAt'
+      ];
       return data.keys().hasAll(required) && data.keys().hasOnly(allowed);
     }
 
@@ -78,7 +108,8 @@ service cloud.firestore {
       return data.displayName is string
         && data.displayName.size() >= 1
         && data.displayName.size() <= 100
-        && isValidEmail(data.email)
+        && isConsistentAuthEmail(data.email)
+        && isConsistentEmailVerifiedField(data)
         && isValidOptionalPhotoUrl(data.photoURL)
         && (!('authProvider' in data) || isValidAuthProvider(data.authProvider))
         && (!('marketingSubscribed' in data) || data.marketingSubscribed is bool)
@@ -104,8 +135,8 @@ service cloud.firestore {
     // Marketing Subscriber Validation (/marketingSubscribers/{uid})
     // =========================================================
 
-    function hasExactSubscriberFields(data) {
-      let allowed = [
+    function hasValidSubscriberFields(data) {
+      let required = [
         'email',
         'displayName',
         'subscribed',
@@ -118,11 +149,26 @@ service cloud.firestore {
         'updatedAt',
         'unsubscribedAt'
       ];
-      return data.keys().hasAll(allowed) && data.keys().hasOnly(allowed);
+      let allowed = [
+        'email',
+        'emailVerified',
+        'displayName',
+        'subscribed',
+        'consentTimestamp',
+        'consentVersion',
+        'consentText',
+        'source',
+        'authProvider',
+        'registeredAt',
+        'updatedAt',
+        'unsubscribedAt'
+      ];
+      return data.keys().hasAll(required) && data.keys().hasOnly(allowed);
     }
 
     function hasValidSubscriberFieldTypes(data) {
-      return isValidEmail(data.email)
+      return isConsistentAuthEmail(data.email)
+        && isConsistentEmailVerifiedField(data)
         && data.displayName is string
         && data.displayName.size() >= 1
         && data.displayName.size() <= 100
@@ -142,25 +188,56 @@ service cloud.firestore {
     }
 
     function isValidSubscriberCreate(data) {
-      return hasExactSubscriberFields(data)
+      return hasValidSubscriberFields(data)
         && hasValidSubscriberFieldTypes(data)
         && data.registeredAt == request.time
         && data.updatedAt == request.time
         && (
-          (data.subscribed == true && data.consentTimestamp == request.time && data.consentVersion.size() > 0 && data.consentText.size() > 0 && data.unsubscribedAt == null)
-          || (data.subscribed == false && data.consentTimestamp == null)
+          (
+            data.subscribed == true
+            && data.authProvider != 'google.com'
+            && data.consentTimestamp == request.time
+            && data.consentVersion.size() > 0
+            && data.consentText.size() > 0
+            && data.unsubscribedAt == null
+          )
+          || (
+            data.subscribed == false
+            && data.consentTimestamp == null
+            && data.unsubscribedAt == null
+          )
         );
     }
 
     function isValidSubscriberUpdate(data, prev) {
-      return hasExactSubscriberFields(data)
+      return hasValidSubscriberFields(data)
         && hasValidSubscriberFieldTypes(data)
         && data.registeredAt == prev.registeredAt
         && data.updatedAt == request.time
         && (
-          (data.subscribed == true && data.consentTimestamp is timestamp && data.consentVersion.size() > 0 && data.consentText.size() > 0 && data.unsubscribedAt == null)
-          || (data.subscribed == false && data.unsubscribedAt == request.time)
-          || (data.subscribed == false && prev.subscribed == false && data.consentTimestamp == prev.consentTimestamp)
+          (
+            data.subscribed == true
+            && data.consentTimestamp is timestamp
+            && data.consentVersion.size() > 0
+            && data.consentText.size() > 0
+            && data.unsubscribedAt == null
+          )
+          || (
+            data.subscribed == false
+            && prev.subscribed == true
+            && data.unsubscribedAt == request.time
+            && data.consentTimestamp == prev.consentTimestamp
+            && data.consentVersion == prev.consentVersion
+            && data.consentText == prev.consentText
+          )
+          || (
+            data.subscribed == false
+            && prev.subscribed == false
+            && data.unsubscribedAt == prev.unsubscribedAt
+            && data.consentTimestamp == prev.consentTimestamp
+            && data.consentVersion == prev.consentVersion
+            && data.consentText == prev.consentText
+          )
         );
     }
 

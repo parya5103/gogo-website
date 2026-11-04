@@ -6,6 +6,22 @@ const root = process.cwd();
 const fletchDir = '/tmp/Fletch_Game';
 const crystalDir = '/tmp/crystal-quest-web';
 
+if (!existsSync(fletchDir)) {
+  try {
+    execSync('git clone --depth 1 https://github.com/parya5103/Fletch_Game.git /tmp/Fletch_Game', { stdio: 'pipe' });
+  } catch (e) {
+    console.warn('[update-upstream-repos] Could not clone Fletch_Game:', e.message);
+  }
+}
+
+if (!existsSync(crystalDir)) {
+  try {
+    execSync('git clone --depth 1 https://github.com/parya5103/crystal-quest-web.git /tmp/crystal-quest-web', { stdio: 'pipe' });
+  } catch (e) {
+    console.warn('[update-upstream-repos] Could not clone crystal-quest-web:', e.message);
+  }
+}
+
 // =========================================================
 // 1. Update Arrow Out (/tmp/Fletch_Game)
 // =========================================================
@@ -143,6 +159,18 @@ if (existsSync(fletchDir)) {
   );
 
   writeFileSync(indexHtmlPath, indexHtml, 'utf8');
+
+  // 1c. Patch sw.js EXTRA_ASSETS so gogo-account.css and gogo-account.js are cached for offline play
+  const swPath = resolve(fletchDir, 'sw.js');
+  if (existsSync(swPath)) {
+    let swCode = readFileSync(swPath, 'utf8');
+    swCode = swCode.replace(
+      `const EXTRA_ASSETS = [\n  './icons/icon-192.png',\n  './icons/icon-512.png',\n  './icons/icon-maskable-512.png'\n];`,
+      `const EXTRA_ASSETS = [\n  './icons/icon-192.png',\n  './icons/icon-512.png',\n  './icons/icon-maskable-512.png',\n  './css/gogo-account.css',\n  './js/gogo-account.js'\n];`
+    );
+    writeFileSync(swPath, swCode, 'utf8');
+  }
+
   console.log('[update-upstream-repos] Updated /tmp/Fletch_Game successfully.');
 }
 
@@ -194,7 +222,18 @@ if (existsSync(crystalDir)) {
 
   writeFileSync(cqHtmlPath, cqHtml, 'utf8');
 
-  // 2c. Use cross-realm compatible node:assert in tests/game.test.js for Node 22 vm.createContext
+  // 2c. Patch sw.js PRECACHE so gogo-account.css and js/gogo-account.js are cached for offline play
+  const cqSwPath = resolve(crystalDir, 'sw.js');
+  if (existsSync(cqSwPath)) {
+    let cqSwCode = readFileSync(cqSwPath, 'utf8');
+    cqSwCode = cqSwCode.replace(
+      `  'js/main.js',\n  'images/bg_cavern.jpg',`,
+      `  'js/main.js',\n  'gogo-account.css',\n  'js/gogo-account.js',\n  'images/bg_cavern.jpg',`
+    );
+    writeFileSync(cqSwPath, cqSwCode, 'utf8');
+  }
+
+  // 2d. Use cross-realm compatible node:assert in tests/game.test.js for Node 22 vm.createContext
   const cqTestPath = resolve(crystalDir, 'tests/game.test.js');
   if (existsSync(cqTestPath)) {
     let cqTestCode = readFileSync(cqTestPath, 'utf8');
@@ -225,8 +264,30 @@ function syncDir(srcDir, destDir, excludes) {
   });
 }
 
-syncDir(fletchDir, resolve(root, 'arrowout'), ['.git', '.github', 'scripts', 'tests', 'node_modules']);
-syncDir(crystalDir, resolve(root, 'crystalquest'), ['.git', '.github', 'tests', 'dev', 'node_modules']);
+syncDir(fletchDir, resolve(root, 'arrowout'), [
+  '.git',
+  '.github',
+  'android',
+  'audit',
+  'scripts',
+  'tests',
+  'README.md',
+  'LICENSE',
+  'SECURITY.md',
+  '.gitignore',
+  'node_modules',
+]);
+syncDir(crystalDir, resolve(root, 'crystalquest'), [
+  '.git',
+  '.github',
+  'android',
+  'dev',
+  'tests',
+  'README.md',
+  'KNOWLEDGE.md',
+  '.gitignore',
+  'node_modules',
+]);
 console.log('[update-upstream-repos] Synced /tmp/Fletch_Game -> /arrowout/ and /tmp/crystal-quest-web -> /crystalquest/.');
 
 // =========================================================
@@ -234,8 +295,9 @@ console.log('[update-upstream-repos] Synced /tmp/Fletch_Game -> /arrowout/ and /
 // =========================================================
 const patchDir = resolve(root, 'upstream-patches');
 mkdirSync(patchDir, { recursive: true });
-const fletchDiff = execSync('git diff index.html js/storage.js', { cwd: fletchDir }).toString();
-const crystalDiff = execSync('git diff index.html js/ui.js', { cwd: crystalDir }).toString();
+const fletchDiff = execSync('git diff index.html js/storage.js sw.js', { cwd: fletchDir }).toString();
+const crystalDiff = execSync('git diff index.html js/ui.js sw.js', { cwd: crystalDir }).toString();
 writeFileSync(resolve(patchDir, 'Fletch_Game.patch'), fletchDiff, 'utf8');
 writeFileSync(resolve(patchDir, 'crystal-quest-web.patch'), crystalDiff, 'utf8');
 console.log('[update-upstream-repos] Wrote upstream patches to /upstream-patches/.');
+

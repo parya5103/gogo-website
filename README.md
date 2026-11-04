@@ -58,36 +58,47 @@ publisher ID is empty.
   per-slot IDs. Guarded against duplicate script injection.
 - `assets/css/ads.css` - ad unit styles; every ad is labelled
   "Advertisement" and visually separated from content.
-- Ad slots exist only on informational pages (homepage mid-content,
-  about-page bottom). The games never load ads.js - no ads inside games
-  or near game controls, and ads are never styled as job listings.
+- Website ad slots exist on informational pages (homepage mid-content,
+  about-page bottom), while the games manage their own optional AdSense /
+  AdMob placements via their own `js/ads.js` modules. Ads are never styled
+  as job listings.
 - EEA / UK / Switzerland: ads stay disabled for those regions until a
   Google-certified CMP (e.g. Funding Choices) handles consent. Set
   `cmpReady: true` only after that works.
-- `ads.txt.example` documents the ads.txt format. Do NOT add a real
-  `ads.txt` at the root until the owner's verified publisher ID exists.
+- `ads.txt.example` documents the ads.txt format. `ads.txt` at the root
+  contains the Google AdSense publisher declaration.
 
-Activation checklist for the owner (after AdSense approval):
+## Shared GoGo Account, Cloud Save & Marketing Subscriber System
 
-1. Put the verified publisher ID in `assets/js/ads.js` (`publisherId`)
-   and create the ad units in AdSense; put their slot IDs in `CONFIG.slots`.
-2. Copy `ads.txt.example` to `ads.txt` at the repository root with the
-   real publisher ID and commit.
-3. Set up a Google-certified CMP before enabling ads for EEA/UK/CH
-   traffic, then set `cmpReady: true`.
+A unified Firebase Authentication + Cloud Firestore bundle (`src/gogo-account.ts` -> compiled to `assets/js/gogo-account.js` and synced into `arrowout/js/gogo-account.js` and `crystalquest/js/gogo-account.js`) provides:
+
+- **Cross-App Single Sign-On (`gogocompany.in`)**: Email/Password registration & login, Email Verification, Google Sign-In, Password Reset, and Account Deletion across `/`, `/arrowout/`, and `/crystalquest/`. Guest play remains enabled by default.
+- **Game Cloud Save & Conflict Resolution**: Automatic & manual cloud backup to `gameProfiles/{uid}/games/{gameId}` with side-by-side Local vs. Cloud vs. Smart Merge conflict resolution.
+- **Explicit Marketing Consent & Unsubscribe**: Optional, unchecked-by-default marketing consent during registration stored in `marketingSubscribers/{uid}`. Only verified emails with explicit consent are exported to promotional CSV lists.
+- **Protected Admin Dashboard (`/admin/`)**: Fail-closed admin dashboard (restricted by Firestore Security Rules to verified admins) with 6 KPIs, registration trends, search/filter, pagination, and RFC-4180 / formula-injection-hardened CSV exports.
+
+Build & test commands:
+
+```bash
+npm run build:account   # Bundles src/gogo-account.ts -> assets/js/gogo-account.js
+npm test                # Runs unit tests, ESLint security rules check, and upstream game tests
+```
 
 ## Other pages
 
 | Path | Content |
 | --- | --- |
 | `/` | Homepage - company intro and product cards |
+| `/account/` | GoGo Account & Cloud Save management |
+| `/unsubscribe/` | Email marketing preference & one-click authenticated unsubscribe center |
+| `/admin/` | Protected GoGo Admin Dashboard (verified admins only) |
 | `/about/` `/contact/` | Company info |
 | `/privacy-policy/` `/terms-and-conditions/` `/disclaimer/` | Legal pages |
 | `404.html` | Not-found page (noindex) |
 
 ## Architecture
 
-- Plain static HTML/CSS/JS. No build step, no dependencies, no iframes.
+- Static HTML/CSS/JS served directly on GitHub Pages (`gogocompany.in`), with `assets/js/gogo-account.js` pre-bundled from TypeScript (`src/gogo-account.ts`) so no server runtime is required in production.
 - `assets/js/main.js` injects the shared header and footer on every page
   (single source of truth for nav links: edit `NAV_LINKS` / `FOOTER_COLS`).
   Pages declare `<html data-root="./">` (root pages) or `data-root="../"`
