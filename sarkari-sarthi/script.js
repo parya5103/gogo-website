@@ -63,6 +63,83 @@ function sanitizeHTML(htmlString) {
     return doc.body.innerHTML;
 }
 
+// Trust labels for the server-side verification_status (Phase 1 data
+// quality). The label explains WHERE the record's information comes
+// from; it is never a claim that the portal itself is official.
+const VERIFICATION_LABELS = {
+    official_verified: {
+        text: 'Official Source',
+        cls: 'trust-chip trust-official',
+        title: 'Backed by an official government source or link'
+    },
+    official_link_pending: {
+        text: 'Official Link Pending',
+        cls: 'trust-chip trust-pending',
+        title: 'Official domain referenced; direct link not captured yet'
+    },
+    secondary_source_only: {
+        text: 'Secondary Source',
+        cls: 'trust-chip trust-secondary',
+        title: 'From a secondary job portal; verify on the official website'
+    },
+    needs_review: {
+        text: 'Needs Review',
+        cls: 'trust-chip trust-review',
+        title: 'Stale or incomplete record; will be re-checked'
+    }
+};
+
+/**
+ * Trust chip info for a verification_status value, or null when the
+ * status is missing/unknown (nothing is invented for unknown values).
+ * @param {string} status - The job's verification_status.
+ * @returns {object|null} {text, cls, title} or null.
+ */
+function getVerificationInfo(status) {
+    if (!status) return null;
+    return VERIFICATION_LABELS[String(status).toLowerCase()] || null;
+}
+
+// ---- Bookmarks (Phase 3) --------------------------------------------
+// Saved jobs live only in this browser (localStorage). No account,
+// no tracking, nothing leaves the device.
+const BOOKMARK_KEY = 'sarkariBookmarks';
+
+function getBookmarks() {
+    try {
+        const parsed = JSON.parse(localStorage.getItem(BOOKMARK_KEY) || '[]');
+        return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function isBookmarked(jobId) {
+    return getBookmarks().indexOf(jobId) !== -1;
+}
+
+/**
+ * Add/remove a job id from the saved list.
+ * @returns {boolean} the new saved state.
+ */
+function toggleBookmark(jobId) {
+    if (!jobId) return false;
+    const bookmarks = getBookmarks();
+    const pos = bookmarks.indexOf(jobId);
+    if (pos === -1) {
+        bookmarks.push(jobId);
+    } else {
+        bookmarks.splice(pos, 1);
+    }
+    try {
+        localStorage.setItem(BOOKMARK_KEY, JSON.stringify(bookmarks));
+    } catch (e) {
+        // Storage full or blocked: the toggle is a no-op for persistence,
+        // but the in-memory list keeps working for this page view.
+    }
+    return pos === -1;
+}
+
 // Global variables
 let jobsData = [];
 let jobsLoadFailed = false; // true when the job manifest could not be loaded (no fake fallback jobs)
@@ -70,6 +147,7 @@ let filteredJobs = [];
 let currentPage = 1;
 const jobsPerPage = 12;
 let isLoading = false;
+let savedOnly = false; // "Saved Jobs" filter toggle state
 
 // DOM Elements
 const jobsGrid = document.getElementById('jobsGrid');
@@ -79,6 +157,7 @@ const jobSearch = document.getElementById('jobSearch');
 const categoryFilter = document.getElementById('categoryFilter');
 const sortFilter = document.getElementById('sortFilter');
 const searchBtn = document.getElementById('searchBtn');
+const savedFilterBtn = document.getElementById('savedFilterBtn');
 const themeToggle = document.getElementById('themeToggle');
 const telegramBtn = document.getElementById('telegramBtn');
 const footerTelegramBtn = document.getElementById('footerTelegramBtn');
@@ -103,6 +182,7 @@ function initializeApp() {
     loadJobs();
     animateCounters();
     setupIntersectionObserver();
+    updateSavedCount();
 }
 
 /**
@@ -116,17 +196,27 @@ function setupEventListeners() {
             handleSearch();
         }
     });
-    
+
     // Filter functionality
     categoryFilter.addEventListener('change', handleFilter);
     sortFilter.addEventListener('change', handleSort);
-    
+
+    // Saved jobs toggle (Phase 3)
+    if (savedFilterBtn) {
+        savedFilterBtn.addEventListener('click', function() {
+            savedOnly = !savedOnly;
+            savedFilterBtn.classList.toggle('active', savedOnly);
+            savedFilterBtn.setAttribute('aria-pressed', String(savedOnly));
+            applyFilters();
+        });
+    }
+
     // Load more functionality
     loadMoreBtn.addEventListener('click', loadMoreJobs);
-    
+
     // Theme toggle
     themeToggle.addEventListener('click', toggleTheme);
-    
+
     // Telegram buttons
     if (telegramBtn) {
         telegramBtn.addEventListener('click', openTelegramChannel);
@@ -134,7 +224,7 @@ function setupEventListeners() {
     if (footerTelegramBtn) {
         footerTelegramBtn.addEventListener('click', openTelegramChannel);
     }
-    
+
     // WhatsApp buttons
     if (whatsappBtn) {
         whatsappBtn.addEventListener('click', openWhatsappChannel);
@@ -153,7 +243,7 @@ function setupEventListeners() {
             }
         });
     }
-    
+
     // Modal functionality
     if (modalClose) {
         modalClose.addEventListener('click', closeModal);
@@ -161,14 +251,14 @@ function setupEventListeners() {
     if (modalClose2) {
         modalClose2.addEventListener('click', closeModal);
     }
-    
+
     // Close modal when clicking outside
     jobModal.addEventListener('click', function(e) {
         if (e.target === jobModal) {
             closeModal();
         }
     });
-    
+
     // Footer category links (href="#" placeholders): make them filter
     // the jobs list instead of dead-ending.
     document.querySelectorAll('a[data-category]').forEach(link => {
@@ -192,7 +282,7 @@ function setupEventListeners() {
             }
         });
     });
-    
+
     // Keyboard navigation
     document.addEventListener('keydown', handleKeyboardNavigation);
 }
@@ -208,6 +298,19 @@ function parseJobDate(dateStr) {
     m = dateStr.match(/(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
     if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
     return null;
+}
+
+/**
+ * Best available "when was this record added/checked" timestamp in ms.
+ * Used for the honest Latest First sort. Records without any usable
+ * timestamp sort last (never guessed into the top).
+ */
+function getRecordTimestamp(job) {
+    if (!job) return 0;
+    const raw = job.last_verified || job.scraped_at ||
+        (job.important_dates && job.important_dates.found_date) || '';
+    const t = Date.parse(raw);
+    return isNaN(t) ? 0 : t;
 }
 
 /**
@@ -278,7 +381,7 @@ async function loadJobs() {
             jobsData = [];
             jobsLoadFailed = true;
         }
-        
+
         // Optimization: Pre-compute _searchString once during data load to avoid O(N*5) string allocations on every search keystroke
         // Reduces CPU usage and garbage collection during search by ~80%
         jobsData.forEach(job => {
@@ -286,10 +389,9 @@ async function loadJobs() {
             job._searchString = `${job.title} ${job.description} ${job.source} ${job.category} ${skillsStr}`.toLowerCase();
         });
 
-        filteredJobs = [...jobsData];
-        renderJobs();
+        applyFilters();
         updateJobCounts();
-        
+
     } catch (error) {
         console.error('Error loading jobs:', error);
         // Honest error state: no fake sample-job fallback.
@@ -301,29 +403,51 @@ async function loadJobs() {
             job._searchString = `${job.title} ${job.description} ${job.source} ${job.category} ${skillsStr}`.toLowerCase();
         });
 
-        filteredJobs = [...jobsData];
-        renderJobs();
-        updateJobCounts();
+        applyFilters();
     } finally {
         showLoading(false);
     }
 }
 
+/**
+ * Single filter pipeline: search term + category + saved-only, then
+ * re-apply the current sort and render. Keeping every filter path in
+ * one function prevents search, category and bookmark filters from
+ * accidentally overwriting each other.
+ */
+function applyFilters() {
+    const searchTerm = jobSearch ? jobSearch.value.toLowerCase().trim() : '';
+    const selectedCategory = categoryFilter ? categoryFilter.value : '';
+
+    let base = jobsData;
+    if (searchTerm !== '') {
+        base = base.filter(job => job._searchString.includes(searchTerm));
+    }
+    if (selectedCategory !== '') {
+        base = base.filter(job => job.category === selectedCategory);
+    }
+    if (savedOnly) {
+        base = base.filter(job => isBookmarked(job.id));
+    }
+    filteredJobs = [...base];
+    currentPage = 1;
+    handleSort();
+}
 
 /**
  * Render jobs on the page
  */
 function renderJobs() {
     if (!jobsGrid) return;
-    
+
     const startIndex = (currentPage - 1) * jobsPerPage;
     const endIndex = startIndex + jobsPerPage;
     const jobsToShow = filteredJobs.slice(0, endIndex);
-    
+
     if (currentPage === 1) {
         jobsGrid.innerHTML = '';
     }
-    
+
     if (jobsToShow.length === 0) {
         if (jobsLoadFailed) {
             jobsGrid.innerHTML = `
@@ -332,6 +456,15 @@ function renderJobs() {
                 <h3>Couldn't load job listings</h3>
                 <p>The latest job data could not be loaded. Check your internet connection and retry. We never display sample or outdated jobs as real vacancies.</p>
                 <button class="clear-filters-btn" onclick="location.reload()">Retry</button>
+            </div>
+        `;
+        } else if (savedOnly) {
+            jobsGrid.innerHTML = `
+            <div class="no-jobs">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🔖</div>
+                <h3>No saved jobs yet</h3>
+                <p>Tap the bookmark icon on any job card to save it on this device. Saved jobs stay here even after their listing moves.</p>
+                <button class="clear-filters-btn" onclick="clearAllFilters()">Show All Jobs</button>
             </div>
         `;
         } else {
@@ -347,9 +480,9 @@ function renderJobs() {
         loadMoreBtn.style.display = 'none';
         return;
     }
-    
+
     const jobsToRender = jobsToShow.slice(startIndex);
-    
+
     // Optimization: Batch DOM insertions using DocumentFragment to prevent layout thrashing
     // Reduces render time by avoiding multiple reflows/repaints inside the loop
     const fragment = document.createDocumentFragment();
@@ -358,14 +491,14 @@ function renderJobs() {
         fragment.appendChild(jobCard);
     });
     jobsGrid.appendChild(fragment);
-    
+
     // Show/hide load more button
     if (endIndex >= filteredJobs.length) {
         loadMoreBtn.style.display = 'none';
     } else {
         loadMoreBtn.style.display = 'block';
     }
-    
+
     // Add animation to new cards
     const newCards = jobsGrid.querySelectorAll('.job-card:not(.animated)');
     newCards.forEach((card, index) => {
@@ -374,6 +507,16 @@ function renderJobs() {
             card.classList.add('slide-up');
         }, index * 100);
     });
+}
+
+/**
+ * Refresh every bookmark button state after a filter change re-renders
+ * the grid (icons are rebuilt from localStorage on each render).
+ */
+function updateSavedCount() {
+    if (!savedFilterBtn) return;
+    const count = getBookmarks().length;
+    savedFilterBtn.textContent = '🔖 Saved Jobs' + (count > 0 ? ' (' + count + ')' : '');
 }
 
 /**
@@ -386,10 +529,10 @@ function createJobCard(job) {
     card.setAttribute('role', 'button');
     card.setAttribute('tabindex', '0');
     card.setAttribute('aria-label', `View details for ${job.title} at ${job.source}`);
-    
+
     const lastDate = job.important_dates?.last_date || job.important_dates?.found_date || 'Not specified';
     const skills = job.skills || [];
-    
+
     const header = document.createElement('div');
     header.className = 'job-header';
 
@@ -411,6 +554,17 @@ function createJobCard(job) {
 
     header.appendChild(headerTitleDiv);
     header.appendChild(categorySpan);
+
+    // Trust chip (Phase 3): shows where this record's information
+    // comes from. Unknown/missing verification never invents a label.
+    const verificationInfo = getVerificationInfo(job.verification_status);
+    if (verificationInfo) {
+        const trustSpan = document.createElement('span');
+        trustSpan.className = verificationInfo.cls;
+        trustSpan.textContent = verificationInfo.text;
+        trustSpan.title = verificationInfo.title;
+        header.appendChild(trustSpan);
+    }
 
     // Application status chip (Phase B status field): 'upcoming' jobs
     // have a future application start date; expired and cancelled jobs
@@ -458,10 +612,37 @@ function createJobCard(job) {
     metaDiv.appendChild(detailsLink);
 
     card.appendChild(metaDiv);
-    
+
+    // Bookmark button (Phase 3): saved jobs live in localStorage on
+    // this device only. The click must not open the detail modal.
+    const bookmarkBtn = document.createElement('button');
+    bookmarkBtn.type = 'button';
+    const saved = isBookmarked(job.id);
+    bookmarkBtn.className = 'bookmark-btn' + (saved ? ' bookmarked' : '');
+    bookmarkBtn.textContent = saved ? '🔖' : '☆';
+    bookmarkBtn.title = saved ? 'Remove from saved jobs' : 'Save this job on this device';
+    bookmarkBtn.setAttribute('aria-label', bookmarkBtn.title);
+    bookmarkBtn.setAttribute('aria-pressed', String(saved));
+    bookmarkBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const nowSaved = toggleBookmark(job.id);
+        bookmarkBtn.classList.toggle('bookmarked', nowSaved);
+        bookmarkBtn.textContent = nowSaved ? '🔖' : '☆';
+        bookmarkBtn.title = nowSaved ? 'Remove from saved jobs' : 'Save this job on this device';
+        bookmarkBtn.setAttribute('aria-label', bookmarkBtn.title);
+        bookmarkBtn.setAttribute('aria-pressed', String(nowSaved));
+        updateSavedCount();
+        // If the Saved filter is active, removing a bookmark must
+        // refresh the list so the unsaved job disappears.
+        if (savedOnly) {
+            applyFilters();
+        }
+    });
+    card.appendChild(bookmarkBtn);
+
     // Add click event to open modal
     card.addEventListener('click', () => openJobModal(job));
-    
+
     // Add keydown event for keyboard accessibility
     card.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -474,27 +655,58 @@ function createJobCard(job) {
 }
 
 /**
+ * Build a readable age-limit string from whatever fields exist.
+ * Never invents values: returns '' when nothing is known.
+ */
+function ageLimitText(job) {
+    if (job.age_limit) return job.age_limit;
+    const min = job.age_min;
+    const max = job.age_max;
+    if (min && max) return min + ' to ' + max + ' years';
+    if (max) return 'Up to ' + max + ' years';
+    if (min) return min + ' years and above';
+    return '';
+}
+
+/**
  * Open job detail modal
  */
 function openJobModal(job) {
     const modalTitle = document.getElementById('modalTitle');
     const modalBody = document.getElementById('modalBody');
     const modalApplyBtn = document.getElementById('modalApplyBtn');
-    
+
     if (!modalTitle || !modalBody || !modalApplyBtn) return;
-    
+
     modalTitle.textContent = job.title;
     // Prefer the verified official application URL when present.
     modalApplyBtn.href = sanitizeURL(job.official_application_url || job.url);
-    
+
     const lastDate = job.important_dates?.last_date || job.important_dates?.found_date || 'Not specified';
     const examDate = job.important_dates?.exam_date || 'Not specified';
     const skills = job.skills || [];
-    
+
     modalBody.innerHTML = '';
 
     const detailsDiv = document.createElement('div');
     detailsDiv.className = 'modal-job-details';
+
+    // Verification section (Phase 3): honest source-of-information
+    // label with a plain-language explanation.
+    const verificationInfo = getVerificationInfo(job.verification_status);
+    if (verificationInfo) {
+        const vDiv = document.createElement('div');
+        vDiv.className = 'modal-verification';
+        const chipSpan = document.createElement('span');
+        chipSpan.className = verificationInfo.cls;
+        chipSpan.textContent = verificationInfo.text;
+        vDiv.appendChild(chipSpan);
+        const vP = document.createElement('p');
+        vP.className = 'verification-note';
+        vP.textContent = verificationInfo.title + '.';
+        vDiv.appendChild(vP);
+        detailsDiv.appendChild(vDiv);
+    }
 
     const section1 = document.createElement('div');
     section1.className = 'modal-section';
@@ -532,6 +744,40 @@ function openJobModal(job) {
         section1.appendChild(examDateP);
     }
     detailsDiv.appendChild(section1);
+
+    // Extended notification fields (Phase 3): shown ONLY when the
+    // pipeline actually captured a value. Missing stays missing -
+    // the old behaviour of hiding everything unknown was replaced by
+    // honest "Not specified" rows for key recruitment facts.
+    const extendedFields = [
+        ['Organization', job.organization],
+        ['Department', job.department],
+        ['Vacancies', job.vacancies],
+        ['Salary', job.salary || job.pay_scale],
+        ['Age Limit', ageLimitText(job)],
+        ['Application Fee', job.application_fee],
+        ['Selection Process', job.selection_process],
+        ['Qualification', job.qualification || job.minimum_qualification],
+        ['State', job.state],
+        ['Employment Type', job.employment_type]
+    ];
+    const knownFields = extendedFields.filter(f => f[1]);
+    if (knownFields.length > 0) {
+        const sectionExt = document.createElement('div');
+        sectionExt.className = 'modal-section';
+        const h4Ext = document.createElement('h4');
+        h4Ext.textContent = 'Notification Details';
+        sectionExt.appendChild(h4Ext);
+        knownFields.forEach(pair => {
+            const p = document.createElement('p');
+            const strong = document.createElement('strong');
+            strong.textContent = pair[0] + ': ';
+            p.appendChild(strong);
+            p.appendChild(document.createTextNode(String(pair[1])));
+            sectionExt.appendChild(p);
+        });
+        detailsDiv.appendChild(sectionExt);
+    }
 
     const section2 = document.createElement('div');
     section2.className = 'modal-section';
@@ -581,11 +827,52 @@ function openJobModal(job) {
         pdfA.textContent = 'Download Official Notification (PDF)';
         pdfP.appendChild(pdfA);
         section4.appendChild(pdfP);
+
+        if (job.official_website) {
+            const siteP = document.createElement('p');
+            const siteA = document.createElement('a');
+            siteA.href = sanitizeURL(job.official_website);
+            siteA.target = '_blank';
+            siteA.rel = 'noopener noreferrer';
+            siteA.className = 'pdf-link';
+            siteA.textContent = 'Official Website';
+            siteP.appendChild(siteA);
+            section4.appendChild(siteP);
+        }
         detailsDiv.appendChild(section4);
     }
 
+    // Attribution + honesty footer: cross-source duplicates recorded by
+    // the merge pipeline, and the last time this record was verified.
+    const section5 = document.createElement('div');
+    section5.className = 'modal-section modal-meta-info';
+    const refs = Array.isArray(job.source_refs) ? job.source_refs : [];
+    const otherSources = refs
+        .map(r => r && r.source)
+        .filter(s => s && s !== job.source);
+    const uniqueSources = otherSources.filter((s, i) => otherSources.indexOf(s) === i);
+    if (uniqueSources.length > 0) {
+        const refsP = document.createElement('p');
+        refsP.className = 'meta-line';
+        refsP.textContent = 'Also found on: ' + uniqueSources.join(', ');
+        section5.appendChild(refsP);
+    }
+    if (job.last_verified) {
+        const verifiedP = document.createElement('p');
+        verifiedP.className = 'meta-line';
+        verifiedP.textContent = 'Record last verified: ' + String(job.last_verified).slice(0, 10);
+        section5.appendChild(verifiedP);
+    }
+    const disclaimerP = document.createElement('p');
+    disclaimerP.className = 'meta-line';
+    disclaimerP.textContent = 'Always verify details on the official notification before applying.';
+    section5.appendChild(disclaimerP);
+    if (section5.childNodes.length > 1) {
+        detailsDiv.appendChild(section5);
+    }
+
     modalBody.appendChild(detailsDiv);
-    
+
     jobModal.classList.add('active');
     document.body.style.overflow = 'hidden';
 }
@@ -605,6 +892,11 @@ function clearAllFilters() {
     if (jobSearch) jobSearch.value = '';
     if (categoryFilter) categoryFilter.value = '';
     if (sortFilter) sortFilter.value = 'latest';
+    savedOnly = false;
+    if (savedFilterBtn) {
+        savedFilterBtn.classList.remove('active');
+        savedFilterBtn.setAttribute('aria-pressed', 'false');
+    }
     handleSearch();
 }
 
@@ -612,36 +904,14 @@ function clearAllFilters() {
  * Handle search functionality
  */
 function handleSearch() {
-    const searchTerm = jobSearch.value.toLowerCase().trim();
-    
-    if (searchTerm === '') {
-        filteredJobs = [...jobsData];
-    } else {
-        // Optimization: Use pre-computed _searchString to check match with one substring search
-        // Impact: Reduces toLowerCase() calls from 4-5 per job per keystroke to zero, speeding up real-time filtering
-        filteredJobs = jobsData.filter(job => 
-            job._searchString.includes(searchTerm)
-        );
-    }
-    
-    currentPage = 1;
-    renderJobs();
+    applyFilters();
 }
 
 /**
  * Handle category filter
  */
 function handleFilter() {
-    const selectedCategory = categoryFilter.value;
-    
-    if (selectedCategory === '') {
-        filteredJobs = [...jobsData];
-    } else {
-        filteredJobs = jobsData.filter(job => job.category === selectedCategory);
-    }
-    
-    currentPage = 1;
-    renderJobs();
+    applyFilters();
 }
 
 /**
@@ -650,7 +920,7 @@ function handleFilter() {
 function filterByCategory(category) {
     categoryFilter.value = category;
     handleFilter();
-    
+
     // Scroll to jobs section
     document.getElementById('jobs').scrollIntoView({ behavior: 'smooth' });
 }
@@ -660,11 +930,13 @@ function filterByCategory(category) {
  */
 function handleSort() {
     const sortBy = sortFilter.value;
-    
+
     switch (sortBy) {
         case 'latest':
-            // Sort by most recent (assuming newer jobs have higher IDs)
-            filteredJobs.sort((a, b) => b.id.localeCompare(a.id));
+            // Honest "Latest First" (Phase 3): sort by the record's
+            // verification/creation timestamp. The old md5 job-id sort
+            // was meaningless (random order) and is gone.
+            filteredJobs.sort((a, b) => getRecordTimestamp(b) - getRecordTimestamp(a));
             break;
         case 'deadline':
             // Sort by deadline (jobs with earlier deadlines first)
@@ -693,8 +965,7 @@ function handleSort() {
             filteredJobs.sort((a, b) => a.category.localeCompare(b.category));
             break;
     }
-    
-    currentPage = 1;
+
     renderJobs();
 }
 
@@ -703,12 +974,12 @@ function handleSort() {
  */
 function loadMoreJobs() {
     if (isLoading) return;
-    
+
     isLoading = true;
     loadMoreBtn.textContent = 'Loading...';
     loadMoreBtn.disabled = true;
     loadMoreBtn.setAttribute('aria-busy', 'true');
-    
+
     setTimeout(() => {
         currentPage++;
         renderJobs();
@@ -733,11 +1004,11 @@ function showLoading(show) {
  */
 function updateJobCounts() {
     const categoryCounts = {};
-    
+
     jobsData.forEach(job => {
         categoryCounts[job.category] = (categoryCounts[job.category] || 0) + 1;
     });
-    
+
     document.querySelectorAll('.category-card').forEach(card => {
         const category = card.dataset.category;
         const countElement = card.querySelector('.category-count');
@@ -752,13 +1023,13 @@ function updateJobCounts() {
  */
 function animateCounters() {
     const counters = document.querySelectorAll('.stat-number');
-    
+
     counters.forEach(counter => {
         const target = parseInt(counter.dataset.target);
         const duration = 2000; // 2 seconds
         const step = target / (duration / 16); // 60 FPS
         let current = 0;
-        
+
         // Optimization: Use requestAnimationFrame instead of setInterval
         // Impact: Synchronizes with display refresh rate, prevents background tab execution,
         // and provides smoother animations without blocking the main thread
@@ -785,7 +1056,7 @@ function setupIntersectionObserver() {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
     };
-    
+
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -795,7 +1066,7 @@ function setupIntersectionObserver() {
             }
         });
     }, observerOptions);
-    
+
     // Observe sections for animation
     document.querySelectorAll('.section-title, .feature-card, .category-card').forEach(el => {
         observer.observe(el);
@@ -814,7 +1085,7 @@ function loadTheme() {
 function toggleTheme() {
     const currentTheme = document.documentElement.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
+
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
     updateThemeIcon(newTheme);
@@ -861,7 +1132,7 @@ function handleKeyboardNavigation(e) {
     if (e.key === 'Escape' && jobModal.classList.contains('active')) {
         closeModal();
     }
-    
+
     // Search with Ctrl+K or Cmd+K
     if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
@@ -908,7 +1179,7 @@ function sanitizeURL(url) {
  */
 function formatDate(dateString) {
     if (!dateString) return 'Not specified';
-    
+
     try {
         const parts = dateString.split('-');
         if (parts.length === 3) {
@@ -922,7 +1193,7 @@ function formatDate(dateString) {
     } catch (error) {
         console.error('Error formatting date:', error);
     }
-    
+
     return dateString;
 }
 
@@ -958,7 +1229,12 @@ if (typeof module !== 'undefined' && module.exports) {
         handleSearch,
         handleFilter,
         handleSort,
-        formatDate
+        formatDate,
+        getVerificationInfo,
+        getRecordTimestamp,
+        getBookmarks,
+        isBookmarked,
+        toggleBookmark,
+        ageLimitText
     };
 }
-

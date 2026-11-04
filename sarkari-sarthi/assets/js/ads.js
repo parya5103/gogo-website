@@ -1,28 +1,42 @@
 /* GoGo Company - central AdSense integration (Sarkari Sarthi copy).
    Loaded by the Sarkari Sarthi portal page (https://gogocompany.in/sarkari-sarthi/).
-   The single ad unit sits between the category grid and the job
+   Listing page: one unit between the category grid and the job
    listings - never beside job cards, Apply buttons, or within the
-   listings grid. Games (/arrowout/, /crystalquest/) never load ads.
+   listings grid. Job detail pages: one unit after the article. Games (/arrowout/, /crystalquest/) never load ads.
 
-   ACTIVATION (owner only, after AdSense approval):
-   1. Set publisherId to the VERIFIED publisher ID (ca-pub-...).
-   2. Fill the slot ID in CONFIG.slots with a real AdSense slot ID.
-   3. Ensure /ads.txt exists at the gogocompany.in site root with the
+   STATUS (2026-11-03):
+   1. DONE: publisherId set to the owner-verified ID
+      ca-pub-2895136878543415.
+   2. DONE: the exact AdSense loader tag is included directly in the
+      <head> of the portal page and every job detail page. This script
+      detects that tag and never injects a second copy.
+   3. DONE: /ads.txt exists at the gogocompany.in site root with the
       real publisher ID (managed in the gogo-website repository).
-   4. EEA / UK / Switzerland: ads stay OFF for those regions until a
-      Google-certified CMP (e.g. Funding Choices) handles consent.
-      Set cmpReady to true only after that integration is verified.
-
-   While publisherId is empty, nothing loads and every .ad-slot stays
-   hidden - the site serves zero ad requests. */
+   4. DONE (2026-11-03): CONFIG.slots filled with the owner-created
+      AdSense units: responsive display 7200569170 on the listing
+      page (sarkari-mid), in-article fluid 4574405834 on job detail
+      pages (sarkari-detail-bottom).
+   5. REMAINING (EEA / UK / Switzerland): ad units stay OFF for those
+      regions until a Google-certified CMP (e.g. Funding Choices)
+      handles consent. Set cmpReady to true only after that
+      integration is verified. */
 (function () {
   "use strict";
 
   var CONFIG = {
-    publisherId: "",   /* real AdSense publisher ID, e.g. "ca-pub-1234567890123456" */
+    publisherId: "ca-pub-2895136878543415",   /* owner-verified AdSense publisher ID (2026-11-03) */
     cmpReady: false,    /* true only after a Google-certified CMP handles consent */
     slots: {
-      "sarkari-mid": ""    /* AdSense slot ID for the portal mid-content unit */
+      "sarkari-mid": "7200569170",           /* listing page: between the category grid and job listings */
+      "sarkari-detail-bottom": "4574405834" /* job detail pages: in-article fluid unit, after the article */
+    },
+    /* Per-slot extra <ins> attributes. The in-article fluid unit
+       needs data-ad-format and data-ad-layout-key besides the ID. */
+    slotAttrs: {
+      "sarkari-detail-bottom": {
+        "data-ad-format": "fluid",
+        "data-ad-layout-key": "-cs-h+4k-la+cg"
+      }
     }
   };
 
@@ -54,17 +68,7 @@
     return true;
   }
 
-  function load() {
-    if (!adsAllowed()) return;
-    if (document.getElementById("sarkari-adsense-lib")) return; /* no duplicate scripts */
-
-    var s = document.createElement("script");
-    s.id = "sarkari-adsense-lib";
-    s.async = true;
-    s.crossOrigin = "anonymous";
-    s.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=" + CONFIG.publisherId;
-    document.head.appendChild(s);
-
+  function activateSlots() {
     var slots = document.querySelectorAll(".ad-slot[hidden]");
     for (var i = 0; i < slots.length; i++) {
       var box = slots[i];
@@ -73,9 +77,33 @@
       if (!slotId || !ins) continue;
       ins.setAttribute("data-ad-client", CONFIG.publisherId);
       ins.setAttribute("data-ad-slot", slotId);
+      var extra = CONFIG.slotAttrs[box.getAttribute("data-ad-slot")];
+      if (extra) {
+        for (var k in extra) {
+          if (Object.prototype.hasOwnProperty.call(extra, k)) ins.setAttribute(k, extra[k]);
+        }
+      }
       box.removeAttribute("hidden");
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     }
+  }
+
+  function load() {
+    if (!adsAllowed()) return;
+    if (document.getElementById("sarkari-adsense-lib")) return; /* no duplicate scripts */
+    if (document.querySelector('script[src*="adsbygoogle.js?client="]')) {
+      /* Static AdSense loader already present in the page head - never inject twice. */
+      activateSlots();
+      return;
+    }
+
+    var s = document.createElement("script");
+    s.id = "sarkari-adsense-lib";
+    s.async = true;
+    s.crossOrigin = "anonymous";
+    s.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=" + CONFIG.publisherId;
+    document.head.appendChild(s);
+    activateSlots();
   }
 
   if (document.readyState === "loading") {

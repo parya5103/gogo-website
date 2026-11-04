@@ -390,6 +390,29 @@ body {
     box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
 }
 
+/* Saved Jobs filter toggle (Phase 3) */
+.saved-filter-btn {
+    padding: 12px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--background-primary);
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.saved-filter-btn:hover {
+    border-color: var(--primary-color);
+}
+
+.saved-filter-btn.active {
+    background: var(--gradient-primary);
+    color: white;
+    border-color: transparent;
+}
+
 /* Categories Section */
 .categories {
     padding: 5rem 0;
@@ -489,6 +512,9 @@ body {
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-right: 2.2rem;
 }
 
 .job-title {
@@ -549,6 +575,76 @@ body {
     font-size: 0.8rem;
     border: 1px solid var(--border-color);
 }
+
+/* Bookmark button on job cards (Phase 3) */
+.bookmark-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background: var(--background-primary);
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 2;
+}
+
+.bookmark-btn:hover {
+    border-color: var(--primary-color);
+    transform: scale(1.08);
+}
+
+.bookmark-btn.bookmarked {
+    background: rgba(255, 193, 7, 0.18);
+    border-color: #ffc107;
+    color: #b8860b;
+}
+
+/* Trust chips (Phase 3): honest source-of-information labels */
+.trust-chip {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    cursor: help;
+}
+
+.trust-chip.trust-official {
+    background: rgba(46, 204, 113, 0.15);
+    border: 1px solid rgba(46, 204, 113, 0.55);
+    color: #1e8449;
+}
+
+.trust-chip.trust-pending {
+    background: rgba(241, 196, 15, 0.15);
+    border: 1px solid rgba(241, 196, 15, 0.55);
+    color: #9a7d0a;
+}
+
+.trust-chip.trust-secondary {
+    background: var(--background-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+}
+
+.trust-chip.trust-review {
+    background: rgba(231, 76, 60, 0.12);
+    border: 1px solid rgba(231, 76, 60, 0.5);
+    color: #b03a2e;
+}
+
+[data-theme="dark"] .trust-chip.trust-official { color: #7dcea0; }
+[data-theme="dark"] .trust-chip.trust-pending { color: #f7dc6f; }
+[data-theme="dark"] .trust-chip.trust-review { color: #f1948a; }
 
 .loading-spinner {
     text-align: center;
@@ -856,65 +952,86 @@ body {
     box-shadow: var(--shadow-light);
 }
 
+/* Modal verification + meta sections (Phase 3) */
+.modal-verification {
+    margin-bottom: 1.25rem;
+    padding: 0.75rem 1rem;
+    background: var(--background-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.modal-verification .verification-note {
+    margin-top: 0.4rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.modal-meta-info .meta-line {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin: 0.3rem 0;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .nav-menu {
         display: none;
     }
-    
+
     .mobile-menu-toggle {
         display: flex;
     }
-    
+
     .hero-title {
         font-size: 2.5rem;
     }
-    
+
     .hero-stats {
         flex-direction: column;
         gap: 1.5rem;
     }
-    
+
     .search-box {
         flex-direction: column;
         gap: 1rem;
         padding: 20px;
         border-radius: 20px;
     }
-    
+
     .search-input {
         text-align: center;
     }
-    
+
     .search-filters {
         flex-direction: column;
     }
-    
+
     .categories-grid {
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 1rem;
     }
-    
+
     .jobs-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
     }
-    
+
     .features-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
     }
-    
+
     .footer-content {
         grid-template-columns: 1fr;
         text-align: center;
     }
-    
+
     .modal-content {
         width: 95%;
         margin: 20px;
     }
-    
+
     .modal-header,
     .modal-body,
     .modal-footer {
@@ -986,16 +1103,16 @@ a:focus {
     .modal {
         display: none;
     }
-    
+
     .hero {
         height: auto;
         padding: 2rem 0;
     }
-    
+
     .hero-background {
         display: none;
     }
-    
+
     .hero-content {
         color: var(--text-primary);
     }
@@ -1061,3 +1178,6 @@ a:focus {
 /* ---- Listing card additions (Phase 6) ---- */
 .view-details-link { font-size: 0.85rem; font-weight: 600; text-decoration: underline; }
 .job-status.status-upcoming { font-size: 0.7rem; padding: 0.2rem 0.55rem; border-radius: 999px; background: rgba(46, 204, 113, 0.15); border: 1px solid rgba(46, 204, 113, 0.5); }
+
+/* ---- Detail page verification chip (Phase 3) ---- */
+.job-verification { margin: 0.5rem 0 0; }
