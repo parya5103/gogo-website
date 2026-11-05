@@ -21,8 +21,13 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Install dependencies
-        run: npm install --no-audit --no-fund
+      - name: Install test dependencies (eslint + Firebase rules plugin only)
+        run: |
+          mv package.json package.json.ci-backup
+          mv package-lock.json package-lock.json.ci-backup
+          npm install --no-save --no-package-lock --no-audit --no-fund eslint@^9.21.0 @firebase/eslint-plugin-security-rules
+          mv package.json.ci-backup package.json
+          mv package-lock.json.ci-backup package-lock.json
 
       - name: Run all repository test suites
         run: npm test
