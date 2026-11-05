@@ -38,7 +38,8 @@
         { href: "about/index.html", label: "About Us" },
         { href: "contact/index.html", label: "Contact" },
         { href: "account/index.html", label: "GoGo Account" },
-        { href: "admin/index.html", label: "Admin Dashboard" }
+        { href: "admin/index.html", la
+bel: "Admin Dashboard" }
       ]
     },
     {
@@ -100,7 +101,8 @@
       '<a class="brand" href="' + attr(ROOT + "index.html") + '">' +
       LOGO_SVG +
       '<span class="brand-name"><span class="accent">GoGo</span> Company</span>' +
-      "</a>" +
+ 
+     "</a>" +
       '<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle main navigation menu">' +
       '<span class="nav-toggle-bar" aria-hidden="true"></span><span class="nav-toggle-bar" aria-hidden="true"></span><span class="nav-toggle-bar" aria-hidden="true"></span>' +
       "</button>" +
@@ -130,7 +132,7 @@
       '<div class="footer-brand">' +
       LOGO_SVG +
       '<span><span class="accent">GoGo</span> Company</span></div>' +
-      '<p class="footer-tag">Games and government exam updates from GoGo Company.</p>' +
+      '<p class="footer-tag">Games and Sarkari exam updates from GoGo Company.</p>' +
       '<p class="footer-mail">Email: <a href="mailto:' + EMAIL + '">' + EMAIL + "</a></p>" +
       '<div class="footer-cols" role="navigation" aria-label="Footer navigation">' + cols + "</div>" +
       '<p class="footer-copy">&copy; <span id="footer-year">2026</span> GoGo Company. All rights reserved.</p>' +
@@ -145,7 +147,8 @@
       var link = document.createElement("link");
       link.rel = "stylesheet";
       link.href = cssHref;
-      document.head.appendChild(link);
+      d
+ocument.head.appendChild(link);
     }
     var jsSrc = ROOT + "assets/js/gogo-account.js";
     if (!document.querySelector('script[src*="gogo-account.js"]')) {
@@ -203,6 +206,7 @@
 
     var year = document.getElementById("footer-year");
     if (year) year.textContent = String(new Date().getFullYear());
+
 
     var toggle = document.querySelector(".nav-toggle");
     var nav = document.getElementById("site-nav");
