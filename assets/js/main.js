@@ -130,7 +130,7 @@
       '<div class="footer-brand">' +
       LOGO_SVG +
       '<span><span class="accent">GoGo</span> Company</span></div>' +
-      '<p class="footer-tag">Games and government exam updates from GoGo Company.</p>' +
+      '<p class="footer-tag">Games and Sarkari exam updates from GoGo Company.</p>' +
       '<p class="footer-mail">Email: <a href="mailto:' + EMAIL + '">' + EMAIL + "</a></p>" +
       '<div class="footer-cols" role="navigation" aria-label="Footer navigation">' + cols + "</div>" +
       '<p class="footer-copy">&copy; <span id="footer-year">2026</span> GoGo Company. All rights reserved.</p>' +

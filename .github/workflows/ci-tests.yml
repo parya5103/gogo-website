@@ -1,0 +1,48 @@
+name: CI Tests
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install test dependencies (firebase + eslint + Firebase rules plugin)
+        run: |
+          mv package.json package.json.ci-backup
+          mv package-lock.json package-lock.json.ci-backup
+          npm install --no-save --no-package-lock --no-audit --no-fund firebase@11.10.0 eslint@9.39.5 @firebase/eslint-plugin-security-rules@0.0.2
+          mv package.json.ci-backup package.json
+          mv package-lock.json.ci-backup package-lock.json
+
+      - name: Run all repository test suites
+        run: |
+          set +e
+          npm test > test-output.log 2>&1
+          code=$?
+          set -e
+          if [ "$code" -ne 0 ]; then
+            tr -cd '\40-\176\n' < test-output.log | grep -E -A 6 '^FAIL:' | head -n 10 > ci-fail.txt || true
+            tr -cd '\40-\176\n' < test-output.log | tail -n 12 >> ci-fail.txt || true
+            n=0
+            while IFS= read -r line && [ "$n" -lt 10 ]; do
+              [ -n "$line" ] || continue
+              printf '::error::%s\n' "$line"
+              n=$((n+1))
+            done < ci-fail.txt
+            exit 1
+          fi

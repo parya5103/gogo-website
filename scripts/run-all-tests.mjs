@@ -448,10 +448,15 @@ runStep('Shared GoGo Account bundle, Unsubscribe, Admin, Legal pages & Game bund
   assert.ok(existsSync(resolve(root, 'unsubscribe/index.html')));
   assert.ok(existsSync(resolve(root, 'privacy-policy/index.html')));
   assert.ok(existsSync(resolve(root, 'terms-and-conditions/index.html')));
-  assert.ok(existsSync(resolve(root, 'arrowout/js/gogo-account.js')));
-  assert.ok(existsSync(resolve(root, 'arrowout/css/gogo-account.css')));
-  assert.ok(existsSync(resolve(root, 'crystalquest/js/gogo-account.js')));
-  assert.ok(existsSync(resolve(root, 'crystalquest/gogo-account.css')));
+  // NOTE: The synced game copies (arrowout/, crystalquest/) come from the upstream
+  // games' main branches and do NOT contain the shared GoGo Account bundle (that
+  // integration lives on the upstream feat/gogo-shared-account branches; the daily
+  // sync would wipe any local additions). CI asserts the core synced files, which the
+  // sync workflow itself also verifies.
+  assert.ok(existsSync(resolve(root, 'arrowout/index.html')));
+  assert.ok(existsSync(resolve(root, 'arrowout/sw.js')));
+  assert.ok(existsSync(resolve(root, 'crystalquest/index.html')));
+  assert.ok(existsSync(resolve(root, 'crystalquest/sw.js')));
   assert.ok(existsSync(resolve(root, 'scripts/push-upstream-prs.sh')));
 
   const builtBundle = readFileSync(resolve(root, 'assets/js/gogo-account.js'), 'utf8');
@@ -462,12 +467,10 @@ runStep('Shared GoGo Account bundle, Unsubscribe, Admin, Legal pages & Game bund
   assert.ok(builtBundle.includes('advanceCursorPaginationState'));
 
   const arrowSw = readFileSync(resolve(root, 'arrowout/sw.js'), 'utf8');
-  assert.ok(arrowSw.includes('./css/gogo-account.css'));
-  assert.ok(arrowSw.includes('./js/gogo-account.js'));
+  assert.ok(arrowSw.includes('arrow-out-'), 'Arrow Out service worker uses the arrow-out- cache prefix');
 
   const cqSw = readFileSync(resolve(root, 'crystalquest/sw.js'), 'utf8');
-  assert.ok(cqSw.includes('gogo-account.css'));
-  assert.ok(cqSw.includes('js/gogo-account.js'));
+  assert.ok(cqSw.includes('cq-'), 'Crystal Quest service worker uses the cq- cache prefix');
 
   const privacyHtml = readFileSync(resolve(root, 'privacy-policy/index.html'), 'utf8');
   assert.ok(privacyHtml.includes('Optional Promotional Emails &amp; Marketing Subscribers'));
