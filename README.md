@@ -6,13 +6,14 @@ deployment that owns the custom domain `gogocompany.in`.
 
 ## Products (unified domain)
 
-All three products run directly under gogocompany.in:
+All four products run directly under gogocompany.in:
 
 | Product | Final URL | Source repository |
 | --- | --- | --- |
 | Arrow Out! (full game) | https://gogocompany.in/arrowout/ | github.com/parya5103/Fletch_Game (branch `main`) |
 | Crystal Quest (full game) | https://gogocompany.in/crystalquest/ | github.com/parya5103/crystal-quest-web (branch `main`) |
 | Sarkari Sarthi (full portal) | https://gogocompany.in/sarkari-sarthi/ | github.com/parya5103/Sarkari-Sarthi (branch `gh-pages`) |
+| PikaNews (news portal) | https://gogocompany.in/pikanews/ | github.com/parya5103/PikaNews (branch `main`) |
 
 Old product paths redirect to the new ones (query strings preserved by
 JavaScript):
@@ -21,16 +22,19 @@ JavaScript):
 - `/crystal-quest/` -> `/crystalquest/`
 - `/sarkari/` -> `/sarkari-sarthi/`
 
-## Product hosting and updates (sync workflow)
+## Product hosting and updates (sync workflows)
 
 `.github/workflows/sync-products.yml` publishes the latest production
-source of each product into this repository:
+source of Arrow Out, Crystal Quest and Sarkari Sarthi into this
+repository, and `.github/workflows/sync-pikanews.yml` publishes PikaNews.
+Both use the same `sync-products` concurrency group, so they can never
+race each other into a failed push.
 
-1. Checks out the three source repositories at their published branches
-   (see table above).
-2. Copies each app into its directory with `rsync` (non-site files like
+1. They check out the product source repositories at their published
+   branches (see table above).
+2. They copy each app into its directory with `rsync` (non-site files like
    `.github`, build tooling, dev folders and lockfiles are excluded).
-3. Commits to `main` ONLY when a product actually changed, which makes
+3. They commit to `main` ONLY when a product actually changed, which makes
    GitHub Pages redeploy automatically.
 
 How updates propagate:
@@ -41,11 +45,16 @@ How updates propagate:
   `jobs/` to its `main` and republishes its `gh-pages` branch -> our sync
   (06:15 IST daily) copies that published site into `/sarkari-sarthi/`,
   so job data stays current.
-- The sync also runs manually: Actions tab -> "Sync product apps" ->
-  "Run workflow".
+- PikaNews: its own collector workflow (every 30 minutes, :00/:30 UTC)
+  fetches RSS feeds, commits fresh `news_json/` data, stats, sitemap and
+  RSS feed to its `main` -> our sync-pikanews workflow (:10/:40 UTC)
+  publishes the frontend plus that data into `/pikanews/`, so news stays
+  current.
+- Both syncs also run manually: Actions tab -> "Sync product apps" or
+  "Sync PikaNews" -> "Run workflow".
 - The product repositories remain the single source of truth; nothing is
-  hand-edited inside `/arrowout/`, `/crystalquest/` or `/sarkari-sarthi/`
-  (edits there would be overwritten by the next sync).
+  hand-edited inside `/arrowout/`, `/crystalquest/`, `/sarkari-sarthi/` or
+  `/pikanews/` (edits there would be overwritten by the next sync).
 
 ## AdSense readiness (NOT yet active)
 
@@ -109,7 +118,8 @@ npm test                # Runs unit tests, ESLint security rules check, and upst
 - `.nojekyll` at the root keeps GitHub Pages from processing the synced
   product apps through Jekyll.
 - The games' PWA manifests and service workers use relative paths and
-  scopes, so they work unchanged inside their subdirectories.
+  scopes, so they work unchanged inside their subdirectories. PikaNews
+  ships no service worker at all.
 - `assets/js/sarkari-data.js` and `assets/js/sarkari.js` are retained from
   the old Sarkari promo page (now a redirect); they are not referenced by
   any page anymore.

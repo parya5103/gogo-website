@@ -1,0 +1,114 @@
+name: Sync PikaNews
+
+on:
+  schedule:
+    # Every 30 minutes at :10 and :40 UTC - 10 minutes after the
+    # PikaNews news_collector runs (:00/:30 UTC), so the collector has
+    # already pushed fresh news_json/ data before we publish it.
+    - cron: '10,40 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Shares the SAME concurrency group as sync-products.yml so the two
+# publishing workflows can never race each other into a failed push or an
+# inconsistent commit on main. Queued runs wait instead of being cancelled.
+concurrency:
+  group: sync-products
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout central site
+        uses: actions/checkout@v4
+
+      - name: Checkout PikaNews source (main branch)
+        uses: actions/checkout@v4
+        with:
+          repository: parya5103/PikaNews
+          ref: main
+          path: src-pikanews
+
+      - name: Publish PikaNews into /pikanews/
+        run: |
+          set -e
+          mkdir -p pikanews
+          # Frontend site (pages, css, js, images, robots, sitemap, feed).
+          # --delete is scoped to pikanews/ only; other products untouched.
+          rsync -a --delete --delete-excluded \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude 'generate_pages.py' \
+            src-pikanews/frontend/ pikanews/
+          # News data published as /pikanews/data/ - the frontend's
+          # data.js fetches relative 'data/...' URLs.
+          mkdir -p pikanews/data
+          rsync -a --delete --delete-excluded \
+            --exclude '.git' \
+            src-pikanews/news_json/ pikanews/data/
+          # Statistics + per-source failure tracking (required, no || true).
+          test -f src-pikanews/data/stats.json
+          cp src-pikanews/data/stats.json pikanews/data/stats.json
+          if [ -f src-pikanews/data/failed_sources.json ]; then
+            cp src-pikanews/data/failed_sources.json pikanews/data/failed_sources.json
+          fi
+
+      - name: Verify synced PikaNews files (fail instead of publishing a broken site)
+        run: |
+          set -e
+          test -f pikanews/index.html
+          test -f pikanews/article.html
+          test -f pikanews/search.html
+          test -f pikanews/css/styles.css
+          test -f pikanews/js/app.js
+          test -f pikanews/js/data.js
+          test -f pikanews/js/utils.js
+          test -f pikanews/images/pikanews-logo.svg
+          test -f pikanews/robots.txt
+          test -f pikanews/sitemap.xml
+          test -f pikanews/feed.xml
+          test -f pikanews/data/all_articles.json
+          test -f pikanews/data/latest.json
+          test -f pikanews/data/trending.json
+          test -f pikanews/data/stats.json
+          test -f pikanews/data/bollywood.json
+          test -f pikanews/data/hollywood.json
+          test -f pikanews/data/entertainment.json
+          test -f pikanews/data/technology.json
+          test -f pikanews/data/gaming.json
+          test -f pikanews/data/business.json
+          test -f pikanews/data/sports.json
+          # Sitemap and feed must reference the production domain.
+          grep -q 'gogocompany.in/pikanews/' pikanews/sitemap.xml
+          grep -q 'gogocompany.in/pikanews/' pikanews/feed.xml
+          # No root-scope service worker may ever be registered.
+          if grep -rn 'serviceWorker.register' pikanews/ 2>/dev/null; then
+            echo "::error::PikaNews registers a service worker - refusing to publish"
+            exit 1
+          fi
+          echo "All PikaNews files verified."
+
+      - name: Commit synced PikaNews if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Same stale-index guard as sync-products.yml: drop old cached
+          # entries so git add stages a fresh tree (gitlink entries from a
+          # broken sync would otherwise be skipped silently).
+          git rm -r --cached --ignore-unmatch --quiet pikanews || true
+          git add pikanews
+          if git ls-files -s | grep -q '^160000'; then
+            echo "::error::gitlink (embedded repository) entries present in index - refusing to publish"
+            git ls-files -s | grep '^160000' || true
+            exit 1
+          fi
+          if git diff --cached --quiet; then
+            echo "No PikaNews changes to publish."
+          else
+            git commit -m "sync: refresh PikaNews from parya5103/PikaNews main"
+            git pull --rebase origin main
+            git push
+          fi
