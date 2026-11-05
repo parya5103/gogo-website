@@ -2,9 +2,10 @@
    Header and footer are injected here so nav links live in ONE place.
    Pages set: <html data-root="./"> (root pages) or "../" (nested pages),
    and <body data-page="home|about|contact|...">.
-   Product apps live under /arrowout/, /crystalquest/ and /sarkari-sarthi/
-   (published from their own source repositories by the sync workflow -
-   see .github/workflows/sync-products.yml).
+   Product apps live under /arrowout/, /crystalquest/, /sarkari-sarthi/
+   and /pikanews/ (published from their own source repositories by the sync
+   workflows - see .github/workflows/sync-products.yml and
+   sync-pikanews.yml).
    Edit NAV_LINKS / FOOTER_COLS below to change the whole site. */
 
 (function () {
@@ -24,6 +25,7 @@
   var NAV_LINKS = [
     { href: "index.html", label: "Home", page: "home" },
     { href: "sarkari-sarthi/", label: "Sarkari Sarthi", page: "sarkari" },
+    { href: "pikanews/", label: "PikaNews", page: "pikanews" },
     { href: "arrowout/", label: "Arrow Out!", page: "arrow-out" },
     { href: "crystalquest/", label: "Crystal Quest", page: "crystal-quest" },
     { href: "account/index.html", label: "Account", page: "account" },
@@ -46,7 +48,8 @@
       links: [
         { href: "arrowout/", label: "Arrow Out!" },
         { href: "crystalquest/", label: "Crystal Quest" },
-        { href: "sarkari-sarthi/", label: "Sarkari Sarthi" }
+        { href: "sarkari-sarthi/", label: "Sarkari Sarthi" },
+        { href: "pikanews/", label: "PikaNews" }
       ]
     },
     {
@@ -130,7 +133,7 @@
       '<div class="footer-brand">' +
       LOGO_SVG +
       '<span><span class="accent">GoGo</span> Company</span></div>' +
-      '<p class="footer-tag">Games and Sarkari exam updates from GoGo Company.</p>' +
+      '<p class="footer-tag">Games, Sarkari exam updates and news from GoGo Company.</p>' +
       '<p class="footer-mail">Email: <a href="mailto:' + EMAIL + '">' + EMAIL + "</a></p>" +
       '<div class="footer-cols" role="navigation" aria-label="Footer navigation">' + cols + "</div>" +
       '<p class="footer-copy">&copy; <span id="footer-year">2026</span> GoGo Company. All rights reserved.</p>' +
