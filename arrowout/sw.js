@@ -39,9 +39,7 @@ const CORE_ASSETS = [
 const EXTRA_ASSETS = [
   './icons/icon-192.png',
   './icons/icon-512.png',
-  './icons/icon-maskable-512.png',
-  './css/gogo-account.css',
-  './js/gogo-account.js'
+  './icons/icon-maskable-512.png'
 ];
 
 // Precache with cache:'reload' so the HTTP cache can never leak OLD bytes
