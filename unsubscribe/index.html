@@ -7,6 +7,9 @@
   <meta name="description" content="Manage your GoGo Games promotional email subscription or unsubscribe immediately while keeping your GoGo Account and cloud saves intact.">
   <link rel="canonical" href="https://gogocompany.in/unsubscribe/">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Email Preferences &amp; Unsubscribe — GoGo Company">
+  <meta name="twitter:description" content="Manage your GoGo Games promotional email subscription or unsubscribe immediately while keeping your GoGo Account and cloud saves intact.">
   <link rel="stylesheet" href="../assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/gogo-account.css">
 </head>
@@ -24,10 +27,14 @@
 
     <section class="section">
       <div class="container">
-        <div id="gogo-unsubscribe-page-root">
+        <div id="gogo-unsubscribe-page-root" role="main" aria-live="polite" aria-busy="true">
           <div class="gogo-account-card gogo-account-card-page">
             <h2 class="gogo-account-title">Loading Email Preferences...</h2>
             <p class="gogo-account-subtitle">Connecting to your GoGo Account...</p>
+            <div class="loading-skeleton" aria-hidden="true">
+              <div class="skeleton-line" style="width:100%;height:16px;margin:8px 0;background:var(--border);border-radius:4px"></div>
+              <div class="skeleton-line" style="width:80%;height:16px;margin:8px 0;background:var(--border);border-radius:4px"></div>
+            </div>
           </div>
         </div>
       </div>

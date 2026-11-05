@@ -13,6 +13,9 @@
   <meta property="og:description" content="Create one GoGo Account for GoGo Games, Arrow Out, and Crystal Quest with cloud save backup.">
   <meta property="og:url" content="https://gogocompany.in/account/">
   <meta name="theme-color" content="#0b1020">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="GoGo Account &amp; Cloud Saves | GoGo Company">
+  <meta name="twitter:description" content="Sign in or create your shared GoGo Account to sync your profile and cloud saves across GoGo Games, Arrow Out, and Crystal Quest.">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/gogo-account.css">
@@ -25,7 +28,17 @@
         <h1>GoGo Account &amp; Cloud Save</h1>
         <p class="lead">Sign in once to back up and restore your progress across GoGo Games, Arrow Out!, and Crystal Quest.</p>
       </div>
-      <div id="gogo-account-page-root"></div>
+      <div id="gogo-account-page-root" role="main" aria-live="polite" aria-busy="true">
+        <div class="gogo-account-card gogo-account-card-page" style="max-width:400px;margin:0 auto;text-align:center">
+          <h2 class="gogo-account-title">Loading GoGo Account...</h2>
+          <p class="gogo-account-subtitle">Initializing Firebase Authentication...</p>
+          <div class="loading-skeleton" aria-hidden="true">
+            <div class="skeleton-line" style="width:100%;height:16px;margin:8px 0;background:var(--border);border-radius:4px"></div>
+            <div class="skeleton-line" style="width:80%;height:16px;margin:8px 0;background:var(--border);border-radius:4px"></div>
+            <div class="skeleton-line" style="width:60%;height:16px;margin:8px 0;background:var(--border);border-radius:4px"></div>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
   <script src="../assets/js/main.js" defer></script>
