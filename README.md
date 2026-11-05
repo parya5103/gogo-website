@@ -84,7 +84,7 @@ A unified Firebase Authentication + Cloud Firestore bundle (`src/gogo-account.ts
 - **Cross-App Single Sign-On (`gogocompany.in`)**: Email/Password registration & login, Email Verification, Google Sign-In, Password Reset, and Account Deletion across `/`, `/arrowout/`, and `/crystalquest/`. Guest play remains enabled by default.
 - **Game Cloud Save & Conflict Resolution**: Automatic & manual cloud backup to `gameProfiles/{uid}/games/{gameId}` with side-by-side Local vs. Cloud vs. Smart Merge conflict resolution.
 - **Explicit Marketing Consent & Unsubscribe**: Optional, unchecked-by-default marketing consent during registration stored in `marketingSubscribers/{uid}`. Only verified emails with explicit consent are exported to promotional CSV lists.
-- **Protected Admin Dashboard (`/admin/`)**: Fail-closed admin dashboard (restricted by Firestore Security Rules to verified admins) with 6 KPIs, registration trends, search/filter, pagination, and RFC-4188 / formula-injection-hardened CSV exports.
+- **Protected Admin Dashboard (`/admin/`)**: Fail-closed admin dashboard (restricted by Firestore Security Rules to verified admins) with 6 KPIs, registration trends, search/filter, pagination, and RFC-4180 / formula-injection-hardened CSV exports.
 
 Build & test commands:
 
