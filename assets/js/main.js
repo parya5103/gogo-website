@@ -162,11 +162,44 @@
     return '<a href="#main" class="skip-link">Skip to main content</a>';
   }
 
+  function buildBackToTop() {
+    return '<button type="button" class="back-to-top" aria-label="Back to top" aria-hidden="true"><span>&#8593;</span></button>';
+  }
+
+  function initBackToTop() {
+    var backToTop = document.querySelector(".back-to-top");
+    if (!backToTop) {
+      document.body.insertAdjacentHTML("beforeend", buildBackToTop());
+      backToTop = document.querySelector(".back-to-top");
+    }
+    
+    if (backToTop) {
+      backToTop.setAttribute("aria-hidden", "true");
+      var toggleVisibility = function() {
+        if (window.pageYOffset > 300) {
+          backToTop.classList.add("visible");
+          backToTop.setAttribute("aria-hidden", "false");
+        } else {
+          backToTop.classList.remove("visible");
+          backToTop.setAttribute("aria-hidden", "true");
+        }
+      };
+      
+      backToTop.addEventListener("click", function() {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+      
+      window.addEventListener("scroll", toggleVisibility);
+      toggleVisibility();
+    }
+  }
+
   function init() {
     document.body.insertAdjacentHTML("afterbegin", buildSkipLink());
     document.body.insertAdjacentHTML("afterbegin", buildHeader());
     document.body.insertAdjacentHTML("beforeend", buildFooter());
     ensureAccountAssets();
+    initBackToTop();
 
     var year = document.getElementById("footer-year");
     if (year) year.textContent = String(new Date().getFullYear());

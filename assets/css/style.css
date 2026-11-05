@@ -535,3 +535,41 @@ main { flex: 1; }
 }
 .footer-col a:hover { color: var(--accent); }
 .footer-copy { border-top: 1px solid var(--border); padding-top: 16px; font-size: 0.9rem; }
+
+/* ---------- Back to Top Button ---------- */
+.back-to-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  z-index: 1000;
+}
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+.back-to-top:hover {
+  background: var(--primary-2);
+  transform: translateY(-2px);
+}
+.back-to-top:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+.back-to-top aria-hidden="true" {
+  display: none;
+}
