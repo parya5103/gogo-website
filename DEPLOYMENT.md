@@ -48,7 +48,8 @@ guessed or copied value.
 1. In `parya5103/Fletch_Game`, run the "TWA APK build" workflow and
    download the `assetlinks.json` file from the build artifact.
 2. In THIS repository, add the file at path
-   `.well-known/assetlinks.json` with exactly the generated contents
+   `.well
+-known/assetlinks.json` with exactly the generated contents
    and commit to `main`.
 3. Verify `https://gogocompany.in/.well-known/assetlinks.json` opens
    in a browser.
@@ -70,5 +71,5 @@ findable there.
 - Old URLs redirect: /arrow-out/ -> /arrowout/, /crystal-quest/ ->
   /crystalquest/, /sarkari/ -> /sarkari-sarthi/.
 - After the first sync run, the games install as PWAs from the new paths
-  and work offline; the Sarkari Sarthi portal shows current job data.
+  and work offline; the Sarkari portal shows current job data.
 - Lock icon / HTTPS works with no mixed-content warnings.
