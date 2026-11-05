@@ -38,8 +38,7 @@
         { href: "about/index.html", label: "About Us" },
         { href: "contact/index.html", label: "Contact" },
         { href: "account/index.html", label: "GoGo Account" },
-        { href: "admin/index.html", la
-bel: "Admin Dashboard" }
+        { href: "admin/index.html", label: "Admin Dashboard" }
       ]
     },
     {
@@ -101,8 +100,7 @@ bel: "Admin Dashboard" }
       '<a class="brand" href="' + attr(ROOT + "index.html") + '">' +
       LOGO_SVG +
       '<span class="brand-name"><span class="accent">GoGo</span> Company</span>' +
- 
-     "</a>" +
+      "</a>" +
       '<button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle main navigation menu">' +
       '<span class="nav-toggle-bar" aria-hidden="true"></span><span class="nav-toggle-bar" aria-hidden="true"></span><span class="nav-toggle-bar" aria-hidden="true"></span>' +
       "</button>" +
@@ -147,8 +145,7 @@ bel: "Admin Dashboard" }
       var link = document.createElement("link");
       link.rel = "stylesheet";
       link.href = cssHref;
-      d
-ocument.head.appendChild(link);
+      document.head.appendChild(link);
     }
     var jsSrc = ROOT + "assets/js/gogo-account.js";
     if (!document.querySelector('script[src*="gogo-account.js"]')) {
@@ -206,7 +203,6 @@ ocument.head.appendChild(link);
 
     var year = document.getElementById("footer-year");
     if (year) year.textContent = String(new Date().getFullYear());
-
 
     var toggle = document.querySelector(".nav-toggle");
     var nav = document.getElementById("site-nav");
