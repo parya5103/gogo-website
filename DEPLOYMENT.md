@@ -48,8 +48,7 @@ guessed or copied value.
 1. In `parya5103/Fletch_Game`, run the "TWA APK build" workflow and
    download the `assetlinks.json` file from the build artifact.
 2. In THIS repository, add the file at path
-   `.well
--known/assetlinks.json` with exactly the generated contents
+   `.well-known/assetlinks.json` with exactly the generated contents
    and commit to `main`.
 3. Verify `https://gogocompany.in/.well-known/assetlinks.json` opens
    in a browser.
