@@ -46,7 +46,7 @@
       <div class="container hero-inner">
         <p class="kicker">Legal</p>
         <h1>Privacy <span class="accent">Policy</span></h1>
-        <p class="lead">Short version: you can play our games and browse gogocompany.in as a guest without creating an account. If you choose to create an optional GoGo Account for Cloud Save or opt in to promotional updates, we store only the account, consent, and game-save records described below in Google Firebase. When advertising is enabled, it works through Google AdSense / AdMob as explained below.</p>
+        <p class="lead">Short version: you can play our games, read PikaNews and browse gogocompany.in as a guest without creating an account. If you choose to create an optional GoGo Account for Cloud Save or opt in to promotional updates, we store only the account, consent, and game-save records described below in Google Firebase. When advertising is enabled, it works through Google AdSense / AdMob as explained below.</p>
       </div>
     </section>
     <section class="section">
@@ -57,18 +57,20 @@
           <li><strong>Arrow Out!</strong> - <em>gogocompany.in/arrowout/</em></li>
           <li><strong>Crystal Quest</strong> - <em>gogocompany.in/crystalquest/</em></li>
           <li><strong>Sarkari Sarthi</strong> - <em>gogocompany.in/sarkari-sarthi/</em></li>
+          <li><strong>PikaNews</strong> - <em>gogocompany.in/pikanews/</em></li>
         </ul>
-        <p>The games may display their own in-game privacy information. Where a game says something specific about its own features, that description also applies on this domain. We do not make privacy claims on behalf of any third-party site we link to.</p>
+        <p>The games and PikaNews may display their own in-product privacy information. Where a product says something specific about its own features, that description also applies on this domain. We do not make privacy claims on behalf of any third-party site we link to.</p>
 
         <h2>Optional GoGo Account &amp; Cloud Save</h2>
         <ul>
-          <li><strong>Guest play by default:</strong> You never need an account to use gogocompany.in, play Arrow Out! or Crystal Quest, or browse Sarkari Sarthi.</li>
+          <li><strong>Guest play by default:</strong> You never need an account to use gogocompany.in, play Arrow Out! or Crystal Quest, browse Sarkari Sarthi, or read PikaNews.</li>
           <li><strong>Optional GoGo Account:</strong> If you choose to create a GoGo Account (via Email/Password or Google Sign-In powered by Google Firebase Authentication), we store only essential account information in Google Cloud Firestore (<code>users/{uid}</code>): your email address, email verification status, display name (if provided), avatar URL (if provided by Google), authentication provider, marketing subscription status, registration timestamp, and last login timestamp.</li>
           <li><strong>Email verification:</strong> Password-based registrations receive a verification email via Firebase Authentication so you can confirm ownership of your email address.</li>
           <li><strong>Game Cloud Save (<code>gameProfiles/{uid}/games/{gameId}</code>):</strong> When signed in, your progress for Arrow Out! and Crystal Quest can be backed up and synced across devices in Cloud Firestore. If your local browser save and cloud save ever differ, you are prompted to choose between keeping local progress, restoring cloud progress, or smart-merging both.</li>
           <li><strong>Strict ownership &amp; account deletion:</strong> Your cloud profile and game saves are accessible only to your authenticated account (and authorized GoGo administrators for account administration). You can permanently delete your GoGo Account and all associated Cloud Firestore data (<code>users/{uid}</code>, <code>marketingSubscribers/{uid}</code>, and <code>gameProfiles/{uid}/games/*</code>) at any time directly from the <a href="../account/">GoGo Account page</a> or the in-game account modal.</li>
           <li>We run no custom first-party analytics tracker of our own on this website.</li>
           <li>The Sarkari Sarthi portal loads public job-data files in your browser and does not use GoGo Accounts.</li>
+          <li>PikaNews is a fully static news site: it uses no GoGo Account, no tracking scripts of its own, and stores nothing in your browser beyond what your browser caches by default.</li>
         </ul>
 
         <h2>Optional Promotional Emails &amp; Marketing Subscribers</h2>
@@ -79,6 +81,7 @@
           <li><strong>Consent accountability records:</strong> In our secure Cloud Firestore <code>marketingSubscribers/{uid}</code> collection, we record your email address, display name, email verification status, subscription status, consent timestamp, consent version/text, registration source, and unsubscribe timestamp for compliance and accountability. Normal users can never read, list, or export other users' email addresses.</li>
           <li><strong>Immediate unsubscribe:</strong> You can unsubscribe from promotional emails at any time with one click via the <a href="../unsubscribe/">GoGo Unsubscribe Center</a> (while signed in) or inside your <a href="../account/">GoGo Account settings</a>, or by emailing <a href="mailto:officialgogocompany@gmail.com?subject=Unsubscribe">officialgogocompany@gmail.com</a>. Unsubscribe requests take effect immediately, preserve prior consent audit metadata as required for compliance, and we never re-add an unsubscribed user automatically.</li>
           <li><strong>No selling or third-party sharing:</strong> GoGo Company never sells, rents, or shares your email address or subscriber list with third parties.</li>
+          <li><strong>PikaNews newsletter:</strong> PikaNews has no newsletter backend. Its subscription block offers the RSS feed instead and never claims an email subscription was stored.</li>
         </ul>
 
         <h2>What is stored in your browser</h2>
@@ -86,12 +89,13 @@
           <li><strong>Game progress:</strong> Arrow Out! and Crystal Quest store your progress, settings and saves in your own browser's local storage under gogocompany.in. For guest players, this data remains in your browser on your device. Signed-in players who use Cloud Save also store a synchronized copy of their game save in their private GoGo Account in Cloud Firestore.</li>
           <li><strong>Authentication session:</strong> When you sign in to a GoGo Account, Firebase Authentication stores your session token locally in your browser (IndexedDB / local storage) so you stay signed in across gogocompany.in, /arrowout/, and /crystalquest/.</li>
           <li><strong>Offline files:</strong> The games install a service worker that caches game and account-interface files on your device so the games work offline. You can remove all local data at any time by signing out and clearing site data in your browser.</li>
+          <li><strong>PikaNews:</strong> PikaNews ships no service worker and sets no cookies or local storage of its own; only your browser's normal cache applies.</li>
         </ul>
 
         <h2>Cookies and similar technologies</h2>
         <ul>
           <li>For guest visitors, gogocompany.in sets no custom tracking cookies of its own. Signed-in GoGo Account sessions use browser IndexedDB / localStorage managed by Google Firebase Authentication.</li>
-          <li>When advertising units are switched on, Google AdSense / AdMob and their partners may set advertising cookies or use device identifiers - explained in the Advertising section below.</li>
+          <li>When advertising units are switched on, Google AdSense / AdMob and their partners may set advertising cookies or use device identifiers - explained in the Advertising section below. This applies to informational pages and to PikaNews article, homepage and category placements alike.</li>
           <li>You can view, block or delete cookies and site data in your browser settings at any time.</li>
         </ul>
 
@@ -99,13 +103,13 @@
         <ul>
           <li><strong>Google Firebase (Authentication &amp; Cloud Firestore):</strong> When you register or sign in to a GoGo Account, Google Firebase processes your authentication credentials and stores your account profile, marketing consent record, and game cloud saves on our behalf.</li>
           <li><strong>Web server logs:</strong> Our static hosting provider (GitHub Pages) may log standard technical request data such as IP address, browser type and requested pages, for security and abuse prevention, governed by GitHub's privacy policy.</li>
-          <li><strong>Emails you send us:</strong> If you email us, we keep your message and address only to reply to you or process your support/privacy request.</li>
+          <li><strong>Emails you send us:</strong> If you email us, we keep your message and address only to reply to you or process your support/privacy request - including PikaNews correction, copyright or content-removal requests.</li>
         </ul>
 
         <h2>Advertising and Google AdSense / AdMob</h2>
-        <p>We may display clearly labelled advertising on informational pages of gogocompany.in, in a separated area of the Sarkari Sarthi portal (never disguised as job cards or beside Apply buttons), and via optional/non-intrusive ad placements in our games (such as optional rewarded hints or between-level placements handled by the games' ad modules). Advertising is served through Google AdSense / AdMob. Important points:</p>
+        <p>We may display clearly labelled advertising on informational pages of gogocompany.in, in a separated area of the Sarkari Sarthi portal (never disguised as job cards or beside Apply buttons), on the PikaNews news portal (in clearly labelled areas between editorial sections, in the desktop sidebar and after article content - never inside navigation, near original-source links, or disguised as news cards), and via optional/non-intrusive ad placements in our games (such as optional rewarded hints or between-level placements handled by the games' ad modules). Advertising is served through Google AdSense / AdMob. Important points:</p>
         <ul>
-          <li><strong>Clear separation:</strong> Website ad units are visibly marked "Advertisement" and visually separated from content. Ads are never styled as, or mixed into, Sarkari job listings, and never obstruct active gameplay controls.</li>
+          <li><strong>Clear separation:</strong> Website ad units are visibly marked "Advertisement" and visually separated from content. Ads are never styled as, or mixed into, Sarkari job listings or PikaNews news cards, and never obstruct active gameplay controls.</li>
           <li><strong>Third-party cookies:</strong> When ads are shown, Google and its advertising partners may use cookies and similar technologies (such as device identifiers and interaction data) to serve, measure and, where permitted, personalise ads, including the Google advertising cookie.</li>
           <li><strong>Personalised advertising:</strong> Where allowed by law and consent rules, Google may use visit data to personalise the ads you see. Without that basis, ads are non-personalised.</li>
           <li><strong>Google's advertising and privacy information:</strong> How Google uses advertising cookies and similar technologies is explained at <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">policies.google.com/technologies/ads</a>, and the Google privacy policy is at <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">policies.google.com/privacy</a>. How Google uses data from websites that use its services is described at policies.google.com/technologies/partner-sites.</li>
@@ -113,10 +117,11 @@
         </ul>
 
         <h2>Consent in the EEA, UK and Switzerland</h2>
-        <p>For visitors from the European Economic Area, the United Kingdom and Switzerland, we only serve advertising after valid consent through a Google-certified Consent Management Platform (CMP). Until a certified CMP is integrated and consent is obtained, advertising remains switched off for those regions - the ad areas simply do not load. Consent, where collected, covers personalised advertising, measurement and the cookies described above, and can be withdrawn at any time through the consent tool or your browser settings.</p>
+        <p>For visitors from the European Economic Area, the United Kingdom and Switzerland, we only serve advertising after valid consent through a Google-certified Consent Management Platform (CMP). Until a certified CMP is integrated and consent is obtained, advertising remains switched off for those regions - the ad areas simply do not load, on the main site and on PikaNews alike. Consent, where collected, covers personalised advertising, measurement and the cookies described above, and can be withdrawn at any time through the consent tool or your browser settings.</p>
 
         <h2>External links</h2>
-        <p>Product pages, game links and Sarkari listings link to third-party and government websites. Once you leave gogocompany.in, their privacy policies apply, not ours.</p>
+        <p>Product pages, game links, PikaNews stories and Sarkari listings link to third-party and government websites. Once you leave gogocompany.in, their privacy policies apply, not ours.</p>
+        <p>PikaNews aggregates headlines, short summaries and links from third-party news publishers; every story names its original publisher and links to the original report. Following those links takes you to the publisher's own website, where the publisher's privacy policy applies. PikaNews correction, copyright and content-removal requests can be sent through the PikaNews contact page or directly to <a href="mailto:officialgogocompany@gmail.com">officialgogocompany@gmail.com</a>.</p>
         <p>Sarkari Sarthi listings in particular link to official recruitment websites and external job application portals run by recruiting authorities and other third parties. When you open those links or apply on those portals, any information you submit is handled under the privacy policy of that website - we never receive it.</p>
 
         <h2>Data security and retention</h2>
@@ -136,14 +141,14 @@
         <h2>Your rights</h2>
         <ul>
           <li><strong>Access, update, unsubscribe, or delete your GoGo Account:</strong> Sign in at <a href="../account/">gogocompany.in/account/</a> at any time to view your profile, toggle promotional email consent, or permanently delete your account and cloud saves.</li>
-          <li><strong>Email correspondence &amp; privacy requests:</strong> You can also write to us at the address below to request access to, correction of, or deletion of your account data, marketing subscription, or email correspondence.</li>
+          <li><strong>Email correspondence &amp; privacy requests:</strong> You can also write to us at the address below to request access to, correction of, or deletion of your account data, marketing subscription, or email correspondence - or to request correction or removal of PikaNews content.</li>
           <li><strong>Browser storage:</strong> Clearing site data in your browser removes all local game saves, offline files, and any cookies in one step.</li>
           <li><strong>Ad preferences:</strong> You can change your Google ad personalisation settings at <a href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer">myadcenter.google.com</a> and use the ad-industry choice tools listed above at any time.</li>
         </ul>
 
         <h2>Contact</h2>
         <p>Questions about privacy? Email <a href="mailto:officialgogocompany@gmail.com">officialgogocompany@gmail.com</a>.</p>
-        <p><em>Effective date: 4 November 2026.</em></p>
+        <p><em>Effective date: 5 November 2026.</em></p>
       </div>
     </section>
   </main>
