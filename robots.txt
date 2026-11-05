@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://gogocompany.in/sitemap.xml
+Sitemap: https://gogocompany.in/sarkari-sarthi/sitemap.xml
