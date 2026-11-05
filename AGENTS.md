@@ -1,19 +1,19 @@
-# GoGo Games — AI Coding Agent Operational Instructions
+# GoGo Games - AI Coding Agent Operational Instructions
 
-**Last Updated:** 2025-01-17  
-**Audit Date:** 2025-01-17  
+**Last Updated:** 2025-11-05  
+**Audit Date:** 2025-11-05  
 **Repository:** parya5103/gogo-website  
 **Production:** https://gogocompany.in/  
 **Branch:** docs/update-agent-knowledge
 
 ---
 
-## 🎯 Project Identity
+## Project Identity
 
 **GoGo Company** is an independent gaming and digital products company. This repository (`parya5103/gogo-website`) is the **central website and synchronization repository** for:
 - GoGo Company website (gogocompany.in)
 - Arrow Out! game portal
-- Crystal Quest game portal  
+- Crystal Quest game portal
 - Sarkari Sarthi job tracker portal
 
 **Critical:** Individual game repositories remain the **source of truth** for their respective games:
@@ -23,11 +23,13 @@
 
 **Sarkari Sarthi** is a **separate project** and must NOT be modified by GoGo website tasks unless explicitly authorized.
 
+**Brand Language Note:** The word "Sarkari" should only appear as part of the full product name "Sarkari Sarthi". Use alternatives like "Government", "government job", "Government job listings" for standalone references.
+
 ---
 
-## 🛡️ Repository Safety Rules (MANDATORY)
+## Repository Safety Rules (MANDATORY)
 
-### ❌ NEVER DO (Hard Boundaries)
+### NEVER DO (Hard Boundaries)
 
 1. **DO NOT overwrite original game repositories** with copies from the central repository
 2. **DO NOT modify synced product copies** (`/arrowout/`, `/crystalquest/`, `/sarkari-sarthi/`) as a substitute for modifying their original repositories
@@ -41,44 +43,70 @@
 10. **DO NOT weaken Firestore rules** to make a feature work
 11. **DO NOT claim Firebase rules are deployed** unless deployment is verified
 12. **DO NOT modify** `parya5103/Fletch_Game`, `parya5103/crystal-quest-web`, or `parya5103/Sarkari-Sarthi` repositories
+13. **DO NOT use standalone "Sarkari"** - only use "Sarkari Sarthi" as full product name
 
-### ✅ ALWAYS DO (Safety First)
+### ALWAYS DO (Safety First)
 
 1. **Use separate feature branches** and PRs for all significant changes
 2. **Inspect existing architecture** before editing any code
 3. **Preserve existing functionality** and backward compatibility
 4. **Verify Firestore rules** against the actual Firebase project before claiming security
 5. **Test cross-user access denial** before claiming security features work
-6. **Run relevant tests** after making changes
+6. **Run relevant tests** after making changes (`npm test`, `npm run lint:rules`)
 7. **Report exact files changed** and test results in your response
 8. **Preserve mobile-first design** and Android Chrome compatibility
 9. **Maintain SEO, accessibility, PWA, and performance** standards
+10. **Add proper ARIA labels and semantic HTML** for accessibility
+11. **Use skip-to-content links** on all pages
+12. **Ensure focus states** are visible for all interactive elements
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 gogo-website/
 ├── index.html                    # Main homepage
+├── 404.html                      # Not found page
+├── CNAME                         # Custom domain
+├── .nojekyll                     # Prevent Jekyll processing
+├── robots.txt                    # Crawler directives
+├── ads.txt                       # AdSense publisher declaration
+├── favicon.svg                   # Site icon
+├── sitemap.xml                   # Site map
+├── README.md                     # Project readme
+├── DEPLOYMENT.md                 # Deployment instructions
+├── security_spec.md              # Security specifications
+├── package.json                  # Node.js dependencies
+├── eslint.config.mjs             # ESLint configuration
 ├── account/                      # GoGo Account & Cloud Save UI
 │   └── index.html
 ├── admin/                        # Protected Admin Dashboard
 │   └── index.html
 ├── unsubscribe/                  # Marketing unsubscribe center
 │   └── index.html
+├── about/                        # About page
+│   └── index.html
+├── contact/                      # Contact page
+│   └── index.html
+├── disclaimer/                   # Disclaimer page
+│   └── index.html
+├── privacy-policy/               # Privacy policy
+│   └── index.html
+├── terms-and-conditions/         # Terms and conditions
+│   └── index.html
 ├── arrowout/                     # Synced Arrow Out game (from Fletch_Game)
 ├── crystalquest/                 # Synced Crystal Quest game
 ├── sarkari-sarthi/               # Synced Sarkari Sarthi portal
 ├── assets/
 │   ├── css/                      # Shared stylesheets
-│   │   ├── style.css
-│   │   ├── gogo-account.css
-│   │   └── ads.css
+│   │   ├── style.css            # Main styles + skip-link, loading skeleton, back-to-top
+│   │   ├── gogo-account.css     # Account system styles + focus states
+│   │   └── ads.css              # AdSense styles
 │   └── js/                       # Shared JavaScript
-│       ├── main.js               # Header/footer injection
+│       ├── main.js               # Header/footer injection, skip-link, back-to-top
 │       ├── gogo-account.js       # Compiled from src/gogo-account.ts
-│       └── ads.js                # AdSense integration (currently OFF)
+│       └── ads.js                # AdSense integration
 ├── src/
 │   └── gogo-account.ts           # TypeScript source for GoGo Account system
 ├── scripts/                      # Build and test scripts
@@ -98,248 +126,149 @@ gogo-website/
 ├── firebase-applet-config.json   # Firebase client config (PUBLIC)
 ├── firebase-blueprint.json       # Firestore schema blueprint
 ├── firestore.rules               # Firestore Security Rules
-├── firestore.rules.test.ts       # Security rules unit tests
-├── security_spec.md              # Security specification
-├── DEPLOYMENT.md                 # Deployment guide
-├── README.md                     # Project README
-├── package.json
-├── .nojekyll
-├── CNAME
-└── ads.txt
+└── firestore.rules.test.ts        # Firestore rules unit tests
 ```
 
 ---
 
-## 🔧 Coding Rules
+## Coding Rules
 
 ### Before Editing
-1. Read `README.md`, `DEPLOYMENT.md`, and `security_spec.md`
-2. Inspect the target file and related files
-3. Check `git status` and recent commits
-4. Understand the existing patterns and conventions
+1. **Read AGENTS.md and KNOWLEDGE.md** - Understand the project before making changes
+2. **Inspect the current code** - Understand existing patterns and architecture
+3. **Check Git history** - Understand why previous decisions were made
+4. **Verify with source code** - Primary evidence comes from actual code, not assumptions
 
 ### During Editing
-1. **Make minimal, targeted changes** - solve one problem at a time
-2. **Preserve existing functionality** - don't break what works
-3. **Follow existing code style** - match indentation, naming, patterns
-4. **No unnecessary dependencies** - avoid adding frameworks or paid services
-5. **Mobile-first** - ensure Android Chrome compatibility
-6. **PWA-aware** - respect service worker and caching patterns
+1. **Make minimal, targeted changes** - Small, focused changes are safer
+2. **Preserve backward compatibility** - Don't break existing functionality
+3. **Follow existing patterns** - Match the repository's coding style
+4. **Add accessibility features** - ARIA labels, focus states, semantic HTML
+5. **Maintain mobile-first** - Test on Android Chrome first
 
 ### After Editing
-1. Run `npm test` to execute the full test suite
-2. Run `npm run lint:rules` to check Firestore rules
-3. Verify the change doesn't break existing functionality
-4. Report exact files changed and test results
+1. **Run tests** - Execute `npm test` and verify all 19 test suites pass
+2. **Run lint** - Execute `npm run lint:rules` and verify 0 errors
+3. **Test manually** - Verify changes work as expected in browser
+4. **Report results** - Document exact files changed and test outcomes
 
 ---
 
-## 🔥 Firebase Safety Rules
+## Firebase Safety
 
-### Configuration Status
-- **Firebase Project ID:** `gen-lang-client-0566323659`
-- **Firestore Database ID:** `ai-studio-gogowebsite-4126d566-149d-4901-8c83-59ba041323ca`
-- **Client API Key:** Public (in `firebase-applet-config.json`) - **NOT a secret**
+### Firebase Configuration
+- Firebase API configuration in `firebase-applet-config.json` is **PUBLIC client configuration**, not a private secret
+- **Real security depends on Firebase Authentication and Firestore Security Rules**
+- Never expose this configuration as a secret
 
-### Security Model
-- **Real security depends on:** Firebase Authentication + Firestore Security Rules
-- **Firebase client config is public** - this is normal and expected
-- **Never expose:** User records, subscriber data, admin privileges
+### Security Rules
+- **Default-deny**: Firestore rules must enforce deny-all by default
+- **UID ownership**: Users can only access their own data (`users/{uid}`)
+- **Verified admin**: Admin access requires verified email and admin flag
+- **Marketing consent**: Must be explicit and unchecked by default
+- **Never weaken rules** to make a feature work - fix the feature instead
 
-### Marketing Consent Rules
-- **Google Sign-In users:** NEVER auto-subscribed to marketing
-- **Marketing consent:** Must be **optional** and **unchecked by default**
-- **Subscribed field:** Only `true` with explicit consent and valid timestamp
-- **Google authProvider:** Cannot have `subscribed: true` on creation
-
-### Firestore Rules Verification
-Before claiming rules are correct or deployed:
-1. Verify rules file matches `firestore.rules`
-2. Run `npm run lint:rules`
-3. Run `npm test` (includes rules unit tests)
-4. **Verify actual deployment** to Firebase project
-5. Test cross-user access denial in production
-
-### Admin Authorization
-- **Verified email required:** `email_verified == true` in auth token
-- **Authorized emails:** `aaryapratik@gmail.com`, `officialgogocompany@gmail.com`
-- **OR:** Document exists in `/admins/{uid}`
-- **Fail closed:** Unverified admins are **strictly rejected**
+### Marketing and Subscribers
+- **Marketing consent must remain optional and unchecked by default**
+- **Google sign-in must NEVER automatically subscribe a user** to marketing
+- **Preserve existing subscription preferences** when users update their accounts
+- **Do not send promotional emails** without explicit authorization
+- **Do not perform bulk marketing operations** without explicit authorization
 
 ---
 
-## 🎮 Game Integration Rules
+## Game Integration
 
-### Arrow Out
-- **Source:** `parya5103/Fletch_Game` (branch: `main`)
-- **Synced to:** `/arrowout/` in this repository
-- **Game ID:** `arrowout`
-- **Integration:** Must preserve guest play and existing localStorage save formats
+### Arrow Out and Crystal Quest
+- **Separate products** with their own repositories
+- **Preserve guest play** - Don't require accounts for gameplay
+- **Preserve existing localStorage save formats** - Cloud saves must work with existing local saves
+- **Cloud saves must never silently destroy or overwrite valid local progress**
+- **Keep account integration consistent** across website and original game repositories
 
-### Crystal Quest
-- **Source:** `parya5103/crystal-quest-web` (branch: `main`)
-- **Synced to:** `/crystalquest/` in this repository
-- **Game ID:** `crystalquest`
-- **Integration:** Must preserve guest play and existing localStorage save formats
+### Synchronization Workflow
+- Products are synced from their original repositories using `rsync --delete`
+- Sync workflow: `.github/workflows/sync-products.yml`
+- **Never modify synced product copies** - Edit the original repositories instead
+- **Source of truth**: Original game repositories (Fletch_Game, crystal-quest-web, Sarkari-Sarthi)
 
-### Cloud Save Rules
-- **NEVER silently destroy or overwrite** valid local progress
-- **Conflict resolution:** Side-by-side Local vs. Cloud vs. Smart Merge
-- **Validation:** Bounded values, valid timestamps, schema versions
-- **Access:** Owner-only (`/gameProfiles/{uid}/games/{gameId}`)
-
-### Integration Workflow
-1. Modify original game repository
-2. Test in original repository
-3. Push to original repository's `main` branch
-4. Wait for sync workflow to copy changes (daily 06:15 IST or manual trigger)
-5. **NEVER edit synced copies directly**
+### Sarkari Sarthi
+- **Separate project** outside GoGo website integration scope
+- **Do not modify** Sarkari Sarthi files or integrations
+- **Technical references allowed**: CSS classes, JS identifiers, repo names can use "sarkari"
+- **Public brand wording**: Use "Government" or "government job" instead of standalone "Sarkari"
 
 ---
 
-## 📊 Product Synchronization
+## Testing Requirements
 
-### Sync Workflow
-- **File:** `.github/workflows/sync-products.yml`
-- **Schedule:** `45 0 * * *` UTC = **06:15 IST daily**
-- **Method:** `rsync -a --delete --delete-excluded`
-- **Exclusions:** `.git`, `.github`, build tooling, dev folders, lockfiles
+### Test Suite
+- **Command**: `npm test`
+- **Expected**: ALL 19 TEST SUITES PASSED SUCCESSFULLY
+- **Do not report tests as passed** unless actually executed and output is available
 
-### Sync Process
-1. Checkout central site (`parya5103/gogo-website`)
-2. Checkout Arrow Out source (`parya5103/Fletch_Game` @ `main`)
-3. Checkout Crystal Quest source (`parya5103/crystal-quest-web` @ `main`)
-4. Checkout Sarkari Sarthi published (`parya5103/Sarkari-Sarthi` @ `gh-pages`)
-5. Rsync each into `/arrowout/`, `/crystalquest/`, `/sarkari-sarthi/`
-6. Verify key files exist
-7. Commit if changed, push to `main` (triggers GitHub Pages redeploy)
+### Test Categories
+1. GoGo Account & Cloud Save Unit & Conflict Tests (7 tests)
+2. GoGo Customer Email Database, Verification & Consent Tests (8 tests)
+3. Firestore Security Rules & Cursor Pagination Audit (3 tests)
+4. Cross-Application Asset, Bundle & Legal Consistency Verification (1 test)
 
-### Manual Trigger
-- GitHub Actions tab -> "Sync product apps" -> "Run workflow"
+### Linting
+- **Command**: `npm run lint:rules`
+- **Expected**: 0 errors/warnings
+- **Do not claim lint passes** unless actually executed
 
 ---
 
-## 🧪 Testing
+## Quality Standards
 
-### Test Commands
-```bash
-npm test                # Full test suite (rules + upstream tests)
-npm run lint:rules     # Lint Firestore rules
-npm run build          # Build TypeScript bundles
-```
+### SEO
+- Unique title and description for each public page
+- Canonical URLs using absolute paths
+- Open Graph meta tags (og:title, og:description, og:url, og:image)
+- Twitter card meta tags (twitter:card, twitter:title, twitter:description, twitter:image)
+- BreadcrumbList JSON-LD schema
+- Organization and WebSite JSON-LD schema on homepage
 
-### Test Files
-- `firestore.rules.test.ts` - Security rules unit tests (Vitest)
-- `scripts/run-all-tests.mjs` - Full test runner
+### Accessibility
+- Skip-to-content link on all pages
+- ARIA labels on all interactive elements
+- Focus states for all interactive elements (buttons, links, form controls)
+- Semantic HTML (proper use of h1-h6, nav, main, footer, etc.)
+- Role attributes for better screen reader support
+- Color contrast meets WCAG AA standards (4.5:1 for normal text)
+- Keyboard navigation support
 
-### Test Coverage
-- Authentication and authorization
-- User profile CRUD
-- Marketing subscriber consent validation
-- Game save validation
-- Admin access control
+### Performance
+- Mobile-first design
+- Lightweight pages (fast loading)
+- Minimal JavaScript
+- Efficient CSS
 
----
-
-## 📋 Workflow for AI Agents
-
-### 1. Understanding the Task
-- Read the user's request carefully
-- Identify which repository is the target
-- Check if it's a GoGo website task or a game repository task
-
-### 2. Before Making Changes
-- Check `git status` and current branch
-- Read existing documentation (`README.md`, `DEPLOYMENT.md`, `security_spec.md`)
-- Inspect the files you'll modify
-- Understand the existing architecture
-
-### 3. Making Changes
-- Create a feature branch: `git checkout -b feat/description`
-- Make minimal, targeted changes
-- Preserve existing functionality
-- Follow existing patterns
-
-### 4. After Making Changes
-- Run relevant tests
-- Verify no existing functionality is broken
-- Check `git diff` to see exactly what changed
-- Commit with descriptive message
-- Push to remote
-- Open a PR (if applicable)
-- Report exact files changed and test results
-
-### 5. Special Cases
-
-**If asked to modify Arrow Out or Crystal Quest:**
-- Work in the original repository (`parya5103/Fletch_Game` or `parya5103/crystal-quest-web`)
-- Test there first
-- The sync workflow will copy changes to the central repository
-
-**If asked to modify Sarkari Sarthi:**
-- **REFUSE** - this is a separate project outside GoGo website scope
-
-**If asked to modify Firebase configuration:**
-- **REFUSE** without explicit authorization
-- Client config is public, but rules and settings require verification
-
-**If asked to deploy to production:**
-- **REFUSE** - deployment is automatic via GitHub Pages
-- Only sync workflow commits trigger redeployment
+### UX
+- Consistent button styling
+- Loading states for async operations
+- Error states with clear messages
+- Back-to-top button for long pages
+- Clear navigation and structure
 
 ---
 
-## 📞 Reporting
-
-### Required in Every Response
-1. **Files changed** - exact list of modified files
-2. **Test results** - which tests passed/failed
-3. **Verification** - what was verified and how
-4. **Limitations** - what remains unverified or incomplete
-
-### Example Report
-```
-Files Changed:
-- src/gogo-account.ts (added validation for X)
-
-Tests Run:
-- npm test: PASSED (all 216 tests)
-- npm run lint:rules: PASSED
-
-Verification:
-- Cross-user access denial tested in rules tests
-- Admin authorization verified for verified emails
-
-Limitations:
-- Production Firestore rules deployment not verified
-- Actual admin dashboard runtime not tested
-```
-
----
-
-## 🔗 Quick Reference
-
-| Item | Location | Status |
-|------|----------|--------|
-| GoGo Account Source | `src/gogo-account.ts` | **IMPLEMENTED** |
-| Compiled Bundle | `assets/js/gogo-account.js` | **GENERATED** |
-| Firebase Config | `firebase-applet-config.json` | **PUBLIC** |
-| Firestore Rules | `firestore.rules` | **IMPLEMENTED** |
-| Security Tests | `firestore.rules.test.ts` | **IMPLEMENTED** |
-| Sync Workflow | `.github/workflows/sync-products.yml` | **ACTIVE** |
-| Admin Dashboard | `admin/index.html` | **IMPLEMENTED** |
-| Account Page | `account/index.html` | **IMPLEMENTED** |
-| Unsubscribe | `unsubscribe/index.html` | **IMPLEMENTED** |
-
----
-
-## 📝 Change History
+## Change History
 
 | Date | Change | Author |
 |------|--------|--------|
-| 2025-01-17 | Initial AGENTS.md created | AI Agent (Mistral) |
-| 2025-01-17 | Comprehensive audit completed | AI Agent (Mistral) |
+| 2025-01-17 | Initial AGENTS.md created | AI Agent |
+| 2025-11-05 | Updated with brand language rules, accessibility standards, recent improvements | AI Agent |
 
 ---
 
-**Remember:** When in doubt, **ask for clarification** rather than making assumptions. Safety first, always.
+## Quick Reference
+
+- **Production**: https://gogocompany.in/
+- **Repository**: https://github.com/parya5103/gogo-website
+- **Test Command**: `npm test`
+- **Lint Command**: `npm run lint:rules`
+- **Build Command**: `npm run build`
+- **Main Branch**: main
+- **Docs Branch**: docs/update-agent-knowledge
