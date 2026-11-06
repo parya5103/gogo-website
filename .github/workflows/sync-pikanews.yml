@@ -36,7 +36,7 @@ jobs:
         run: |
           set -e
           mkdir -p pikanews
-          # Frontend site (pages, css, js, images, robots, sitemap, feed).
+          # Frontend site (pages, css, js, images, robots, sitemaps, feed).
           # --delete is scoped to pikanews/ only; other products untouched.
           rsync -a --delete --delete-excluded \
             --exclude '.git' \
@@ -62,13 +62,18 @@ jobs:
           test -f pikanews/index.html
           test -f pikanews/article.html
           test -f pikanews/search.html
+          test -f pikanews/sources.html
+          test -f pikanews/editorial-policy.html
           test -f pikanews/css/styles.css
           test -f pikanews/js/app.js
           test -f pikanews/js/data.js
           test -f pikanews/js/utils.js
+          test -f pikanews/js/ads.js
+          test -f pikanews/js/newsroom.js
           test -f pikanews/images/pikanews-logo.svg
           test -f pikanews/robots.txt
           test -f pikanews/sitemap.xml
+          test -f pikanews/news-sitemap.xml
           test -f pikanews/feed.xml
           test -f pikanews/data/all_articles.json
           test -f pikanews/data/latest.json
@@ -81,9 +86,27 @@ jobs:
           test -f pikanews/data/gaming.json
           test -f pikanews/data/business.json
           test -f pikanews/data/sports.json
-          # Sitemap and feed must reference the production domain.
+          # Sitemaps and feed must reference the production domain.
           grep -q 'gogocompany.in/pikanews/' pikanews/sitemap.xml
           grep -q 'gogocompany.in/pikanews/' pikanews/feed.xml
+          grep -q 'gogocompany.in/pikanews/news-sitemap.xml' pikanews/robots.txt
+          # Sitemaps must list static article pages, never duplicate
+          # query-parameter article URLs.
+          if grep -q 'article.html?id=' pikanews/sitemap.xml; then
+            echo "::error::PikaNews sitemap lists query-parameter article URLs - refusing to publish"
+            exit 1
+          fi
+          # If the source repo has generated static article pages, they
+          # must have been copied into /pikanews/news/ (guarded: before
+          # the first collector run after a redesign merge the directory
+          # legitimately does not exist yet).
+          if [ -d src-pikanews/frontend/news ]; then
+            static_page=$(find pikanews/news -name 'index.html' -print -quit 2>/dev/null || true)
+            if [ -z "$static_page" ]; then
+              echo "::error::Static article pages exist in the source but were not published to /pikanews/news/"
+              exit 1
+            fi
+          fi
           # No root-scope service worker may ever be registered.
           if grep -rn 'serviceWorker.register' pikanews/ 2>/dev/null; then
             echo "::error::PikaNews registers a service worker - refusing to publish"

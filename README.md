@@ -46,10 +46,13 @@ How updates propagate:
   (06:15 IST daily) copies that published site into `/sarkari-sarthi/`,
   so job data stays current.
 - PikaNews: its own collector workflow (every 30 minutes, :00/:30 UTC)
-  fetches RSS feeds, commits fresh `news_json/` data, stats, sitemap and
-  RSS feed to its `main` -> our sync-pikanews workflow (:10/:40 UTC)
-  publishes the frontend plus that data into `/pikanews/`, so news stays
-  current.
+  fetches RSS feeds, commits fresh `news_json/` data, stats, the sitemap,
+  the Google News sitemap (`news-sitemap.xml`), the RSS feed and the
+  generated static article pages (`news/<slug>/`) to its `main` -> our
+  sync-pikanews workflow (:10/:40 UTC) publishes the frontend plus that
+  data into `/pikanews/`, so news stays current. The sync verification
+  requires the news sitemap and refuses sitemaps that still list
+  query-parameter article URLs.
 - Both syncs also run manually: Actions tab -> "Sync product apps" or
   "Sync PikaNews" -> "Run workflow".
 - The product repositories remain the single source of truth; nothing is
@@ -71,11 +74,20 @@ publisher ID is empty.
   about-page bottom), while the games manage their own optional AdSense /
   AdMob placements via their own `js/ads.js` modules. Ads are never styled
   as job listings.
+- PikaNews ships its own `frontend/js/ads.js` following the same rules:
+  one loader per page, the same verified GoGo publisher ID, the existing
+  responsive display unit, honest "Advertisement" labels and the same
+  `cmpReady` fail-closed gate. Placements are limited to one homepage /
+  category mid-content slot, the desktop sidebar and after-article-content
+  positions, and never appear on legal, search-result, error or
+  under-construction pages.
 - EEA / UK / Switzerland: ads stay disabled for those regions until a
   Google-certified CMP (e.g. Funding Choices) handles consent. Set
-  `cmpReady: true` only after that works.
+  `cmpReady: true` only after that works - in the central loader and in
+  the PikaNews loader alike.
 - `ads.txt.example` documents the ads.txt format. `ads.txt` at the root
-  contains the Google AdSense publisher declaration.
+  contains the Google AdSense publisher declaration. PikaNews relies on
+  this single root `ads.txt`; no duplicate exists under `/pikanews/`.
 
 ## Shared GoGo Account, Cloud Save & Marketing Subscriber System
 
