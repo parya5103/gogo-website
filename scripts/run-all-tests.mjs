@@ -523,4 +523,69 @@ if (existsSync('/tmp/crystal-quest-web')) {
   });
 }
 
+console.log('\n==========================================================');
+console.log('6. Visitor-Facing GitHub Link Absence (security audit)');
+console.log('==========================================================');
+
+// gogo-owned pages only. The synced product copies (arrowout/,
+// crystalquest/, pikanews/, sarkari-sarthi/) are overwritten by the
+// sync workflow from their upstream repositories, so their GitHub-link
+// fixes belong upstream (see PikaNews PR / Fletch PR) and are NOT
+// asserted here until those merge and the sync lands.
+const gogoOwnedPages = [
+  'index.html',
+  '404.html',
+  'about/index.html',
+  'contact/index.html',
+  'disclaimer/index.html',
+  'account/index.html',
+  'admin/index.html',
+  'unsubscribe/index.html',
+  'privacy-policy/index.html',
+  'terms-and-conditions/index.html',
+];
+const gogoOwnedScripts = [
+  'assets/js/main.js',
+  'assets/js/ads.js',
+  'assets/js/sarkari-data.js',
+];
+
+runStep('No visitor-facing GitHub profile/repository links on any gogo-owned page or script', () => {
+  for (const page of gogoOwnedPages) {
+    const html = readFileSync(resolve(root, page), 'utf8');
+    assert.ok(
+      !html.includes('github.com/parya5103'),
+      `${page} must not link the public GitHub account/repository`
+    );
+    assert.ok(
+      !/href\s*=\s*["']https:\/\/github\.com\//.test(html),
+      `${page} must not hyperlink github.com for visitors`
+    );
+    assert.ok(
+      !/action\s*=\s*["']https:\/\/github\.com/.test(html),
+      `${page} must not submit forms to github.com`
+    );
+  }
+  for (const script of gogoOwnedScripts) {
+    const js = readFileSync(resolve(root, script), 'utf8');
+    // Visitor-facing links use https://github.com/parya5103. The
+    // sarkari-data.js manifest fetch from raw.githubusercontent.com and
+    // its scheme-less source comment are deliberate data-layer
+    // references (audit decision), not visitor links, and stay.
+    assert.ok(
+      !js.includes('https://github.com/parya5103'),
+      `${script} must not link the public GitHub repository`
+    );
+  }
+});
+
+runStep('Legal hosting disclosure retained without linking the repository', () => {
+  // The privacy policy must keep the honest "GitHub Pages" hosting
+  // disclosure, but as text - never as a link to the account/repo.
+  const privacyHtml = readFileSync(resolve(root, 'privacy-policy/index.html'), 'utf8');
+  assert.ok(privacyHtml.includes('GitHub Pages'));
+  assert.ok(!/href\s*=\s*["']https:\/\/github\.com\//.test(privacyHtml));
+});
+
 console.log(`\nALL ${totalPassed} TEST SUITES PASSED SUCCESSFULLY.`);
+
