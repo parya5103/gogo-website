@@ -229,7 +229,6 @@ main { flex: 1; }
 .nav-list a[aria-current="page"] { color: #fff; background: linear-gradient(135deg, var(--primary), var(--primary-2)); }
 
 .nav-toggle {
-  outline: none;
   display: none;
   flex-direction: column;
   justify-content: center;
@@ -256,8 +255,6 @@ main { flex: 1; }
 
 @media (max-width: 760px) {
   .nav-toggle { display: inline-flex; }
-.nav-toggle:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-  outline: none;
   .site-nav { display: none; width: 100%; }
   .site-nav.open { display: block; }
   .nav-list { flex-direction: column; padding: 8px 0 12px; }
@@ -339,6 +336,9 @@ main { flex: 1; }
 }
 .card .btn { margin-top: 18px; align-self: flex-start; }
 .card-actions .btn { margin-top: 0; }
+/* Bottom-align card actions so sibling cards in the grid keep their
+   buttons level regardless of description length. */
+.card .card-actions { margin-top: auto; padding-top: 18px; }
 .feature-list { list-style: none; padding: 0; margin: 0; color: var(--text-dim); }
 .feature-list li { padding: 6px 0 6px 26px; position: relative; }
 .feature-list li::before {
@@ -502,10 +502,18 @@ main { flex: 1; }
 @media (max-width: 720px) {
   .contact-grid { grid-template-columns: 1fr; }
   .section { padding: 40px 0; }
+  .card { padding: 18px 16px; }
   .card .btn, .card-actions .btn { flex: 1 1 100%; }
   .back-link { align-self: flex-start; }
   .hero { padding: 32px 0 44px; }
   .hero-actions .btn { flex: 1 1 auto; }
+}
+
+/* Small phones: single-column product cards with full-width buttons. */
+@media (max-width: 380px) {
+  .container { padding: 0 14px; }
+  .card-grid { gap: 14px; }
+  .btn { padding: 10px 16px; }
 }
 
 /* ---------- Footer ---------- */
@@ -570,6 +578,4 @@ main { flex: 1; }
   outline: 3px solid var(--accent);
   outline-offset: 2px;
 }
-.back-to-top aria-hidden="true" {
-  display: none;
-}
+
