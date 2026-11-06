@@ -166,7 +166,7 @@
   }
 
   function buildBackToTop() {
-    return '<button type="button" class="back-to-top" aria-label="Back to top" aria-hidden="true"><span>&#8593;</span></button>';
+    return '<button type="button" class="back-to-top" aria-label="Back to top"><span>&#8593;</span></button>';
   }
 
   function initBackToTop() {
@@ -177,14 +177,11 @@
     }
     
     if (backToTop) {
-      backToTop.setAttribute("aria-hidden", "true");
       var toggleVisibility = function() {
         if (window.pageYOffset > 300) {
           backToTop.classList.add("visible");
-          backToTop.setAttribute("aria-hidden", "false");
         } else {
           backToTop.classList.remove("visible");
-          backToTop.setAttribute("aria-hidden", "true");
         }
       };
       
@@ -210,10 +207,40 @@
     var toggle = document.querySelector(".nav-toggle");
     var nav = document.getElementById("site-nav");
     if (toggle && nav) {
-      toggle.addEventListener("click", function () {
-        var open = nav.classList.toggle("open");
-        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      var setOpen = function (open) {
+        nav.classList.toggle("open", open);
         toggle.classList.toggle("open", open);
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      };
+
+      toggle.addEventListener("click", function () {
+        setOpen(!nav.classList.contains("open"));
+      });
+
+      // Close after a navigation link is chosen.
+      nav.addEventListener("click", function (e) {
+        if (e.target && e.target.closest && e.target.closest("a")) {
+          setOpen(false);
+        }
+      });
+
+      // Escape closes the menu and returns focus to the toggle.
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && nav.classList.contains("open")) {
+          setOpen(false);
+          toggle.focus();
+        }
+      });
+
+      // Click outside the header nav closes the menu.
+      document.addEventListener("click", function (e) {
+        if (
+          nav.classList.contains("open") &&
+          !nav.contains(e.target) &&
+          !toggle.contains(e.target)
+        ) {
+          setOpen(false);
+        }
       });
     }
   }
@@ -224,3 +251,4 @@
     init();
   }
 })();
+
