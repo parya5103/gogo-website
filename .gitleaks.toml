@@ -1,0 +1,12 @@
+# Gitleaks configuration: default rules plus documented, project-specific allowlists.
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Firebase web app config is public by design (client-side SDK config, not a credential). Same value ships inside the public gogo-account.js bundle."
+paths = [
+  '''firebase-applet-config\.json''',
+]
+regexes = [
+  '''AIzaSyCtfvrvfRSlZmiNBluRLeHCLNgaNkuY-_4''',
+]
