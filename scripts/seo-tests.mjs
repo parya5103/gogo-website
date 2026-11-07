@@ -147,7 +147,7 @@ check('sitemap.xml: locs absolute, unique, targets exist, no noindex URLs', () =
   }
 });
 
-check('sitemap.xml: all indexable gogo pages and all four products listed', () => {
+check('sitemap.xml: all indexable gogo pages, product roots and arrowout sub-pages listed', () => {
   const sm = read('sitemap.xml');
   const must = [
     'https://gogocompany.in/',
@@ -157,6 +157,9 @@ check('sitemap.xml: all indexable gogo pages and all four products listed', () =
     'https://gogocompany.in/privacy-policy/',
     'https://gogocompany.in/terms-and-conditions/',
     'https://gogocompany.in/arrowout/',
+    'https://gogocompany.in/arrowout/about.html',
+    'https://gogocompany.in/arrowout/contact.html',
+    'https://gogocompany.in/arrowout/privacy.html',
     'https://gogocompany.in/crystalquest/',
     'https://gogocompany.in/sarkari-sarthi/',
     'https://gogocompany.in/pikanews/',
@@ -165,12 +168,13 @@ check('sitemap.xml: all indexable gogo pages and all four products listed', () =
 });
 
 // robots.txt
-check('robots.txt: nothing blocked, declared sitemaps resolvable', () => {
+check('robots.txt: nothing blocked, all four sitemaps declared and resolvable', () => {
   const rb = read('robots.txt');
   assert(rb.includes('User-agent: *'), 'missing User-agent: *');
   assert(!/^\s*Disallow:/m.test(rb), 'unexpected Disallow directive');
   const sitemapLines = rb.split('\n').filter((l) => l.trim().startsWith('Sitemap:'));
-  assert(sitemapLines.length >= 1, 'no Sitemap directive');
+  assert(sitemapLines.length >= 4, 'expected 4 Sitemap directives, found ' + sitemapLines.length);
+  assert(rb.includes('Sitemap: https://gogocompany.in/pikanews/news-sitemap.xml'), 'robots.txt must declare the PikaNews news sitemap');
   for (const line of sitemapLines) {
     const url = line.replace('Sitemap:', '').trim();
     assert(url.startsWith('https://'), 'sitemap URL not https: ' + url);
@@ -179,6 +183,15 @@ check('robots.txt: nothing blocked, declared sitemaps resolvable', () => {
     else if (path.endsWith('/')) path += 'sitemap.xml';
     assert(existsSync(resolve(root, path)), 'declared sitemap missing in repo: ' + path);
   }
+});
+
+// PikaNews sub-sitemaps (synced folder, verified on every test run)
+check('pikanews sub-sitemaps present, news sitemap uses the Google news namespace', () => {
+  const pikaSm = read('pikanews/sitemap.xml');
+  assert(pikaSm.startsWith('<?xml'), 'pikanews/sitemap.xml unreadable');
+  const newsSm = read('pikanews/news-sitemap.xml');
+  assert(newsSm.startsWith('<?xml'), 'pikanews/news-sitemap.xml unreadable');
+  assert(newsSm.includes('http://www.google.com/schemas/sitemap-news/0.9'), 'news-sitemap.xml missing Google news namespace');
 });
 
 // Legacy redirect stubs

@@ -96,6 +96,12 @@ jobs:
             echo "::error::PikaNews sitemap lists query-parameter article URLs - refusing to publish"
             exit 1
           fi
+          # The portal root must be listed as the clean /pikanews/ URL
+          # (matching its canonical), never as /pikanews/index.html.
+          if grep -q 'gogocompany.in/pikanews/index.html' pikanews/sitemap.xml; then
+            echo "::error::PikaNews sitemap lists the root as index.html instead of the clean /pikanews/ canonical URL - refusing to publish"
+            exit 1
+          fi
           # If the source repo has generated static article pages, they
           # must have been copied into /pikanews/news/ (guarded: before
           # the first collector run after a redesign merge the directory
