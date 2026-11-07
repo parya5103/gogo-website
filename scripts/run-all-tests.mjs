@@ -587,5 +587,13 @@ runStep('Legal hosting disclosure retained without linking the repository', () =
   assert.ok(!/href\s*=\s*["']https:\/\/github\.com\//.test(privacyHtml));
 });
 
+
+console.log('\n==========================================================');
+console.log('7. SEO Regression Suite');
+console.log('==========================================================');
+
+runStep('SEO regression suite passes (titles, descriptions, canonicals, robots, sitemap, JSON-LD, links, redirects, alt text)', () => {
+  execSync('node scripts/seo-tests.mjs', { cwd: root, stdio: 'pipe' });
+});
 console.log(`\nALL ${totalPassed} TEST SUITES PASSED SUCCESSFULLY.`);
 
