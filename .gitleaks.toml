@@ -10,3 +10,21 @@ paths = [
 regexes = [
   '''AIzaSyCtfvrvfRSlZmiNBluRLeHCLNgaNkuY-_4''',
 ]
+
+[[allowlists]]
+description = "Client save storage key literal (a localStorage key name, not a credential) in src/gogo-account.ts history and the synced crystalquest/js/ui.js copy; keyword proximity (SAVE_KEY/CRYSTAL_STORAGE_KEY) triggers a generic-api-key false positive."
+regexes = [
+  '''crystal-quest-save-v1''',
+]
+
+[[allowlists]]
+description = "Supabase anon key inside the synced arrowout/js/pwa.js copy: public-by-design frontend client key paired with an insert/delete-only RLS policy on the push_subscriptions table."
+regexes = [
+  '''eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzc3pjbmFheWxic2dxYWVoc2dwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE4ODY4ODMsImV4cCI6MjEwNzQ2Mjg4M30\.6LQPGdiJ8ggDgCdJdTXmxQNkBjV0fA0_vXYHehExMzc''',
+]
+
+[[allowlists]]
+description = "SHA-256 password-verification hash from the old client-side admin gate in the synced sarkari-sarthi/admin.js copy. That gate was removed from the source repo (#200); a one-way hash of a retired default is not a usable credential."
+regexes = [
+  '''8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918''',
+]
