@@ -21,24 +21,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout central site
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Checkout Arrow Out source (Fletch_Game)
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           repository: parya5103/Fletch_Game
           ref: main
           path: src-arrowout
 
       - name: Checkout Crystal Quest source (crystal-quest-web)
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           repository: parya5103/crystal-quest-web
           ref: main
           path: src-crystalquest
 
       - name: Checkout Sarkari Sarthi published site (gh-pages branch)
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           repository: parya5103/Sarkari-Sarthi
           ref: gh-pages
@@ -140,3 +140,4 @@ jobs:
             git pull --rebase origin main
             git push
           fi
+

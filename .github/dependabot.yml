@@ -1,0 +1,17 @@
+version: 2
+updates:
+  # Keep GitHub Actions references up to date. All actions are pinned
+  # to immutable commit SHAs; Dependabot re-pins the SHA together
+  # with the version comment on version bumps.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+
+  # npm devDependencies (TypeScript/Node tooling for the test suite).
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
