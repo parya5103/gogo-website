@@ -579,3 +579,27 @@ main { flex: 1; }
   outline-offset: 2px;
 }
 
+/* ---------- Design polish (2026-11-07) ---------- */
+/* Subtle card lift on hover-capable pointers only.
+   The global prefers-reduced-motion rule above already disables
+   this transition for users who ask for reduced motion. */
+@media (hover: hover) {
+  .card {
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+  }
+}
+/* Centered CTA actions (replaces inline style in index.html). */
+.cta-actions { justify-content: center; }
+/* Inverse primary button inside the gradient CTA band
+   (replaces inline style in index.html). */
+.cta-band .btn-inverse {
+  background: #fff;
+  color: #0369a1;
+}
+.cta-band .btn-inverse:hover { color: #0369a1; }
+/* Anchored headings keep breathing room below the sticky header. */
+h1, h2, h3 { scroll-margin-top: 88px; }
