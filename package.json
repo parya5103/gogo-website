@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@firebase/eslint-plugin-security-rules": "latest",
-    "@firebase/rules-unit-testing": "^4.0.1",
+    "@firebase/rules-unit-testing": "^6.0.0",
     "esbuild": "^0.25.0",
     "eslint": "^9.21.0",
     "vitest": "^5.1.0"
