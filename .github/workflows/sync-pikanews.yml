@@ -113,9 +113,19 @@ jobs:
               exit 1
             fi
           fi
-          # No root-scope service worker may ever be registered.
-          if grep -rn 'serviceWorker.register' pikanews/ 2>/dev/null; then
+          # No root-scope service worker may ever be registered. The one
+          # deliberate exception is the GoGo Central notifications module
+          # (js/gogo-notifications.js): it registers the FCM worker at the
+          # /pikanews/ product scope only, and only after an explicit opt-in.
+          if grep -rn 'serviceWorker.register' pikanews/ 2>/dev/null | grep -v 'gogo-notifications.js'; then
             echo "::error::PikaNews registers a service worker - refusing to publish"
+            exit 1
+          fi
+          # GoGo Central notifications pairing (guard: these files arrive from
+          # the upstream PikaNews repo only after its central-notifications merge;
+          # until then both are absent and this check passes).
+          if [ -f pikanews/js/gogo-notifications.js ] && [ ! -f pikanews/firebase-messaging-sw.js ]; then
+            echo "::error::PikaNews notifications module synced without its service worker"
             exit 1
           fi
           echo "All PikaNews files verified."
