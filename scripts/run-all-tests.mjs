@@ -595,5 +595,115 @@ console.log('==========================================================');
 runStep('SEO regression suite passes (titles, descriptions, canonicals, robots, sitemap, JSON-LD, links, redirects, alt text)', () => {
   execSync('node scripts/seo-tests.mjs', { cwd: root, stdio: 'pipe' });
 });
+console.log('');
+console.log('==========================================================');
+console.log('8. GoGo Central Notifications (FCM web push, opt-in) — MOCKED module tests');
+console.log('==========================================================');
+// MOCKED/pure unit tests: the module is evaluated against a fake window in
+// Node. No Firebase SDK, no service worker, no Notification API and no
+// network are involved. These tests validate the fail-closed config gate
+// and the exact request payload shapes. They do NOT prove live FCM
+// delivery — live delivery is a manual post-deployment verification step.
+
+const notificationsModuleSrc = readFileSync(resolve(root, 'assets/js/gogo-notifications.js'), 'utf8');
+const notificationsWindow = {};
+new Function('window', notificationsModuleSrc)(notificationsWindow);
+const GoGoNotifications = notificationsWindow.GoGoNotifications;
+
+runStep('GoGo notifications module exposes its testable API and stays inert outside the browser', () => {
+  assert.ok(GoGoNotifications, 'window.GoGoNotifications must be defined');
+  assert.equal(typeof GoGoNotifications.internals.validateConfig, 'function');
+  assert.equal(typeof GoGoNotifications.internals.buildRegisterPayload, 'function');
+  assert.equal(typeof GoGoNotifications.internals.buildPreferencePayload, 'function');
+  assert.equal(typeof GoGoNotifications.internals.safeUrl, 'function');
+  assert.equal(GoGoNotifications.config.appId, 'gogocompany-in');
+});
+
+runStep('Fail-closed gate: empty apiBase/vapidPublicKey disables the entire feature', () => {
+  const v = GoGoNotifications.internals.validateConfig();
+  assert.equal(v.ok, false);
+  assert.equal(v.disabled, true);
+  assert.ok(v.problems.some((p) => p.includes('API base')));
+  assert.ok(v.problems.some((p) => p.includes('VAPID')));
+  const v2 = GoGoNotifications.internals.validateConfig({
+    appId: 'gogocompany-in',
+    apiBase: 'https://gogo-central-backend.example.run.app/',
+    vapidPublicKey: 'BExampleVapidPublicKey000000000000000000000',
+  });
+  assert.equal(v2.ok, true);
+  assert.equal(v2.disabled, false);
+  assert.equal(v2.problems.length, 0);
+});
+
+runStep('Device registration payload matches the backend contract (appId, fcmToken, platform web, userAgent)', () => {
+  const payload = GoGoNotifications.internals.buildRegisterPayload(
+    { appId: 'gogocompany-in' },
+    'fcm-web-token-abcdefgh1234567890',
+    'Mozilla/5.0 (Linux; Android 15) TestAgent/1.0'
+  );
+  assert.equal(payload.appId, 'gogocompany-in');
+  assert.equal(payload.fcmToken, 'fcm-web-token-abcdefgh1234567890');
+  assert.equal(payload.platform, 'web');
+  assert.equal(payload.userAgent, 'Mozilla/5.0 (Linux; Android 15) TestAgent/1.0');
+  const fallback = GoGoNotifications.internals.buildRegisterPayload({ appId: 'x' }, 'tok-1234567890abcdef');
+  assert.equal(fallback.userAgent, 'unknown-web', 'userAgent falls back safely outside the browser');
+});
+
+runStep('Preference payload toggles every channel together and keeps quiet hours', () => {
+  const on = GoGoNotifications.internals.buildPreferencePayload(true);
+  assert.equal(on.enabled, true);
+  assert.equal(on.webPush, true);
+  assert.equal(on.androidPush, true);
+  assert.equal(on.marketingAlerts, true);
+  assert.equal(on.transactionalAlerts, true);
+  assert.equal(on.quietHoursStart, '22:00');
+  assert.equal(on.quietHoursEnd, '06:00');
+  const off = GoGoNotifications.internals.buildPreferencePayload(false);
+  assert.equal(off.enabled, false);
+  assert.equal(off.webPush, false);
+  assert.equal(off.androidPush, false);
+  assert.equal(off.marketingAlerts, false);
+  assert.equal(off.transactionalAlerts, false);
+  assert.equal(off.quietHoursStart, '22:00');
+  assert.equal(off.quietHoursEnd, '06:00');
+});
+
+runStep('safeUrl allowlist opens only GoGo domains, everything else falls back to the portal', () => {
+  const safeUrl = GoGoNotifications.internals.safeUrl;
+  assert.equal(safeUrl('https://gogocompany.in/'), 'https://gogocompany.in/');
+  assert.equal(safeUrl('https://gogocompany.in/sarkari-sarthi/'), 'https://gogocompany.in/sarkari-sarthi/');
+  assert.equal(safeUrl('https://evil.example.org/phish'), 'https://gogocompany.in/');
+  assert.equal(safeUrl('javascript:alert(1)'), 'https://gogocompany.in/');
+  assert.equal(safeUrl(''), 'https://gogocompany.in/');
+  assert.equal(safeUrl(null), 'https://gogocompany.in/');
+});
+
+runStep('Background worker: messaging handler, GoGo-only links, dedupe tag, click focus, and NO fetch handler', () => {
+  const sw = readFileSync(resolve(root, 'firebase-messaging-sw.js'), 'utf8');
+  assert.ok(sw.includes('firebase-messaging-compat.js'));
+  assert.ok(sw.includes('onBackgroundMessage'));
+  assert.ok(sw.includes('showNotification'));
+  assert.ok(sw.includes('notificationclick'));
+  assert.ok(sw.includes('gogocompany.in'));
+  assert.ok(sw.includes('tag:'), 'notifications must carry a collapsing tag');
+  assert.ok(!sw.includes("addEventListener('fetch'"), 'the FCM worker must never install a fetch handler');
+});
+
+runStep('Account page loads the notifications module after the account bundle', () => {
+  const html = readFileSync(resolve(root, 'account/index.html'), 'utf8');
+  assert.ok(html.includes('assets/js/gogo-notifications.js'));
+  assert.ok(html.indexOf('gogo-account.js') < html.indexOf('gogo-notifications.js'));
+});
+
+runStep('Sync workflows keep the service-worker guard (with the notifications allowlist) and pairing checks', () => {
+  const pikanewsYml = readFileSync(resolve(root, '.github/workflows/sync-pikanews.yml'), 'utf8');
+  assert.ok(pikanewsYml.includes("grep -v 'gogo-notifications.js'"), 'service-worker guard must allowlist the notifications module');
+  assert.ok(pikanewsYml.includes('pikanews/firebase-messaging-sw.js'), 'pikanews pairing check present');
+  const productsYml = readFileSync(resolve(root, '.github/workflows/sync-products.yml'), 'utf8');
+  assert.ok(productsYml.includes('arrowout/fcm/firebase-messaging-sw.js'), 'arrowout pairing check present');
+  assert.ok(productsYml.includes('crystalquest/fcm/firebase-messaging-sw.js'), 'crystalquest pairing check present');
+  assert.ok(productsYml.includes('sarkari-sarthi/firebase-messaging-sw.js'), 'sarkari pairing check present');
+});
+
 console.log(`\nALL ${totalPassed} TEST SUITES PASSED SUCCESSFULLY.`);
 

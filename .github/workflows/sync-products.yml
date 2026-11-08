@@ -116,6 +116,22 @@ jobs:
           test -f sarkari-sarthi/script.js
           test -f sarkari-sarthi/style.css
           test -f sarkari-sarthi/jobs/job_manifest.json
+          # GoGo Central notifications pairing (guard: the module and its FCM
+          # worker arrive from the upstream product repos after their
+          # central-notifications merges; until then both are absent and these
+          # checks pass).
+          if [ -f arrowout/js/gogo-notifications.js ] && [ ! -f arrowout/fcm/firebase-messaging-sw.js ]; then
+            echo "::error::Arrow Out notifications module synced without its service worker"
+            exit 1
+          fi
+          if [ -f crystalquest/js/gogo-notifications.js ] && [ ! -f crystalquest/fcm/firebase-messaging-sw.js ]; then
+            echo "::error::Crystal Quest notifications module synced without its service worker"
+            exit 1
+          fi
+          if [ -f sarkari-sarthi/gogo-notifications.js ] && [ ! -f sarkari-sarthi/firebase-messaging-sw.js ]; then
+            echo "::error::Sarkari Sarthi notifications module synced without its service worker"
+            exit 1
+          fi
           echo "All key product files verified."
 
       - name: Commit synced apps if changed
