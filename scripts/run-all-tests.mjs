@@ -619,12 +619,19 @@ runStep('GoGo notifications module exposes its testable API and stays inert outs
   assert.equal(GoGoNotifications.config.appId, 'gogocompany-in');
 });
 
-runStep('Fail-closed gate: empty apiBase/vapidPublicKey disables the entire feature', () => {
+runStep('Config gate: shipped config validates; empty apiBase/vapidPublicKey stays fail-closed', () => {
   const v = GoGoNotifications.internals.validateConfig();
-  assert.equal(v.ok, false);
-  assert.equal(v.disabled, true);
-  assert.ok(v.problems.some((p) => p.includes('API base')));
-  assert.ok(v.problems.some((p) => p.includes('VAPID')));
+  assert.equal(v.ok, true);
+  assert.equal(v.disabled, false);
+  const empty = GoGoNotifications.internals.validateConfig({
+    appId: 'gogocompany-in',
+    apiBase: '',
+    vapidPublicKey: '',
+  });
+  assert.equal(empty.ok, false);
+  assert.equal(empty.disabled, true);
+  assert.ok(empty.problems.some((p) => p.includes('API base')));
+  assert.ok(empty.problems.some((p) => p.includes('VAPID')));
   const v2 = GoGoNotifications.internals.validateConfig({
     appId: 'gogocompany-in',
     apiBase: 'https://gogo-central-backend.example.run.app/',
