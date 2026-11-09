@@ -712,5 +712,54 @@ runStep('Sync workflows keep the service-worker guard (with the notifications al
   assert.ok(productsYml.includes('sarkari-sarthi/firebase-messaging-sw.js'), 'sarkari pairing check present');
 });
 
+runStep('Onboarding state machine: first-visit intro, one 3-day reminder, never nags', () => {
+  const eo = GoGoNotifications.internals.evaluateOnboarding;
+  assert.equal(typeof eo, 'function');
+  const DAY = 24 * 60 * 60 * 1000;
+  const env = { configOk: true, pushSupported: true, permission: 'default', active: false };
+  assert.equal(eo(null, 1000, env).action, 'intro');
+  assert.equal(eo({ shownAt: 2000 }, 1000 + DAY / 2, env).action, 'none', 'no reshow within 24h of the last view');
+  assert.equal(eo({ decision: 'not-now', decidedAt: 1000 }, 1000 + DAY, env).action, 'none', 'no reminder before 3 days');
+  assert.equal(eo({ decision: 'not-now', decidedAt: 1000 }, 1000 + 3 * DAY + 1, env).action, 'reminder');
+  assert.equal(eo({ decision: 'not-now', decidedAt: 1000, reminderShown: true }, 1000 + 3 * DAY + 1, env).action, 'none', 'reminder is one-time');
+  assert.equal(eo({ decision: 'dismissed-forever' }, 9999999999999, env).action, 'none');
+  assert.equal(eo({ decision: 'enabled' }, 9999999999999, env).action, 'none');
+  assert.equal(eo(null, 1000, { ...env, active: true }).action, 'none', 'already-active visitors never see the intro');
+  assert.equal(eo(null, 1000, { ...env, configOk: false }).action, 'none', 'fail-closed config never shows the intro');
+  assert.equal(eo(null, 1000, { ...env, permission: 'denied' }).action, 'blocked', 'denied gets one-time settings guidance');
+  assert.equal(eo({ blockedShown: true }, 1000, { ...env, permission: 'denied' }).action, 'none', 'denied guidance never repeats');
+});
+
+runStep('Onboarding popup lists all six GoGo categories and only prompts on an explicit click', () => {
+  assert.ok(notificationsModuleSrc.includes('id="gogo-notifications-intro"'));
+  assert.ok(notificationsModuleSrc.includes('id="gogo-notifications-intro-enable"'));
+  assert.ok(notificationsModuleSrc.includes('id="gogo-notifications-intro-dismiss"'));
+  for (const label of ["GoGo Company announcements","Sarkari Sarthi job alerts","Pika News breaking news","Crystal Quest updates","Arrow Out updates","Future GoGo product announcements"]) {
+    assert.ok(notificationsModuleSrc.includes(label), `intro must list: ${label}`);
+  }
+  assert.equal((notificationsModuleSrc.match(/requestPermission/g) || []).length, 1, 'native prompt only inside the Enable click path');
+  assert.ok(notificationsModuleSrc.includes('visibilitychange'), 'permission rechecked when the visitor returns');
+});
+
+runStep('Backend verification before Active: active token+appId match, revoked rows rejected', () => {
+  const find = GoGoNotifications.internals.findRegisteredDevice;
+  const devices = [
+    { deviceId: 'd1', fcmToken: 'tok-aaa', appId: 'gogocompany-in', status: 'active' },
+    { deviceId: 'd2', fcmToken: 'tok-aaa', appId: 'other-app', status: 'active' },
+    { deviceId: 'd3', fcmToken: 'tok-bbb', appId: 'gogocompany-in', status: 'revoked' },
+    { deviceId: 'd4', fcmToken: 'tok-bbb', appId: 'gogocompany-in', status: 'active' },
+  ];
+  assert.equal(find(devices, 'tok-aaa', 'gogocompany-in').deviceId, 'd1', 'exact token + appId match');
+  assert.equal(find(devices, 'tok-bbb', 'gogocompany-in').deviceId, 'd4', 'revoked/duplicate rows resolve to the active row');
+  assert.equal(find(devices, 'tok-ccc', 'gogocompany-in'), null, 'unknown token is not registered');
+  assert.equal(find(devices, 'tok-aaa', null).deviceId, 'd1', 'appId filter is optional');
+  assert.equal(find(null, 'tok-aaa', 'gogocompany-in'), null);
+  assert.equal(find([], 'tok-aaa', 'gogocompany-in'), null);
+  assert.ok(notificationsModuleSrc.includes("apiFetch('/api/v1/devices', { method: 'GET' })"), 'verification reuses the existing devices endpoint');
+  assert.ok(notificationsModuleSrc.includes('VERIFY_FAILED'), 'verification failure surfaces an honest error');
+  assert.ok(notificationsModuleSrc.includes('verified: true'), 'verified flag persisted before Active is displayed');
+});
+
 console.log(`\nALL ${totalPassed} TEST SUITES PASSED SUCCESSFULLY.`);
+
 
