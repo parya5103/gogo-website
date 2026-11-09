@@ -233,15 +233,22 @@ function setupEventListeners() {
         footerWhatsappBtn.addEventListener('click', openWhatsappChannel);
     }
 
-    // Mobile menu toggle
+    // Mobile menu toggle (real <button>: click fires for mouse, Enter and
+    // Space, so no separate keydown handler is needed - it would
+    // double-toggle on Enter).
     if (mobileMenuToggle) {
         mobileMenuToggle.addEventListener('click', toggleMobileMenu);
-        mobileMenuToggle.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                toggleMobileMenu();
-            }
-        });
+    }
+
+    // Close the drawer after a navigation link is selected
+    document.querySelectorAll('.nav-menu .nav-link').forEach(link => {
+        link.addEventListener('click', closeMobileMenu);
+    });
+
+    // Close the drawer when the backdrop is tapped
+    const menuBackdrop = document.getElementById('menuBackdrop');
+    if (menuBackdrop) {
+        menuBackdrop.addEventListener('click', closeMobileMenu);
     }
 
     // Modal functionality
@@ -1115,12 +1122,42 @@ function openWhatsappChannel() {
 }
 
 /**
+ * Mobile menu drawer helpers.
+ * CSS contract: .nav-menu.active slides the drawer in (style.css),
+ * .menu-backdrop uses the hidden attribute, body.menu-open locks
+ * page scroll. All state changes go through these two functions so
+ * the button, backdrop, Escape key and nav links can never disagree.
+ */
+function openMobileMenu() {
+    const navMenu = document.getElementById('navMenu');
+    const menuBackdrop = document.getElementById('menuBackdrop');
+    if (!navMenu || navMenu.classList.contains('active')) return;
+    navMenu.classList.add('active');
+    if (menuBackdrop) menuBackdrop.hidden = false;
+    document.body.classList.add('menu-open');
+    if (mobileMenuToggle) mobileMenuToggle.setAttribute('aria-expanded', 'true');
+}
+
+function closeMobileMenu() {
+    const navMenu = document.getElementById('navMenu');
+    const menuBackdrop = document.getElementById('menuBackdrop');
+    if (!navMenu || !navMenu.classList.contains('active')) return;
+    navMenu.classList.remove('active');
+    if (menuBackdrop) menuBackdrop.hidden = true;
+    document.body.classList.remove('menu-open');
+    if (mobileMenuToggle) mobileMenuToggle.setAttribute('aria-expanded', 'false');
+}
+
+/**
  * Toggle mobile menu
  */
 function toggleMobileMenu() {
-    const navMenu = document.querySelector('.nav-menu');
-    if (navMenu) {
-        navMenu.classList.toggle('active');
+    const navMenu = document.getElementById('navMenu');
+    if (!navMenu) return;
+    if (navMenu.classList.contains('active')) {
+        closeMobileMenu();
+    } else {
+        openMobileMenu();
     }
 }
 
@@ -1128,6 +1165,13 @@ function toggleMobileMenu() {
  * Handle keyboard navigation
  */
 function handleKeyboardNavigation(e) {
+    // Close mobile menu drawer with Escape key
+    const navMenu = document.getElementById('navMenu');
+    if (e.key === 'Escape' && navMenu && navMenu.classList.contains('active')) {
+        closeMobileMenu();
+        if (mobileMenuToggle) mobileMenuToggle.focus();
+    }
+
     // Close modal with Escape key
     if (e.key === 'Escape' && jobModal.classList.contains('active')) {
         closeModal();
@@ -1142,16 +1186,9 @@ function handleKeyboardNavigation(e) {
 
 /**
  * Security utility: Escape HTML to prevent XSS
+ * (single definition - see the escapeHTML at the top of this file;
+ * the duplicate definition that used to sit here was removed)
  */
-function escapeHTML(str) {
-    if (!str) return '';
-    return str.toString()
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-}
 
 /**
  * Sanitizes URLs to ensure they only use http/https protocols.

@@ -8,7 +8,7 @@
     
     <!-- SEO Meta Tags -->
     <meta name="description" content="SarkariSarthi 2.0 - independent Indian government job information portal. Find latest sarkari naukri, government jobs, SSC, banking, railway and UPSC notifications with instant Telegram and WhatsApp alerts.">
-    <meta name="keywords" content="sarkari job, government jobs, sarkari naukri, indian government jobs, job portal, general, project, walk, interview, research, medical, associate, assistant, offline, fellow, administrative, senior, engineer, engineering, aiims">
+    <meta name="keywords" content="sarkari job, government jobs, sarkari naukri, indian government jobs, job portal, general, project, walk, interview, research, medical, associate, offline, assistant, fellow, administrative, senior, engineer, engineering, officer">
     <meta name="author" content="SarkariSarthi Team">
     
     <!-- Open Graph Meta Tags -->
@@ -52,7 +52,7 @@
                     <img src="ai-powered-icon.png" alt="SarkariSarthi logo" class="logo-icon">
                     <span class="logo-text">SarkariSarthi 2.0</span>
                 </div>
-                <div class="nav-menu">
+                <div class="nav-menu" id="navMenu">
                     <a href="#home" class="nav-link">Home</a>
                     <a href="#jobs" class="nav-link">Jobs</a>
                     <a href="#categories" class="nav-link">Categories</a>
@@ -69,19 +69,26 @@
                         Join WhatsApp
                     </button>
                 </div>
-                <div class="mobile-menu-toggle" id="mobileMenuToggle" role="button" tabindex="0" aria-label="Toggle mobile menu">
+                <button type="button" class="mobile-menu-toggle" id="mobileMenuToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle mobile menu">
                     <span></span>
                     <span></span>
                     <span></span>
-                </div>
+                </button>
             </div>
         </nav>
     </header>
 
+    <!-- Mobile menu backdrop: closes the drawer on outside tap -->
+    <div class="menu-backdrop" id="menuBackdrop" hidden></div>
+
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <div class="hero-background">
-            <img src="hero-bg.jpg" alt="Modern Indian Government Building" class="hero-bg-image">
+        <div class="hero-background" aria-hidden="true">
+            <picture>
+                <source srcset="hero-bg-720.webp" media="(max-width: 767px)" type="image/webp">
+                <source srcset="hero-bg-1280.webp" media="(max-width: 1365px)" type="image/webp">
+                <img src="hero-bg.jpg" alt="Modern Indian Government Building" class="hero-bg-image" fetchpriority="high" decoding="async">
+            </picture>
             <div class="hero-overlay"></div>
         </div>
         <div class="hero-content">
@@ -281,6 +288,11 @@
                         </button>
                     </div>
                 </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Browser Notifications</h4>
+                    <!-- GoGo Central notifications: the module renders its opt-in card here. -->
+                    <div data-gogo-notifications></div>
+                </div>
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2026 SarkariSarthi 2.0. All rights reserved.</p>
@@ -312,5 +324,6 @@
     <!-- JavaScript -->
     <script src="assets/js/ads.js"></script>
     <script src="script.js"></script>
+    <script src="gogo-notifications.js"></script>
 </body>
 </html>
