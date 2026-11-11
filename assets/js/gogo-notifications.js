@@ -585,7 +585,7 @@
     if (code.indexOf('VERIFY_FAILED') === 0) {
       return 'GoGo Central could not confirm this device registration yet. Please try again in a moment.';
     }
-    return 'Something went wrong while enabling notifications. Please try again later.';
+    return 'Something went wrong while enabling notifications (' + code.slice(0, 100) + '). Please try again later.';
   }
 
   function enable() {
