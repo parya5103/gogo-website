@@ -31,10 +31,11 @@
   var CONFIG = {
     // Backend product id for this site (must exist in registered_applications).
     appId: 'gogocompany-in',
-    // 'gogo-account' -> reuse the shared GoGo Account Firebase session.
-    // 'anonymous'    -> lazily sign in to Firebase Anonymous auth on opt-in
-    //                    (product sites without the shared account bundle).
-    authMode: 'gogo-account',
+    // 'anonymous' -> lazily sign in to Firebase Anonymous auth on opt-in.
+    // The portal no longer requires a GoGo Account login to receive push
+    // notifications: any visitor opts in with one tap, like mainstream
+    // websites. (Backend auth-provider.ts maps 'anonymous' providers.)
+    authMode: 'anonymous',
     // FAIL-CLOSED deployment switches. BOTH stay empty until the backend is
     // deployed and the Firebase Console Web Push VAPID key has been created.
     apiBase: 'https://gogo-central-backend-mg6z.onrender.com',
