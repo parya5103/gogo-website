@@ -1,4 +1,4 @@
-successfully downloaded text file (SHA: 145804344a33ff13ef2baecb0ca22f4a7623cdac)import assert from 'node:assert/strict';
+import assert from 'node:assert/strict';
 import { execSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -69,7 +69,7 @@ runStep('Validates and sanitizes Crystal Quest v2 save data', () => {
     unlocked: 14,
     lastLevel: 12,
     stars: { '1': 3, '2': 3, '3': 2 },
-    best: { '1': 5400, '2': 6100 },
+    best: { '1': 5400, '2': 6100, },
     settings: { sfx: true, music: false, motion: false, symbols: true },
     world: {
       forest: { seen: ['spark', 'saplings'] },
@@ -119,7 +119,7 @@ runStep('Smart merges Arrow Out and Crystal Quest saves without losing stars, co
     {
       v: 2,
       unlocked: 12,
-      best: { '1': { stars: 2, plays: 2 }, '5': { stars: 3, plays: 1 } },
+      best: { '1': { stars: 2, plays: 2 }, '5': { stars: 3, plays: 4 } },
       coins: 300,
       owned: { default: true, neon: true },
     },
@@ -850,5 +850,3 @@ runStep('Disable path still exists and clears stored state (turn-off behavior pr
 });
 
 console.log(`\nALL ${totalPassed} TEST SUITES PASSED SUCCESSFULLY.`);
-
-

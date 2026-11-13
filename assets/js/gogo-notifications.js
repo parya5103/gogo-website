@@ -1,4 +1,4 @@
-successfully downloaded text file (SHA: 3f4c6546727177e1c6c79f215eb90d0b96fe6323)/*
+/*
  * GoGo Central Notifications — opt-in Firebase Cloud Messaging (web push)
  * for the GoGo Company portal (account page).
  *
@@ -829,4 +829,3 @@ successfully downloaded text file (SHA: 3f4c6546727177e1c6c79f215eb90d0b96fe6323
     }
   }
 }(typeof window !== 'undefined' ? window : globalThis));
-

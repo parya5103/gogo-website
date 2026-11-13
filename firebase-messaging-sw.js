@@ -1,4 +1,4 @@
-successfully downloaded text file (SHA: 0cba8adde171fe42bd29d7dcae1fcaa256f08110)/*
+/*
  * GoGo Central — FCM background service worker for the GoGo Company portal.
  * Scope: / (portal root). This worker installs NO fetch handler on purpose:
  * it cannot affect page loading, caching or offline behaviour. It only
