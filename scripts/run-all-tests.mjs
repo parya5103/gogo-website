@@ -882,18 +882,21 @@ async function runEnableScenario({ supported, supportError } = {}) {
   const order = [];
   let swRegisterCalls = 0;
   const fakeMessaging = {
-    isSupported() {
-      order.push('isSupported-called');
-      if (supportError) return Promise.reject(supportError);
-      // Resolve asynchronously so tests can prove registration WAITS for it.
-      return Promise.resolve().then(() => {
-        order.push('isSupported-resolved');
-        return supported;
-      });
-    },
     onTokenRefresh() {},
     getToken() { return Promise.resolve('fcm-test-token-1234567890abcdef'); },
     deleteToken() { return Promise.resolve(true); },
+  };
+  // Real Firebase compat SDKs expose isSupported() as a STATIC on the
+  // messaging namespace function, so the mock mirrors that shape.
+  const messagingFactory = () => fakeMessaging;
+  messagingFactory.isSupported = () => {
+    order.push('isSupported-called');
+    if (supportError) return Promise.reject(supportError);
+    // Resolve asynchronously so tests can prove registration WAITS for it.
+    return Promise.resolve().then(() => {
+      order.push('isSupported-resolved');
+      return supported;
+    });
   };
   const fakeFirebase = {
     apps: [],
@@ -904,7 +907,7 @@ async function runEnableScenario({ supported, supportError } = {}) {
         signInAnonymously: () => Promise.resolve({ user: { getIdToken: () => Promise.resolve('test-id-token') } }),
       };
     },
-    messaging() { return fakeMessaging; },
+    messaging: messagingFactory,
   };
   // Load the module with NO document first: it must stay inert (no mount,
   // no onboarding timers) until the test explicitly provides the DOM.
@@ -913,7 +916,16 @@ async function runEnableScenario({ supported, supportError } = {}) {
   win.firebase = fakeFirebase;
   setGlobal('document', {
     readyState: 'complete',
-    getElementById: (id) => (elements[id] = elements[id] || { textContent: '' }),
+    // DOM elements must tolerate the module's UI updates (style/disabled
+    // writes), or the final refreshStatus() would throw and fail enable().
+    getElementById: (id) => (elements[id] = elements[id] || {
+      textContent: '',
+      style: {},
+      disabled: false,
+      setAttribute() {},
+      getAttribute: () => null,
+      addEventListener() {},
+    }),
     querySelector: () => null,
     createElement: () => ({}),
     head: { appendChild: (el) => { Promise.resolve().then(() => el.onload && el.onload()); } },
