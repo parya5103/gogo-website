@@ -36,6 +36,20 @@ function runStep(title, fn) {
   }
 }
 
+// Async variant for behavior tests that await real promise chains (the
+// notifications enable() flow). Failures still set the exit code.
+async function runStepAsync(title, fn) {
+  try {
+    await fn();
+    totalPassed++;
+    console.log(`PASS: ${title}`);
+  } catch (err) {
+    console.error(`FAIL: ${title}`);
+    console.error(err);
+    process.exitCode = 1;
+  }
+}
+
 console.log('==========================================================');
 console.log('1. GoGo Account & Cloud Save Unit & Conflict Tests');
 console.log('==========================================================');
@@ -69,7 +83,7 @@ runStep('Validates and sanitizes Crystal Quest v2 save data', () => {
     unlocked: 14,
     lastLevel: 12,
     stars: { '1': 3, '2': 3, '3': 2 },
-    best: { '1': 5400, '2': 6100, },
+    best: { '1': 5400, '2': 6100 },
     settings: { sfx: true, music: false, motion: false, symbols: true },
     world: {
       forest: { seen: ['spark', 'saplings'] },
@@ -119,7 +133,7 @@ runStep('Smart merges Arrow Out and Crystal Quest saves without losing stars, co
     {
       v: 2,
       unlocked: 12,
-      best: { '1': { stars: 2, plays: 2 }, '5': { stars: 3, plays: 4 } },
+      best: { '1': { stars: 2, plays: 2 }, '5': { stars: 3, plays: 1 } },
       coins: 300,
       owned: { default: true, neon: true },
     },
@@ -790,6 +804,8 @@ runStep('Enable failure messages are accurate per failure stage and never leak t
   assert.ok(m(new Error('PERMISSION_DISMISSED')).includes('again'), 'dismissed invites a retry, not settings');
   assert.notEqual(m(new Error('PERMISSION_DENIED')), m(new Error('PERMISSION_DISMISSED')));
   // Every stage has its own message.
+  assert.ok(m(new Error('SUPPORT_CHECK_FAILED: x')).includes('support'), 'support-check failure has its own message');
+  assert.notEqual(m(new Error('SUPPORT_CHECK_FAILED: x')), m(new Error('MESSAGING_UNSUPPORTED')));
   assert.ok(m(new Error('MESSAGING_UNSUPPORTED')).includes('browser'));
   assert.ok(m(new Error('NETWORK_ERROR')).includes('connection'));
   assert.ok(m(new Error('SW_REGISTER_FAILED: script 404')).includes('worker'));
@@ -804,7 +820,7 @@ runStep('Enable failure messages are accurate per failure stage and never leak t
   assert.ok(m(new Error('VERIFY_FAILED_NOT_FOUND')).includes('confirm'));
   assert.notEqual(m(new Error('REGISTER_FAILED_500')), m(new Error('PREFERENCE_FAILED_429')));
   // No sensitive runtime values in any message.
-  for (const e of ['PERMISSION_DENIED', 'PERMISSION_DISMISSED', 'NETWORK_ERROR', 'SW_REGISTER_FAILED: x', 'ANON_AUTH_FAILED: auth/x', 'SDK_LOAD_FAILED: x', 'SDK_INIT_FAILED', 'NO_FCM_TOKEN', 'SESSION_EXPIRED', 'REGISTER_FAILED_500', 'PREFERENCE_FAILED_429', 'VERIFY_FAILED_NOT_FOUND']) {
+  for (const e of ['PERMISSION_DENIED', 'PERMISSION_DISMISSED', 'SUPPORT_CHECK_FAILED: x', 'MESSAGING_UNSUPPORTED', 'NETWORK_ERROR', 'SW_REGISTER_FAILED: x', 'ANON_AUTH_FAILED: auth/x', 'SDK_LOAD_FAILED: x', 'SDK_INIT_FAILED', 'NO_FCM_TOKEN', 'SESSION_EXPIRED', 'REGISTER_FAILED_500', 'PREFERENCE_FAILED_429', 'VERIFY_FAILED_NOT_FOUND']) {
     const msg = m(new Error(e));
     assert.ok(!msg.includes('Bearer'), `no Authorization material in ${e}`);
     assert.ok(!msg.includes('fcmToken'), `no FCM token in ${e}`);
@@ -847,6 +863,122 @@ runStep('Disable path still exists and clears stored state (turn-off behavior pr
   assert.ok(notificationsModuleSrc.includes("storageRemove(CONFIG.storageKey)"), 'disable clears the stored device record');
   assert.ok(notificationsModuleSrc.includes('setPreferences(false)'), 'disable turns every channel off server-side');
   assert.ok(notificationsModuleSrc.includes('function setPreferences(enabled)'), 'preferences helper sends buildPreferencePayload(enabled)');
+});
+
+// ---------------------------------------------------------------------------
+// BEHAVIOR tests for the async isSupported() gate. These load a FRESH module
+// instance against mocked browser globals and drive the REAL enable() flow
+// end to end (fake Firebase compat SDK, fake service-worker container, fake
+// fetch). No network, no real Firebase. They assert actual behavior, not
+// source-code string matching.
+// ---------------------------------------------------------------------------
+async function runEnableScenario({ supported, supportError } = {}) {
+  const saved = {};
+  const setGlobal = (name, value) => {
+    saved[name] = Object.getOwnPropertyDescriptor(globalThis, name);
+    Object.defineProperty(globalThis, name, { value, writable: true, configurable: true });
+  };
+  const elements = {};
+  const order = [];
+  let swRegisterCalls = 0;
+  const fakeMessaging = {
+    isSupported() {
+      order.push('isSupported-called');
+      if (supportError) return Promise.reject(supportError);
+      // Resolve asynchronously so tests can prove registration WAITS for it.
+      return Promise.resolve().then(() => {
+        order.push('isSupported-resolved');
+        return supported;
+      });
+    },
+    onTokenRefresh() {},
+    getToken() { return Promise.resolve('fcm-test-token-1234567890abcdef'); },
+    deleteToken() { return Promise.resolve(true); },
+  };
+  const fakeFirebase = {
+    apps: [],
+    initializeApp() {},
+    auth() {
+      return {
+        currentUser: null,
+        signInAnonymously: () => Promise.resolve({ user: { getIdToken: () => Promise.resolve('test-id-token') } }),
+      };
+    },
+    messaging() { return fakeMessaging; },
+  };
+  // Load the module with NO document first: it must stay inert (no mount,
+  // no onboarding timers) until the test explicitly provides the DOM.
+  const win = { isSecureContext: true };
+  new Function('window', notificationsModuleSrc)(win);
+  win.firebase = fakeFirebase;
+  setGlobal('document', {
+    readyState: 'complete',
+    getElementById: (id) => (elements[id] = elements[id] || { textContent: '' }),
+    querySelector: () => null,
+    createElement: () => ({}),
+    head: { appendChild: (el) => { Promise.resolve().then(() => el.onload && el.onload()); } },
+    addEventListener: () => {},
+    body: { appendChild: () => {} },
+  });
+  setGlobal('Notification', { permission: 'default', requestPermission: () => Promise.resolve('granted') });
+  setGlobal('PushManager', function FakePushManager() {});
+  setGlobal('navigator', {
+    serviceWorker: {
+      register: () => {
+        swRegisterCalls++;
+        order.push('sw-register-called');
+        return Promise.resolve({ scope: '/' });
+      },
+    },
+  });
+  const savedFetch = globalThis.fetch;
+  globalThis.fetch = () => Promise.resolve({
+    status: 200,
+    json: () => Promise.resolve({
+      devices: [{ deviceId: 'd1', fcmToken: 'fcm-test-token-1234567890abcdef', appId: 'gogocompany-in', status: 'active' }],
+    }),
+  });
+  try {
+    const result = await win.GoGoNotifications.enable();
+    return { result, elements, order, swRegisterCalls };
+  } finally {
+    globalThis.fetch = savedFetch;
+    for (const [name, descriptor] of Object.entries(saved)) {
+      if (descriptor) Object.defineProperty(globalThis, name, descriptor);
+      else delete globalThis[name];
+    }
+  }
+}
+
+await runStepAsync('Behavior: isSupported() resolving true lets enable() proceed to service-worker registration and complete', async () => {
+  const scenario = await runEnableScenario({ supported: true });
+  assert.equal(scenario.result, true, 'enable() must complete successfully');
+  assert.equal(scenario.swRegisterCalls, 1, 'service worker registered exactly once');
+  const resolvedAt = scenario.order.indexOf('isSupported-resolved');
+  const registerAt = scenario.order.indexOf('sw-register-called');
+  assert.ok(resolvedAt !== -1, 'isSupported() was awaited');
+  assert.ok(registerAt !== -1);
+  assert.ok(resolvedAt < registerAt, 'service-worker registration must NOT begin before the support check resolves');
+});
+
+await runStepAsync('Behavior: isSupported() resolving false stops enable() with MESSAGING_UNSUPPORTED before any registration', async () => {
+  const scenario = await runEnableScenario({ supported: false });
+  assert.equal(scenario.result, false, 'enable() must fail closed');
+  assert.equal(scenario.swRegisterCalls, 0, 'no service-worker registration on unsupported browsers');
+  const msg = scenario.elements['gogo-notifications-status'].textContent;
+  assert.ok(msg.includes('does not support'), `user must see the unsupported-browser guidance, got: ${msg}`);
+  assert.equal(msg, GoGoNotifications.internals.enableErrorMessage(new Error('MESSAGING_UNSUPPORTED')));
+});
+
+await runStepAsync('Behavior: a rejected isSupported() Promise yields a distinct, accurate support-check error and no registration', async () => {
+  const scenario = await runEnableScenario({ supported: true, supportError: new Error('support check crashed') });
+  assert.equal(scenario.result, false, 'enable() must fail closed');
+  assert.equal(scenario.swRegisterCalls, 0, 'no service-worker registration when the support check rejects');
+  const msg = scenario.elements['gogo-notifications-status'].textContent;
+  assert.ok(msg.includes('Could not verify notification support'), `user must see the support-check guidance, got: ${msg}`);
+  assert.ok(msg.includes('browser'), 'message must point at the browser, not the backend');
+  assert.notEqual(msg, GoGoNotifications.internals.enableErrorMessage(new Error('MESSAGING_UNSUPPORTED')), 'rejection is NOT reported as unsupported');
+  assert.ok(!msg.includes('support check crashed'), 'internal rejection details must not leak raw into the message');
 });
 
 console.log(`\nALL ${totalPassed} TEST SUITES PASSED SUCCESSFULLY.`);

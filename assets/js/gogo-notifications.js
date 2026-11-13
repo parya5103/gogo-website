@@ -621,6 +621,9 @@
     if (code === 'PERMISSION_DISMISSED') {
       return 'The permission prompt was closed without an answer. Tap Enable again to allow notifications.';
     }
+    if (code.indexOf('SUPPORT_CHECK_FAILED') === 0) {
+      return 'Could not verify notification support in this browser. Please update your browser and try again.';
+    }
     if (code === 'MESSAGING_UNSUPPORTED') {
       return 'This browser does not support Firebase web push messaging. Please try Chrome, Edge or Firefox.';
     }
@@ -690,10 +693,33 @@
       })
       .then(function () {
         var fb = root.firebase;
-        if (fb && fb.messaging && typeof fb.messaging.isSupported === 'function' &&
-            !fb.messaging.isSupported()) {
-          throw new Error('MESSAGING_UNSUPPORTED');
+        if (fb && fb.messaging && typeof fb.messaging.isSupported === 'function') {
+          // isSupported() returns a Promise<boolean> in current Firebase SDKs
+          // (a plain boolean in some older builds). Promise.resolve() accepts
+          // both shapes, so a Promise object is never mistaken for a truthy
+          // boolean, a false result blocks registration, and a rejected
+          // support check gets its own diagnosable error instead of falling
+          // into the generic failure path.
+          setStatus('Checking messaging support...');
+          var supportCheck;
+          try {
+            supportCheck = fb.messaging.isSupported();
+          } catch (err) {
+            throw new Error('SUPPORT_CHECK_FAILED: ' + String((err && err.message) || err).slice(0, 80));
+          }
+          return Promise.resolve(supportCheck).then(
+            function (supported) {
+              if (supported !== true) throw new Error('MESSAGING_UNSUPPORTED');
+              return null;
+            },
+            function (err) {
+              throw new Error('SUPPORT_CHECK_FAILED: ' + String((err && err.message) || err).slice(0, 80));
+            }
+          );
         }
+        return null;
+      })
+      .then(function () {
         setStatus('Registering the background worker...');
         return navigator.serviceWorker.register(
           CONFIG.swUrl,
