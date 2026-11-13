@@ -760,6 +760,94 @@ runStep('Backend verification before Active: active token+appId match, revoked r
   assert.ok(notificationsModuleSrc.includes('verified: true'), 'verified flag persisted before Active is displayed');
 });
 
+runStep('Permission request outcomes classify distinctly: granted / denied / dismissed (default)', () => {
+  const c = GoGoNotifications.internals.classifyPermissionResult;
+  assert.equal(c('granted'), 'granted');
+  assert.equal(c('denied'), 'denied');
+  assert.equal(c('default'), 'dismissed', 'a dismissed prompt is NOT a site-settings block');
+  assert.equal(c(undefined), 'dismissed');
+  assert.equal(c(''), 'dismissed');
+});
+
+runStep('Browser support summary separates insecure context, missing APIs, and missing PushManager', () => {
+  const s = GoGoNotifications.internals.browserSupportSummary;
+  assert.equal(s({ isSecureContext: true, hasNotification: true, hasServiceWorker: true, hasPushManager: true }).supported, true);
+  const insecure = s({ isSecureContext: false, hasNotification: true, hasServiceWorker: true, hasPushManager: true });
+  assert.equal(insecure.supported, false);
+  assert.ok(insecure.problems.includes('insecure-context'));
+  const noPush = s({ isSecureContext: true, hasNotification: true, hasServiceWorker: true, hasPushManager: false });
+  assert.deepEqual(noPush.problems, ['no-push-manager']);
+  const bare = s({ isSecureContext: false, hasNotification: false, hasServiceWorker: false, hasPushManager: false });
+  assert.equal(bare.supported, false);
+  assert.ok(bare.problems.includes('no-notification-api'));
+  assert.ok(bare.problems.includes('no-service-worker'));
+});
+
+runStep('Enable failure messages are accurate per failure stage and never leak tokens or credentials', () => {
+  const m = GoGoNotifications.internals.enableErrorMessage;
+  // Permission states get DISTINCT, actionable messages.
+  assert.ok(m(new Error('PERMISSION_DENIED')).includes('BLOCKED'), 'denied points to browser site settings');
+  assert.ok(m(new Error('PERMISSION_DISMISSED')).includes('again'), 'dismissed invites a retry, not settings');
+  assert.notEqual(m(new Error('PERMISSION_DENIED')), m(new Error('PERMISSION_DISMISSED')));
+  // Every stage has its own message.
+  assert.ok(m(new Error('MESSAGING_UNSUPPORTED')).includes('browser'));
+  assert.ok(m(new Error('NETWORK_ERROR')).includes('connection'));
+  assert.ok(m(new Error('SW_REGISTER_FAILED: script 404')).includes('worker'));
+  assert.ok(m(new Error('ANON_AUTH_FAILED: auth/operation-not-allowed')).includes('operation-not-allowed'));
+  assert.ok(m(new Error('SDK_LOAD_FAILED: https://www.gstatic.com/x')).includes('connection'), 'SDK download failure = network guidance');
+  assert.ok(m(new Error('SDK_INIT_FAILED')).includes('browser'), 'SDK init failure = browser guidance');
+  assert.notEqual(m(new Error('SDK_LOAD_FAILED: x')), m(new Error('SDK_INIT_FAILED')));
+  assert.ok(m(new Error('NO_FCM_TOKEN')).includes('token'));
+  assert.ok(m(new Error('SESSION_EXPIRED')).includes('session'));
+  assert.ok(m(new Error('REGISTER_FAILED_500')).includes('500'));
+  assert.ok(m(new Error('PREFERENCE_FAILED_429')).includes('429'));
+  assert.ok(m(new Error('VERIFY_FAILED_NOT_FOUND')).includes('confirm'));
+  assert.notEqual(m(new Error('REGISTER_FAILED_500')), m(new Error('PREFERENCE_FAILED_429')));
+  // No sensitive runtime values in any message.
+  for (const e of ['PERMISSION_DENIED', 'PERMISSION_DISMISSED', 'NETWORK_ERROR', 'SW_REGISTER_FAILED: x', 'ANON_AUTH_FAILED: auth/x', 'SDK_LOAD_FAILED: x', 'SDK_INIT_FAILED', 'NO_FCM_TOKEN', 'SESSION_EXPIRED', 'REGISTER_FAILED_500', 'PREFERENCE_FAILED_429', 'VERIFY_FAILED_NOT_FOUND']) {
+    const msg = m(new Error(e));
+    assert.ok(!msg.includes('Bearer'), `no Authorization material in ${e}`);
+    assert.ok(!msg.includes('fcmToken'), `no FCM token in ${e}`);
+    assert.ok(!msg.includes('AIzaSy'), `no API key in ${e}`);
+  }
+});
+
+runStep('Permission is requested exactly once, through the compat wrapper, only from the click path', () => {
+  // askPermission() is the single call site; enable() must call the wrapper,
+  // never Notification.requestPermission directly.
+  assert.equal((notificationsModuleSrc.match(/requestPermission/g) || []).length, 1);
+  assert.ok(notificationsModuleSrc.includes('function askPermission()'), 'callback-compatible wrapper exists');
+  assert.ok(notificationsModuleSrc.includes('return askPermission()'), 'enable() uses the wrapper');
+  assert.ok(notificationsModuleSrc.includes("typeof result.then === 'function'"), 'Promise-based browsers pass through the wrapper');
+});
+
+runStep('Pre-flight capability checks run before any SDK or network work', () => {
+  assert.ok(notificationsModuleSrc.includes('browserSupportSummary({'), 'enable() runs the support summary');
+  assert.ok(notificationsModuleSrc.includes('isSecureContext'), 'secure-context is checked');
+  assert.ok(notificationsModuleSrc.includes('hasPushManager'), 'PushManager availability is checked');
+  assert.ok(notificationsModuleSrc.includes('messaging.isSupported'), 'Firebase Messaging browser support is checked');
+  assert.ok(notificationsModuleSrc.includes('MESSAGING_UNSUPPORTED'), 'unsupported messaging is a distinct failure');
+  assert.ok(notificationsModuleSrc.includes("throw new Error('NETWORK_ERROR')"), 'fetch network/CORS failures are classified');
+});
+
+runStep('Service worker click handler validates client URLs by hostname parsing, never substring matching', () => {
+  const sw = readFileSync(resolve(root, 'firebase-messaging-sw.js'), 'utf8');
+  assert.ok(!sw.includes('client.url.indexOf'), 'focus matching must not use unsafe substring matching');
+  const clickIdx = sw.indexOf("addEventListener('notificationclick'");
+  assert.ok(clickIdx !== -1);
+  const clickBody = sw.slice(clickIdx);
+  assert.ok(clickBody.includes('new URL(client.url)'), 'client URLs must be parsed with URL hostname validation');
+  assert.ok(clickBody.includes("'gogocompany.in'") && clickBody.includes("'www.gogocompany.in'"), 'only GoGo hosts may be focused');
+  assert.ok(clickBody.includes('openWindow(target)'), 'non-matching clicks open the safe fallback URL');
+  assert.ok(!sw.includes("addEventListener('fetch'"), 'no fetch handler may appear in the FCM worker');
+});
+
+runStep('Disable path still exists and clears stored state (turn-off behavior preserved)', () => {
+  assert.equal(typeof GoGoNotifications.disable, 'function');
+  assert.ok(notificationsModuleSrc.includes("storageRemove(CONFIG.storageKey)"), 'disable clears the stored device record');
+  assert.ok(notificationsModuleSrc.includes("buildPreferencePayload(false)"), 'disable turns every channel off server-side');
+});
+
 console.log(`\nALL ${totalPassed} TEST SUITES PASSED SUCCESSFULLY.`);
 
 

@@ -57,7 +57,12 @@ self.addEventListener('notificationclick', function (event) {
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function (clientList) {
       for (var i = 0; i < clientList.length; i++) {
         var client = clientList[i];
-        if (client.url && client.url.indexOf('gogocompany.in') !== -1 && 'focus' in client) {
+        // Hostname-parsed validation (never substring matching: a tab on
+        // evil-gogocompany.in.attacker.example must not be focused).
+        var clientHost = '';
+        try { clientHost = new URL(client.url).hostname; } catch (err) { clientHost = ''; }
+        if ((clientHost === 'gogocompany.in' || clientHost === 'www.gogocompany.in') &&
+            'focus' in client) {
           return client.focus();
         }
       }

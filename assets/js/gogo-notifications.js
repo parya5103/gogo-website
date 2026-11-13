@@ -139,6 +139,28 @@
     return typeof navigator !== 'undefined' && !!navigator.serviceWorker;
   }
 
+  // Classify the result of a permission request (unit-tested). 'default'
+  // means the prompt was dismissed or never answered - NOT a site-settings
+  // block - so it must get its own retry message instead of the
+  // browser-settings guidance.
+  function classifyPermissionResult(permission) {
+    if (permission === 'granted') return 'granted';
+    if (permission === 'denied') return 'denied';
+    return 'dismissed';
+  }
+
+  // Pure browser-support summary (unit-tested). env: { isSecureContext,
+  // hasNotification, hasServiceWorker, hasPushManager }.
+  function browserSupportSummary(env) {
+    var problems = [];
+    env = env || {};
+    if (!env.isSecureContext) problems.push('insecure-context');
+    if (!env.hasNotification) problems.push('no-notification-api');
+    if (!env.hasServiceWorker) problems.push('no-service-worker');
+    if (env.hasServiceWorker && !env.hasPushManager) problems.push('no-push-manager');
+    return { supported: problems.length === 0, problems: problems };
+  }
+
   function storageGet(key) {
     try { if (typeof localStorage !== 'undefined') return localStorage.getItem(key); } catch (err) {}
     return null;
@@ -444,6 +466,26 @@
     });
   }
 
+  // The ONLY permission call site in this module (a regression test asserts
+  // Single permission-request call site (an existing test asserts exactly one
+  // occurrence of that API name). Wraps callback-style browsers
+  // (older Safari) into a Promise; Promise-based browsers pass through.
+  // Resolving twice is harmless: only the first settle wins.
+  function askPermission() {
+    return new Promise(function (resolve, reject) {
+      try {
+        var result = Notification.requestPermission(function (permission) {
+          resolve(permission);
+        });
+        if (result && typeof result.then === 'function') {
+          result.then(resolve, reject);
+        }
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
   function ensureSdk() {
     if (state.sdkReady) return Promise.resolve();
     return loadScript(CONFIG.sdkBase + '/firebase-app-compat.js')
@@ -484,6 +526,11 @@
     if (CONFIG.authMode === 'anonymous' && root.firebase && root.firebase.auth) {
       return root.firebase.auth().signInAnonymously().then(function (cred) {
         return cred.user.getIdToken(true);
+      }).catch(function (err) {
+        // Surface the Firebase error CODE (never tokens or credentials) so a
+        // failed anonymous sign-in is diagnosable (e.g. auth/
+        // operation-not-allowed = Anonymous provider disabled in console).
+        throw new Error('ANON_AUTH_FAILED: ' + String((err && err.code) || (err && err.message) || err).slice(0, 60));
       });
     }
     return Promise.reject(new Error('SIGN_IN_REQUIRED'));
@@ -500,6 +547,10 @@
         method: options.method || 'GET',
         headers: headers,
         body: options.body || undefined
+      }).catch(function () {
+        // fetch() rejects with a bare TypeError on network/CORS failures;
+        // classify it so the user sees a connection message, not raw noise.
+        throw new Error('NETWORK_ERROR');
       });
     });
   }
@@ -566,7 +617,22 @@
   function enableErrorMessage(error) {
     var code = String((error && error.message) || error || '');
     if (code === 'PERMISSION_DENIED') {
-      return 'Permission denied. Allow notifications for gogocompany.in in your browser site settings, then tap Enable again.';
+      return 'Notifications are BLOCKED for gogocompany.in in your browser settings. Tap the padlock icon in the address bar, open Site settings, set Notifications to Allow, then tap Enable again.';
+    }
+    if (code === 'PERMISSION_DISMISSED') {
+      return 'The permission prompt was closed without an answer. Tap Enable again to allow notifications.';
+    }
+    if (code === 'MESSAGING_UNSUPPORTED') {
+      return 'This browser does not support Firebase web push messaging. Please try Chrome, Edge or Firefox.';
+    }
+    if (code === 'NETWORK_ERROR') {
+      return 'Network error: the GoGo Central backend could not be reached. Check your connection and try again.';
+    }
+    if (code.indexOf('SW_REGISTER_FAILED') === 0) {
+      return 'Could not register the background message worker. Reload the page and try again.';
+    }
+    if (code.indexOf('ANON_AUTH_FAILED') === 0) {
+      return 'Anonymous sign-in with the notification service failed (' + code + '). Please try again later.';
     }
     if (code === 'SIGN_IN_REQUIRED') {
       return 'Please sign in to your GoGo Account first, then tap Enable again.';
@@ -577,8 +643,11 @@
     if (code === 'NO_FCM_TOKEN') {
       return 'Could not obtain a push token from this browser. Please try again later.';
     }
-    if (code.indexOf('SDK_LOAD_FAILED') === 0 || code.indexOf('SDK_INIT_FAILED') === 0) {
-      return 'Could not load the messaging SDK. Check your connection and try again.';
+    if (code.indexOf('SDK_LOAD_FAILED') === 0) {
+      return 'Could not download the messaging SDK. Check your connection and try again.';
+    }
+    if (code.indexOf('SDK_INIT_FAILED') === 0) {
+      return 'The messaging SDK could not start in this browser. Please try another browser.';
     }
     if (code.indexOf('REGISTER_FAILED') === 0 || code.indexOf('PREFERENCE_FAILED') === 0) {
       return 'The GoGo Central backend rejected this device registration (' + code + '). Please try again later.';
@@ -593,25 +662,46 @@
     if (state.busy) return Promise.resolve(false);
     var check = validateConfig();
     if (!check.ok) { refreshStatus(); return Promise.resolve(false); }
-    if (!hasNotificationApi() || !swSupported()) { refreshStatus(); return Promise.resolve(false); }
+    // Pre-flight capability checks with an explicit, visible reason. The
+    // previous version returned silently here: the visitor tapped Enable
+    // and nothing happened at all.
+    var support = browserSupportSummary({
+      isSecureContext: typeof window !== 'undefined' && window.isSecureContext === true,
+      hasNotification: hasNotificationApi(),
+      hasServiceWorker: swSupported(),
+      hasPushManager: swSupported() && typeof PushManager !== 'undefined'
+    });
+    if (!support.supported) {
+      setStatus('This browser or connection cannot use web push notifications here (' + support.problems.join(', ') + ').');
+      return Promise.resolve(false);
+    }
     if (CONFIG.authMode === 'gogo-account' && !getCurrentUser()) {
       setStatus('Please sign in to your GoGo Account first, then tap Enable again.');
       return Promise.resolve(false);
     }
     state.busy = true;
     setStatus('Asking for permission...');
-    return Notification.requestPermission()
+    return askPermission()
       .then(function (permission) {
-        if (permission !== 'granted') throw new Error('PERMISSION_DENIED');
+        var outcome = classifyPermissionResult(permission);
+        if (outcome === 'denied') throw new Error('PERMISSION_DENIED');
+        if (outcome === 'dismissed') throw new Error('PERMISSION_DISMISSED');
         setStatus('Loading the messaging SDK...');
         return ensureSdk();
       })
       .then(function () {
+        var fb = root.firebase;
+        if (fb && fb.messaging && typeof fb.messaging.isSupported === 'function' &&
+            !fb.messaging.isSupported()) {
+          throw new Error('MESSAGING_UNSUPPORTED');
+        }
         setStatus('Registering the background worker...');
         return navigator.serviceWorker.register(
           CONFIG.swUrl,
           CONFIG.swScope ? { scope: CONFIG.swScope } : undefined
-        );
+        ).catch(function (err) {
+          throw new Error('SW_REGISTER_FAILED: ' + String((err && err.message) || err).slice(0, 80));
+        });
       })
       .then(function (registration) {
         state.swRegistration = registration;
@@ -721,6 +811,9 @@
       safeUrl: safeUrl,
       evaluateOnboarding: evaluateOnboarding,
       findRegisteredDevice: findRegisteredDevice,
+      classifyPermissionResult: classifyPermissionResult,
+      browserSupportSummary: browserSupportSummary,
+      enableErrorMessage: enableErrorMessage,
       onboardingDelaysMs: {
         remindAfterMs: ONBOARDING_REMIND_AFTER_MS,
         reshowAfterMs: ONBOARDING_RESHOW_AFTER_MS
