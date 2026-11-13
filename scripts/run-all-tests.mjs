@@ -36,6 +36,20 @@ function runStep(title, fn) {
   }
 }
 
+// Async variant for behavior tests that await real promise chains (the
+// notifications enable() flow). Failures still set the exit code.
+async function runStepAsync(title, fn) {
+  try {
+    await fn();
+    totalPassed++;
+    console.log(`PASS: ${title}`);
+  } catch (err) {
+    console.error(`FAIL: ${title}`);
+    console.error(err);
+    process.exitCode = 1;
+  }
+}
+
 console.log('==========================================================');
 console.log('1. GoGo Account & Cloud Save Unit & Conflict Tests');
 console.log('==========================================================');
@@ -760,6 +774,223 @@ runStep('Backend verification before Active: active token+appId match, revoked r
   assert.ok(notificationsModuleSrc.includes('verified: true'), 'verified flag persisted before Active is displayed');
 });
 
+runStep('Permission request outcomes classify distinctly: granted / denied / dismissed (default)', () => {
+  const c = GoGoNotifications.internals.classifyPermissionResult;
+  assert.equal(c('granted'), 'granted');
+  assert.equal(c('denied'), 'denied');
+  assert.equal(c('default'), 'dismissed', 'a dismissed prompt is NOT a site-settings block');
+  assert.equal(c(undefined), 'dismissed');
+  assert.equal(c(''), 'dismissed');
+});
+
+runStep('Browser support summary separates insecure context, missing APIs, and missing PushManager', () => {
+  const s = GoGoNotifications.internals.browserSupportSummary;
+  assert.equal(s({ isSecureContext: true, hasNotification: true, hasServiceWorker: true, hasPushManager: true }).supported, true);
+  const insecure = s({ isSecureContext: false, hasNotification: true, hasServiceWorker: true, hasPushManager: true });
+  assert.equal(insecure.supported, false);
+  assert.ok(insecure.problems.includes('insecure-context'));
+  const noPush = s({ isSecureContext: true, hasNotification: true, hasServiceWorker: true, hasPushManager: false });
+  assert.deepEqual(noPush.problems, ['no-push-manager']);
+  const bare = s({ isSecureContext: false, hasNotification: false, hasServiceWorker: false, hasPushManager: false });
+  assert.equal(bare.supported, false);
+  assert.ok(bare.problems.includes('no-notification-api'));
+  assert.ok(bare.problems.includes('no-service-worker'));
+});
+
+runStep('Enable failure messages are accurate per failure stage and never leak tokens or credentials', () => {
+  const m = GoGoNotifications.internals.enableErrorMessage;
+  // Permission states get DISTINCT, actionable messages.
+  assert.ok(m(new Error('PERMISSION_DENIED')).includes('BLOCKED'), 'denied points to browser site settings');
+  assert.ok(m(new Error('PERMISSION_DISMISSED')).includes('again'), 'dismissed invites a retry, not settings');
+  assert.notEqual(m(new Error('PERMISSION_DENIED')), m(new Error('PERMISSION_DISMISSED')));
+  // Every stage has its own message.
+  assert.ok(m(new Error('SUPPORT_CHECK_FAILED: x')).includes('support'), 'support-check failure has its own message');
+  assert.notEqual(m(new Error('SUPPORT_CHECK_FAILED: x')), m(new Error('MESSAGING_UNSUPPORTED')));
+  assert.ok(m(new Error('MESSAGING_UNSUPPORTED')).includes('browser'));
+  assert.ok(m(new Error('NETWORK_ERROR')).includes('connection'));
+  assert.ok(m(new Error('SW_REGISTER_FAILED: script 404')).includes('worker'));
+  assert.ok(m(new Error('ANON_AUTH_FAILED: auth/operation-not-allowed')).includes('operation-not-allowed'));
+  assert.ok(m(new Error('SDK_LOAD_FAILED: https://www.gstatic.com/x')).includes('connection'), 'SDK download failure = network guidance');
+  assert.ok(m(new Error('SDK_INIT_FAILED')).includes('browser'), 'SDK init failure = browser guidance');
+  assert.notEqual(m(new Error('SDK_LOAD_FAILED: x')), m(new Error('SDK_INIT_FAILED')));
+  assert.ok(m(new Error('NO_FCM_TOKEN')).includes('token'));
+  assert.ok(m(new Error('SESSION_EXPIRED')).includes('session'));
+  assert.ok(m(new Error('REGISTER_FAILED_500')).includes('500'));
+  assert.ok(m(new Error('PREFERENCE_FAILED_429')).includes('429'));
+  assert.ok(m(new Error('VERIFY_FAILED_NOT_FOUND')).includes('confirm'));
+  assert.notEqual(m(new Error('REGISTER_FAILED_500')), m(new Error('PREFERENCE_FAILED_429')));
+  // No sensitive runtime values in any message.
+  for (const e of ['PERMISSION_DENIED', 'PERMISSION_DISMISSED', 'SUPPORT_CHECK_FAILED: x', 'MESSAGING_UNSUPPORTED', 'NETWORK_ERROR', 'SW_REGISTER_FAILED: x', 'ANON_AUTH_FAILED: auth/x', 'SDK_LOAD_FAILED: x', 'SDK_INIT_FAILED', 'NO_FCM_TOKEN', 'SESSION_EXPIRED', 'REGISTER_FAILED_500', 'PREFERENCE_FAILED_429', 'VERIFY_FAILED_NOT_FOUND']) {
+    const msg = m(new Error(e));
+    assert.ok(!msg.includes('Bearer'), `no Authorization material in ${e}`);
+    assert.ok(!msg.includes('fcmToken'), `no FCM token in ${e}`);
+    assert.ok(!msg.includes('AIzaSy'), `no API key in ${e}`);
+  }
+});
+
+runStep('Permission is requested exactly once, through the compat wrapper, only from the click path', () => {
+  // askPermission() is the single call site; enable() must call the wrapper,
+  // never Notification.requestPermission directly.
+  assert.equal((notificationsModuleSrc.match(/requestPermission/g) || []).length, 1);
+  assert.ok(notificationsModuleSrc.includes('function askPermission()'), 'callback-compatible wrapper exists');
+  assert.ok(notificationsModuleSrc.includes('return askPermission()'), 'enable() uses the wrapper');
+  assert.ok(notificationsModuleSrc.includes("typeof result.then === 'function'"), 'Promise-based browsers pass through the wrapper');
+});
+
+runStep('Pre-flight capability checks run before any SDK or network work', () => {
+  assert.ok(notificationsModuleSrc.includes('browserSupportSummary({'), 'enable() runs the support summary');
+  assert.ok(notificationsModuleSrc.includes('isSecureContext'), 'secure-context is checked');
+  assert.ok(notificationsModuleSrc.includes('hasPushManager'), 'PushManager availability is checked');
+  assert.ok(notificationsModuleSrc.includes('messaging.isSupported'), 'Firebase Messaging browser support is checked');
+  assert.ok(notificationsModuleSrc.includes('MESSAGING_UNSUPPORTED'), 'unsupported messaging is a distinct failure');
+  assert.ok(notificationsModuleSrc.includes("throw new Error('NETWORK_ERROR')"), 'fetch network/CORS failures are classified');
+});
+
+runStep('Service worker click handler validates client URLs by hostname parsing, never substring matching', () => {
+  const sw = readFileSync(resolve(root, 'firebase-messaging-sw.js'), 'utf8');
+  assert.ok(!sw.includes('client.url.indexOf'), 'focus matching must not use unsafe substring matching');
+  const clickIdx = sw.indexOf("addEventListener('notificationclick'");
+  assert.ok(clickIdx !== -1);
+  const clickBody = sw.slice(clickIdx);
+  assert.ok(clickBody.includes('new URL(client.url)'), 'client URLs must be parsed with URL hostname validation');
+  assert.ok(clickBody.includes("'gogocompany.in'") && clickBody.includes("'www.gogocompany.in'"), 'only GoGo hosts may be focused');
+  assert.ok(clickBody.includes('openWindow(target)'), 'non-matching clicks open the safe fallback URL');
+  assert.ok(!sw.includes("addEventListener('fetch'"), 'no fetch handler may appear in the FCM worker');
+});
+
+runStep('Disable path still exists and clears stored state (turn-off behavior preserved)', () => {
+  assert.equal(typeof GoGoNotifications.disable, 'function');
+  assert.ok(notificationsModuleSrc.includes("storageRemove(CONFIG.storageKey)"), 'disable clears the stored device record');
+  assert.ok(notificationsModuleSrc.includes('setPreferences(false)'), 'disable turns every channel off server-side');
+  assert.ok(notificationsModuleSrc.includes('function setPreferences(enabled)'), 'preferences helper sends buildPreferencePayload(enabled)');
+});
+
+// ---------------------------------------------------------------------------
+// BEHAVIOR tests for the async isSupported() gate. These load a FRESH module
+// instance against mocked browser globals and drive the REAL enable() flow
+// end to end (fake Firebase compat SDK, fake service-worker container, fake
+// fetch). No network, no real Firebase. They assert actual behavior, not
+// source-code string matching.
+// ---------------------------------------------------------------------------
+async function runEnableScenario({ supported, supportError } = {}) {
+  const saved = {};
+  const setGlobal = (name, value) => {
+    saved[name] = Object.getOwnPropertyDescriptor(globalThis, name);
+    Object.defineProperty(globalThis, name, { value, writable: true, configurable: true });
+  };
+  const elements = {};
+  const order = [];
+  let swRegisterCalls = 0;
+  const fakeMessaging = {
+    onTokenRefresh() {},
+    getToken() { return Promise.resolve('fcm-test-token-1234567890abcdef'); },
+    deleteToken() { return Promise.resolve(true); },
+  };
+  // Real Firebase compat SDKs expose isSupported() as a STATIC on the
+  // messaging namespace function, so the mock mirrors that shape.
+  const messagingFactory = () => fakeMessaging;
+  messagingFactory.isSupported = () => {
+    order.push('isSupported-called');
+    if (supportError) return Promise.reject(supportError);
+    // Resolve asynchronously so tests can prove registration WAITS for it.
+    return Promise.resolve().then(() => {
+      order.push('isSupported-resolved');
+      return supported;
+    });
+  };
+  const fakeFirebase = {
+    apps: [],
+    initializeApp() {},
+    auth() {
+      return {
+        currentUser: null,
+        signInAnonymously: () => Promise.resolve({ user: { getIdToken: () => Promise.resolve('test-id-token') } }),
+      };
+    },
+    messaging: messagingFactory,
+  };
+  // Load the module with NO document first: it must stay inert (no mount,
+  // no onboarding timers) until the test explicitly provides the DOM.
+  const win = { isSecureContext: true };
+  new Function('window', notificationsModuleSrc)(win);
+  win.firebase = fakeFirebase;
+  setGlobal('document', {
+    readyState: 'complete',
+    // DOM elements must tolerate the module's UI updates (style/disabled
+    // writes), or the final refreshStatus() would throw and fail enable().
+    getElementById: (id) => (elements[id] = elements[id] || {
+      textContent: '',
+      style: {},
+      disabled: false,
+      setAttribute() {},
+      getAttribute: () => null,
+      addEventListener() {},
+    }),
+    querySelector: () => null,
+    createElement: () => ({}),
+    head: { appendChild: (el) => { Promise.resolve().then(() => el.onload && el.onload()); } },
+    addEventListener: () => {},
+    body: { appendChild: () => {} },
+  });
+  setGlobal('Notification', { permission: 'default', requestPermission: () => Promise.resolve('granted') });
+  setGlobal('PushManager', function FakePushManager() {});
+  setGlobal('navigator', {
+    serviceWorker: {
+      register: () => {
+        swRegisterCalls++;
+        order.push('sw-register-called');
+        return Promise.resolve({ scope: '/' });
+      },
+    },
+  });
+  const savedFetch = globalThis.fetch;
+  globalThis.fetch = () => Promise.resolve({
+    status: 200,
+    json: () => Promise.resolve({
+      devices: [{ deviceId: 'd1', fcmToken: 'fcm-test-token-1234567890abcdef', appId: 'gogocompany-in', status: 'active' }],
+    }),
+  });
+  try {
+    const result = await win.GoGoNotifications.enable();
+    return { result, elements, order, swRegisterCalls };
+  } finally {
+    globalThis.fetch = savedFetch;
+    for (const [name, descriptor] of Object.entries(saved)) {
+      if (descriptor) Object.defineProperty(globalThis, name, descriptor);
+      else delete globalThis[name];
+    }
+  }
+}
+
+await runStepAsync('Behavior: isSupported() resolving true lets enable() proceed to service-worker registration and complete', async () => {
+  const scenario = await runEnableScenario({ supported: true });
+  assert.equal(scenario.result, true, 'enable() must complete successfully');
+  assert.equal(scenario.swRegisterCalls, 1, 'service worker registered exactly once');
+  const resolvedAt = scenario.order.indexOf('isSupported-resolved');
+  const registerAt = scenario.order.indexOf('sw-register-called');
+  assert.ok(resolvedAt !== -1, 'isSupported() was awaited');
+  assert.ok(registerAt !== -1);
+  assert.ok(resolvedAt < registerAt, 'service-worker registration must NOT begin before the support check resolves');
+});
+
+await runStepAsync('Behavior: isSupported() resolving false stops enable() with MESSAGING_UNSUPPORTED before any registration', async () => {
+  const scenario = await runEnableScenario({ supported: false });
+  assert.equal(scenario.result, false, 'enable() must fail closed');
+  assert.equal(scenario.swRegisterCalls, 0, 'no service-worker registration on unsupported browsers');
+  const msg = scenario.elements['gogo-notifications-status'].textContent;
+  assert.ok(msg.includes('does not support'), `user must see the unsupported-browser guidance, got: ${msg}`);
+  assert.equal(msg, GoGoNotifications.internals.enableErrorMessage(new Error('MESSAGING_UNSUPPORTED')));
+});
+
+await runStepAsync('Behavior: a rejected isSupported() Promise yields a distinct, accurate support-check error and no registration', async () => {
+  const scenario = await runEnableScenario({ supported: true, supportError: new Error('support check crashed') });
+  assert.equal(scenario.result, false, 'enable() must fail closed');
+  assert.equal(scenario.swRegisterCalls, 0, 'no service-worker registration when the support check rejects');
+  const msg = scenario.elements['gogo-notifications-status'].textContent;
+  assert.ok(msg.includes('Could not verify notification support'), `user must see the support-check guidance, got: ${msg}`);
+  assert.ok(msg.includes('browser'), 'message must point at the browser, not the backend');
+  assert.notEqual(msg, GoGoNotifications.internals.enableErrorMessage(new Error('MESSAGING_UNSUPPORTED')), 'rejection is NOT reported as unsupported');
+  assert.ok(!msg.includes('support check crashed'), 'internal rejection details must not leak raw into the message');
+});
+
 console.log(`\nALL ${totalPassed} TEST SUITES PASSED SUCCESSFULLY.`);
-
-
