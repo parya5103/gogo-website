@@ -1,4 +1,4 @@
-/*
+successfully downloaded text file (SHA: 3f4c6546727177e1c6c79f215eb90d0b96fe6323)/*
  * GoGo Central Notifications — opt-in Firebase Cloud Messaging (web push)
  * for the GoGo Company portal (account page).
  *
@@ -467,8 +467,7 @@
   }
 
   // The ONLY permission call site in this module (a regression test asserts
-  // Single permission-request call site (an existing test asserts exactly one
-  // occurrence of that API name). Wraps callback-style browsers
+  // exactly one occurrence of that API name). Wraps callback-style browsers
   // (older Safari) into a Promise; Promise-based browsers pass through.
   // Resolving twice is harmless: only the first settle wins.
   function askPermission() {

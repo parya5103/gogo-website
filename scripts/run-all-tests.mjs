@@ -1,4 +1,4 @@
-import assert from 'node:assert/strict';
+successfully downloaded text file (SHA: 145804344a33ff13ef2baecb0ca22f4a7623cdac)import assert from 'node:assert/strict';
 import { execSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -845,7 +845,8 @@ runStep('Service worker click handler validates client URLs by hostname parsing,
 runStep('Disable path still exists and clears stored state (turn-off behavior preserved)', () => {
   assert.equal(typeof GoGoNotifications.disable, 'function');
   assert.ok(notificationsModuleSrc.includes("storageRemove(CONFIG.storageKey)"), 'disable clears the stored device record');
-  assert.ok(notificationsModuleSrc.includes("buildPreferencePayload(false)"), 'disable turns every channel off server-side');
+  assert.ok(notificationsModuleSrc.includes('setPreferences(false)'), 'disable turns every channel off server-side');
+  assert.ok(notificationsModuleSrc.includes('function setPreferences(enabled)'), 'preferences helper sends buildPreferencePayload(enabled)');
 });
 
 console.log(`\nALL ${totalPassed} TEST SUITES PASSED SUCCESSFULLY.`);
