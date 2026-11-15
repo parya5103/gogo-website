@@ -757,13 +757,13 @@ async function loadFeaturedNews() {
                         </span>
                     </div>
                     <div class="news-card-actions">
-                        <button class="news-card-action" onclick="openArticle('${article.id}')">
+                        <button class="news-card-action" aria-label="Read article: ${Utils.escapeHtml(article.title)}" onclick="openArticle('${article.id}')">
                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M5 12h14M12 5l7 7-7 7"/>
                             </svg>
                             <span>Read</span>
                         </button>
-                        <button class="news-card-action" onclick="toggleBookmark('${article.id}')">
+                        <button class="news-card-action" aria-label="Bookmark ${Utils.escapeHtml(article.title)}" onclick="toggleBookmark('${article.id}')">
                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
                             </svg>
@@ -820,13 +820,13 @@ async function loadLatestNews() {
                         </span>
                     </div>
                     <div class="news-card-actions">
-                        <button class="news-card-action" onclick="openArticle('${article.id}')">
+                        <button class="news-card-action" aria-label="Read article: ${Utils.escapeHtml(article.title)}" onclick="openArticle('${article.id}')">
                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M5 12h14M12 5l7 7-7 7"/>
                             </svg>
                             <span>Read</span>
                         </button>
-                        <button class="news-card-action" onclick="toggleBookmark('${article.id}')">
+                        <button class="news-card-action" aria-label="Bookmark ${Utils.escapeHtml(article.title)}" onclick="toggleBookmark('${article.id}')">
                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
                             </svg>
@@ -883,13 +883,13 @@ async function loadTrendingNews() {
                         </span>
                     </div>
                     <div class="news-card-actions">
-                        <button class="news-card-action" onclick="openArticle('${article.id}')">
+                        <button class="news-card-action" aria-label="Read article: ${Utils.escapeHtml(article.title)}" onclick="openArticle('${article.id}')">
                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M5 12h14M12 5l7 7-7 7"/>
                             </svg>
                             <span>Read</span>
                         </button>
-                        <button class="news-card-action" onclick="toggleBookmark('${article.id}')">
+                        <button class="news-card-action" aria-label="Bookmark ${Utils.escapeHtml(article.title)}" onclick="toggleBookmark('${article.id}')">
                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
                             </svg>
@@ -949,13 +949,13 @@ async function loadCategoryNews() {
                             </span>
                         </div>
                         <div class="news-card-actions">
-                            <button class="news-card-action" onclick="openArticle('${article.id}')">
+                            <button class="news-card-action" aria-label="Read article: ${Utils.escapeHtml(article.title)}" onclick="openArticle('${article.id}')">
                                 <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M5 12h14M12 5l7 7-7 7"/>
                                 </svg>
                                 <span>Read</span>
                             </button>
-                            <button class="news-card-action" onclick="toggleBookmark('${article.id}')">
+                            <button class="news-card-action" aria-label="Bookmark ${Utils.escapeHtml(article.title)}" onclick="toggleBookmark('${article.id}')">
                                 <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
                                 </svg>
