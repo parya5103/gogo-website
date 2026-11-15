@@ -122,7 +122,7 @@
       var links = "";
       for (var j = 0; j < c.links.length; j++) {
         links +=
-          '<li role="none"><a href="' + attr(ROOT + c.links[j].href) + '">' +
+          '<li><a href="' + attr(ROOT + c.links[j].href) + '">' +
           esc(c.links[j].label) + "</a></li>";
       }
       cols += '<div class="footer-col"><h3>' + esc(c.heading) + '</h3><ul role="list">' + links + "</ul></div>";
