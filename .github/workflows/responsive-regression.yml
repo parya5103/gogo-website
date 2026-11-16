@@ -5,6 +5,9 @@ on:
     branches: [main]
   push:
     branches: [main]
+  schedule:
+    # Weekly Monday 09:00 IST (03:30 UTC).
+    - cron: '30 3 * * 1'
   workflow_dispatch:
 
 permissions:
