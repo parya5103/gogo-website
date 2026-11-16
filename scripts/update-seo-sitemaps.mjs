@@ -22,7 +22,7 @@ function git(args) {
 }
 
 function changedPaths() {
-  return git(["status", "--porcelain"])
+  return git(["status", "--porcelain", "--untracked-files=all"])
     .split("\n")
     .filter(Boolean)
     .map((line) => line.slice(3).replace(/^"|"$/g, ""))
