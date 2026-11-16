@@ -68,27 +68,43 @@ try {
         const metrics = await page.evaluate(() => {
           const root = document.documentElement;
           const body = document.body;
-          const overflows = root.scrollWidth > window.innerWidth + 1 || body.scrollWidth > window.innerWidth + 1;
+          const clippedOverflow = [];
           const offenders = [...document.querySelectorAll("body *")].map(el => {
             const r = el.getBoundingClientRect();
             const s = getComputedStyle(el);
+            let parent = el.parentElement;
+            let clippedByAncestor = false;
+            while (parent && parent !== body) {
+              const parentStyle = getComputedStyle(parent);
+              if (["hidden", "clip", "scroll", "auto"].includes(parentStyle.overflowX)) {
+                clippedByAncestor = true;
+                break;
+              }
+              parent = parent.parentElement;
+            }
             return {
               tag: el.tagName.toLowerCase(),
               id: el.id || "",
               className: typeof el.className === "string" ? el.className.slice(0, 100) : "",
               left: Math.round(r.left), right: Math.round(r.right),
               width: Math.round(r.width), position: s.position,
-              overflowX: s.overflowX
+              overflowX: s.overflowX, clippedByAncestor
             };
-          }).filter(x => x.width > 0 && (x.left < -2 || x.right > window.innerWidth + 2))
-            .slice(0, 8);
+          }).filter(x => x.width > 0 && (x.left < -2 || x.right > window.innerWidth + 2));
+          const contained = offenders.filter(x => x.clippedByAncestor);
+          const uncontained = offenders.filter(x => !x.clippedByAncestor).slice(0, 8);
+          const bodyClipsX = ["hidden", "clip"].includes(getComputedStyle(body).overflowX);
+          const horizontalOverflow = uncontained.length > 0 ||
+            (!bodyClipsX && root.scrollWidth > window.innerWidth + 1);
           return {
             innerWidth: window.innerWidth,
             rootClientWidth: root.clientWidth,
             rootScrollWidth: root.scrollWidth,
             bodyScrollWidth: body.scrollWidth,
-            horizontalOverflow: overflows,
-            offenders
+            bodyOverflowX: getComputedStyle(body).overflowX,
+            horizontalOverflow,
+            containedOverflowCount: contained.length,
+            offenders: uncontained
           };
         });
         pageResult.viewports.push({ width, ...metrics });
