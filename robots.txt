@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://gogocompany.in/sitemap-index.xml
+Sitemap: https://gogocompany.in/sitemap.xml
+Sitemap: https://gogocompany.in/sarkari-sarthi/sitemap.xml
+Sitemap: https://gogocompany.in/pikanews/sitemap.xml
+Sitemap: https://gogocompany.in/pikanews/news-sitemap.xml
