@@ -16,6 +16,11 @@ const HUBS = [
 export function escapeHtml(value = "") {
   return String(value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
 }
+export function serializeJsonLd(value) {
+  return JSON.stringify(value).replace(/[<>&]/g, character => ({
+    "<": "\\u003c", ">": "\\u003e", "&": "\\u0026"
+  })[character]);
+}
 function safeUrl(value) { try { const url = new URL(value); return ["https:","http:"].includes(url.protocol) ? url.href : null; } catch { return null; } }
 async function readJson(path, fallback) { try { return JSON.parse(await readFile(path,"utf8")); } catch { return fallback; } }
 function jobCard(job) {
