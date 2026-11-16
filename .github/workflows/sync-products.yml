@@ -134,6 +134,9 @@ jobs:
           fi
           echo "All key product files verified."
 
+      - name: Refresh SEO sitemap and notify IndexNow
+        run: node scripts/update-seo-sitemaps.mjs
+
       - name: Commit synced apps if changed
         run: |
           git config user.name "github-actions[bot]"
