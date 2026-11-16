@@ -2514,3 +2514,17 @@ body{font-size:15.5px;line-height:1.68}.utility-bar{border-bottom:1px solid var(
 .ticker { width: 100%; max-width: 100%; overflow-x: clip; contain: paint; }
 .ticker-inner { width: 100%; min-width: 0; }
 .ticker-viewport { width: 0; min-width: 0; flex: 1 1 0%; }
+
+
+/* Keep the wide PikaNews wordmark inside the editorial hero on tablet and mobile. */
+@media (max-width: 1120px) {
+  .hero-container { min-width: 0; }
+  .hero-content { min-width: 0; }
+  .hero-image { flex: 0 1 180px; min-width: 0; }
+  .hero-img { display: block; width: 100%; max-width: 180px; height: auto; }
+}
+@media (max-width: 640px) {
+  .hero-container { align-items: flex-start; gap: 16px; }
+  .hero-image { flex-basis: 104px; }
+  .hero-img { max-width: 104px; }
+}
