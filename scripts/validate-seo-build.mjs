@@ -25,9 +25,26 @@ assert.match(css, /--accent:\s*#1e40af/i);
 assert.match(css, /site-header \.accent \{ color: #1e40af; \}/);
 assert.match(css, /site-footer \.accent \{ color: #1e40af; \}/);
 
+function stripCompleteHtmlComments(source, file) {
+  let output = "";
+  let cursor = 0;
+  while (cursor < source.length) {
+    const start = source.indexOf("<!--", cursor);
+    if (start === -1) {
+      output += source.slice(cursor);
+      break;
+    }
+    output += source.slice(cursor, start);
+    const end = source.indexOf("-->", start + 4);
+    assert.notEqual(end, -1, file + " contains an unterminated HTML comment");
+    cursor = end + 3;
+  }
+  return output;
+}
 function assertListChildrenAreLi(html, file) {
   for (const match of html.matchAll(/<(ul|ol)\b[^>]*>([\s\S]*?)<\/\1>/gi)) {
-    const remaining = match[2].replace(/<!--([\s\S]*?)-->/g, "")
+    const withoutComments = stripCompleteHtmlComments(match[2], file);
+    const remaining = withoutComments
       .replace(/<li\b[^>]*>[\s\S]*?<\/li>/gi, "").replace(/\s/g, "");
     assert.equal(remaining, "", file + " contains a list with a non-li direct child");
   }
