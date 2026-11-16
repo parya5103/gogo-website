@@ -105,3 +105,82 @@ Official guidance: Google Trends supports related/rising query research and geog
 - [Google Search Central: Get started with Google Trends](https://developers.google.com/search/docs/monitor-debug/trends-start) — Explore terms by country, date range and category; review Top and Rising related queries; compare findings with Search Console.
 - [Google Search Console: Search results Performance report](https://support.google.com/webmasters/answer/7576553) — Query/page dimensions, clicks, impressions, CTR and average position.
 - [Google Search Console: common performance-report tasks](https://support.google.com/webmasters/answer/17010961) — Filter a query and inspect which pages appeared for it.
+
+
+## Expanded free-tool research (16 November 2026)
+
+This second research pass uses live Google Trends pages, current India job/education trend snapshots, Google Play search-suggestion observations, and a fresh Search Console query pull. These sources have different meanings and must not be combined into a fabricated search-volume score.
+
+### Fresh Search Console query check
+
+A fresh GSC Wizard query pull returned the same settled 28-day window (17 Oct–13 Nov 2026), with data available through 14 Nov:
+
+| Query | Clicks | Impressions | CTR | Avg. position | Decision |
+|---|---:|---:|---:|---:|---|
+| gogo company | 1 | 10 | 10% | 3.20 | Keep brand title/name consistent |
+| go company | 0 | 7 | 0% | 8.86 | Brand spelling variant; monitor |
+| go go company | 0 | 5 | 0% | 3.20 | Brand spelling variant; monitor |
+| aees librarian vacancy 2025 | 0 | 1 | 0% | 96.00 | Irrelevant/stale; do not target |
+
+Coverage caveat remains: the four visible rows account for only 34.85% of impressions and 33.33% of clicks. Do not interpret missing query rows as zero demand.
+
+### Additional keyword clusters to validate
+
+These are phrase ideas from search-result language, product mechanics, current topic signals and audience intent. They are candidates, not measured monthly search volumes.
+
+| Product | New phrase candidates | Best page / use | Priority / condition |
+|---|---|---|---|
+| GoGo Company | GoGo online games; free browser games; play games online; GoGo puzzle games | Homepage product directory | P2; use only if the homepage actually presents these products clearly |
+| Arrow Out | tap away puzzle; tap puzzle game; arrow escape puzzle; arrow block puzzle; clear arrows puzzle; arrow logic game; arrow puzzle levels; relaxing arrow puzzle; offline arrow puzzle | Arrow Out landing page and how-to guide | P1; emphasize the actual tap-to-clear mechanic; do not imply offline play unless verified in the deployed build |
+| Crystal Quest | match 3 puzzles; match three puzzle; gem matching game; gem match puzzle; match 3 levels; special gems match 3; relaxing match 3 game; match 3 puzzle adventure | Crystal Quest landing page and guide | P1/P2; use only features that exist in the current game |
+| Sarkari Sarthi | MP Police Constable admit card 2026; MP Police Constable exam date 2026; RRB exam city intimation slip 2026; AIBE admit card 2026; SBI Clerk prelims result 2026; government job admit card 2026; government exam result 2026; latest MP government vacancy | Individual update pages / category pages | P1 only when a matching, current, verified record exists and the official notice link is present |
+| PikaNews | latest technology news today; entertainment news today; Bollywood news today; gaming news today; business news today; latest film news; technology launch news; exact person/event + latest update | Crawlable category pages and individual article pages | P2 for category hubs; P1 for eligible timely articles with original context and source attribution |
+
+### What the free public signals actually say
+
+1. **Google Trends India (16 Nov 2026):** the live Trends page exposes current queries and related query breakdowns, but this is a time-sensitive trend snapshot—not a durable keyword-volume database. The Jobs & Education category snapshot showed terms including AIBE admit card, RRB exam city intimation slip, MP Police Constable admit card 2026, Madhya Pradesh police, and SBI Clerk prelims result. Treat these as editorial watchlist topics, not evergreen SEO targets. A trend is not proof that an admit card/result has officially been released.
+2. **Official Google Trends interface:** use India, a suitable date range, and category filters; compare exact phrase variants and related/rising queries before committing a page. Trends' 0–100 scale is relative interest, not monthly search counts.
+3. **Google Play search-suggestion / category research (third-party observation):** an India Play Store keyword snapshot showed tap puzzle as a suggested query (reported popularity 53/100), while triple match was reported as a strong suggestion (66/100). Match puzzle was reported at 43/100. These are Google Play app-store signals, not Google web-search volume and not proof of demand for a browser game. Use them only to learn the vocabulary puzzle players use.
+4. **Google Play competitor-language review:** current arrow-puzzle listings repeatedly use phrases such as tap away, arrow puzzle, puzzle escape, tap to clear, and logic puzzle. This supports the relevance of those words to Arrow Out's actual mechanic, but also indicates a competitive category.
+5. **Current Google Play puzzle charts:** arrow/logic and match/tile puzzle games appear in India's current puzzle charts. This is a product-category demand signal only; app chart position/install estimates do not equal web keyword search volume.
+
+### Revised targeting order
+
+- **Arrow Out:** prioritize tap away puzzle / arrow puzzle game language in the title/H1 and first visible paragraph. Explain exactly how a player clears arrows, avoids blocked paths, and progresses through levels. Use tap puzzle game, arrow escape puzzle, and arrow logic puzzle naturally in guide copy, not as a keyword list.
+- **Crystal Quest:** use match 3 puzzle / match 3 game as the category language and gem matching game as the differentiator. Do not overstate features such as offline support, daily events, or level count if the live build does not provide them.
+- **Sarkari Sarthi:** create timely pages only for current notifications, admit cards, results, answer keys and exam-city slips with a verified official source. For the 16 Nov trend watchlist, verify status directly with the issuing authority before writing headlines; do not publish a trend as a confirmed release.
+- **PikaNews:** use category phrases as navigation labels and category page titles. Individual articles should target the exact story/entity/event query, with a clear publication date, publisher attribution, canonical URL and original context.
+- **GoGo Company:** keep the homepage brand-led. Do not turn it into a generic jobs/news/games keyword landing page.
+
+### Free tools and repeatable workflow
+
+| Tool | Exact use in this project | How to interpret |
+|---|---|---|
+| Google Search Console | Export query + page rows every 28 settled days; find queries with impressions and positions 4–20 | First-party observed Google web performance; hidden query coverage must be noted |
+| Google Trends | Compare up to five terms for India; inspect related/rising searches and category/date filters | Relative interest only; record selected period and geography |
+| Google Search autocomplete | Enter each seed and inspect completions; repeat with how, best, free, online, for Android, and Hindi variants | Phrase discovery, not volume |
+| Google People Also Ask | Capture questions for game mechanics, eligibility, admit cards and exam-result guidance | Question ideas; answer only where the product/data supports |
+| Bing Webmaster Tools | Review Search Performance queries after property verification | First-party Bing performance; separate from Google data |
+| Google Play autocomplete / charts | Learn app-store vocabulary and competing game naming | App-store signal only; never label it Google web volume |
+| Google Keyword Planner | Optional volume/CPC range cross-check if an account is already available | Google Ads-derived ranges; do not create campaigns or incur spend |
+| PageSpeed Insights + Lighthouse | Validate landing-page experience after keyword-led copy changes | Technical/UX diagnostics, not keyword research |
+
+### Source log (free public pages reviewed)
+
+- Google Trends India, Trending Now: https://trends.google.co.in/trending?geo=IN
+- Google Trends India, Jobs & Education category snapshot: https://www.48hrstrends.com/India/job-and-education
+- Google Trends India current snapshot: https://www.48hrstrends.com/India
+- Google Play India arrow puzzle category/competitor review: https://www.appbrain.com/topics/arrow-puzzle-games
+- Google Play India tap-puzzle keyword suggestion observation: https://appsxray.com/keyword/tap-puzzle
+- Google Play India match-puzzle keyword observation: https://appsxray.com/keyword/match-puzzle
+- Google Play India match-3 puzzle phrase observation: https://appsxray.com/keyword/match-3-puzzles
+- Google Play India puzzle chart: https://appsxray.com/charts?category=GAME_PUZZLE&chart=trending&country=IN
+- Google Search Console Performance report: https://support.google.com/webmasters/answer/7576553
+- Google Trends help for Search Central: https://developers.google.com/search/docs/monitor-debug/trends-start
+
+### Research limits / no fabricated metrics
+
+- No paid DataForSEO/OpenSEO keyword research was run. The connected OpenSEO balance was only 5 credits; seed research costs approximately 54 credits per seed, so those credits were preserved.
+- No numeric Google web monthly volume, keyword difficulty, CPC, or ranking probability is claimed for the candidate phrases.
+- Third-party Play Store popularity/demand metrics are explicitly app-store signals and must not be copied into website SEO volume columns.
+- Current trend phrases expire quickly. Re-check the official source and live trend snapshot on the day a timely Sarkari Sarthi/PikaNews page is published.
