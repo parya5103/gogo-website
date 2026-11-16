@@ -105,3 +105,93 @@ Official guidance: Google Trends supports related/rising query research and geog
 - [Google Search Central: Get started with Google Trends](https://developers.google.com/search/docs/monitor-debug/trends-start) — Explore terms by country, date range and category; review Top and Rising related queries; compare findings with Search Console.
 - [Google Search Console: Search results Performance report](https://support.google.com/webmasters/answer/7576553) — Query/page dimensions, clicks, impressions, CTR and average position.
 - [Google Search Console: common performance-report tasks](https://support.google.com/webmasters/answer/17010961) — Filter a query and inspect which pages appeared for it.
+
+
+## Supplemental keyword expansion — free-tool review (16 November 2026)
+
+This section restores candidate phrases found in the expanded free-tool research and adds a small set of fresh India Jobs & Education trend signals. These are **research candidates**, not verified monthly Google search volumes. Third-party trend bands are approximate observations and do not confirm an exam notice, result, admit-card release, or application window.
+
+### GoGo Company hub
+
+- GoGo online games
+- play games online
+- free browser games
+- online puzzle games
+
+Keep the homepage primarily brand-led. Use these only where the page visibly introduces the actual games; do not create a generic keyword doorway.
+
+### Arrow Out
+
+- tap away puzzle
+- tap puzzle game
+- arrow escape puzzle
+- arrow block puzzle
+- clear arrows puzzle
+- arrow logic game
+- arrow puzzle levels
+- relaxing arrow puzzle
+- offline arrow puzzle — use only while offline play is verified on the deployed PWA
+
+Use the natural phrase “tap-away arrow puzzle game” as the primary intent. Explain the real tap-to-launch mechanic and only mention features that are present in the shipped build.
+
+### Crystal Quest
+
+- match 3 puzzles
+- match three puzzle
+- gem matching game
+- gem match puzzle
+- match 3 levels
+- special gems match 3
+- relaxing match 3 game
+- match 3 puzzle adventure
+
+Use “match-3 puzzle game” / “match 3 game” naturally, with “gem matching game” as a supporting descriptor. Keep level counts, offline claims, daily challenges and special-gem claims synchronized with the current game build.
+
+### Sarkari Sarthi — trend-led candidate phrases
+
+- AIBE admit card 2026
+- RRB exam city intimation slip 2026
+- MP Police Constable admit card 2026
+- MP Police Constable exam date 2026
+- SBI Clerk prelims result 2026
+- ICSI CSEET result 2026
+- scholarship news / scholarship update 2026
+- SSC GD PET/PST admit card 2026
+- RRB Group D result 2026
+- RRB ALP CBT 1 answer key 2026
+- JEE Advanced 2026
+- UTET result 2026
+- government job admit card 2026
+- government exam result 2026
+- latest MP government vacancy
+
+**Publishing gate:** add a keyword to a live listing/article only after checking the issuing authority's current notice page and recording its official URL, notice date, status and relevant candidate details. A trend is not proof that a result/admit card/answer key is out. Avoid “out”, “released” or confirmed dates until the official source verifies them. Remove or update year-specific targets when the cycle becomes stale.
+
+### PikaNews
+
+- latest technology news today
+- entertainment news today
+- Bollywood news today
+- gaming news today
+- business news today
+- latest film news
+- technology launch news
+- exact entity / product / event + latest update
+
+Use category phrases on crawlable category hubs that actually exist. Use the exact story, entity and event on individual article pages; add publisher attribution and original context. “Today” terms require genuinely fresh timestamps and must not be hard-coded into evergreen pages.
+
+### Free evidence reviewed for this expansion
+
+- Google Trends India — https://trends.google.co.in/trending?geo=IN (relative interest and related/rising searches; not monthly volume).
+- India Jobs & Education trend snapshot, updated 16 November 2026 — https://www.48hrstrends.com/India/job-and-education (third-party observed trend bands; partial coverage).
+- India trend roundup, 14 November 2026 — https://resulttoday.in/india-job-education-search-trends-14-november-2026/ (secondary trend context; official-source checks still required).
+- MPESB 2026 exam schedule — https://esb.mp.gov.in/exams_schedule/Exam_schedule_2026.pdf (official calendar; tentative schedule, not confirmation of every individual release).
+- Arrow-puzzle competitor phrase review — https://www.appbrain.com/topics/arrow-puzzle-games and https://appsxray.com/keyword/tap-puzzle (store/category language, not web-search volume).
+- Match-puzzle store-language review — https://appsxray.com/keyword/match-puzzle and https://appsxray.com/charts?category=GAME_PUZZLE&chart=trending&country=IN (store discovery signals, not web-search volume).
+
+### Interpretation limits
+
+- Google Trends uses relative interest; third-party trend trackers can have partial coverage and approximate lower-bound bands.
+- App-store keyword suggestion popularity is not Google web-search volume.
+- No keyword difficulty, CPC, monthly search volume, ranking guarantee or traffic forecast is asserted here.
+- Recheck time-sensitive exam phrases against official notices before publishing and refresh this section as trends change.
