@@ -41,7 +41,8 @@ async function noHorizontalOverflow(page) {
     });
     return { width, scroll: Math.max(document.documentElement.scrollWidth, document.body.scrollWidth), offenders, ticker };
   });
-  expect(metrics.scroll, `horizontal overflow: ${JSON.stringify(metrics)}`).toBeLessThanOrEqual(metrics.width + 1);
+  // Ignore intentionally clipped marquee descendants; fail only on visible, un-clipped overflow.
+  expect(metrics.offenders, `visible horizontal overflow: ${JSON.stringify(metrics)}`).toEqual([]);
 }
 
 test.describe('responsive viewport matrix', () => {
