@@ -230,7 +230,7 @@ try {
     await toggle.click();
     const backdrop = page.locator(".mobile-menu-backdrop").last();
     if (!(await backdrop.count())) throw new Error("backdrop element missing");
-    await backdrop.click({ force: true, position: { x: 380, y: 420 } });
+    await page.mouse.click(380, 420);
     await page.waitForTimeout(300);
     if (await page.locator("#mobile-menu").evaluate(el => el.classList.contains("open"))) {
       const diagnostic = await page.evaluate(() => {
