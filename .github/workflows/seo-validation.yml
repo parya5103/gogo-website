@@ -59,6 +59,7 @@ jobs:
           node --check scripts/validate-seo-build.mjs
           node --check scripts/generate-pikanews-news-sitemap.mjs
           node --check scripts/validate-pikanews-news-seo.mjs
+          node --check scripts/validate-structured-data.mjs
           node --check sarkari-sarthi/assets/js/sarkari-schema-injector.js
       - name: Apply post-sync SEO enhancements
         run: node scripts/apply-seo-enhancements.mjs
@@ -72,6 +73,7 @@ jobs:
         run: |
           node scripts/generate-pikanews-news-sitemap.mjs
           node scripts/validate-pikanews-news-seo.mjs
+          node scripts/validate-structured-data.mjs
       - name: Validate generated SEO pages
         run: node scripts/validate-seo-build.mjs
       - name: Validate SEO implementation
