@@ -1,18 +1,80 @@
 /**
- * Only injects JobPosting on a genuine, canonical individual detail page.
- * The Sarkari Sarthi homepage is a collection page and is intentionally excluded.
- * A detail page must set window.SARKARI_JOB_DETAIL and main[data-job-detail-page=true].
+ * Inject JobPosting only on a genuine, canonical individual job-detail page.
+ * The portal collection page is intentionally excluded. The current manifest
+ * contains incomplete records, so only complete, active, official-verified
+ * records with an explicit application route are eligible.
  */
-const clean=v=>typeof v==="string"?v.trim():"";
-const iso=v=>{const d=new Date(v);return Number.isFinite(d.getTime())?d.toISOString():null};
-function injectJobPosting(job,pageUrl=location.href){
- if(!job||typeof job!=="object"||!document.querySelector('[data-job-detail-page="true"]'))return false;
- const canonical=document.querySelector('link[rel="canonical"]')?.href,current=new URL(pageUrl,location.href).href.split("#")[0];
- if(!canonical||new URL(canonical).href.split("#")[0]!==current)return false;
- const title=clean(job.title),description=clean(job.description),datePosted=iso(job.published_date||job.datePosted),validThrough=iso(job.valid_through||job.validThrough),employer=clean(job.organization||job.department||job.recruitment_board),place=clean(job.location||job.district||job.state),apply=clean(job.official_application_url||job.application_url);
- if(!title||!description||!datePosted||!validThrough||!employer||!place||!/^https:\/\//i.test(apply)||clean(job.status).toLowerCase()!=="active"||clean(job.verification_status).toLowerCase()!=="official_verified"||new Date(validThrough)<=new Date())return false;
- const schema={"@context":"https://schema.org","@type":"JobPosting","title":title,"description":description,"datePosted":datePosted,"validThrough":validThrough,"employmentType":clean(job.employment_type).toUpperCase()||"FULL_TIME","hiringOrganization":{"@type":"Organization","name":employer},"jobLocation":{"@type":"Place","address":{"@type":"PostalAddress","addressLocality":place,"addressCountry":"IN"}},"url":current,"directApply":false};
- const node=document.createElement("script");node.type="application/ld+json";node.dataset.generatedJobPosting="true";node.textContent=JSON.stringify(schema);document.head.querySelectorAll('script[data-generated-job-posting="true"]').forEach(x=>x.remove());document.head.appendChild(node);return true;
+const clean = value => typeof value === "string" ? value.trim() : "";
+const iso = value => { const d = new Date(value); return Number.isFinite(d.getTime()) ? d.toISOString() : null; };
+const EMPLOYMENT_TYPES = new Set(["FULL_TIME","PART_TIME","CONTRACTOR","TEMPORARY","INTERN","VOLUNTEER","PER_DIEM","OTHER"]);
+
+function injectJobPosting(job, pageUrl = location.href) {
+  if (!job || typeof job !== "object" || !document.querySelector('[data-job-detail-page="true"]')) return false;
+  const canonical = document.querySelector('link[rel="canonical"]')?.href;
+  const current = new URL(pageUrl, location.href).href.split("#")[0];
+  if (!canonical || new URL(canonical).href.split("#")[0] !== current) return false;
+
+  const title = clean(job.title);
+  const description = clean(job.description);
+  const datePosted = iso(job.published_date || job.datePosted);
+  const validThrough = iso(job.valid_through || job.validThrough);
+  const employer = clean(job.organization || job.department || job.recruitment_board);
+  const place = clean(job.location || job.district || job.state);
+  const applicationUrl = clean(job.official_application_url || job.application_url);
+  const employmentType = clean(job.employment_type).toUpperCase();
+
+  if (!title || !description || !datePosted || !validThrough || !employer || !place ||
+      !/^https:\/\//i.test(applicationUrl) || !EMPLOYMENT_TYPES.has(employmentType) ||
+      clean(job.status).toLowerCase() !== "active" ||
+      clean(job.verification_status).toLowerCase() !== "official_verified" ||
+      new Date(validThrough) <= new Date()) return false;
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "JobPosting",
+    "title": title,
+    "description": description,
+    "datePosted": datePosted,
+    "validThrough": validThrough,
+    "employmentType": employmentType,
+    "hiringOrganization": { "@type": "Organization", "name": employer },
+    "jobLocation": {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": place,
+        "addressCountry": "IN"
+      }
+    },
+    "url": current,
+    "directApply": false
+  };
+
+  const script = document.createElement("script");
+  script.type = "application/ld+json";
+  script.dataset.generatedJobPosting = "true";
+  script.textContent = JSON.stringify(schema);
+  document.head.querySelectorAll('script[data-generated-job-posting="true"]').forEach(node => node.remove());
+  document.head.appendChild(script);
+  return true;
 }
-if(window.SARKARI_JOB_DETAIL)injectJobPosting(window.SARKARI_JOB_DETAIL);
-export{injectJobPosting};
+
+async function loadCurrentJob() {
+  const detailPage = document.querySelector('[data-job-detail-page="true"]');
+  const jobId = clean(detailPage?.dataset.jobId || window.SARKARI_JOB_ID);
+  if (!jobId) return;
+  try {
+    const response = await fetch(new URL("../../jobs/job_manifest.json", import.meta.url), { cache: "no-store" });
+    if (!response.ok) return;
+    const manifest = await response.json();
+    const job = Array.isArray(manifest.jobs) ? manifest.jobs.find(item => String(item.id) === jobId) : null;
+    if (job) injectJobPosting(job);
+  } catch (error) {
+    console.warn("Sarkari Sarthi job structured data unavailable:", error);
+  }
+}
+
+if (window.SARKARI_JOB_DETAIL) injectJobPosting(window.SARKARI_JOB_DETAIL);
+else loadCurrentJob();
+
+export { injectJobPosting };
