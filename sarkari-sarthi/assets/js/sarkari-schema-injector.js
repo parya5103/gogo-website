@@ -5,6 +5,7 @@
  * records with an explicit application route are eligible.
  */
 const clean = value => typeof value === "string" ? value.trim() : "";
+const escapeHtml = value => String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/\x27/g, "&#39;");
 const iso = value => { const d = new Date(value); return Number.isFinite(d.getTime()) ? d.toISOString() : null; };
 const EMPLOYMENT_TYPES = new Set(["FULL_TIME","PART_TIME","CONTRACTOR","TEMPORARY","INTERN","VOLUNTEER","PER_DIEM","OTHER"]);
 
@@ -27,13 +28,13 @@ function injectJobPosting(job, pageUrl = location.href) {
       !/^https:\/\//i.test(applicationUrl) || !EMPLOYMENT_TYPES.has(employmentType) ||
       clean(job.status).toLowerCase() !== "active" ||
       clean(job.verification_status).toLowerCase() !== "official_verified" ||
-      new Date(validThrough) <= new Date()) return false;
+      (validThrough && new Date(validThrough) <= new Date())) return false;
 
   const schema = {
     "@context": "https://schema.org",
     "@type": "JobPosting",
     "title": title,
-    "description": description,
+    "description": description.split(/\\n+/).map(part => "<p>" + escapeHtml(part) + "</p>").join(""),
     "datePosted": datePosted,
     ...(validThrough ? { "validThrough": validThrough } : {}),
     "employmentType": employmentType,
