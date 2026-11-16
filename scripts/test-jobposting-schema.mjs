@@ -39,6 +39,7 @@ assert.equal(schema["@type"], "JobPosting");
 assert.equal(schema.datePosted, "2026-11-02T00:00:00.000Z");
 assert.equal(schema.validThrough, "2099-11-21T00:00:00.000Z");
 assert.equal(schema.directApply, false);
+assert.equal(schema.jobLocation.address.addressLocality, "Nagrota, Jammu and Kashmir");
 
 scripts.length = 0;
 const noExpiry = { ...validJob };
@@ -50,5 +51,7 @@ scripts.length = 0;
 assert.equal(injectJobPosting({ ...validJob, valid_through: "not-a-date" }), false, "Malformed supplied expiry must be rejected");
 assert.equal(scripts.length, 0);
 assert.equal(injectJobPosting({ ...validJob, official_application_url: "http://recruit.example/apply" }), false, "Non-HTTPS application routes must be rejected");
+assert.equal(scripts.length, 0);
+assert.equal(injectJobPosting({ ...validJob, location: "", district: "", state: "Jammu and Kashmir" }), false, "A state-only location must not be mislabeled as a locality");
 assert.equal(scripts.length, 0);
 console.log("JobPosting generator tests passed: strict dates, optional expiry, canonical detail guard and secure application URL.");
