@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { decodeEntities, parseGoogleTrendsRss, renderTrendingSection, safeUrl } from "./update-trending-seo.mjs";
+import { decodeEntities, parseGoogleTrendsRss, renderTrendingSection, safeUrl, serializeJsonLd as serializeHomeJsonLd } from "./update-trending-seo.mjs";
 import { renderHub, escapeHtml, serializeJsonLd as serializeHubJsonLd } from "./generate-pseo-hubs.mjs";
 
 assert.equal(decodeEntities("&amp;lt;script&amp;gt;"), "&lt;script&gt;", "RSS entities must be decoded exactly once");
