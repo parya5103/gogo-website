@@ -3,7 +3,8 @@ import { injectJobPosting, iso } from "../sarkari-sarthi/assets/js/sarkari-schem
 
 assert.equal(iso("02-11-2026"), "2026-11-02T00:00:00.000Z", "DD-MM-YYYY must be interpreted as day-month-year");
 assert.equal(iso("2026-11-02"), "2026-11-02T00:00:00.000Z", "ISO date must remain unchanged");
-assert.equal(iso("31-02-2026"), null, "Impossible calendar dates must be rejected");
+assert.equal(iso("31-02-2026"), null, "Impossible DMY calendar dates must be rejected");
+assert.equal(iso("2026-02-31"), null, "Impossible ISO calendar dates must be rejected");
 assert.equal(iso("02/11/2026"), null, "Ambiguous slash dates must be rejected");
 
 const scripts = [];
