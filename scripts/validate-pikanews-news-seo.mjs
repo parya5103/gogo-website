@@ -6,6 +6,7 @@ import { join } from "node:path";
 const root = process.cwd();
 const sitemap = await readFile(join(root, "pikanews/news-sitemap.xml"), "utf8");
 const blocks = [...sitemap.matchAll(/<url>([\s\S]*?)<\/url>/gi)].map(match => match[1]);
+assert.ok(blocks.length > 0, "At least one recent PikaNews article should be discoverable");
 assert.ok(blocks.length <= 1000, "Google News sitemap must contain at most 1,000 URLs");
 assert.match(sitemap, /xmlns:news=["']http:\/\/www\.google\.com\/schemas\/sitemap-news\/0\.9["']/);
 const dirs = await readdir(join(root, "pikanews/news"), { withFileTypes: true });
