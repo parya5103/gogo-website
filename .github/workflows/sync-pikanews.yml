@@ -149,7 +149,7 @@ jobs:
           # entries so git add stages a fresh tree (gitlink entries from a
           # broken sync would otherwise be skipped silently).
           git rm -r --cached --ignore-unmatch --quiet pikanews || true
-          git add pikanews sitemap.xml
+          git add pikanews sitemap.xml index.html sarkari-sarthi/latest-govt-jobs sarkari-sarthi/admit-card sarkari-sarthi/sarkari-result sarkari-sarthi/mp-govt-jobs free-online-games
           if git ls-files -s | grep -q '^160000'; then
             echo "::error::gitlink (embedded repository) entries present in index - refusing to publish"
             git ls-files -s | grep '^160000' || true
