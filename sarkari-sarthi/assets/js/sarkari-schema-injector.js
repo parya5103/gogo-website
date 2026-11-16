@@ -6,7 +6,20 @@
  */
 const clean = value => typeof value === "string" ? value.trim() : "";
 const escapeHtml = value => String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/\x27/g, "&#39;");
-const iso = value => { const d = new Date(value); return Number.isFinite(d.getTime()) ? d.toISOString() : null; };
+export const iso = value => {
+  if (typeof value !== "string") return null;
+  const input = value.trim();
+  const dmy = input.match(/^(\\d{2})-(\\d{2})-(\\d{4})$/);
+  if (dmy) {
+    const day = Number(dmy[1]), month = Number(dmy[2]), year = Number(dmy[3]);
+    const date = new Date(Date.UTC(year, month - 1, day));
+    if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) return null;
+    return date.toISOString();
+  }
+  if (!/^\\d{4}-\\d{2}-\\d{2}(?:T.*)?$/.test(input)) return null;
+  const date = new Date(input);
+  return Number.isFinite(date.getTime()) ? date.toISOString() : null;
+};
 const EMPLOYMENT_TYPES = new Set(["FULL_TIME","PART_TIME","CONTRACTOR","TEMPORARY","INTERN","VOLUNTEER","PER_DIEM","OTHER"]);
 
 function injectJobPosting(job, pageUrl = location.href) {
@@ -78,7 +91,9 @@ async function loadCurrentJob() {
   }
 }
 
-if (window.SARKARI_JOB_DETAIL) injectJobPosting(window.SARKARI_JOB_DETAIL);
-else loadCurrentJob();
+if (typeof window !== "undefined") {
+  if (window.SARKARI_JOB_DETAIL) injectJobPosting(window.SARKARI_JOB_DETAIL);
+  else loadCurrentJob();
+}
 
 export { injectJobPosting };
