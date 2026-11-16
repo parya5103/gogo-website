@@ -259,6 +259,10 @@ try {
       await page.locator("#btn-reward-claim").click();
       await page.waitForTimeout(120);
     }
+    if (name === "Arrow Out" && await page.locator("#dlg-howto.show").count()) {
+      await page.locator("#dlg-howto [data-close]").click();
+      await page.waitForTimeout(120);
+    }
     if (startSelector) {
       const start = page.locator(startSelector).first();
       if (await start.count()) await start.click();
