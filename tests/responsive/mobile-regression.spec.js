@@ -48,9 +48,11 @@ test.describe('GoGo shared navigation accessibility', () => {
     await page.keyboard.press('Enter');
     await expect(toggle).toHaveAttribute('aria-expanded', 'true');
     await expect(nav).toHaveClass(/open/);
+    await expect(page.locator('body')).toHaveCSS('overflow', 'hidden');
     await page.keyboard.press('Escape');
     await expect(toggle).toHaveAttribute('aria-expanded', 'false');
     await expect(nav).not.toHaveClass(/open/);
+    await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
     await expect(toggle).toBeFocused();
   });
 
@@ -191,9 +193,11 @@ test.describe('Sarkari Sarthi narrow-screen job flows', () => {
     await expect(toggle).toHaveAttribute('aria-expanded', 'true');
     await expect(nav).toHaveClass(/active/);
     await expect(page.locator('#menuBackdrop')).toBeVisible();
+    await expect(page.locator('body')).toHaveCSS('overflow', 'hidden');
     await page.keyboard.press('Escape');
     await expect(toggle).toHaveAttribute('aria-expanded', 'false');
     await expect(nav).not.toHaveClass(/active/);
+    await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
     await toggle.click();
     await page.locator('#menuBackdrop').click({ force: true });
     await expect(toggle).toHaveAttribute('aria-expanded', 'false');
@@ -226,10 +230,12 @@ test.describe('PikaNews categories, articles, drawer and search modal', () => {
     await page.keyboard.press('Enter');
     await expect(toggle).toHaveAttribute('aria-expanded', 'true');
     await expect(drawer).toHaveClass(/open/);
+    await expect(page.locator('body')).toHaveCSS('overflow', 'hidden');
     await expect(page.locator('.mobile-menu-backdrop')).toBeVisible();
     await page.keyboard.press('Escape');
     await expect(toggle).toHaveAttribute('aria-expanded', 'false');
     await expect(drawer).not.toHaveClass(/open/);
+    await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
     await expect(toggle).toBeFocused();
     await toggle.click();
     await page.locator('.mobile-menu-backdrop').click({ force: true });
