@@ -228,16 +228,17 @@ try {
     await page.goto(base + "/pikanews/", { waitUntil: "domcontentloaded" });
     const toggle = page.locator("#mobile-menu-toggle");
     await toggle.click();
-    const backdrop = page.locator(".mobile-menu-backdrop");
+    const backdrop = page.locator(".mobile-menu-backdrop").last();
     if (!(await backdrop.count())) throw new Error("backdrop element missing");
     await backdrop.click({ force: true, position: { x: 380, y: 420 } });
     await page.waitForTimeout(300);
     if (await page.locator("#mobile-menu").evaluate(el => el.classList.contains("open"))) {
       const diagnostic = await page.evaluate(() => {
-        const b = document.querySelector(".mobile-menu-backdrop"), m = document.querySelector("#mobile-menu");
+        const backdrops = Array.from(document.querySelectorAll(".mobile-menu-backdrop"));
+        const b = backdrops[backdrops.length - 1], m = document.querySelector("#mobile-menu");
         const br = b.getBoundingClientRect(), mr = m.getBoundingClientRect();
         const hit = document.elementFromPoint(innerWidth - 10, Math.round(innerHeight / 2));
-        return { backdrop: { left: br.left, right: br.right, width: br.width, visibility: getComputedStyle(b).visibility, zIndex: getComputedStyle(b).zIndex }, menu: { left: mr.left, right: mr.right, width: mr.width, zIndex: getComputedStyle(m).zIndex }, hit: hit ? { tag: hit.tagName, id: hit.id, className: typeof hit.className === "string" ? hit.className : "" } : null };
+        return { backdropCount: backdrops.length, backdrop: { left: br.left, right: br.right, width: br.width, visibility: getComputedStyle(b).visibility, zIndex: getComputedStyle(b).zIndex }, menu: { left: mr.left, right: mr.right, width: mr.width, zIndex: getComputedStyle(m).zIndex }, hit: hit ? { tag: hit.tagName, id: hit.id, className: typeof hit.className === "string" ? hit.className : "" } : null };
       });
       throw new Error("backdrop did not close menu: " + JSON.stringify(diagnostic));
     }
@@ -254,6 +255,10 @@ try {
     await page.route("**/*", requestRoute => ["127.0.0.1", "localhost"].includes(new URL(requestRoute.request().url()).hostname) ? requestRoute.continue() : requestRoute.abort());
     await page.goto(base + route, { waitUntil: "domcontentloaded", timeout: 20000 });
     await page.waitForTimeout(450);
+    if (name === "Arrow Out" && await page.locator("#dlg-reward.show").count()) {
+      await page.locator("#btn-reward-claim").click();
+      await page.waitForTimeout(120);
+    }
     if (startSelector) {
       const start = page.locator(startSelector).first();
       if (await start.count()) await start.click();
