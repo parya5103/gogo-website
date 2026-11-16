@@ -95,6 +95,9 @@ jobs:
             --exclude 'CNAME' \
             src-sarkari/ sarkari-sarthi/
 
+      - name: Apply persistent SEO enhancements after sync
+        run: node scripts/apply-seo-enhancements.mjs
+
       - name: Verify synced product files (fail instead of publishing broken apps)
         run: |
           set -e
