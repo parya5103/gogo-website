@@ -22,7 +22,8 @@ globalThis.document = {
   }
 };
 const validJob = {
-  title: "Computer Science Teacher",
+  title: "TGT Computer Science Recruitment — Sainik School Nagrota",
+  job_title: "Computer Science Teacher",
   description: "This is a sufficiently complete recruitment description with responsibilities, qualifications, experience, working hours, required skills and selection information. It is published by the verified recruiting authority and provides meaningful details for applicants.",
   published_date: "02-11-2026",
   valid_through: "21-11-2099",
@@ -36,6 +37,7 @@ const validJob = {
 assert.equal(injectJobPosting(validJob), true, "A complete official-verified detail record should be eligible");
 const schema = JSON.parse(scripts[0].textContent);
 assert.equal(schema["@type"], "JobPosting");
+assert.equal(schema.title, "Computer Science Teacher", "Structured title must use the actual job title, not the notice heading");
 assert.equal(schema.datePosted, "2026-11-02T00:00:00.000Z");
 assert.equal(schema.validThrough, "2099-11-21T00:00:00.000Z");
 assert.equal(schema.directApply, false);
@@ -53,5 +55,7 @@ assert.equal(scripts.length, 0);
 assert.equal(injectJobPosting({ ...validJob, official_application_url: "http://recruit.example/apply" }), false, "Non-HTTPS application routes must be rejected");
 assert.equal(scripts.length, 0);
 assert.equal(injectJobPosting({ ...validJob, location: "", district: "", state: "Jammu and Kashmir" }), false, "A state-only location must not be mislabeled as a locality");
+assert.equal(scripts.length, 0);
+assert.equal(injectJobPosting(({ job_title: undefined, ...validJob })), false, "Notice heading alone must not be used as the job title");
 assert.equal(scripts.length, 0);
 console.log("JobPosting generator tests passed: strict dates, optional expiry, canonical detail guard and secure application URL.");
