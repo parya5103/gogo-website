@@ -109,7 +109,8 @@ for (const [page, expectedCanonical, isIndexable] of ownedPages) {
       for (const b of blocks) {
         const json = JSON.parse(b.replace(/^<script type="application\/ld\+json">/, '').replace(/<\/script>$/, ''));
         assert(json['@context'] === 'https://schema.org', 'unexpected @context: ' + json['@context']);
-        assert(typeof json['@type'] === 'string' && json['@type'].length > 0, 'missing @type');
+        const nodes = Array.isArray(json['@graph']) ? json['@graph'] : [json];
+        assert(nodes.length > 0 && nodes.every((node) => typeof node['@type'] === 'string' && node['@type'].length > 0), 'missing @type on one or more JSON-LD graph nodes');
       }
     });
 

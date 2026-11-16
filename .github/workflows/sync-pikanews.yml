@@ -130,6 +130,9 @@ jobs:
           fi
           echo "All PikaNews files verified."
 
+      - name: Refresh SEO sitemap and notify IndexNow
+        run: node scripts/update-seo-sitemaps.mjs
+
       - name: Commit synced PikaNews if changed
         run: |
           git config user.name "github-actions[bot]"
@@ -138,7 +141,7 @@ jobs:
           # entries so git add stages a fresh tree (gitlink entries from a
           # broken sync would otherwise be skipped silently).
           git rm -r --cached --ignore-unmatch --quiet pikanews || true
-          git add pikanews
+          git add pikanews sitemap.xml
           if git ls-files -s | grep -q '^160000'; then
             echo "::error::gitlink (embedded repository) entries present in index - refusing to publish"
             git ls-files -s | grep '^160000' || true
