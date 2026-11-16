@@ -37,7 +37,7 @@ assert.equal(new Set(locs).size,locs.length,"root sitemap URLs must be unique");
 assert.equal((sitemap.match(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g)||[]).length,14,"all root URLs require ISO lastmod");
 for(const url of locs){const u=new URL(url);assert.equal(u.protocol,"https:");assert.equal(u.hostname,"gogocompany.in")}
 const robots=await read("robots.txt");
-assert.ok(robots.includes("Sitemap: https://gogocompany.in/sitemap-index.xml"));
+assert.ok(robots.includes("Sitemap: https://gogocompany.in/sitemap.xml"));
 const index=await read("sitemap-index.xml");
 for(const p of ["sitemap.xml","sarkari-sarthi/sitemap.xml","pikanews/sitemap.xml","pikanews/news-sitemap.xml"])assert.ok(index.includes(p),"Sitemap index missing "+p);
 
