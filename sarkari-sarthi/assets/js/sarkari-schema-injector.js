@@ -31,7 +31,7 @@ function injectJobPosting(job, pageUrl = location.href) {
   const current = new URL(pageUrl, location.href).href.split("#")[0];
   if (!canonical || new URL(canonical).href.split("#")[0] !== current) return false;
 
-  const title = clean(job.title);
+  const title = clean(job.job_title);
   const description = clean(job.description);
   const datePosted = iso(job.published_date || job.datePosted);
   const rawValidThrough = clean(job.valid_through || job.validThrough);
