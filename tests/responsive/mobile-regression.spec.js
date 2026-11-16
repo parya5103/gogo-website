@@ -23,8 +23,16 @@ async function noHorizontalOverflow(page) {
     const offenders = [...document.querySelectorAll("body *")].map(el => {
       const r = el.getBoundingClientRect();
       const s = getComputedStyle(el);
-      return { tag: el.tagName.toLowerCase(), id: el.id, className: typeof el.className === "string" ? el.className.slice(0, 100) : "", left: Math.round(r.left), right: Math.round(r.right), width: Math.round(r.width), position: s.position, overflowX: s.overflowX };
-    }).filter(x => x.width > 0 && (x.left < -1 || x.right > width + 1)).slice(0, 12);
+      let clipped = false;
+      for (let parent = el.parentElement; parent && parent !== document.body; parent = parent.parentElement) {
+        const ps = getComputedStyle(parent);
+        if (["hidden", "clip", "auto", "scroll"].includes(ps.overflowX)) {
+          const pr = parent.getBoundingClientRect();
+          if (r.left < pr.left - 1 || r.right > pr.right + 1) { clipped = true; break; }
+        }
+      }
+      return { tag: el.tagName.toLowerCase(), id: el.id, className: typeof el.className === "string" ? el.className.slice(0, 100) : "", left: Math.round(r.left), right: Math.round(r.right), width: Math.round(r.width), position: s.position, overflowX: s.overflowX, clipped };
+    }).filter(x => !x.clipped && x.width > 0 && (x.left < -1 || x.right > width + 1)).slice(0, 12);
     const ticker = [".ticker", ".ticker-inner", ".ticker-label", ".ticker-viewport", ".ticker-track"].map(selector => {
       const el = document.querySelector(selector);
       if (!el) return { selector, missing: true };
