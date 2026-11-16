@@ -18,11 +18,14 @@ function injectJobPosting(job, pageUrl = location.href) {
   const title = clean(job.title);
   const description = clean(job.description);
   const datePosted = iso(job.published_date || job.datePosted);
-  const validThrough = iso(job.valid_through || job.validThrough);
+  const rawValidThrough = clean(job.valid_through || job.validThrough);
+  const validThrough = rawValidThrough ? iso(rawValidThrough) : null;
   const employer = clean(job.organization || job.department || job.recruitment_board);
   const place = clean(job.location || job.district || job.state);
   const applicationUrl = clean(job.official_application_url || job.application_url);
   const employmentType = clean(job.employment_type).toUpperCase();
+  let applicationIsSecure = false;
+  try { applicationIsSecure = new URL(applicationUrl).protocol === "https:"; } catch {}
 
   if (!title || description.length < 200 || /(?:\.\.\.|…)$/.test(description) || !datePosted || !employer || !place ||
       !/^https:\/\//i.test(applicationUrl) || !EMPLOYMENT_TYPES.has(employmentType) ||
