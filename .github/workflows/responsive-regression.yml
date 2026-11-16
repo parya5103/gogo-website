@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: 22
       - name: Install Playwright (no project dependency changes)
-        run: npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.56.1
+        run: npm install --no-save --no-package-lock --no-audit --no-fund --legacy-peer-deps playwright@1.56.1
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Start local static server
