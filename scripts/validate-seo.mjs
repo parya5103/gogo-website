@@ -7,7 +7,7 @@ import {readFile,readdir} from "node:fs/promises";
 import assert from "node:assert/strict";
 
 const read=p=>readFile(p,"utf8");
-const htmlPages=["index.html","arrowout/index.html","crystalquest/index.html","sarkari-sarthi/index.html","pikanews/index.html"];
+const htmlPages=["index.html","arrowout/index.html","crystalquest/index.html","sarkari-sarthi/index.html","pikanews/index.html","sarkari-sarthi/latest-govt-jobs/index.html","sarkari-sarthi/admit-card/index.html","sarkari-sarthi/sarkari-result/index.html","sarkari-sarthi/mp-govt-jobs/index.html","free-online-games/index.html"];
 const types=new Set();
 for(const path of htmlPages){
  const html=await read(path);
@@ -32,9 +32,9 @@ assert.match(home,/og:image:height["']?\s+content=["']630/i);
 
 const sitemap=await read("sitemap.xml");
 const locs=[...sitemap.matchAll(/<loc>\s*([^<]+)\s*<\/loc>/gi)].map(m=>m[1].trim());
-assert.equal(locs.length,14,"root sitemap must contain 14 URLs");
+assert.equal(locs.length,19,"root sitemap must contain 19 URLs including the five pSEO hubs");
 assert.equal(new Set(locs).size,locs.length,"root sitemap URLs must be unique");
-assert.equal((sitemap.match(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g)||[]).length,14,"all root URLs require ISO lastmod");
+assert.equal((sitemap.match(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g)||[] ).length,19,"all root URLs require ISO lastmod");
 for(const url of locs){const u=new URL(url);assert.equal(u.protocol,"https:");assert.equal(u.hostname,"gogocompany.in")}
 const robots=await read("robots.txt");
 assert.ok(robots.includes("Sitemap: https://gogocompany.in/sitemap.xml"));
