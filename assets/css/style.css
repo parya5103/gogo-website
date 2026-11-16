@@ -603,3 +603,9 @@ main { flex: 1; }
 .cta-band .btn-inverse:hover { color: #0369a1; }
 /* Anchored headings keep breathing room below the sticky header. */
 h1, h2, h3 { scroll-margin-top: 88px; }
+
+
+/* Prevent background scrolling while the shared mobile navigation is open. */
+@media (max-width: 860px) {
+  body.nav-open { overflow: hidden; }
+}
