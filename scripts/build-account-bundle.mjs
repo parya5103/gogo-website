@@ -1,5 +1,5 @@
-import { build } from 'esbuild';
-import { copyFileSync, existsSync, mkdirSync } from 'node:fs';
+import { build, transform } from 'esbuild';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const root = process.cwd();
@@ -12,6 +12,7 @@ await build({
   format: 'iife',
   target: ['es2020'],
   minify: true,
+  treeShaking: true,
   sourcemap: false,
   outfile: outJs,
   define: {
@@ -20,6 +21,16 @@ await build({
 });
 
 console.log('[build-account-bundle] Built /assets/js/gogo-account.js successfully.');
+
+const notificationsSource = readFileSync(resolve(root, 'assets/js/gogo-notifications.js'), 'utf8');
+const notificationsMinified = await transform(notificationsSource, {
+  loader: 'js',
+  target: 'es2020',
+  minify: true,
+  legalComments: 'none',
+});
+writeFileSync(resolve(root, 'assets/js/gogo-notifications.min.js'), notificationsMinified.code);
+console.log('[build-account-bundle] Built /assets/js/gogo-notifications.min.js successfully.');
 
 // Also copy into upstream source clones if present so their local href/src tests pass
 const fletchDir = '/tmp/Fletch_Game';
