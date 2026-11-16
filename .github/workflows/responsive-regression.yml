@@ -33,11 +33,16 @@ jobs:
           python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/gogo-http.log 2>&1 &
           echo $! > /tmp/gogo-http.pid
       - name: Audit all HTML viewport tags and responsive routes
-        run: node scripts/responsive-smoke.mjs
+        shell: bash
+        run: |
+          set +e
+          node scripts/responsive-smoke.mjs 2>&1 | tee responsive-regression.log
+          status=${PIPESTATUS[0]}
+          exit "$status"
       - name: Upload responsive regression report
         if: always()
         uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v4.6.2
         with:
           name: responsive-regression-report
-          path: responsive-regression-report.json
+          path: |\n            responsive-regression-report.json\n            responsive-regression.log
           if-no-files-found: warn
