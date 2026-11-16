@@ -23,7 +23,7 @@ function injectJobPosting(job, pageUrl = location.href) {
   const applicationUrl = clean(job.official_application_url || job.application_url);
   const employmentType = clean(job.employment_type).toUpperCase();
 
-  if (!title || !description || !datePosted || !validThrough || !employer || !place ||
+  if (!title || description.length < 200 || /(?:\.\.\.|…)$/.test(description) || !datePosted || !employer || !place ||
       !/^https:\/\//i.test(applicationUrl) || !EMPLOYMENT_TYPES.has(employmentType) ||
       clean(job.status).toLowerCase() !== "active" ||
       clean(job.verification_status).toLowerCase() !== "official_verified" ||
@@ -35,7 +35,7 @@ function injectJobPosting(job, pageUrl = location.href) {
     "title": title,
     "description": description,
     "datePosted": datePosted,
-    "validThrough": validThrough,
+    ...(validThrough ? { "validThrough": validThrough } : {}),
     "employmentType": employmentType,
     "hiringOrganization": { "@type": "Organization", "name": employer },
     "jobLocation": {
@@ -53,7 +53,7 @@ function injectJobPosting(job, pageUrl = location.href) {
   const script = document.createElement("script");
   script.type = "application/ld+json";
   script.dataset.generatedJobPosting = "true";
-  script.textContent = JSON.stringify(schema);
+  script.textContent = JSON.stringify(schema).replace(/</g, "\\u003c").replace(/>/g, "\\u003e").replace(/&/g, "\\u0026");
   document.head.querySelectorAll('script[data-generated-job-posting="true"]').forEach(node => node.remove());
   document.head.appendChild(script);
   return true;
