@@ -38,10 +38,18 @@ jobs:
         run: npm install --legacy-peer-deps --no-save --no-package-lock --no-audit --no-fund @playwright/test@1.56.1
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
-      - name: Run production mobile regression
+      - name: Start local static site from the pull request commit
+        run: |
+          node scripts/serve-static.mjs > /tmp/gogo-static.log 2>&1 &
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:4173/ > /dev/null; then break; fi
+            sleep 1
+          done
+          curl --fail http://127.0.0.1:4173/ > /dev/null
+      - name: Run responsive regression against pull request files
         env:
           CI: true
-          BASE_URL: https://gogocompany.in
+          BASE_URL: http://127.0.0.1:4173
         run: npx playwright test
       - name: Upload failure evidence
         if: failure()
