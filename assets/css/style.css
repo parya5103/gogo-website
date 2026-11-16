@@ -253,7 +253,7 @@ main { flex: 1; }
 .nav-toggle.open .nav-toggle-bar:nth-child(2) { opacity: 0; }
 .nav-toggle.open .nav-toggle-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-@media (max-width: 760px) {
+@media (max-width: 1120px) {
   .nav-toggle { display: inline-flex; }
   .site-nav { display: none; width: 100%; }
   .site-nav.open { display: block; }
@@ -647,4 +647,20 @@ body.theme-gogo input, body.theme-gogo select, body.theme-gogo textarea { accent
 }
 @media (prefers-reduced-motion: reduce) {
   body.theme-gogo .card, body.theme-gogo .btn { transition: none !important; }
+}
+
+/* Responsive regression fixes: collapse shared GoGo navigation before it
+   competes with the brand/account control, and allow long email CTAs to wrap. */
+@media (max-width: 1120px) {
+  .nav-toggle { display: inline-flex; }
+  .site-nav { display: none; width: 100%; }
+  .site-nav.open { display: block; }
+  .nav-list { flex-direction: column; padding: 8px 0 12px; }
+}
+.contact-grid .card { min-width: 0; }
+.contact-grid .card .btn {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: center;
 }
