@@ -9,60 +9,70 @@
 </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GoGo Company | Free Online Games, Job Alerts & News</title>
-  <meta name="description" content="Play free mobile-friendly browser games, explore government job updates on Sarkari Sarthi and read the latest stories on PikaNews at GoGo Company.">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="author" content="GoGo Company">
+  <meta name="theme-color" content="#101827">
+  <title>GoGo Company | Free Online Games &amp; Digital Hub</title>
+  <meta name="description" content="Discover free browser games, play Arrow Out! and Crystal Quest instantly, and explore government job updates and the latest news with GoGo Company.">
   <link rel="canonical" href="https://gogocompany.in/">
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+  <link rel="dns-prefetch" href="//www.googletagmanager.com">
+  <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="//www.gstatic.com">
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="GoGo Company">
-  <meta property="og:title" content="GoGo Company | Free Online Games, Job Alerts & News">
-  <meta property="og:description" content="Play free mobile-friendly browser games, explore government job updates on Sarkari Sarthi and read the latest stories on PikaNews at GoGo Company.">
+  <meta property="og:title" content="GoGo Company | Free Online Games &amp; Digital Hub">
+  <meta property="og:description" content="Play free browser games, explore gaming experiences, discover government job updates and read the latest news.">
   <meta property="og:url" content="https://gogocompany.in/">
-  <meta property="og:image" content="https://gogocompany.in/arrowout/docs/screenshot-home.png">
+  <meta property="og:image" content="https://gogocompany.in/assets/seo/gogo-company-social.svg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="GoGo Company | Free Online Games, Job Alerts & News">
-  <meta name="twitter:description" content="Play free mobile-friendly browser games, explore government job updates on Sarkari Sarthi and read the latest stories on PikaNews at GoGo Company.">
-  <meta name="twitter:image" content="https://gogocompany.in/arrowout/docs/screenshot-home.png">
+  <meta name="twitter:title" content="GoGo Company | Free Online Games &amp; Digital Hub">
+  <meta name="twitter:description" content="Discover free browser games, government job updates and the latest news.">
+  <meta name="twitter:image" content="https://gogocompany.in/assets/seo/gogo-company-social.svg">
   <link rel="stylesheet" href="./assets/css/style.css">
   <link rel="stylesheet" href="./assets/css/ads.css">
   <link rel="stylesheet" href="./assets/css/gogo-account.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "GoGo Company",
-    "alternateName": "GoGo Games",
-    "url": "https://gogocompany.in/",
-    "logo": "https://gogocompany.in/favicon.svg",
-    "email": "officialgogocompany@gmail.com",
-    "description": "Independent gaming and digital products company. Browser games Arrow Out! and Crystal Quest, and the Sarkari Sarthi government job information portal.",
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "contactType": "customer support",
-      "email": "officialgogocompany@gmail.com"
-    }
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "GoGo Company",
-    "alternateName": "GoGo Games",
-    "url": "https://gogocompany.in/",
-    "description": "Independent gaming and digital products company. Browser games Arrow Out! and Crystal Quest, and the Sarkari Sarthi government job information portal."
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
+    "@graph": [
       {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://gogocompany.in/"
+        "@type": "Organization",
+        "@id": "https://gogocompany.in/#organization",
+        "name": "GoGo Company",
+        "url": "https://gogocompany.in/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://gogocompany.in/favicon.svg"
+        },
+        "email": "officialgogocompany@gmail.com",
+        "description": "Independent gaming and digital products company behind Arrow Out!, Crystal Quest, Sarkari Sarthi and PikaNews.",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "email": "officialgogocompany@gmail.com"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://gogocompany.in/#website",
+        "name": "GoGo Company",
+        "url": "https://gogocompany.in/",
+        "publisher": { "@id": "https://gogocompany.in/#organization" },
+        "inLanguage": "en-IN"
+      },
+      {
+        "@type": "ItemList",
+        "@id": "https://gogocompany.in/#products",
+        "name": "GoGo Company Products",
+        "numberOfItems": 4,
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "item": { "@type": "WebApplication", "name": "Arrow Out!", "url": "https://gogocompany.in/arrowout/", "applicationCategory": "GameApplication", "operatingSystem": "Web Browser" } },
+          { "@type": "ListItem", "position": 2, "item": { "@type": "WebApplication", "name": "Crystal Quest", "url": "https://gogocompany.in/crystalquest/", "applicationCategory": "GameApplication", "operatingSystem": "Web Browser" } },
+          { "@type": "ListItem", "position": 3, "item": { "@type": "WebSite", "name": "Sarkari Sarthi", "url": "https://gogocompany.in/sarkari-sarthi/" } },
+          { "@type": "ListItem", "position": 4, "item": { "@type": "WebSite", "name": "PikaNews", "url": "https://gogocompany.in/pikanews/" } }
+        ]
       }
     ]
   }
