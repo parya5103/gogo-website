@@ -35,7 +35,7 @@ function assertListChildrenAreLi(html, file) {
 assertListChildrenAreLi(homepage, "index.html");
 for (const [path, h1] of pages) {
   const html = await read(path);
-  assert.match(html, new RegExp("<h1>" + h1.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "</h1>"));
+  assert.ok(html.includes("<h1>" + h1 + "</h1>"), path + " has the expected unique H1");
   assert.match(html, /rel=["']canonical["']/);
   assert.match(html, /CollectionPage/);
   assert.match(html, /FAQPage/);
