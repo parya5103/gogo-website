@@ -712,8 +712,8 @@ runStep('Background worker: messaging handler, GoGo-only links, dedupe tag, clic
 
 runStep('Account page loads the notifications module after the account bundle', () => {
   const html = readFileSync(resolve(root, 'account/index.html'), 'utf8');
-  assert.ok(html.includes('assets/js/gogo-notifications.js'));
-  assert.ok(html.indexOf('gogo-account.js') < html.indexOf('gogo-notifications.js'));
+  assert.ok(html.includes('assets/js/gogo-notifications.min.js'));
+  assert.ok(html.indexOf('gogo-account.js') < html.indexOf('gogo-notifications.min.js'));
 });
 
 runStep('Sync workflows keep the service-worker guard (with the notifications allowlist) and pairing checks', () => {
