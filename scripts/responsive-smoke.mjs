@@ -230,9 +230,17 @@ try {
     await toggle.click();
     const backdrop = page.locator(".mobile-menu-backdrop");
     if (!(await backdrop.count())) throw new Error("backdrop element missing");
-    await page.mouse.click(380, 420);
-    await page.waitForTimeout(80);
-    if (await page.locator("#mobile-menu").evaluate(el => el.classList.contains("open"))) throw new Error("backdrop did not close menu");
+    await backdrop.click({ force: true, position: { x: 380, y: 420 } });
+    await page.waitForTimeout(300);
+    if (await page.locator("#mobile-menu").evaluate(el => el.classList.contains("open"))) {
+      const diagnostic = await page.evaluate(() => {
+        const b = document.querySelector(".mobile-menu-backdrop"), m = document.querySelector("#mobile-menu");
+        const br = b.getBoundingClientRect(), mr = m.getBoundingClientRect();
+        const hit = document.elementFromPoint(innerWidth - 10, Math.round(innerHeight / 2));
+        return { backdrop: { left: br.left, right: br.right, width: br.width, visibility: getComputedStyle(b).visibility, zIndex: getComputedStyle(b).zIndex }, menu: { left: mr.left, right: mr.right, width: mr.width, zIndex: getComputedStyle(m).zIndex }, hit: hit ? { tag: hit.tagName, id: hit.id, className: typeof hit.className === "string" ? hit.className : "" } : null };
+      });
+      throw new Error("backdrop did not close menu: " + JSON.stringify(diagnostic));
+    }
     if ((await toggle.getAttribute("aria-expanded")) !== "false") throw new Error("aria-expanded did not reset");
     if (await page.locator("body").evaluate(el => el.classList.contains("menu-open"))) throw new Error("scroll lock remained");
     result.backdrop = "closed";
@@ -254,6 +262,14 @@ try {
       const firstUnlocked = page.locator("#level-grid .level-card:not(.is-locked)").first();
       await firstUnlocked.waitFor({ state: "visible", timeout: 8000 });
       await firstUnlocked.click();
+      for (let attempt = 0; attempt < 8; attempt++) {
+        const active = await page.locator("#screen-game").evaluate(el => el.classList.contains("is-active"));
+        if (active) break;
+        const storyNext = page.locator("#btn-story-next");
+        if (await storyNext.isVisible()) await storyNext.click();
+        else break;
+      }
+      if (!await page.locator("#screen-game").evaluate(el => el.classList.contains("is-active"))) throw new Error("Crystal Quest did not enter the playable game screen");
     }
     await page.waitForTimeout(500);
     const viewportMeta = await page.locator('meta[name="viewport"]').getAttribute("content");
@@ -281,7 +297,7 @@ try {
         return {
           canvas: { left: Math.round(c.left), top: Math.round(c.top), right: Math.round(c.right), bottom: Math.round(c.bottom), width: Math.round(c.width), height: Math.round(c.height) },
           wrap: { left: Math.round(w.left), top: Math.round(w.top), right: Math.round(w.right), bottom: Math.round(w.bottom), width: Math.round(w.width), height: Math.round(w.height) },
-          canvasInsideWrap: c.left >= w.left - 2 && c.top >= w.top - 2 && c.right <= w.right + 2 && c.bottom <= w.bottom + 2,
+          canvasInsideWrap: c.width > 0 && c.height > 0 && w.width > 0 && w.height > 0 && c.left >= w.left - 2 && c.top >= w.top - 2 && c.right <= w.right + 2 && c.bottom <= w.bottom + 2,
           viewportOverflow: root.scrollWidth > innerWidth + 1 || document.body.scrollWidth > innerWidth + 1,
           targets
         };
@@ -298,7 +314,7 @@ try {
   }
 
   await interaction("Arrow Out portrait/landscape canvas, touch targets and safe-area", async result => {
-    result.viewports = await auditGameSurface("Arrow Out", "/arrowout/", null, "#board", "#board-wrap",
+    result.viewports = await auditGameSurface("Arrow Out", "/arrowout/", "#btn-play-home", "#board", "#board-wrap",
       ["#btn-menu", "#btn-sound", "#btn-zoom-in", "#btn-zoom-out", "#btn-board-fit", "#btn-undo", "#btn-hint", "#btn-restart"]);
   });
   await interaction("Crystal Quest portrait/landscape canvas, touch targets and safe-area", async result => {
@@ -366,7 +382,7 @@ try {
     const readButton = cards.first().locator(".news-card-action").first();
     if (!(await readButton.count())) throw new Error("article card has no accessible read action");
     await readButton.click();
-    await page.waitForURL(url => url.includes("/pikanews/news/") || url.includes("article.html?id="), { timeout: 10000 });
+    await page.waitForURL(url => url.pathname.includes("/pikanews/news/") || url.pathname.includes("article.html") && url.search.includes("id="), { timeout: 10000 });
     if (!page.url().includes("/pikanews/news/") && !page.url().includes("article.html?id=")) throw new Error("article card did not open its detail route");
     await page.goto(base + "/pikanews/", { waitUntil: "domcontentloaded" });
     await page.waitForTimeout(300);
