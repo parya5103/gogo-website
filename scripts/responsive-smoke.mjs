@@ -253,7 +253,7 @@ try {
     await page.waitForTimeout(500);
     const viewportMeta = await page.locator('meta[name="viewport"]').getAttribute("content");
     if (!viewportMeta || !viewportMeta.includes("viewport-fit=cover")) throw new Error(name + ": viewport-fit=cover missing");
-    const cssText = await page.locator("style, link[rel=stylesheet]").evaluateAll(nodes => nodes.map(n => n.tagName === "STYLE" ? n.textContent : n.href).join("\\n"));
+    const cssText = walk(process.cwd()).filter(file => /\.css$/i.test(file)).map(file => fs.readFileSync(file, "utf8")).join("\\n");
     if (!cssText.includes("safe-area-inset")) throw new Error(name + ": safe-area inset CSS declaration missing");
     const results = [];
     for (const size of [{ width: 390, height: 844, orientation: "portrait" }, { width: 844, height: 390, orientation: "landscape" }]) {
@@ -362,6 +362,10 @@ try {
     await page.keyboard.press("Control+k");
     if (!await page.locator("#search-modal").evaluate(el => el.classList.contains("open"))) throw new Error("Ctrl+K shortcut did not open search");
     await page.keyboard.press("Escape");
+    await tech.click();
+    await page.waitForURL(/technology\.html$/);
+    if (!page.url().endsWith("/pikanews/technology.html")) throw new Error("Technology category navigation did not reach its page");
+    result.categoryNavigation = "technology.html";
     result.categoryLinks = await categories.count();
     result.articleCards = await cards.count();
     result.searchModal = "button + Ctrl+K + Escape passed";
