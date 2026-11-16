@@ -108,7 +108,7 @@
       '<span class="nav-toggle-bar" aria-hidden="true"></span><span class="nav-toggle-bar" aria-hidden="true"></span><span class="nav-toggle-bar" aria-hidden="true"></span>' +
       "</button>" +
       '<nav id="site-nav" class="site-nav" aria-label="Main navigation" role="navigation">' +
-      '<ul class="nav-list" role="menubar">' + nav + "</ul>" +
+      '<ul class="nav-list">' + nav + "</ul>" +
       "</nav>" +
       "</div>" +
       "</header>"
@@ -151,6 +151,42 @@
       document.head.appendChild(link);
     }
     var jsSrc = ROOT + "assets/js/gogo-account.js";
+
+    function loadAccountBundle(onReady) {
+      if (window.GoGoAccount) {
+        if (onReady) onReady();
+        return;
+      }
+      var pending = document.querySelector('script[data-gogo-account-loader="true"]');
+      if (pending) {
+        if (onReady) pending.addEventListener("load", onReady, { once: true });
+        return;
+      }
+      var script = document.createElement("script");
+      script.src = jsSrc;
+      script.async = true;
+      script.setAttribute("data-gogo-account-loader", "true");
+      if (onReady) script.addEventListener("load", onReady, { once: true });
+      document.head.appendChild(script);
+    }
+
+    if (currentPage() === "home") {
+      document.addEventListener("click", function (event) {
+        var target = event.target && event.target.closest
+          ? event.target.closest("[data-gogo-open-account]")
+          : null;
+        if (!target || window.GoGoAccount) return;
+        event.preventDefault();
+        var tab = target.getAttribute("data-gogo-open-account");
+        loadAccountBundle(function () {
+          if (!window.GoGoAccount) return;
+          var validTab = tab === "login" || tab === "register" || tab === "profile" || tab === "conflict";
+          window.GoGoAccount.openModal(validTab ? tab : undefined);
+        });
+      }, true);
+      return;
+    }
+
     if (!document.querySelector('script[src*="gogo-account.js"]')) {
       var s = document.createElement("script");
       s.src = jsSrc;
@@ -177,19 +213,22 @@
     }
     
     if (backToTop) {
+      var scrollFramePending = false;
       var toggleVisibility = function() {
-        if (window.pageYOffset > 300) {
-          backToTop.classList.add("visible");
-        } else {
-          backToTop.classList.remove("visible");
-        }
+        if (scrollFramePending) return;
+        scrollFramePending = true;
+        window.requestAnimationFrame(function() {
+          scrollFramePending = false;
+          var shouldShow = window.scrollY > 300;
+          backToTop.classList.toggle("visible", shouldShow);
+        });
       };
       
       backToTop.addEventListener("click", function() {
         window.scrollTo({ top: 0, behavior: "smooth" });
       });
       
-      window.addEventListener("scroll", toggleVisibility);
+      window.addEventListener("scroll", toggleVisibility, { passive: true });
       toggleVisibility();
     }
   }
