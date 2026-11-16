@@ -18,10 +18,15 @@ async function openPage(page, path) {
 }
 
 async function noHorizontalOverflow(page) {
-  const metrics = await page.evaluate(() => ({
-    width: document.documentElement.clientWidth,
-    scroll: Math.max(document.documentElement.scrollWidth, document.body.scrollWidth),
-  }));
+  const metrics = await page.evaluate(() => {
+    const width = document.documentElement.clientWidth;
+    const offenders = [...document.querySelectorAll("body *")].map(el => {
+      const r = el.getBoundingClientRect();
+      const s = getComputedStyle(el);
+      return { tag: el.tagName.toLowerCase(), id: el.id, className: typeof el.className === "string" ? el.className.slice(0, 100) : "", left: Math.round(r.left), right: Math.round(r.right), width: Math.round(r.width), position: s.position, overflowX: s.overflowX };
+    }).filter(x => x.width > 0 && (x.left < -1 || x.right > width + 1)).slice(0, 12);
+    return { width, scroll: Math.max(document.documentElement.scrollWidth, document.body.scrollWidth), offenders };
+  });
   expect(metrics.scroll, `horizontal overflow: ${JSON.stringify(metrics)}`).toBeLessThanOrEqual(metrics.width + 1);
 }
 
