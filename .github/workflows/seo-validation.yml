@@ -5,6 +5,9 @@ on:
     branches: [main]
     paths:
       - 'index.html'
+      - 'assets/css/style.css'
+      - 'package.json'
+      - 'free-online-games/**'
       - 'sitemap*.xml'
       - 'robots.txt'
       - 'assets/css/ads.css'
@@ -50,8 +53,32 @@ jobs:
           node --check scripts/update-seo-sitemaps.mjs
           node --check scripts/seo-sync-ping.mjs
           node --check scripts/validate-seo.mjs
+          node --check scripts/update-trending-seo.mjs
+          node --check scripts/generate-pseo-hubs.mjs
+          node --check scripts/test-seo-generators.mjs
+          node --check scripts/validate-seo-build.mjs
+          node --check scripts/generate-pikanews-news-sitemap.mjs
+          node --check scripts/validate-pikanews-news-seo.mjs
+          node --check scripts/validate-structured-data.mjs
+          node --check scripts/test-jobposting-schema.mjs
+          node --check scripts/sarkari-schema-injector.js
           node --check sarkari-sarthi/assets/js/sarkari-schema-injector.js
       - name: Apply post-sync SEO enhancements
         run: node scripts/apply-seo-enhancements.mjs
+      - name: Test JobPosting schema generator
+        run: node scripts/test-jobposting-schema.mjs
+      - name: Generate trending content and pSEO hubs
+        run: |
+          node scripts/update-trending-seo.mjs
+          node scripts/generate-pseo-hubs.mjs
+      - name: Test SEO generator helpers
+        run: node scripts/test-seo-generators.mjs
+      - name: Generate and validate PikaNews news sitemap
+        run: |
+          node scripts/generate-pikanews-news-sitemap.mjs
+          node scripts/validate-pikanews-news-seo.mjs
+          node scripts/validate-structured-data.mjs
+      - name: Validate generated SEO pages
+        run: node scripts/validate-seo-build.mjs
       - name: Validate SEO implementation
         run: node scripts/validate-seo.mjs

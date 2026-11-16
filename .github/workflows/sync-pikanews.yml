@@ -59,6 +59,9 @@ jobs:
       - name: Apply persistent SEO enhancements after sync
         run: node scripts/apply-seo-enhancements.mjs
 
+      - name: Regenerate Google News sitemap (fresh articles only)
+        run: node scripts/generate-pikanews-news-sitemap.mjs
+
       - name: Verify synced PikaNews files (fail instead of publishing a broken site)
         run: |
           set -e
@@ -133,6 +136,11 @@ jobs:
           fi
           echo "All PikaNews files verified."
 
+      - name: Generate fresh homepage trends and programmatic SEO hubs
+        run: |
+          node scripts/update-trending-seo.mjs
+          node scripts/generate-pseo-hubs.mjs
+
       - name: Refresh SEO sitemap and notify IndexNow
         run: node scripts/seo-sync-ping.mjs
 
@@ -144,7 +152,7 @@ jobs:
           # entries so git add stages a fresh tree (gitlink entries from a
           # broken sync would otherwise be skipped silently).
           git rm -r --cached --ignore-unmatch --quiet pikanews || true
-          git add pikanews sitemap.xml
+          git add pikanews sitemap.xml index.html sarkari-sarthi/latest-govt-jobs sarkari-sarthi/admit-card sarkari-sarthi/sarkari-result sarkari-sarthi/mp-govt-jobs free-online-games
           if git ls-files -s | grep -q '^160000'; then
             echo "::error::gitlink (embedded repository) entries present in index - refusing to publish"
             git ls-files -s | grep '^160000' || true

@@ -620,15 +620,15 @@ body.theme-gogo {
   --text-dim: #596579;
   --primary: #5b4bdb;
   --primary-2: #4338ca;
-  --accent: #087f8c;
+  --accent: #1e40af;
   --link: #4338ca;
   --border: #dce2ec;
   --chip: #eeedff;
 }
 body.theme-gogo { background: var(--bg); }
 /* WCAG AA text contrast for the brand accent on the dark header and light footer. */
-body.theme-gogo .site-header .accent { color: #93c5fd; }
-body.theme-gogo .site-footer .accent { color: #1d4ed8; }
+body.theme-gogo .site-header .accent { color: #1e40af; }
+body.theme-gogo .site-footer .accent { color: #1e40af; }
 body.theme-gogo .site-header { box-shadow: 0 4px 18px rgba(23,32,51,.06); }
 body.theme-gogo .brand { letter-spacing: -.03em; }
 body.theme-gogo .hero { padding: clamp(48px, 8vw, 88px) 0; }
@@ -685,3 +685,14 @@ body.theme-gogo input, body.theme-gogo select, body.theme-gogo textarea { accent
 @media (max-width: 1120px) {
   body.nav-open { overflow: hidden; }
 }
+
+/* Crawlable daily content blocks on the GoGo homepage. */
+.gogo-trending { background: var(--bg-soft); }
+.trending-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 18px; }
+.trending-grid > section { min-width: 0; padding: 20px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); }
+.trending-grid h3 { margin-top: 0; }
+.trending-list, .trending-tags { margin: 0; padding-left: 22px; }
+.trending-list li, .trending-tags li { margin: 8px 0; overflow-wrap: anywhere; }
+.trending-list a, .trending-tags a { color: var(--link); font-weight: 650; }
+.trending-source { color: var(--text-dim); font-size: .9rem; }
+.trending-empty { color: var(--text-dim); }
