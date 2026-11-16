@@ -10,13 +10,16 @@ export const iso = value => {
   if (typeof value !== "string") return null;
   const input = value.trim();
   const dmy = input.match(/^(\d{2})-(\d{2})-(\d{4})$/);
-  if (dmy) {
-    const day = Number(dmy[1]), month = Number(dmy[2]), year = Number(dmy[3]);
-    const date = new Date(Date.UTC(year, month - 1, day));
-    if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) return null;
+  const ymd = input.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  const parts = dmy
+    ? { day: Number(dmy[1]), month: Number(dmy[2]), year: Number(dmy[3]) }
+    : ymd ? { year: Number(ymd[1]), month: Number(ymd[2]), day: Number(ymd[3]) } : null;
+  if (parts) {
+    const date = new Date(Date.UTC(parts.year, parts.month - 1, parts.day));
+    if (date.getUTCFullYear() !== parts.year || date.getUTCMonth() !== parts.month - 1 || date.getUTCDate() !== parts.day) return null;
     return date.toISOString();
   }
-  if (!/^\d{4}-\d{2}-\d{2}(?:T.*)?$/.test(input)) return null;
+  if (!/^\d{4}-\d{2}-\d{2}T.+$/.test(input)) return null;
   const date = new Date(input);
   return Number.isFinite(date.getTime()) ? date.toISOString() : null;
 };
