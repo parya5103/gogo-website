@@ -29,3 +29,15 @@ Purpose: assign one primary search intent to each canonical landing page, reduce
 ## Measurement
 
 Use Google Search Console query and page exports for settled 28-day periods. Track clicks, impressions, CTR, average position, branded vs non-branded queries, country, device, and page-level overlap. Do not add estimated monthly search volumes without a named keyword-data source and collection date.
+
+## GitHub repository About metadata
+
+Suggested repository description (concise, factual; not a public-site footer link):
+
+> GoGo Company website and product hub for Arrow Out!, Crystal Quest, Sarkari Sarthi and PikaNews. Responsive static site with PWA game publishing, recruitment-information discovery, publisher-attributed news, structured data and automated GitHub Actions sync workflows.
+
+Suggested repository topics (apply only if they accurately describe the repository):
+
+`gogocompany`, `browser-games`, `puzzle-games`, `pwa`, `static-website`, `github-pages`, `arrow-out`, `crystal-quest`, `match-3-game`, `arrow-puzzle`, `sarkari-sarthi`, `government-jobs-india`, `recruitment-updates`, `pikanews`, `news-aggregator`, `technical-seo`, `structured-data`, `sitemaps`, `indexnow`, `web-performance`.
+
+The connected GitHub actions in this workflow support file and pull-request operations but do not expose a repository About/topics update action. Apply this description and topic set manually in GitHub repository Settings/About if desired.
