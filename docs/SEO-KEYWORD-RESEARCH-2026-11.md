@@ -42,9 +42,9 @@ Priority is based on product fit, likely intent, current site capability, and th
 | Product / page | Primary candidate phrase | Supporting phrase ideas | Intent | Priority |
 |---|---|---|---|---|
 | GoGo hub `/` | GoGo Company | GoGo Company games; GoGo digital products; GoGo browser games | Navigational / brand | P1 |
-| Arrow Out `/arrowout/` | free arrow puzzle game | arrow puzzle game online; arrow logic puzzle; play arrow puzzle in browser; arrow escape puzzle; mobile arrow puzzle game | Play now | P1 |
+| Arrow Out `/arrowout/` | tap-away arrow puzzle game | free arrow puzzle game; arrow puzzle game online; arrow logic puzzle; play arrow puzzle in browser; arrow escape puzzle; mobile arrow puzzle game | Play now | P1 |
 | Arrow Out guide `/arrowout/about.html` | how to play Arrow Out | arrow puzzle rules; how to solve arrow puzzles; arrow puzzle tips | Informational | P2 |
-| Crystal Quest `/crystalquest/` | free match 3 puzzle game | match 3 game online; gem matching game; browser match 3 game; mobile match 3 puzzle | Play now | P1 |
+| Crystal Quest `/crystalquest/` | free match-3 puzzle game | match 3 game online; free gem matching game; browser match-3 game; mobile match-3 puzzle; 27-level match-3 game | Play now | P1 |
 | Crystal Quest guide `/crystalquest/guide.html` | how to play Crystal Quest | match 3 tips; gem combos; match 3 strategy; special gems guide | Informational | P2 |
 | Sarkari Sarthi `/sarkari-sarthi/` | latest government jobs 2026 | sarkari naukri 2026; govt job vacancy 2026; latest government job notifications; government jobs in India | Fresh listings | P1 |
 | Sarkari Sarthi state/category pages | MP government jobs 2026 | Madhya Pradesh govt vacancy; MPPSC recruitment 2026; MP police vacancy 2026; 10th pass government jobs; 12th pass government jobs; graduate government jobs | State / qualification | P1 only where matching live data exists |
@@ -52,6 +52,15 @@ Priority is based on product fit, likely intent, current site capability, and th
 | PikaNews homepage `/pikanews/` | latest news headlines | latest entertainment news; technology news; gaming news; business news; sports news | News discovery | P2 |
 | PikaNews category pages | Bollywood news | Hollywood news; technology news; gaming news; business news; sports news; entertainment news | Category browsing | P2 |
 | PikaNews article pages | exact article subject + event/person | exact headline variants; entity + latest update; event + date | News / long-tail | P1 per eligible article |
+
+### Manual search-result review
+
+A free Google search-result review found established browser-game pages already using broad terms such as “free arrow puzzle game” and “match 3 game online.” This means those phrases are relevant to the category but are not evidence of low competition. The better first-page strategy is to make the product pages satisfy specific gameplay intent:
+
+- Arrow Out: lead with “tap-away arrow puzzle game,” explain the tap-to-launch mechanic, 1,000-level progression, hints and daily challenges, and use “free arrow puzzle game” as a natural secondary phrase.
+- Crystal Quest: lead with “free match-3 puzzle game,” then explain the 27 levels, special gems, daily challenge and offline-capable PWA accurately.
+- Sarkari Sarthi: broad government-job terms are dominated by fresh vacancy-list pages. Compete only on real state/qualification/category pages with verified dates, eligibility and official application links.
+- PikaNews: avoid trying to rank the homepage for generic “latest news.” Focus on category discovery and specific article subjects with source attribution and original context.
 
 ### Important targeting rules
 
