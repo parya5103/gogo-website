@@ -68,11 +68,14 @@
     }
   }
 
+  var scheduled = false;
+  var loaded = false;
+
   function load() {
-    if (!adsAllowed()) return;
-    if (document.getElementById("gogo-adsense-lib")) return; /* no duplicate scripts */
-    if (document.querySelector('script[src*="adsbygoogle.js?client="]')) {
-      /* Static AdSense loader already present in the page head - never inject twice. */
+    if (loaded || !adsAllowed()) return;
+    var existing = document.querySelector('script[src*="adsbygoogle.js?client="]');
+    if (existing) {
+      loaded = true;
       activateSlots();
       return;
     }
@@ -82,13 +85,42 @@
     s.async = true;
     s.crossOrigin = "anonymous";
     s.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=" + CONFIG.publisherId;
+    s.onload = function () {
+      loaded = true;
+      activateSlots();
+    };
     document.head.appendChild(s);
-    activateSlots();
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", load);
-  } else {
-    load();
+  function scheduleLoad() {
+    if (scheduled) return;
+    scheduled = true;
+    var events = ["scroll", "pointerdown", "keydown", "touchstart"];
+    function cleanup() {
+      events.forEach(function (name) {
+        window.removeEventListener(name, onInteraction);
+      });
+      window.removeEventListener("load", afterLoad);
+    }
+    function onInteraction() {
+      cleanup();
+      load();
+    }
+    function afterLoad() {
+      window.setTimeout(function () {
+        cleanup();
+        load();
+      }, 4000);
+    }
+    events.forEach(function (name) {
+      window.addEventListener(name, onInteraction, { once: true, passive: true });
+    });
+    if (document.readyState === "complete") {
+      afterLoad();
+    } else {
+      window.addEventListener("load", afterLoad, { once: true });
+    }
   }
+
+  scheduleLoad();
 })();
