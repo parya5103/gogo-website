@@ -59,7 +59,10 @@ jobs:
       - name: Apply persistent SEO enhancements after sync
         run: node scripts/apply-seo-enhancements.mjs
 
-      - name: Regenerate Google News sitemap (fresh articles only)\n        run: node scripts/generate-pikanews-news-sitemap.mjs\n\n      - name: Verify synced PikaNews files (fail instead of publishing a broken site)
+      - name: Regenerate Google News sitemap (fresh articles only)
+        run: node scripts/generate-pikanews-news-sitemap.mjs
+
+      - name: Verify synced PikaNews files (fail instead of publishing a broken site)
         run: |
           set -e
           test -f pikanews/index.html
