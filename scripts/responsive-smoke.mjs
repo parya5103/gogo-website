@@ -366,7 +366,7 @@ try {
     const readButton = cards.first().locator(".news-card-action").first();
     if (!(await readButton.count())) throw new Error("article card has no accessible read action");
     await readButton.click();
-    await page.waitForURL(/\\/pikanews\\/news\\/|article\\.html\\?id=/, { timeout: 10000 });
+    await page.waitForURL(url => url.includes("/pikanews/news/") || url.includes("article.html?id="), { timeout: 10000 });
     if (!page.url().includes("/pikanews/news/") && !page.url().includes("article.html?id=")) throw new Error("article card did not open its detail route");
     await page.goto(base + "/pikanews/", { waitUntil: "domcontentloaded" });
     await page.waitForTimeout(300);
@@ -379,7 +379,7 @@ try {
     if (!await page.locator("#search-modal").evaluate(el => el.classList.contains("open"))) throw new Error("Ctrl+K shortcut did not open search");
     await page.keyboard.press("Escape");
     await tech.click();
-    await page.waitForURL(/technology\.html$/);
+    await page.waitForURL(url => url.endsWith("technology.html"));
     if (!page.url().endsWith("/pikanews/technology.html")) throw new Error("Technology category navigation did not reach its page");
     result.categoryNavigation = "technology.html";
     result.categoryLinks = await categories.count();
