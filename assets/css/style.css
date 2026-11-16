@@ -620,15 +620,15 @@ body.theme-gogo {
   --text-dim: #596579;
   --primary: #5b4bdb;
   --primary-2: #4338ca;
-  --accent: #087f8c;
+  --accent: #1e40af;
   --link: #4338ca;
   --border: #dce2ec;
   --chip: #eeedff;
 }
 body.theme-gogo { background: var(--bg); }
 /* WCAG AA text contrast for the brand accent on the dark header and light footer. */
-body.theme-gogo .site-header .accent { color: #93c5fd; }
-body.theme-gogo .site-footer .accent { color: #1d4ed8; }
+body.theme-gogo .site-header .accent { color: #1e40af; }
+body.theme-gogo .site-footer .accent { color: #1e40af; }
 body.theme-gogo .site-header { box-shadow: 0 4px 18px rgba(23,32,51,.06); }
 body.theme-gogo .brand { letter-spacing: -.03em; }
 body.theme-gogo .hero { padding: clamp(48px, 8vw, 88px) 0; }
