@@ -18,6 +18,15 @@ Purpose: assign one primary search intent to each canonical landing page, reduce
 | /pikanews/trending.html | Trend discovery | trending news | trending topics, popular stories | Trends page, not a substitute for editorial reporting |
 | /pikanews/[category].html | Category discovery | category-specific news | category and topic terms | Each category page owns its category intent |
 
+## Search Console baseline — settled 28-day window
+
+Property: `sc-domain:gogocompany.in` · Search type: Web · Window: 17 October–13 November 2026 · Settled through 14 November 2026.
+
+- 3 clicks, 66 impressions, 4.55% CTR, average position 6.97.
+- Visible query rows: `gogo company` (1 click / 10 impressions / position 3.2), `go company` (7 impressions), `go go company` (5 impressions), and `aees librarian vacancy 2025` (1 impression / position 96).
+- The returned query rows cover only 34.85% of impressions and 33.33% of clicks; Search Console hides some low-volume queries. Do not interpret this small visible query set as the full demand profile.
+- This is an early/low-volume baseline. Keep the brand homepage focused on GoGo Company; prioritize accurate product and recruitment landing pages, then re-evaluate query growth in subsequent settled 28-day windows.
+
 ## India trend watchlist — captured 16 November 2026
 
 This is a dated editorial-priority snapshot, not a permanent keyword list or a verified search-volume report. Google Trends related searches are volatile; third-party volume bands are approximate lower bounds. Re-check the live trend and issuing authority before publishing or changing page titles.
