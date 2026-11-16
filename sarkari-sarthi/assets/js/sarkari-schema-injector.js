@@ -28,7 +28,7 @@ function injectJobPosting(job, pageUrl = location.href) {
   try { applicationIsSecure = new URL(applicationUrl).protocol === "https:"; } catch {}
 
   if (!title || description.length < 200 || /(?:\.\.\.|…)$/.test(description) || !datePosted || !employer || !place ||
-      !/^https:\/\//i.test(applicationUrl) || !EMPLOYMENT_TYPES.has(employmentType) ||
+      !applicationIsSecure || (rawValidThrough && !validThrough) || !EMPLOYMENT_TYPES.has(employmentType) ||
       clean(job.status).toLowerCase() !== "active" ||
       clean(job.verification_status).toLowerCase() !== "official_verified" ||
       (validThrough && new Date(validThrough) <= new Date())) return false;
