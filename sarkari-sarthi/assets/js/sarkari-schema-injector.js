@@ -37,7 +37,8 @@ function injectJobPosting(job, pageUrl = location.href) {
   const rawValidThrough = clean(job.valid_through || job.validThrough);
   const validThrough = rawValidThrough ? iso(rawValidThrough) : null;
   const employer = clean(job.organization || job.department || job.recruitment_board);
-  const place = clean(job.location || job.district || job.state);
+  const place = clean(job.location || job.district);
+  const region = clean(job.state);
   const applicationUrl = clean(job.official_application_url || job.application_url);
   const employmentType = clean(job.employment_type).toUpperCase();
   let applicationIsSecure = false;
@@ -63,6 +64,7 @@ function injectJobPosting(job, pageUrl = location.href) {
       "address": {
         "@type": "PostalAddress",
         "addressLocality": place,
+        ...(region ? { "addressRegion": region } : {}),
         "addressCountry": "IN"
       }
     },
