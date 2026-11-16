@@ -18,6 +18,34 @@ Purpose: assign one primary search intent to each canonical landing page, reduce
 | /pikanews/trending.html | Trend discovery | trending news | trending topics, popular stories | Trends page, not a substitute for editorial reporting |
 | /pikanews/[category].html | Category discovery | category-specific news | category and topic terms | Each category page owns its category intent |
 
+## India trend watchlist — captured 16 November 2026
+
+This is a dated editorial-priority snapshot, not a permanent keyword list or a verified search-volume report. Google Trends related searches are volatile; third-party volume bands are approximate lower bounds. Re-check the live trend and issuing authority before publishing or changing page titles.
+
+| Trend query observed | Signal reported | GoGo target | Recommended supporting phrases / content angle | Publish gate |
+| --- | ---: | --- | --- | --- |
+| aibe admit card | 20,000+ | /sarkari-sarthi/admit-card/ | AIBE admit card download, AIBE hall ticket, AIBE exam instructions | Publish/update only after Bar Council of India / AIBE official notice is verified |
+| rrb exam city intimation slip | 5,000+ | /sarkari-sarthi/admit-card/ | RRB exam city slip, railway exam city intimation, RRB city details | Only when the relevant RRB notice and candidate portal are live |
+| mp police constable admit card 2026 | 2,000+ | /sarkari-sarthi/mp-govt-jobs/ and admit-card hub | MP Police Constable admit card 2026, MP Police exam date, MPESB candidate login | Verify MPESB / MP Police notice first; do not imply release based on trend alone |
+| मध्य प्रदेश पुलिस | 2,000+ | /sarkari-sarthi/mp-govt-jobs/ | Madhya Pradesh Police recruitment, MP Police bharti, MP Police vacancy | Use only for an actual relevant recruitment update |
+| sbi clerk prelims result 2026 | 1,000+ (snapshot 14 Nov) | /sarkari-sarthi/sarkari-result/ | SBI Clerk prelims result 2026, SBI Clerk scorecard, SBI Clerk cutoff | Verify result status on SBI Careers before writing “declared” or “out” |
+| scholarship news | 5,000+ | PikaNews education/news coverage only if category exists | scholarship update, scholarship application dates, scholarship eligibility | Needs a sourced, current story; do not invent a scholarship scheme |
+| icsi cseet result | 2,000+ | PikaNews education/news coverage only if category exists | ICSI CSEET result, scorecard, result date | Verify on ICSI official website before claiming a result |
+
+### Wider PikaNews trend signals (editorial leads, not automatic SEO targets)
+
+Google Trends India also showed major sports spikes during the 16 November snapshot, including Yash Thakur (500K+) and Bangladesh vs South Africa (100K+). These are short-lived news leads, not evergreen target keywords. Create an article only when PikaNews has a timely, independently checked story with source attribution, dates and useful original context. Do not add player/team names to static homepage metadata or unrelated game pages.
+
+### Trend-source notes
+
+- Google Trends India, Trending Now: https://trends.google.co.in/trending?geo=IN (live, volatile; use Explore/related queries for validation).
+- Google Trends India, past 7 days: https://trends.google.com/trending?geo=IN&hours=168
+- Job & Education snapshot, updated 16 November 2026: https://www.48hrstrends.com/India/job-and-education
+- Law & Government snapshot, updated 15 November 2026: https://www.48hrstrends.com/India/law-and-government
+- 14 November editorial cross-check for job/exam trend context: https://resulttoday.in/india-job-education-search-trends-14-november-2026/
+
+The 48HrsTrends figures are approximate trend-volume bands, not verified Google Search Console impressions, monthly keyword volumes, or proof that a notification/result exists. Treat Google Trends as a discovery signal only. The official recruiting/exam authority remains the source of truth.
+
 ## Prioritization
 
 1. Protect branded navigational searches for GoGo Company and each product name.
