@@ -8,22 +8,15 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const ROOT = process.cwd();
-const NEWS_DIR = join(ROOT, "pikanews", "news");
-const DATA_FILE = join(ROOT, "pikanews", "data", "latest.json");
-const OUTPUT = join(ROOT, "pikanews", "news-sitemap.xml");
 const SITE = "https://gogocompany.in";
 const WINDOW_MS = 48 * 60 * 60 * 1000;
-
 const xml = value => String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 const iso = value => { const date = new Date(value); return Number.isFinite(date.getTime()) ? date.toISOString() : null; };
 
 export async function generateNewsSitemap({ root = ROOT, now = new Date() } = {}) {
-  const dataPath = join(root, "pikanews", "data", "latest.json");
-  const newsDir = join(root, "pikanews", "news");
-  const output = join(root, "pikanews", "news-sitemap.xml");
-  const latest = JSON.parse(await readFile(dataPath, "utf8"));
+  const latest = JSON.parse(await readFile(join(root, "pikanews/data/latest.json"), "utf8"));
   if (!Array.isArray(latest)) throw new Error("PikaNews latest.json must contain an array");
-  const dirs = await readdir(newsDir, { withFileTypes: true });
+  const dirs = await readdir(join(root, "pikanews/news"), { withFileTypes: true });
   const slugs = dirs.filter(entry => entry.isDirectory()).map(entry => entry.name);
   const candidates = latest.filter(item => {
     if (!item || !item.id || !item.title || !item.summary || !item.url || !item.source) return false;
@@ -38,26 +31,27 @@ export async function generateNewsSitemap({ root = ROOT, now = new Date() } = {}
 
   const entries = [];
   for (const { item, slug, published } of candidates) {
-    const pagePath = join(newsDir, slug, "index.html");
-    const html = await readFile(pagePath, "utf8");
-    const canonical = html.match(/<link\\s+rel=["']canonical["']\\s+href=["']([^"']+)["']/i)?.[1];
-    const articleSchema = [...html.matchAll(/<script\\s+type=["']application\\/ld\\+json["'][^>]*>([\\s\\S]*?)<\\/script>/gi)]
+    const html = await readFile(join(root, "pikanews/news", slug, "index.html"), "utf8");
+    const canonical = html.match(/<link\s+rel=["']canonical["']\s+href=["']([^"']+)["']/i)?.[1];
+    const articleSchema = [...html.matchAll(/<script\s+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)]
       .map(match => { try { return JSON.parse(match[1]); } catch { return null; } })
       .find(schema => schema && schema["@type"] === "NewsArticle");
     if (!canonical || !canonical.startsWith(SITE + "/pikanews/news/") || !articleSchema) continue;
-    entries.push("  <url>\\n" +
-      "    <loc>" + xml(canonical) + "</loc>\\n" +
-      "    <news:news>\\n" +
-      "      <news:publication><news:name>PikaNews</news:name><news:language>en</news:language></news:publication>\\n" +
-      "      <news:publication_date>" + published + "</news:publication_date>\\n" +
-      "      <news:title>" + xml(item.title) + "</news:title>\\n" +
-      "    </news:news>\\n" +
-      "  </url>");
+    entries.push(
+      "  <url>\n" +
+      "    <loc>" + xml(canonical) + "</loc>\n" +
+      "    <news:news>\n" +
+      "      <news:publication><news:name>PikaNews</news:name><news:language>en</news:language></news:publication>\n" +
+      "      <news:publication_date>" + published + "</news:publication_date>\n" +
+      "      <news:title>" + xml(item.title) + "</news:title>\n" +
+      "    </news:news>\n" +
+      "  </url>"
+    );
   }
-  const document = '<?xml version="1.0" encoding="UTF-8"?>\\n' +
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\\n' +
-    entries.join("\\n") + (entries.length ? "\\n" : "") + '</urlset>\\n';
-  await writeFile(output, document, "utf8");
+  const document = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n' +
+    entries.join("\n") + (entries.length ? "\n" : "") + '</urlset>\n';
+  await writeFile(join(root, "pikanews/news-sitemap.xml"), document, "utf8");
   console.log("Generated PikaNews news sitemap with " + entries.length + " recent, canonical NewsArticle URLs.");
   return { count: entries.length, document };
 }
