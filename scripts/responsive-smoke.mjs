@@ -76,6 +76,9 @@ try {
           // user-scrollable viewport regression.
           const horizontalOverflow = !bodyClipsX &&
             (root.scrollWidth > window.innerWidth + 1 || body.scrollWidth > window.innerWidth + 1);
+          const heroImage = document.querySelector(".hero-img");
+          const heroRect = heroImage?.getBoundingClientRect();
+          const heroImageBounds = heroRect ? { left: heroRect.left, right: heroRect.right, width: heroRect.width } : null;
           const offenders = [...document.querySelectorAll("body *")].map(el => {
             const r = el.getBoundingClientRect();
             const s = getComputedStyle(el);
@@ -89,6 +92,7 @@ try {
             };
           }).filter(x => x.width > 0 && (x.left < -2 || x.right > window.innerWidth + 2)).slice(0, 8);
           return {
+            heroImageBounds,
             innerWidth: window.innerWidth,
             rootClientWidth: root.clientWidth,
             rootScrollWidth: root.scrollWidth,
@@ -102,6 +106,10 @@ try {
         if (metrics.horizontalOverflow) {
           report.horizontalOverflow.push({ route, width, ...metrics });
           failures.push(`${route}: horizontal overflow at ${width}px`);
+        }
+        if (route === "/pikanews/" && metrics.heroImageBounds &&
+            (metrics.heroImageBounds.left < -1 || metrics.heroImageBounds.right > width + 1)) {
+          failures.push(route + ": hero image clipped at " + width + "px");
         }
       }
       report.routes.push(pageResult);
