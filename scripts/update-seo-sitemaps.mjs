@@ -3,13 +3,13 @@
  * Refreshes root sitemap lastmod from changed tracked/untracked HTML and sends
  * changed sitemap URLs to IndexNow. Zero npm dependencies; Node.js 20+ ESM.
  */
-import {readFile,writeFile,stat} from "node:fs/promises";
+import {readFile,writeFile} from "node:fs/promises";
 import {execFileSync} from "node:child_process";
 import {resolve,extname} from "node:path";
 
 const ROOT=process.cwd();
 const DOMAIN="https://gogocompany.in";
-const KEY="gogocompanyin2026indexnowkey";
+const KEY_FILE=resolve(ROOT,"indexnow-key.txt");
 const KEY_LOCATION=DOMAIN+"/indexnow-key.txt";
 const ROOT_SITEMAP=resolve(ROOT,"sitemap.xml");
 const SITEMAPS=["sitemap.xml","sarkari-sarthi/sitemap.xml","pikanews/sitemap.xml","pikanews/news-sitemap.xml"];
@@ -63,6 +63,10 @@ async function refreshRootLastmod(changed){
  await writeFile(ROOT_SITEMAP,xml.endsWith("\n")?xml:xml+"\n","utf8");
  console.log("Updated lastmod for "+updated+" changed root sitemap URLs.");
 }
+async function readIndexNowKey(){
+ try{const key=(await readFile(KEY_FILE,"utf8")).trim();return /^[A-Za-z0-9-]{8,128}$/.test(key)?key:null}
+ catch{return null}
+}
 async function main(){
  const changed=changedPaths();
  await refreshRootLastmod(changed);
@@ -71,11 +75,13 @@ async function main(){
  const changedHtml=[...changed].map(urlForFile).filter(Boolean);
  const urls=[...new Set([...listedChanged,...changedHtml])].slice(0,10000);
  if(!urls.length){console.log("No changed public HTML URLs found; IndexNow skipped.");return}
+ const key=await readIndexNowKey();
+ if(!key){console.log("IndexNow key file is missing or invalid; notification skipped (sitemap publication is unaffected).");return}
  try{
   const response=await fetch("https://api.indexnow.org/indexnow",{
    method:"POST",
    headers:{"content-type":"application/json; charset=utf-8"},
-   body:JSON.stringify({host:new URL(DOMAIN).hostname,key:KEY,keyLocation:KEY_LOCATION,urlList:urls}),
+   body:JSON.stringify({host:new URL(DOMAIN).hostname,key,keyLocation:KEY_LOCATION,urlList:urls}),
    signal:AbortSignal.timeout(15000)
   });
   if(response.ok||response.status===202)console.log("IndexNow accepted "+urls.length+" changed URLs (HTTP "+response.status+").");
