@@ -201,7 +201,13 @@ try {
       if (await menu.evaluate((el, cls) => el.classList.contains(cls), item.openClass)) throw new Error("Escape left menu open");
       if (!await toggle.evaluate(el => document.activeElement === el)) throw new Error("focus was not returned to menu toggle");
       if (item.lock && await page.locator("body").evaluate(el => el.classList.contains("menu-open"))) throw new Error("body scroll lock remained after closing");
-      result.keyboard = "Enter + Escape";
+      await toggle.focus();
+      await toggle.press("Space");
+      if ((await toggle.getAttribute("aria-expanded")) !== "true") throw new Error("Space did not open menu");
+      await page.keyboard.press("Escape");
+      if ((await toggle.getAttribute("aria-expanded")) !== "false") throw new Error("Escape did not close menu after Space");
+      if (!await toggle.evaluate(el => document.activeElement === el)) throw new Error("focus was not returned after Space/Escape");
+      result.keyboard = "Enter + Space + Escape";
       result.focusReturned = true;
     });
     await page.close();
