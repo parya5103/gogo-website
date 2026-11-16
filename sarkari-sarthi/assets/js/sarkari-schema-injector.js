@@ -34,7 +34,7 @@ function injectJobPosting(job, pageUrl = location.href) {
     "@context": "https://schema.org",
     "@type": "JobPosting",
     "title": title,
-    "description": description.split(/\\n+/).map(part => "<p>" + escapeHtml(part) + "</p>").join(""),
+    "description": description.split(/\n+/).map(part => "<p>" + escapeHtml(part) + "</p>").join(""),
     "datePosted": datePosted,
     ...(validThrough ? { "validThrough": validThrough } : {}),
     "employmentType": employmentType,
