@@ -9,8 +9,16 @@ const START = "<!-- GOGO-TRENDING-START -->";
 const END = "<!-- GOGO-TRENDING-END -->";
 
 export function decodeEntities(value = "") {
-  return String(value).replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'").replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)));
+  const named = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'" };
+  return String(value).replace(/&(#x[0-9a-f]+|#\d+|amp|lt|gt|quot|apos);/gi, (entity, token) => {
+    if (token[0] !== "#") return named[token.toLowerCase()] ?? entity;
+    const codePoint = token[1].toLowerCase() === "x"
+      ? Number.parseInt(token.slice(2), 16)
+      : Number.parseInt(token.slice(1), 10);
+    if (!Number.isInteger(codePoint) || codePoint < 0 || codePoint > 0x10ffff ||
+        (codePoint >= 0xd800 && codePoint <= 0xdfff)) return entity;
+    return String.fromCodePoint(codePoint);
+  });
 }
 export function escapeHtml(value = "") {
   return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
