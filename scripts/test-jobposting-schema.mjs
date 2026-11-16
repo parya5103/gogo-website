@@ -56,6 +56,6 @@ assert.equal(injectJobPosting({ ...validJob, official_application_url: "http://r
 assert.equal(scripts.length, 0);
 assert.equal(injectJobPosting({ ...validJob, location: "", district: "", state: "Jammu and Kashmir" }), false, "A state-only location must not be mislabeled as a locality");
 assert.equal(scripts.length, 0);
-assert.equal(injectJobPosting(({ job_title: undefined, ...validJob })), false, "Notice heading alone must not be used as the job title");
+assert.equal(injectJobPosting(({ ...validJob, job_title: undefined })), false, "Notice heading alone must not be used as the job title");
 assert.equal(scripts.length, 0);
 console.log("JobPosting generator tests passed: strict dates, optional expiry, canonical detail guard and secure application URL.");
