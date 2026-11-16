@@ -16,6 +16,12 @@ Latest settled 28-day web-search window returned by Search Console: **17 October
 - The AEES query is a stale, unrelated term. Do not target it or create a page for it.
 - No meaningful non-brand product query is visible yet. This is an early baseline, not proof that the proposed non-brand terms have search volume.
 
+### Live on-page audit and crawl baseline (16 November 2026)
+
+The connected GSC Wizard audit fetched the five live product/hub URLs successfully (HTTP 200); all five were indexable. There were three low-severity thin-content notices: GoGo homepage (275 words), PikaNews homepage (286 words), and Sarkari Sarthi homepage (289 words). Arrow Out (789 words) and Crystal Quest (386 words) had no on-page issues in this audit; Crystal Quest's favicon was not detected. Follow-up source-repository PRs were opened to add the missing Crystal Quest favicon declaration and improve PikaNews's visible publisher-attribution context. The GoGo homepage copy was expanded in this PR branch.
+
+Google Search Console currently lists four submitted sitemaps (root, Sarkari Sarthi, PikaNews web, and PikaNews news); each reported zero warnings and zero errors at the latest download. The IndexNow settings panel has no key configured yet. The key file and notification workflow in the central-site PR are not live until merge/deployment, so do not claim IndexNow is active.
+
 ## Keyword map and page ownership
 
 Priority is based on product fit, likely intent, current site capability, and the manual search-result landscape—not a fabricated volume or difficulty score.
