@@ -672,3 +672,9 @@ body.theme-gogo input, body.theme-gogo select, body.theme-gogo textarea { accent
   overflow-wrap: anywhere;
   word-break: break-word;
 }
+
+
+/* Prevent background scrolling while the shared mobile navigation is open. */
+@media (max-width: 1120px) {
+  body.nav-open { overflow: hidden; }
+}
