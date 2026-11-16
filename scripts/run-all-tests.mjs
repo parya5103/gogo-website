@@ -1032,8 +1032,8 @@ runStep('Lighthouse: AdSense loader waits for interaction or four seconds after 
 runStep('Lighthouse: accessible GoGo accents and CLS reservations are explicit', () => {
   const css = readFileSync(resolve(root, 'assets/css/style.css'), 'utf8');
   const adsCss = readFileSync(resolve(root, 'assets/css/ads.css'), 'utf8');
-  assert.ok(css.includes('body.theme-gogo .site-header .accent { color: #93c5fd; }'));
-  assert.ok(css.includes('body.theme-gogo .site-footer .accent { color: #1d4ed8; }'));
+  assert.ok(css.includes('body.theme-gogo .site-header .accent { color: #1e40af; }'));
+  assert.ok(css.includes('body.theme-gogo .site-footer .accent { color: #1e40af; }'));
   assert.ok(css.includes('.site-header {') && css.includes('min-height: 65px;'));
   assert.ok(adsCss.includes('.ad-slot-reservation') && adsCss.includes('min-height: 280px;'));
 });
