@@ -1044,4 +1044,13 @@ runStep('Build: account bundle enables tree shaking and emits a minified notific
 });
 
 
+runStep('Build output: compiled account code is idle-deferred and notifications runtime is minified', () => {
+  const accountBundle = readFileSync(resolve(root, 'assets/js/gogo-account.js'), 'utf8');
+  const minifiedNotifications = readFileSync(resolve(root, 'assets/js/gogo-notifications.min.js'), 'utf8');
+  assert.ok(accountBundle.includes('requestIdleCallback'), 'compiled account bundle includes idle initialization');
+  assert.ok(!accountBundle.includes('test/connection'), 'compiled account bundle has no anonymous Firestore probe');
+  assert.ok(minifiedNotifications.length < notificationsModuleSrc.length, 'minified notifications payload is smaller than source');
+  assert.doesNotThrow(() => new Function(minifiedNotifications), 'minified notifications asset parses');
+});
+
 console.log(`\nALL ${totalPassed} TEST SUITES PASSED SUCCESSFULLY.`);
