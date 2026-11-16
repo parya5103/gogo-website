@@ -254,6 +254,7 @@ main { flex: 1; }
 .nav-toggle.open .nav-toggle-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 @media (max-width: 1120px) {
+  .header-inner { flex-wrap: wrap; }
   .nav-toggle { display: inline-flex; }
   .site-nav { display: none; width: 100%; }
   .site-nav.open { display: block; }
