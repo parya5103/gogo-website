@@ -25,7 +25,13 @@ async function noHorizontalOverflow(page) {
       const s = getComputedStyle(el);
       return { tag: el.tagName.toLowerCase(), id: el.id, className: typeof el.className === "string" ? el.className.slice(0, 100) : "", left: Math.round(r.left), right: Math.round(r.right), width: Math.round(r.width), position: s.position, overflowX: s.overflowX };
     }).filter(x => x.width > 0 && (x.left < -1 || x.right > width + 1)).slice(0, 12);
-    return { width, scroll: Math.max(document.documentElement.scrollWidth, document.body.scrollWidth), offenders };
+    const ticker = [".ticker", ".ticker-inner", ".ticker-label", ".ticker-viewport", ".ticker-track"].map(selector => {
+      const el = document.querySelector(selector);
+      if (!el) return { selector, missing: true };
+      const r = el.getBoundingClientRect(), s = getComputedStyle(el);
+      return { selector, left: Math.round(r.left), right: Math.round(r.right), width: Math.round(r.width), clientWidth: el.clientWidth, scrollWidth: el.scrollWidth, overflowX: s.overflowX, overflowY: s.overflowY, contain: s.contain, transform: s.transform };
+    });
+    return { width, scroll: Math.max(document.documentElement.scrollWidth, document.body.scrollWidth), offenders, ticker };
   });
   expect(metrics.scroll, `horizontal overflow: ${JSON.stringify(metrics)}`).toBeLessThanOrEqual(metrics.width + 1);
 }
