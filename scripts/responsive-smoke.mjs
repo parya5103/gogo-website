@@ -230,7 +230,7 @@ try {
     await toggle.click();
     const backdrop = page.locator(".mobile-menu-backdrop");
     if (!(await backdrop.count())) throw new Error("backdrop element missing");
-    await backdrop.click({ force: true });
+    await page.mouse.click(380, 420);
     await page.waitForTimeout(80);
     if (await page.locator("#mobile-menu").evaluate(el => el.classList.contains("open"))) throw new Error("backdrop did not close menu");
     if ((await toggle.getAttribute("aria-expanded")) !== "false") throw new Error("aria-expanded did not reset");
@@ -253,7 +253,9 @@ try {
     await page.waitForTimeout(500);
     const viewportMeta = await page.locator('meta[name="viewport"]').getAttribute("content");
     if (!viewportMeta || !viewportMeta.includes("viewport-fit=cover")) throw new Error(name + ": viewport-fit=cover missing");
-    const cssText = walk(process.cwd()).filter(file => /\.css$/i.test(file)).map(file => fs.readFileSync(file, "utf8")).join("\\n");
+    const htmlFile = name === "Arrow Out" ? "arrowout/index.html" : "crystalquest/index.html";
+    const cssFile = name === "Arrow Out" ? "arrowout/css/styles.css" : "crystalquest/styles.css";
+    const cssText = fs.readFileSync(htmlFile, "utf8") + fs.readFileSync(cssFile, "utf8");
     if (!cssText.includes("safe-area-inset")) throw new Error(name + ": safe-area inset CSS declaration missing");
     const results = [];
     for (const size of [{ width: 390, height: 844, orientation: "portrait" }, { width: 844, height: 390, orientation: "landscape" }]) {
@@ -308,9 +310,11 @@ try {
     const search = page.locator("#jobSearch");
     if (!(await search.isVisible())) throw new Error("search input is not visible at 320px");
     await search.fill("zz-mobile-regression-no-match");
+    await page.locator("#searchBtn").click();
     await page.waitForTimeout(100);
     if (!(await page.locator(".no-jobs").isVisible())) throw new Error("search did not update empty state");
     await search.fill("");
+    await page.locator("#searchBtn").click();
     const category = page.locator("#categoryFilter");
     const sort = page.locator("#sortFilter");
     if (!(await category.isVisible()) || !(await sort.isVisible())) throw new Error("category/sort filter not visible");
@@ -357,8 +361,8 @@ try {
     const readButton = cards.first().locator(".news-card-action").first();
     if (!(await readButton.count())) throw new Error("article card has no accessible read action");
     await readButton.click();
-    await page.waitForURL(/article\\.html\\?id=/, { timeout: 10000 });
-    if (!page.url().includes("article.html?id=")) throw new Error("article card did not open its detail route");
+    await page.waitForURL(/\\/pikanews\\/news\\/|article\\.html\\?id=/, { timeout: 10000 });
+    if (!page.url().includes("/pikanews/news/") && !page.url().includes("article.html?id=")) throw new Error("article card did not open its detail route");
     await page.goto(base + "/pikanews/", { waitUntil: "domcontentloaded" });
     await page.waitForTimeout(300);
     await page.locator("#search-toggle").click();
