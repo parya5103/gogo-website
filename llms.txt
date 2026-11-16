@@ -48,4 +48,3 @@ Important interpretation notes:
 
 ## Optional
 
-- [GitHub repository](https://github.com/parya5103/gogo-website): Public source repository for the central GoGo Company website.
