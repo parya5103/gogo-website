@@ -1007,6 +1007,8 @@ runStep('Lighthouse: homepage defers account code and keeps only essential preco
   assert.ok(mainJs.includes('currentPage() === "home"'), 'homepage account bundle is click-loaded');
   assert.ok(mainJs.includes('requestAnimationFrame'), 'scroll visibility work is frame-coalesced');
   assert.ok(!mainJs.includes('role="menubar"'), 'navigation uses native list semantics');
+  assert.ok(mainJs.includes('configuredRoot === "../" ? "../" : "./"'), 'DOM-provided root is restricted to known safe relative paths');
+  assert.ok(mainJs.includes('.replace(/</g, "&lt;")') && mainJs.includes('.replace(/>/g, "&gt;")') && mainJs.includes('.replace(/\'/g, "&#39;")'), 'dynamic HTML attributes escape all HTML metacharacters');
 });
 
 runStep('Lighthouse: account Firebase init waits for window load and does not probe Firestore anonymously', () => {
