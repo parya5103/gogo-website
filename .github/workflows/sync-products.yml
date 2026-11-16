@@ -95,6 +95,9 @@ jobs:
             --exclude 'CNAME' \
             src-sarkari/ sarkari-sarthi/
 
+      - name: Apply persistent SEO enhancements after sync
+        run: node scripts/apply-seo-enhancements.mjs
+
       - name: Verify synced product files (fail instead of publishing broken apps)
         run: |
           set -e
@@ -135,7 +138,7 @@ jobs:
           echo "All key product files verified."
 
       - name: Refresh SEO sitemap and notify IndexNow
-        run: node scripts/update-seo-sitemaps.mjs
+        run: node scripts/seo-sync-ping.mjs
 
       - name: Commit synced apps if changed
         run: |

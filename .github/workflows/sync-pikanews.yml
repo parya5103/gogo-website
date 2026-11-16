@@ -56,6 +56,9 @@ jobs:
             cp src-pikanews/data/failed_sources.json pikanews/data/failed_sources.json
           fi
 
+      - name: Apply persistent SEO enhancements after sync
+        run: node scripts/apply-seo-enhancements.mjs
+
       - name: Verify synced PikaNews files (fail instead of publishing a broken site)
         run: |
           set -e
@@ -131,7 +134,7 @@ jobs:
           echo "All PikaNews files verified."
 
       - name: Refresh SEO sitemap and notify IndexNow
-        run: node scripts/update-seo-sitemaps.mjs
+        run: node scripts/seo-sync-ping.mjs
 
       - name: Commit synced PikaNews if changed
         run: |
