@@ -1270,3 +1270,18 @@ a:focus {
 
 /* ---- Detail page verification chip (Phase 3) ---- */
 .job-verification { margin: 0.5rem 0 0; }
+
+
+/* Sarkari Sarthi UI refresh — hosted copy, listing and job detail pages */
+:root{--primary-color:#2457a7;--secondary-color:#173b70;--accent-color:#087f8c;--text-primary:#172033;--text-secondary:#596579;--background-primary:#f7f9fc;--background-secondary:#eef3f9;--border-color:#dce3ee;--shadow-light:0 2px 8px rgba(23,32,51,.05);--shadow-medium:0 8px 22px rgba(23,32,51,.08);--shadow-heavy:0 16px 36px rgba(23,32,51,.12)}
+body{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.65}.header{box-shadow:0 4px 18px rgba(23,32,51,.06)}.navbar{padding:.7rem 0}.nav-logo{font-size:1.25rem;letter-spacing:-.03em}.nav-link{min-height:42px;padding:9px 12px;border-radius:10px}.nav-link:hover{background:var(--background-secondary)}
+.hero{min-height:340px}.hero-content{max-width:1120px;padding-top:clamp(90px,12vw,140px);padding-bottom:54px}.hero-title{font-size:clamp(2rem,5vw,3.5rem);line-height:1.08;letter-spacing:-.04em}.hero-description{max-width:66ch;font-size:clamp(1rem,2vw,1.15rem);line-height:1.75}
+.search-section{position:relative;z-index:2}.search-container{border:1px solid var(--border-color);border-radius:20px;box-shadow:var(--shadow-medium)}.search-box{border-radius:16px}
+.search-input,.filter-select{min-height:48px;border-radius:11px;font:inherit}.search-btn,.saved-filter-btn,.telegram-btn,.whatsapp-btn{min-height:46px;border-radius:11px;font-weight:750}
+.categories-grid{gap:14px}.category-card{min-height:126px;border-radius:16px;border:1px solid var(--border-color);box-shadow:var(--shadow-light);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.category-card:focus-visible,.job-card:focus-visible,button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #0e9aa6;outline-offset:3px}
+.jobs-grid{gap:18px}.job-card{border-radius:18px;border:1px solid var(--border-color);box-shadow:var(--shadow-light)}.job-card h3{line-height:1.35}
+@media(hover:hover){.category-card:hover,.job-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-medium);border-color:rgba(8,127,140,.45)}}
+@media(max-width:768px){.nav-container{padding-left:14px;padding-right:14px}.nav-logo{font-size:1.1rem}.logo-icon{width:34px;height:34px}.hero{min-height:300px}.hero-content{padding:96px 18px 36px}.search-container{margin:0 12px;padding:14px}.search-box{padding:14px;gap:10px}.search-input{text-align:left;width:100%}.search-btn{width:100%}.search-filters{gap:9px}.filter-select,.saved-filter-btn{width:100%}.categories-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.category-card{min-width:0;padding:14px 10px}.jobs-grid{grid-template-columns:minmax(0,1fr)}.job-card{padding:18px}}
+@media(max-width:360px){.categories-grid{grid-template-columns:minmax(0,1fr)}.hero-title{font-size:1.85rem}}
+@media(prefers-reduced-motion:reduce){.category-card,.job-card,.nav-menu{transition:none!important}}

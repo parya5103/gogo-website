@@ -1,0 +1,50 @@
+name: Responsive regression
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: ['**']
+  schedule:
+    # Weekly Monday 09:00 IST (03:30 UTC).
+    - cron: '30 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  responsive:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+      - name: Install Playwright (no project dependency changes)
+        run: npm install --no-save --no-package-lock --no-audit --no-fund --legacy-peer-deps playwright@1.56.1
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Start local static server
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/gogo-http.log 2>&1 &
+          echo $! > /tmp/gogo-http.pid
+      - name: Audit all HTML viewport tags and responsive routes
+        shell: bash
+        run: |
+          set +e
+          node scripts/responsive-smoke.mjs 2>&1 | tee responsive-regression.log
+          status=${PIPESTATUS[0]}
+          exit "$status"
+      - name: Upload responsive regression report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: responsive-regression-report
+          path: |
+            responsive-regression-report.json
+            responsive-regression.log
+          if-no-files-found: warn
