@@ -665,3 +665,10 @@ body.theme-gogo input, body.theme-gogo select, body.theme-gogo textarea { accent
   overflow-wrap: anywhere;
   text-align: center;
 }
+
+/* Prevent long legal/support links and inline code from widening narrow pages. */
+.prose { min-width: 0; overflow-wrap: anywhere; }
+.prose a, .prose code, .footer-mail, .footer-mail a {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
