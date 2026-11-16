@@ -250,6 +250,11 @@ try {
       const start = page.locator(startSelector).first();
       if (await start.count()) await start.click();
     }
+    if (name === "Crystal Quest") {
+      const firstUnlocked = page.locator("#level-grid .level-card:not(.is-locked)").first();
+      await firstUnlocked.waitFor({ state: "visible", timeout: 8000 });
+      await firstUnlocked.click();
+    }
     await page.waitForTimeout(500);
     const viewportMeta = await page.locator('meta[name="viewport"]').getAttribute("content");
     if (!viewportMeta || !viewportMeta.includes("viewport-fit=cover")) throw new Error(name + ": viewport-fit=cover missing");
