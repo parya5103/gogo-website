@@ -133,7 +133,12 @@ jobs:
           fi
           echo "All PikaNews files verified."
 
-      - name: Generate fresh homepage trends and programmatic SEO hubs\n        run: |\n          node scripts/update-trending-seo.mjs\n          node scripts/generate-pseo-hubs.mjs\n\n      - name: Refresh SEO sitemap and notify IndexNow
+      - name: Generate fresh homepage trends and programmatic SEO hubs
+        run: |
+          node scripts/update-trending-seo.mjs
+          node scripts/generate-pseo-hubs.mjs
+
+      - name: Refresh SEO sitemap and notify IndexNow
         run: node scripts/seo-sync-ping.mjs
 
       - name: Commit synced PikaNews if changed
