@@ -138,7 +138,7 @@ jobs:
           echo "All key product files verified."
 
       - name: Refresh SEO sitemap and notify IndexNow
-        run: node scripts/update-seo-sitemaps.mjs
+        run: node scripts/seo-sync-ping.mjs
 
       - name: Commit synced apps if changed
         run: |
