@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
-import { parseGoogleTrendsRss, renderTrendingSection, safeUrl } from "./update-trending-seo.mjs";
+import { decodeEntities, parseGoogleTrendsRss, renderTrendingSection, safeUrl } from "./update-trending-seo.mjs";
 import { renderHub, escapeHtml } from "./generate-pseo-hubs.mjs";
 
+assert.equal(decodeEntities("&amp;lt;script&amp;gt;"), "&lt;script&gt;", "RSS entities must be decoded exactly once");
+assert.equal(decodeEntities("&#x110000;"), "&#x110000;", "Out-of-range numeric entities must remain inert");
 const trends = parseGoogleTrendsRss('<rss><channel><item><title>SSC &amp; Railway</title><link>https://trends.google.com/item</link><ht:approx_traffic>20K+</ht:approx_traffic></item></channel></rss>');
 assert.equal(trends.length,1);
 assert.equal(trends[0].title,"SSC & Railway");
