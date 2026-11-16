@@ -11,7 +11,10 @@
 (function () {
   "use strict";
 
-  var ROOT = (document.documentElement.getAttribute("data-root") || "./");
+  // Only accept the two relative roots used by the published site. Never let
+  // DOM-provided text flow into the HTML strings rendered below.
+  var configuredRoot = document.documentElement.getAttribute("data-root");
+  var ROOT = configuredRoot === "../" ? "../" : "./";
 
   var LOGO_SVG =
     '<svg class="logo" viewBox="0 0 64 64" width="40" height="40" aria-hidden="true" focusable="false">' +
@@ -66,7 +69,12 @@
   var EMAIL = "officialgogocompany@gmail.com";
 
   function attr(s) {
-    return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
   }
 
   function esc(s) {
