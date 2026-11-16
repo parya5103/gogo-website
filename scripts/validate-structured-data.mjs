@@ -20,6 +20,8 @@ for (const [path, expectedName] of [["arrowout/index.html", "Arrow Out!"], ["cry
 const sarkari = schemas(await read("sarkari-sarthi/index.html"));
 assert.ok(!sarkari.some(schema => schema["@type"] === "JobPosting"), "JobPosting must never be placed on a job-listing page");
 const injector = await read("sarkari-sarthi/assets/js/sarkari-schema-injector.js");
+const injectorTemplate = await read("scripts/sarkari-schema-injector.js");
+assert.equal(injector, injectorTemplate, "Sarkari sync must receive the persistent central JobPosting injector template");
 for (const guard of ['data-job-detail-page="true"', 'verification_status', '"official_verified"', 'official_application_url', 'applicationIsSecure', 'rawValidThrough', 'const place = clean(job.location || job.district)', 'directApply": false', 'escapeHtml']) {
   assert.ok(injector.includes(guard), "JobPosting injector missing safety guard: " + guard);
 }
