@@ -22,6 +22,19 @@ The connected GSC Wizard audit fetched the five live product/hub URLs successful
 
 Google Search Console currently lists four submitted sitemaps (root, Sarkari Sarthi, PikaNews web, and PikaNews news); each reported zero warnings and zero errors at the latest download. The IndexNow settings panel has no key configured yet. The key file and notification workflow in the central-site PR are not live until merge/deployment, so do not claim IndexNow is active.
 
+### Landing-page evidence from the same 28-day window
+
+Search Console's page report (17 Oct–13 Nov 2026) shows:
+
+- GoGo homepage: 45 impressions, 2 clicks, 4.44% CTR, average position 5.64.
+- GoGo About page: 12 impressions, 1 click, 8.33% CTR, average position 6.08.
+- Arrow Out: 3 impressions, 0 clicks, average position 5.33.
+- PikaNews: 1 impression, 0 clicks, average position 10.
+- Sarkari Sarthi homepage: 0 impressions; three individual job-detail URLs each had 1 impression (one at position 96, two around positions 9–10).
+- Crystal Quest homepage: 0 impressions.
+
+This supports prioritizing brand clarity and useful product-specific landing content. It does not establish search volume for the candidate keywords, and zero impressions in a short window does not prove zero demand.
+
 ## Keyword map and page ownership
 
 Priority is based on product fit, likely intent, current site capability, and the manual search-result landscape—not a fabricated volume or difficulty score.
