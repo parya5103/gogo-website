@@ -400,7 +400,7 @@ try {
     if (!await page.locator("#search-modal").evaluate(el => el.classList.contains("open"))) throw new Error("Ctrl+K shortcut did not open search");
     await page.keyboard.press("Escape");
     await tech.click();
-    await page.waitForURL(url => url.endsWith("technology.html"));
+    await page.waitForURL(url => url.pathname.endsWith("technology.html"));
     if (!page.url().endsWith("/pikanews/technology.html")) throw new Error("Technology category navigation did not reach its page");
     result.categoryNavigation = "technology.html";
     result.categoryLinks = await categories.count();
