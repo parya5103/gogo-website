@@ -27,7 +27,6 @@ import {
   doc,
   getDoc,
   getDocs,
-  getDocFromServer,
   query,
   orderBy,
   limit,
@@ -1184,8 +1183,8 @@ class GoGoAccountManager {
         console.warn('[GoGoAccount] Auth persistence fallback warning:', err);
       });
 
-    this.testConnection();
-
+    // No Firestore request is made for signed-out visitors. User-scoped
+    // reads/writes begin only after onAuthStateChanged supplies a real user.
     onAuthStateChanged(this.auth, async (user) => {
       this.currentUser = user;
       if (user) {
@@ -1236,16 +1235,6 @@ class GoGoAccountManager {
       document.addEventListener('DOMContentLoaded', () => this.mountDOM());
     } else {
       this.mountDOM();
-    }
-  }
-
-  private async testConnection() {
-    try {
-      await getDocFromServer(doc(this.db, 'test', 'connection'));
-    } catch (error) {
-      if (error instanceof Error && error.message.includes('the client is offline')) {
-        console.error('Please check your Firebase configuration. The client appears to be offline.');
-      }
     }
   }
 
@@ -3682,5 +3671,20 @@ if (typeof window !== 'undefined') {
     advanceCursorPaginationState,
     escapeCsvCell,
   };
-  gogoAccount.init();
+  const startWhenIdle = () => {
+    const start = () => gogoAccount.init();
+    const idleWindow = window as any;
+    if (typeof idleWindow.requestIdleCallback === 'function') {
+      idleWindow.requestIdleCallback(start, { timeout: 2500 });
+    } else {
+      window.setTimeout(start, 1200);
+    }
+  };
+
+  // Firebase Auth starts only after the first page load/paint opportunity.
+  if (document.readyState === 'complete') {
+    startWhenIdle();
+  } else {
+    window.addEventListener('load', startWhenIdle, { once: true });
+  }
 }

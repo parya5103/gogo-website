@@ -1,0 +1,71 @@
+name: Build frontend performance assets
+
+on:
+  push:
+    branches:
+      - main
+      - perf/lighthouse-mobile-a11y-2026-11
+    paths:
+      - 'src/gogo-account.ts'
+      - 'scripts/build-account-bundle.mjs'
+      - 'assets/js/gogo-notifications.js'
+      - 'assets/js/gogo-account.js'
+      - 'assets/js/gogo-notifications.min.js'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/build-frontend-assets.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/gogo-account.ts'
+      - 'scripts/build-account-bundle.mjs'
+      - 'assets/js/gogo-notifications.js'
+      - 'assets/js/gogo-account.js'
+      - 'assets/js/gogo-notifications.min.js'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/build-frontend-assets.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: frontend-assets-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install --no-save --legacy-peer-deps --no-audit --no-fund
+
+      - name: Build optimized browser bundles
+        run: npm run build
+
+      - name: Run regression suite
+        run: npm test
+
+      - name: Commit generated browser bundles
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/js/gogo-account.js assets/js/gogo-notifications.min.js
+          if git diff --cached --quiet; then
+            echo "Generated browser bundles are already up to date."
+          else
+            git commit -m "build: regenerate optimized browser bundles"
+            git push origin HEAD:${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}
+          fi

@@ -712,8 +712,8 @@ runStep('Background worker: messaging handler, GoGo-only links, dedupe tag, clic
 
 runStep('Account page loads the notifications module after the account bundle', () => {
   const html = readFileSync(resolve(root, 'account/index.html'), 'utf8');
-  assert.ok(html.includes('assets/js/gogo-notifications.js'));
-  assert.ok(html.indexOf('gogo-account.js') < html.indexOf('gogo-notifications.js'));
+  assert.ok(html.includes('assets/js/gogo-notifications.min.js'));
+  assert.ok(html.indexOf('gogo-account.js') < html.indexOf('gogo-notifications.min.js'));
 });
 
 runStep('Sync workflows keep the service-worker guard (with the notifications allowlist) and pairing checks', () => {
@@ -991,6 +991,68 @@ await runStepAsync('Behavior: a rejected isSupported() Promise yields a distinct
   assert.ok(msg.includes('browser'), 'message must point at the browser, not the backend');
   assert.notEqual(msg, GoGoNotifications.internals.enableErrorMessage(new Error('MESSAGING_UNSUPPORTED')), 'rejection is NOT reported as unsupported');
   assert.ok(!msg.includes('support check crashed'), 'internal rejection details must not leak raw into the message');
+});
+
+runStep('Lighthouse: homepage defers account code and keeps only essential preconnects', () => {
+  const html = readFileSync(resolve(root, 'index.html'), 'utf8');
+  const mainJs = readFileSync(resolve(root, 'assets/js/main.js'), 'utf8');
+  const preconnects = html.match(/rel="preconnect"/g) || [];
+  assert.ok(preconnects.length <= 3, 'no more than three preconnects');
+  assert.ok(!html.includes('identitytoolkit.googleapis.com" rel="preconnect"'));
+  assert.ok(!html.includes('fonts.googleapis.com" rel="preconnect"'));
+  assert.ok(!html.includes('www.gstatic.com" crossorigin'));
+  assert.ok(html.includes('rel="preload" href="./assets/css/gogo-account.css" as="style"'));
+  assert.ok(html.includes('rel="preload" href="./assets/css/ads.css" as="style"'));
+  assert.ok(!html.includes('pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'));
+  assert.ok(mainJs.includes('currentPage() === "home"'), 'homepage account bundle is click-loaded');
+  assert.ok(mainJs.includes('requestAnimationFrame'), 'scroll visibility work is frame-coalesced');
+  assert.ok(!mainJs.includes('role="menubar"'), 'navigation uses native list semantics');
+  assert.ok(mainJs.includes('configuredRoot === "../" ? "../" : "./"'), 'DOM-provided root is restricted to known safe relative paths');
+  assert.ok(mainJs.includes('.replace(/</g, "&lt;")') && mainJs.includes('.replace(/>/g, "&gt;")') && mainJs.includes('.replace(/\'/g, "&#39;")'), 'dynamic HTML attributes escape all HTML metacharacters');
+});
+
+runStep('Lighthouse: account Firebase init waits for window load and does not probe Firestore anonymously', () => {
+  const accountSource = readFileSync(resolve(root, 'src/gogo-account.ts'), 'utf8');
+  assert.ok(accountSource.includes("window.addEventListener('load', startWhenIdle, { once: true })"));
+  assert.ok(accountSource.includes('requestIdleCallback'));
+  assert.ok(!accountSource.includes('this.testConnection()'));
+  assert.ok(!accountSource.includes('getDocFromServer'));
+  assert.ok(accountSource.includes('onAuthStateChanged(this.auth'), 'auth callback remains the gate for user-scoped data');
+});
+
+runStep('Lighthouse: AdSense loader waits for interaction or four seconds after window load', () => {
+  const adsJs = readFileSync(resolve(root, 'assets/js/ads.js'), 'utf8');
+  for (const eventName of ['scroll', 'pointerdown', 'keydown', 'touchstart']) {
+    assert.ok(adsJs.includes('"' + eventName + '"'), 'interaction trigger: ' + eventName);
+  }
+  assert.ok(adsJs.includes('}, 4000)'), 'four-second post-load fallback exists');
+  assert.ok(adsJs.includes('if (loaded || !adsAllowed()) return'), 'consent gate remains fail-closed');
+});
+
+runStep('Lighthouse: accessible GoGo accents and CLS reservations are explicit', () => {
+  const css = readFileSync(resolve(root, 'assets/css/style.css'), 'utf8');
+  const adsCss = readFileSync(resolve(root, 'assets/css/ads.css'), 'utf8');
+  assert.ok(css.includes('body.theme-gogo .site-header .accent { color: #93c5fd; }'));
+  assert.ok(css.includes('body.theme-gogo .site-footer .accent { color: #1d4ed8; }'));
+  assert.ok(css.includes('.site-header {') && css.includes('min-height: 65px;'));
+  assert.ok(adsCss.includes('.ad-slot-reservation') && adsCss.includes('min-height: 280px;'));
+});
+
+runStep('Build: account bundle enables tree shaking and emits a minified notifications asset', () => {
+  const buildScript = readFileSync(resolve(root, 'scripts/build-account-bundle.mjs'), 'utf8');
+  assert.ok(buildScript.includes('treeShaking: true'));
+  assert.ok(buildScript.includes('await transform(notificationsSource'));
+  assert.ok(buildScript.includes('assets/js/gogo-notifications.min.js'));
+});
+
+
+runStep('Build output: compiled account code is idle-deferred and notifications runtime is minified', () => {
+  const accountBundle = readFileSync(resolve(root, 'assets/js/gogo-account.js'), 'utf8');
+  const minifiedNotifications = readFileSync(resolve(root, 'assets/js/gogo-notifications.min.js'), 'utf8');
+  assert.ok(accountBundle.includes('requestIdleCallback'), 'compiled account bundle includes idle initialization');
+  assert.ok(!accountBundle.includes('test/connection'), 'compiled account bundle has no anonymous Firestore probe');
+  assert.ok(minifiedNotifications.length < notificationsModuleSrc.length, 'minified notifications payload is smaller than source');
+  assert.doesNotThrow(() => new Function(minifiedNotifications), 'minified notifications asset parses');
 });
 
 console.log(`\nALL ${totalPassed} TEST SUITES PASSED SUCCESSFULLY.`);

@@ -16,15 +16,9 @@
   <meta name="description" content="Play free online browser games, track Sarkari job alerts, Sarkari results and admit cards in India, and read breaking tech and gaming news with GoGo Company.">
   <link rel="canonical" href="https://gogocompany.in/">
   <link rel="preconnect" href="https://www.googletagmanager.com">
-  <link rel="dns-prefetch" href="//www.googletagmanager.com">
-  <link rel="preconnect" href="https://firestore.googleapis.com">
   <link rel="dns-prefetch" href="//firestore.googleapis.com">
-  <link rel="preconnect" href="https://identitytoolkit.googleapis.com">
   <link rel="dns-prefetch" href="//identitytoolkit.googleapis.com">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="dns-prefetch" href="//fonts.googleapis.com">
-  <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
-  <link rel="dns-prefetch" href="//www.gstatic.com">
+  <link rel="dns-prefetch" href="//gen-lang-client-0566323659.firebaseapp.com">
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="GoGo Company">
@@ -44,8 +38,10 @@
   <meta name="twitter:image" content="https://gogocompany.in/assets/seo/gogo-company-social.svg">
   <meta name="twitter:image:alt" content="GoGo Company official website">
   <link rel="stylesheet" href="./assets/css/style.css">
-  <link rel="stylesheet" href="./assets/css/ads.css">
-  <link rel="stylesheet" href="./assets/css/gogo-account.css">
+  <link rel="preload" href="./assets/css/gogo-account.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="./assets/css/gogo-account.css"></noscript>
+  <link rel="preload" href="./assets/css/ads.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="./assets/css/ads.css"></noscript>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -221,7 +217,6 @@
   ]
 }
   </script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2895136878543415" crossorigin="anonymous"></script>
 </head>
 <body class="theme-gogo page-body" data-page="home">
   <main>
@@ -315,7 +310,7 @@
       </div>
     </section>
 
-    <div class="container">
+    <div class="container ad-slot-reservation">
       <aside class="ad-slot" hidden data-ad-slot="home-mid" aria-label="Advertisement">
         <p class="ad-label">Advertisement</p>
         <ins class="adsbygoogle" style="display:block" data-ad-format="auto" data-full-width-responsive="true"></ins>
@@ -337,7 +332,7 @@
   </main>
   <script src="./assets/js/main.js" defer></script>
   <script src="./assets/js/ads.js" defer></script>
-  <script src="./assets/js/gogo-notifications.js" defer></script>
+  <script src="./assets/js/gogo-notifications.min.js" defer></script>
 </body>
 </html>
 
