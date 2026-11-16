@@ -12,6 +12,15 @@ on:
       - 'package.json'
       - 'package-lock.json'
       - '.github/workflows/build-frontend-assets.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/gogo-account.ts'
+      - 'scripts/build-account-bundle.mjs'
+      - 'assets/js/gogo-notifications.js'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/build-frontend-assets.yml'
   workflow_dispatch:
 
 permissions:
@@ -28,7 +37,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ github.ref }}
+          ref: ${{ github.head_ref || github.ref }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -54,5 +63,5 @@ jobs:
             echo "Generated browser bundles are already up to date."
           else
             git commit -m "build: regenerate optimized browser bundles"
-            git push origin HEAD:${GITHUB_REF_NAME}
+            git push origin HEAD:${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}
           fi
