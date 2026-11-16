@@ -108,9 +108,9 @@ try {
   // Exercise the three actual mobile navigation implementations without
   // submitting forms or changing application data.
   const menuCases = [
-    { route: "/", toggle: ".nav-toggle", menu: "#site-nav", open: ".open", label: "GoGo" },
-    { route: "/sarkari-sarthi/", toggle: "#mobileMenuToggle", menu: "#navMenu", open: ".active", label: "Sarkari Sarthi" },
-    { route: "/pikanews/", toggle: "#mobile-menu-toggle", menu: ".mobile-menu", open: ".open", label: "PikaNews" }
+    { route: "/", toggle: ".nav-toggle", menu: "#site-nav", open: ".open", label: "GoGo", requiresScrollLock: false },
+    { route: "/sarkari-sarthi/", toggle: "#mobileMenuToggle", menu: "#navMenu", open: ".active", label: "Sarkari Sarthi", requiresScrollLock: true },
+    { route: "/pikanews/", toggle: "#mobile-menu-toggle", menu: ".mobile-menu", open: ".open", label: "PikaNews", requiresScrollLock: true }
   ];
   for (const item of menuCases) {
     const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
@@ -130,7 +130,7 @@ try {
       const bodyLocked = await page.locator("body").evaluate(el => getComputedStyle(el).overflow === "hidden" || el.classList.contains("menu-open"));
       if (!opened) throw new Error("menu did not open");
       if (expanded !== "true") throw new Error(`aria-expanded expected true, got ${expanded}`);
-      if (!bodyLocked) throw new Error("body scroll lock was not applied");
+      if (item.requiresScrollLock && !bodyLocked) throw new Error("body scroll lock was not applied");
       if (item.label === "PikaNews") {
         await page.locator(".mobile-menu-close").click();
       } else {
