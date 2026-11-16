@@ -95,3 +95,13 @@ Track these by URL and product, not just site-wide:
 6. Core Web Vitals field data when enough Chrome UX Report data exists.
 
 The goal for the first 30 days is to establish clean crawl/indexing signals, publish useful product-specific content and earn a small number of relevant mentions. Ranking gains depend on competition, demand, content quality and Google's systems; they cannot be guaranteed.
+
+
+## Official technical references
+
+- [Google Search Central: Google Trends](https://developers.google.com/search/docs/monitor-debug/trends-start)
+- [Google Search Console: Performance report](https://support.google.com/webmasters/answer/7576553)
+- [IndexNow FAQ](https://www.indexnow.org/faq) and [protocol documentation](https://www.indexnow.org/documentation) — key-file requirements and HTTP response meanings.
+- [PageSpeed Insights](https://pagespeed.web.dev/)
+- [Rich Results Test](https://search.google.com/test/rich-results)
+- [Schema Markup Validator](https://validator.schema.org/)
