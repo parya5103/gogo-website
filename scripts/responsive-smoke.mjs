@@ -354,6 +354,13 @@ try {
     if (!(await cards.count())) throw new Error("article cards did not render");
     const cardBox = await cards.first().boundingBox();
     if (!cardBox || cardBox.width > 390 + 1) throw new Error("article card exceeds mobile viewport");
+    const readButton = cards.first().locator(".news-card-action").first();
+    if (!(await readButton.count())) throw new Error("article card has no accessible read action");
+    await readButton.click();
+    await page.waitForURL(/article\\.html\\?id=/, { timeout: 10000 });
+    if (!page.url().includes("article.html?id=")) throw new Error("article card did not open its detail route");
+    await page.goto(base + "/pikanews/", { waitUntil: "domcontentloaded" });
+    await page.waitForTimeout(300);
     await page.locator("#search-toggle").click();
     if (!await page.locator("#search-modal").evaluate(el => el.classList.contains("open"))) throw new Error("search modal did not open");
     if (!await page.locator("#search-input").evaluate(el => document.activeElement === el)) throw new Error("search input did not receive focus");
