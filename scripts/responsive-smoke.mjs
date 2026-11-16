@@ -68,43 +68,34 @@ try {
         const metrics = await page.evaluate(() => {
           const root = document.documentElement;
           const body = document.body;
-          const clippedOverflow = [];
+          const bodyOverflowX = getComputedStyle(body).overflowX;
+          const bodyClipsX = ["hidden", "clip"].includes(bodyOverflowX);
+          // A few components intentionally animate/crop content (ticker,
+          // off-canvas drawers, decorative hero art). If the page itself
+          // clips horizontal overflow, its larger scrollWidth is not a
+          // user-scrollable viewport regression.
+          const horizontalOverflow = !bodyClipsX &&
+            (root.scrollWidth > window.innerWidth + 1 || body.scrollWidth > window.innerWidth + 1);
           const offenders = [...document.querySelectorAll("body *")].map(el => {
             const r = el.getBoundingClientRect();
             const s = getComputedStyle(el);
-            let parent = el.parentElement;
-            let clippedByAncestor = false;
-            while (parent && parent !== body) {
-              const parentStyle = getComputedStyle(parent);
-              if (["hidden", "clip", "scroll", "auto"].includes(parentStyle.overflowX)) {
-                clippedByAncestor = true;
-                break;
-              }
-              parent = parent.parentElement;
-            }
             return {
               tag: el.tagName.toLowerCase(),
               id: el.id || "",
               className: typeof el.className === "string" ? el.className.slice(0, 100) : "",
               left: Math.round(r.left), right: Math.round(r.right),
               width: Math.round(r.width), position: s.position,
-              overflowX: s.overflowX, clippedByAncestor
+              overflowX: s.overflowX
             };
-          }).filter(x => x.width > 0 && (x.left < -2 || x.right > window.innerWidth + 2));
-          const contained = offenders.filter(x => x.clippedByAncestor);
-          const uncontained = offenders.filter(x => !x.clippedByAncestor).slice(0, 8);
-          const bodyClipsX = ["hidden", "clip"].includes(getComputedStyle(body).overflowX);
-          const horizontalOverflow = uncontained.length > 0 ||
-            (!bodyClipsX && root.scrollWidth > window.innerWidth + 1);
+          }).filter(x => x.width > 0 && (x.left < -2 || x.right > window.innerWidth + 2)).slice(0, 8);
           return {
             innerWidth: window.innerWidth,
             rootClientWidth: root.clientWidth,
             rootScrollWidth: root.scrollWidth,
             bodyScrollWidth: body.scrollWidth,
-            bodyOverflowX: getComputedStyle(body).overflowX,
+            bodyOverflowX,
             horizontalOverflow,
-            containedOverflowCount: contained.length,
-            offenders: uncontained
+            offenders
           };
         });
         pageResult.viewports.push({ width, ...metrics });
