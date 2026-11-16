@@ -1,6 +1,11 @@
 /* GoGo Company - CLS-conscious ad reservations.
    Slots stay hidden until the ad loader activates them; once visible, their
    reserved dimensions prevent late ad responses from pushing page content. */
+.ad-slot-reservation {
+  min-height: 280px;
+  contain: layout style;
+}
+
 .ad-slot {
   box-sizing: border-box;
   display: block;
