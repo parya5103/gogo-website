@@ -149,7 +149,7 @@ test.describe('Sarkari Sarthi narrow-screen job flows', () => {
     await expect(search).toBeVisible();
     await search.fill('bank');
     await page.locator('#searchBtn').click();
-    await page.locator('#categoryFilter').selectOption({ label: 'Banking' });
+    await page.locator('#categoryFilter').selectOption('Banking');
     await page.locator('#sortFilter').selectOption('deadline');
     await noHorizontalOverflow(page);
     await expect(page.locator('#jobsGrid')).toBeVisible();
