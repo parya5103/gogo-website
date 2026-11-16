@@ -60,9 +60,12 @@ jobs:
           node --check scripts/generate-pikanews-news-sitemap.mjs
           node --check scripts/validate-pikanews-news-seo.mjs
           node --check scripts/validate-structured-data.mjs
+          node --check scripts/test-jobposting-schema.mjs
           node --check sarkari-sarthi/assets/js/sarkari-schema-injector.js
       - name: Apply post-sync SEO enhancements
         run: node scripts/apply-seo-enhancements.mjs
+      - name: Test JobPosting schema generator
+        run: node scripts/test-jobposting-schema.mjs
       - name: Generate trending content and pSEO hubs
         run: |
           node scripts/update-trending-seo.mjs
