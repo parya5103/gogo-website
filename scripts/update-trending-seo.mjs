@@ -20,7 +20,7 @@ export function decodeEntities(value = "") {
     return String.fromCodePoint(codePoint);
   });
 }
-export function escapeHtml(value = "") {
+export function serializeJsonLd(value, space = 0) {\n  return JSON.stringify(value, null, space).replace(/[<>&]/g, character => ({ "<": "\\\\u003c", ">": "\\\\u003e", "&": "\\\\u0026" })[character]);\n}\nexport function escapeHtml(value = "") {
   return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
@@ -98,7 +98,7 @@ export async function updateTrendingSeo(root = ROOT, trendItems) {
         ...news.slice(0, 6).map(item => ({ name: item.title, url: safeUrl(item.url) }))
       ].filter(item => item.url).map((item, index) => ({ "@type": "ListItem", position: index + 1, name: item.name, url: item.url }));
       graph["@graph"].push({ "@type": "ItemList", "@id": DOMAIN + "/#daily-updates", name: "Latest GoGo Company updates", dateModified: new Date().toISOString(), numberOfItems: entries.length, itemListElement: entries });
-      html = html.replace(match[0], '<script type="application/ld+json">\n' + JSON.stringify(graph, null, 2) + '\n</script>');
+      html = html.replace(match[0], '<script type="application/ld+json">\n' + serializeJsonLd(graph, 2) + '\n</script>');
     } catch (error) { console.warn("Existing homepage JSON-LD was not changed:", error.message); }
   }
   await writeFile(root + "/index.html", html.endsWith("\n") ? html : html + "\n");
