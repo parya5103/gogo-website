@@ -61,6 +61,7 @@ jobs:
           node --check scripts/validate-pikanews-news-seo.mjs
           node --check scripts/validate-structured-data.mjs
           node --check scripts/test-jobposting-schema.mjs
+          node --check scripts/sarkari-schema-injector.js
           node --check sarkari-sarthi/assets/js/sarkari-schema-injector.js
       - name: Apply post-sync SEO enhancements
         run: node scripts/apply-seo-enhancements.mjs
