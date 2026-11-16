@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [main]
+    branches: ['**']
   schedule:
     # Weekly Monday 09:00 IST (03:30 UTC).
     - cron: '30 3 * * 1'
@@ -34,3 +34,10 @@ jobs:
           echo $! > /tmp/gogo-http.pid
       - name: Audit all HTML viewport tags and responsive routes
         run: node scripts/responsive-smoke.mjs
+      - name: Upload responsive regression report
+        if: always()
+        uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v4.6.2
+        with:
+          name: responsive-regression-report
+          path: responsive-regression-report.json
+          if-no-files-found: warn
