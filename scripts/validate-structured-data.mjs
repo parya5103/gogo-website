@@ -22,7 +22,7 @@ assert.ok(!sarkari.some(schema => schema["@type"] === "JobPosting"), "JobPosting
 const injector = await read("sarkari-sarthi/assets/js/sarkari-schema-injector.js");
 const injectorTemplate = await read("scripts/sarkari-schema-injector.js");
 assert.equal(injector, injectorTemplate, "Sarkari sync must receive the persistent central JobPosting injector template");
-for (const guard of ['data-job-detail-page="true"', 'verification_status', '"official_verified"', 'official_application_url', 'applicationIsSecure', 'rawValidThrough', 'const place = clean(job.location || job.district)', 'directApply": false', 'escapeHtml']) {
+for (const guard of ['data-job-detail-page="true"', 'const title = clean(job.job_title);', 'verification_status', '"official_verified"', 'official_application_url', 'applicationIsSecure', 'rawValidThrough', 'const place = clean(job.location || job.district)', 'directApply": false', 'escapeHtml']) {
   assert.ok(injector.includes(guard), "JobPosting injector missing safety guard: " + guard);
 }
 assert.ok(injector.includes('(validThrough && new Date(validThrough) <= new Date())'), "Unknown expiry must remain optional; expired jobs must be excluded");
