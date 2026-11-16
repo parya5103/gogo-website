@@ -48,6 +48,7 @@ jobs:
           node --version
           node --check scripts/apply-seo-enhancements.mjs
           node --check scripts/update-seo-sitemaps.mjs
+          node --check scripts/seo-sync-ping.mjs
           node --check scripts/validate-seo.mjs
           node --check sarkari-sarthi/assets/js/sarkari-schema-injector.js
       - name: Apply post-sync SEO enhancements
