@@ -57,6 +57,8 @@ jobs:
           node --check scripts/generate-pseo-hubs.mjs
           node --check scripts/test-seo-generators.mjs
           node --check scripts/validate-seo-build.mjs
+          node --check scripts/generate-pikanews-news-sitemap.mjs
+          node --check scripts/validate-pikanews-news-seo.mjs
           node --check sarkari-sarthi/assets/js/sarkari-schema-injector.js
       - name: Apply post-sync SEO enhancements
         run: node scripts/apply-seo-enhancements.mjs
@@ -66,6 +68,10 @@ jobs:
           node scripts/generate-pseo-hubs.mjs
       - name: Test SEO generator helpers
         run: node scripts/test-seo-generators.mjs
+      - name: Generate and validate PikaNews news sitemap
+        run: |
+          node scripts/generate-pikanews-news-sitemap.mjs
+          node scripts/validate-pikanews-news-seo.mjs
       - name: Validate generated SEO pages
         run: node scripts/validate-seo-build.mjs
       - name: Validate SEO implementation
