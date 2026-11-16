@@ -9,14 +9,14 @@ const escapeHtml = value => String(value).replace(/&/g, "&amp;").replace(/</g, "
 export const iso = value => {
   if (typeof value !== "string") return null;
   const input = value.trim();
-  const dmy = input.match(/^(\\d{2})-(\\d{2})-(\\d{4})$/);
+  const dmy = input.match(/^(\d{2})-(\d{2})-(\d{4})$/);
   if (dmy) {
     const day = Number(dmy[1]), month = Number(dmy[2]), year = Number(dmy[3]);
     const date = new Date(Date.UTC(year, month - 1, day));
     if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) return null;
     return date.toISOString();
   }
-  if (!/^\\d{4}-\\d{2}-\\d{2}(?:T.*)?$/.test(input)) return null;
+  if (!/^\d{4}-\d{2}-\d{2}(?:T.*)?$/.test(input)) return null;
   const date = new Date(input);
   return Number.isFinite(date.getTime()) ? date.toISOString() : null;
 };
