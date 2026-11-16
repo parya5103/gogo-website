@@ -20,7 +20,12 @@ export function decodeEntities(value = "") {
     return String.fromCodePoint(codePoint);
   });
 }
-export function serializeJsonLd(value, space = 0) {\n  return JSON.stringify(value, null, space).replace(/[<>&]/g, character => ({ "<": "\\\\u003c", ">": "\\\\u003e", "&": "\\\\u0026" })[character]);\n}\nexport function escapeHtml(value = "") {
+export function serializeJsonLd(value, space = 0) {
+  return JSON.stringify(value, null, space).replace(/[<>&]/g, character => ({
+    "<": "\\u003c", ">": "\\u003e", "&": "\\u0026"
+  })[character]);
+}
+export function escapeHtml(value = "") {
   return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
