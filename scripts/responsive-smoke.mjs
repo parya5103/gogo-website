@@ -133,6 +133,10 @@ try {
       if (item.requiresScrollLock && !bodyLocked) throw new Error("body scroll lock was not applied");
       if (item.label === "PikaNews") {
         await page.locator(".mobile-menu-close").click();
+      } else if (item.label === "Sarkari Sarthi") {
+        // The backdrop covers the toggle while the drawer is open; tap its
+        // exposed right edge to close the overlay as a user would.
+        await page.locator("#menuBackdrop").click({ position: { x: 385, y: 420 }, timeout: 5000 });
       } else {
         await toggle.click();
       }
