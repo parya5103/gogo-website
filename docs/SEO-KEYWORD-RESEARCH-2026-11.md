@@ -76,3 +76,10 @@ Official guidance: Google Trends supports related/rising query research and geog
 - Do not promise page-one rankings.
 - Track each URL's impressions, clicks, CTR, and average position separately; site-wide averages can hide product-level differences.
 - Treat hidden/anonymized Search Console queries as a coverage limitation, not as zero demand.
+
+
+## Official references
+
+- [Google Search Central: Get started with Google Trends](https://developers.google.com/search/docs/monitor-debug/trends-start) — Explore terms by country, date range and category; review Top and Rising related queries; compare findings with Search Console.
+- [Google Search Console: Search results Performance report](https://support.google.com/webmasters/answer/7576553) — Query/page dimensions, clicks, impressions, CTR and average position.
+- [Google Search Console: common performance-report tasks](https://support.google.com/webmasters/answer/17010961) — Filter a query and inspect which pages appeared for it.
