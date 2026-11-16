@@ -54,7 +54,7 @@ for(const dir of dirs.filter(x=>x.isDirectory())){
  let article;try{article=await read("pikanews/news/"+dir.name+"/index.html")}catch{continue}
  for(const block of article.matchAll(/<script\s+type=["']application\/ld\+json["']\s*>([\s\S]*?)<\/script>/gi)){
   const data=JSON.parse(block[1]);
-  if(data["@type"]==="NewsArticle"){assert.equal(data.publisher?.name,"GoGo Company");assert.match(article,/max-image-preview:large/);articleCount++}
+  if(data["@type"]==="NewsArticle"){assert.equal(data.publisher?.name,"PikaNews");assert.match(article,/max-image-preview:large/);articleCount++}
  }
 }
 console.log("SEO validation passed: "+title.length+"-character title, "+description.length+"-character description, "+locs.length+" root URLs, "+articleCount+" NewsArticle pages checked.");
