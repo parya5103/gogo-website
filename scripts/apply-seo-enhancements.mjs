@@ -2,7 +2,7 @@
 import {readFile,writeFile,readdir,mkdir} from "node:fs/promises";
 import {resolve} from "node:path";
 const ROOT=process.cwd(), DOMAIN="https://gogocompany.in", SOCIAL=DOMAIN+"/assets/seo/gogo-company-social.svg", ORG=DOMAIN+"/#organization";
-const rx=s=>s.replace(/[.*+?^()|[\]\]/g,"\$&"), esc=s=>String(s).replaceAll("&","&amp;").replaceAll('"',"&quot;");
+const rx=s=>s, esc=s=>String(s).replaceAll("&","&amp;").replaceAll('"',"&quot;");
 async function read(p){try{return await readFile(resolve(ROOT,p),"utf8")}catch{return null}}
 async function write(p,s){const f=resolve(ROOT,p);await mkdir(f.slice(0,f.lastIndexOf("/")),{recursive:true});await writeFile(f,s.endsWith("\n")?s:s+"\n","utf8")}
 function meta(h,attr,key,val){const r=new RegExp("<meta\\b(?=[^>]*\\b"+attr+"=[\"']"+rx(key)+"[\"'])[^>]*>","i"),t='<meta '+attr+'="'+esc(key)+'" content="'+esc(val)+'">';return r.test(h)?h.replace(r,t):h.replace(/<\/head>/i,"  "+t+"\n</head>")}
