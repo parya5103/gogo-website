@@ -685,3 +685,14 @@ body.theme-gogo input, body.theme-gogo select, body.theme-gogo textarea { accent
 @media (max-width: 1120px) {
   body.nav-open { overflow: hidden; }
 }
+
+/* Crawlable daily content blocks on the GoGo homepage. */
+.gogo-trending { background: var(--bg-soft); }
+.trending-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 18px; }
+.trending-grid > section { min-width: 0; padding: 20px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); }
+.trending-grid h3 { margin-top: 0; }
+.trending-list, .trending-tags { margin: 0; padding-left: 22px; }
+.trending-list li, .trending-tags li { margin: 8px 0; overflow-wrap: anywhere; }
+.trending-list a, .trending-tags a { color: var(--link); font-weight: 650; }
+.trending-source { color: var(--text-dim); font-size: .9rem; }
+.trending-empty { color: var(--text-dim); }
