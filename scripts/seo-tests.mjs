@@ -127,6 +127,22 @@ for (const [page, expectedCanonical, isIndexable] of ownedPages) {
   }
 }
 
+check('homepage Organization and WebSite schema share one publisher entity', () => {
+  const html = getHtml('index.html');
+  const scripts = html.split('<script type="application/ld+json">').slice(1).map((part) => part.split('</script>')[0]);
+  const schemas = scripts.map((json) => JSON.parse(json));
+  const graph = schemas.flatMap((schema) => Array.isArray(schema['@graph']) ? schema['@graph'] : [schema]);
+  const org = graph.find((schema) => schema['@type'] === 'Organization');
+  const website = graph.find((schema) => schema['@type'] === 'WebSite');
+  assert(org && org['@id'] === 'https://gogocompany.in/#organization', 'Organization needs a stable @id');
+  assert(website && website['@id'] === 'https://gogocompany.in/#website', 'WebSite needs a stable @id');
+  assert(website.publisher && website.publisher['@id'] === org['@id'], 'WebSite publisher must reference the Organization');
+  assert(org.description.includes('PikaNews'), 'Organization description must include the current product portfolio');
+  assert(org.logo && org.logo.url === 'https://gogocompany.in/favicon.svg', 'Organization must reference the GoGo brand mark');
+  const logo = read('favicon.svg');
+  assert(/<svg[^>]*width="512"[^>]*height="512"/.test(logo), 'brand logo must expose square 512px dimensions');
+});
+
 // Sitemap integrity
 check('sitemap.xml: locs absolute, unique, targets exist, no noindex URLs', () => {
   const sm = read('sitemap.xml');
