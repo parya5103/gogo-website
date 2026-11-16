@@ -10,7 +10,7 @@ on:
       - 'playwright.config.js'
       - '.github/workflows/mobile-responsive.yml'
   push:
-    branches: [main]
+    branches: ['**']
     paths:
       - 'tests/responsive/**'
       - 'playwright.config.js'
