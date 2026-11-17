@@ -45,8 +45,8 @@ function notificationOptions(notification, data, notificationId) {
     body: String(notification.body || data.body || ''),
     tag: notificationId,
     renotify: false,
-    icon: 'https://gogocompany.in/favicon.ico',
-    badge: 'https://gogocompany.in/favicon.ico',
+    icon: 'https://gogocompany.in/favicon.svg',
+    badge: 'https://gogocompany.in/favicon.svg',
     data: { url: link, notificationId: notificationId }
   };
 }
