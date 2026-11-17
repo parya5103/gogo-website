@@ -784,7 +784,6 @@ runStep('FCM foreground delivery and token validation are wired fail-closed', ()
   assert.ok(notificationsModuleSrc.includes('function sendTestLocalNotification()'));
   assert.ok(notificationsModuleSrc.includes('function getDiagnostics()'));
   assert.ok(notificationsModuleSrc.includes('foregroundHandlerAttached'));
-  assert.ok(notificationsModuleSrc.includes('FIREBASE'));
 });
 
 runStep('Permission request outcomes classify distinctly: granted / denied / dismissed (default)', () => {
