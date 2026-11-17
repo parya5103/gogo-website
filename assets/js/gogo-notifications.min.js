@@ -528,9 +528,10 @@
         if (error) reject(error); else resolve(registration);
       }
       function check() {
+        // Firebase needs an activated registration, not necessarily a page
+        // controller (the first visit may still be awaiting clients.claim()).
         var worker = registration.active;
-        var controlled = !!(navigator.serviceWorker && navigator.serviceWorker.controller);
-        if (worker && worker.state === 'activated' && controlled) finish();
+        if (worker && worker.state === 'activated') finish();
       }
       [registration.installing, registration.waiting, registration.active].forEach(function (worker) {
         if (worker) worker.addEventListener('statechange', check);
