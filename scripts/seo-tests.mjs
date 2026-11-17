@@ -32,7 +32,8 @@ const read = (p) => readFileSync(resolve(root, p), 'utf8');
 // [file, expectedCanonical, indexable]
 const ownedPages = [
   ['index.html', 'https://gogocompany.in/', true],
-  ['about/index.html', 'https://gogocompany.in/about/', true],
+  ['about/index.html', 'https://gogocompany.in/about.html', true],
+  ['about.html', 'https://gogocompany.in/about.html', true],
   ['contact/index.html', 'https://gogocompany.in/contact/', true],
   ['disclaimer/index.html', 'https://gogocompany.in/disclaimer/', true],
   ['privacy-policy/index.html', 'https://gogocompany.in/privacy-policy/', true],
@@ -168,7 +169,7 @@ check('sitemap.xml: all indexable gogo pages, product roots and arrowout sub-pag
   const sm = read('sitemap.xml');
   const must = [
     'https://gogocompany.in/',
-    'https://gogocompany.in/about/',
+    'https://gogocompany.in/about.html',
     'https://gogocompany.in/contact/',
     'https://gogocompany.in/disclaimer/',
     'https://gogocompany.in/privacy-policy/',
