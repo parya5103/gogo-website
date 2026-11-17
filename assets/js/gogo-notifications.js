@@ -1054,31 +1054,38 @@
   function getDiagnostics() {
     var stored = loadStored();
     var token = stored && typeof stored.fcmToken === 'string' ? stored.fcmToken : '';
-    var registration = state.swRegistration;
-    var active = registration && registration.active;
-    return {
-      origin: root.location ? root.location.origin : null,
-      permission: hasNotificationApi() ? Notification.permission : 'unsupported',
-      secureContext: root.isSecureContext === true,
-      messagingReady: state.sdkReady,
-      foregroundHandlerAttached: state.foregroundHandlerAttached,
-      serviceWorker: {
-        supported: swSupported(),
-        scope: registration ? registration.scope : null,
-        activeState: active ? active.state : null,
-        controller: !!(swSupported() && navigator.serviceWorker.controller)
-      },
-      token: {
-        present: !!token,
-        plausible: isPlausibleFcmToken(token),
-        length: token.length,
-        masked: token ? token.slice(0, 8) + '…' + token.slice(-6) : null,
-        registered: !!(stored && stored.deviceId),
-        verified: !!(stored && stored.verified)
-      },
-      apiBase: CONFIG.apiBase,
-      appId: CONFIG.appId
-    };
+    var registrationPromise = state.swRegistration
+      ? Promise.resolve(state.swRegistration)
+      : (swSupported() && navigator.serviceWorker.getRegistration
+        ? navigator.serviceWorker.getRegistration(CONFIG.swScope || '/')
+        : Promise.resolve(null));
+    return Promise.resolve(registrationPromise).catch(function () { return null; }).then(function (registration) {
+      if (registration) state.swRegistration = registration;
+      var active = registration && registration.active;
+      return {
+        origin: root.location ? root.location.origin : null,
+        permission: hasNotificationApi() ? Notification.permission : 'unsupported',
+        secureContext: root.isSecureContext === true,
+        messagingReady: state.sdkReady,
+        foregroundHandlerAttached: state.foregroundHandlerAttached,
+        serviceWorker: {
+          supported: swSupported(),
+          scope: registration ? registration.scope : null,
+          activeState: active ? active.state : null,
+          controller: !!(swSupported() && navigator.serviceWorker.controller)
+        },
+        token: {
+          present: !!token,
+          plausible: isPlausibleFcmToken(token),
+          length: token.length,
+          masked: token ? token.slice(0, 8) + '…' + token.slice(-6) : null,
+          registered: !!(stored && stored.deviceId),
+          verified: !!(stored && stored.verified)
+        },
+        apiBase: CONFIG.apiBase,
+        appId: CONFIG.appId
+      };
+    });
   }
 
   var api = {
