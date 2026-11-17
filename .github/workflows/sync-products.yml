@@ -195,6 +195,6 @@ jobs:
             --arg body "GoGo के products और website में नया update प्रकाशित हुआ है। अभी देखें।" \
             --arg deepLink "https://gogocompany.in/" \
             '{eventType:"product_update",eventId:$eventId,title:$title,body:$body,deepLink:$deepLink}' > /tmp/gogo-event.json
-          curl -fsS --max-time 20 -X POST "$CENTRAL_API/api/v1/automation/publish" \
+          curl --fail-with-body -sS --connect-timeout 10 --max-time 60 --retry 2 --retry-connrefused --retry-delay 5 -X POST "$CENTRAL_API/api/v1/automation/publish" \
             -H "Authorization: Bearer $OIDC_TOKEN" -H "Content-Type: application/json" \
             --data-binary @/tmp/gogo-event.json
