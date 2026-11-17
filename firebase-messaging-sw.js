@@ -45,7 +45,8 @@ function notificationOptions(notification, data, notificationId) {
     body: String(notification.body || data.body || ''),
     tag: notificationId,
     renotify: false,
-    icon: '/favicon.svg',
+    icon: 'https://gogocompany.in/favicon.ico',
+    badge: 'https://gogocompany.in/favicon.ico',
     data: { url: link, notificationId: notificationId }
   };
 }
@@ -58,10 +59,14 @@ messaging.onBackgroundMessage(function (payload) {
   var notificationId = String(
     data.notificationId || data.campaignId || (payload && payload.messageId) || ('gogo-' + Date.now())
   );
-  return self.registration.showNotification(
-    String(notification.title || data.title || 'GoGo Company'),
-    notificationOptions(notification, data, notificationId)
-  );
+  var title = String(notification.title || data.title || 'GoGo Company');
+  var options = notificationOptions(notification, data, notificationId);
+  // The background handler is the sole popup owner while the page is hidden.
+  // Check by tag first so an FCM redelivery does not stack duplicate popups.
+  return self.registration.getNotifications({ tag: notificationId }).then(function (existing) {
+    if (existing && existing.length) return null;
+    return self.registration.showNotification(title, options);
+  });
 });
 
 // Optional standard Web Push support for a future non-FCM sender.
