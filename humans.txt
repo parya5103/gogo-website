@@ -1,0 +1,21 @@
+/* TEAM */
+  Site: Gogo Company
+  Website: https://gogocompany.in/
+  Founder: Pratik Arya
+  Location: Indore, Madhya Pradesh, India
+  Contact: officialgogocompany@gmail.com
+
+/* SITE */
+  Standards: HTML5, CSS3, Schema.org structured data
+  Platform: GitHub Pages
+  Last updated: 2026-11-17
+  Language: English (India)
+
+  Official products:
+  - https://gogocompany.in/sarkari-sarthi/
+  - https://gogocompany.in/pikanews/
+  - https://gogocompany.in/arrowout/
+  - https://gogocompany.in/crystalquest/
+
+  Gogo Company is independent and is not affiliated with Gogo Business Aviation
+  or other third-party businesses using the Gogo name.
