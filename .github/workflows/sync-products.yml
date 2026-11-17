@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: write
+  id-token: write
 
 concurrency:
   group: sync-products
@@ -146,6 +147,7 @@ jobs:
         run: node scripts/seo-sync-ping.mjs
 
       - name: Commit synced apps if changed
+        id: publish
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -161,10 +163,31 @@ jobs:
             exit 1
           fi
           if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No product changes to publish."
           else
             git commit -m "sync: refresh product apps from source repositories"
             git pull --rebase origin main
             git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
+
+      - name: Send GoGo Central product update notification
+        if: steps.publish.outputs.changed == 'true' && success()
+        env:
+          CENTRAL_API: https://gogo-central-backend.onrender.com
+        run: |
+          set -euo pipefail
+          OIDC_URL="${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=gogo-central-notifications"
+          OIDC_TOKEN=$(curl -fsS -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" "$OIDC_URL" | jq -r '.value')
+          EVENT_ID=$(find arrowout crystalquest sarkari-sarthi -type f -not -path '*/.git/*' -print0 | sort -z | xargs -0 sha256sum | sha256sum | cut -d' ' -f1)
+          jq -n --arg eventId "$EVENT_ID" \
+            --arg title "GoGo Company में नया अपडेट" \
+            --arg body "GoGo के products और website में नया update प्रकाशित हुआ है। अभी देखें।" \
+            --arg deepLink "https://gogocompany.in/" \
+            '{eventType:"product_update",eventId:$eventId,title:$title,body:$body,deepLink:$deepLink}' > /tmp/gogo-event.json
+          curl -fsS --max-time 20 -X POST "$CENTRAL_API/api/v1/automation/publish" \
+            -H "Authorization: Bearer $OIDC_TOKEN" -H "Content-Type: application/json" \
+            --data-binary @/tmp/gogo-event.json
