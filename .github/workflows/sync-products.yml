@@ -185,7 +185,7 @@ jobs:
           set -euo pipefail
           OIDC_URL="${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=gogo-central-notifications"
           OIDC_TOKEN=$(curl -fsS -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" "$OIDC_URL" | jq -r '.value')
-          EVENT_ID=$(sha256sum index.html | cut -d' ' -f1)
+          EVENT_ID=$(git rev-parse HEAD)
           jq -n --arg eventId "$EVENT_ID" \
             --arg title "GoGo Company में नया अपडेट" \
             --arg body "GoGo के products और website में नया update प्रकाशित हुआ है। अभी देखें।" \
