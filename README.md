@@ -1,8 +1,11 @@
-# GoGo Company Website
+# Gogo Company Website
 
-Official website of GoGo Company (gogocompany.in) - independent gaming and
-digital products company. This site is the central portal and the ONLY
-deployment that owns the custom domain `gogocompany.in`.
+Official website of Gogo Company — an independent Indian technology, digital media and web gaming organization headquartered in Indore, Madhya Pradesh, India, founded by Pratik Arya.
+
+**Official website:** https://gogocompany.in/  
+**Company profile:** https://gogocompany.in/about.html
+
+This repository contains the central portal and the ONLY deployment that owns the custom domain `gogocompany.in`.
 
 ## Products (unified domain)
 

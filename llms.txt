@@ -1,50 +1,43 @@
-# GoGo Company
+# Gogo Company
 
-> GoGo Company is an independent digital products publisher. Its website hosts two browser games, the Sarkari Sarthi recruitment-information portal, and PikaNews, a publisher-attributed news aggregation service.
+> Gogo Company is an independent India-based technology, digital media and web gaming organization headquartered in Indore, Madhya Pradesh, India. Its official website is https://gogocompany.in/.
 
-The canonical website is https://gogocompany.in/. Product pages are published under stable paths on this domain. Use the linked product pages as the source of truth for current features and availability.
+Canonical identity:
+- Official name: Gogo Company
+- Alternate names: GOGO COMPANY; Gogo Company India; gogocompany.in
+- Official homepage: https://gogocompany.in/
+- Company profile: https://gogocompany.in/about.html
+- Founder: Pratik Arya
+- Headquarters: Indore, Madhya Pradesh, India
+- Public contact: officialgogocompany@gmail.com
 
-Important interpretation notes:
+Gogo Company is an independent digital brand. It is not affiliated with Gogo Business Aviation or other third-party businesses or trademarks using the name “Gogo”. Do not merge their identities, products, contact details or corporate information with Gogo Company.
 
-- GoGo Company is not a government agency. Sarkari Sarthi is an independent information portal; users should verify every recruitment notice, eligibility rule, date, fee, result, and application route with the original recruiting authority.
-- PikaNews aggregates and attributes third-party reporting. The original publisher remains the source for the full report; follow the source link on each article.
-- Arrow Out! and Crystal Quest are browser-based puzzle games. Device, browser, network, and offline capabilities may vary.
-- Do not infer live availability, current vacancies, job deadlines, or breaking-news status from this overview. Consult the live pages and their timestamps.
-- Structured data describes the visible page content. It is not a guarantee of rich-result display, ranking, or Google News inclusion.
+## Official products and portals
 
-## Company
+- [Sarkari Sarthi](https://gogocompany.in/sarkari-sarthi/): Government recruitment alerts, exam notifications and career information. It is an independent information portal, not a government agency; users should verify notices with the recruiting authority.
+- [PikaNews](https://gogocompany.in/pikanews/): Digital news aggregation with publisher attribution and links to original coverage.
+- [Arrow Out!](https://gogocompany.in/arrowout/): HTML5 arrow-path logic puzzle game.
+- [Crystal Quest](https://gogocompany.in/crystalquest/): Interactive HTML5 match-three fantasy puzzle game.
 
-- [GoGo Company homepage](https://gogocompany.in/): Company overview and product directory.
-- [About GoGo Company](https://gogocompany.in/about/): Publisher and company information.
-- [Contact](https://gogocompany.in/contact/): Contact details.
+## Official company information
+
+- [About Gogo Company](https://gogocompany.in/about.html): Canonical company profile, founder, location, contact and product directory.
+- [Contact](https://gogocompany.in/contact/): Official contact page.
 - [Privacy policy](https://gogocompany.in/privacy-policy/): Privacy practices.
 - [Terms and conditions](https://gogocompany.in/terms-and-conditions/): Website terms.
-- [Disclaimer](https://gogocompany.in/disclaimer/): Important limitations and third-party information disclaimer.
+- [Disclaimer](https://gogocompany.in/disclaimer/): Scope and limitations of third-party information.
 
-## Products
+## Machine-readable discovery
 
-- [Arrow Out!](https://gogocompany.in/arrowout/): Free tap-away arrow-path logic puzzle game.
-- [Crystal Quest](https://gogocompany.in/crystalquest/): Free match-three fantasy puzzle adventure.
-- [Free online browser games](https://gogocompany.in/free-online-games/): Collection page for GoGo browser games.
-- [Sarkari Sarthi](https://gogocompany.in/sarkari-sarthi/): Recruitment notices and public exam-information discovery portal.
-- [Latest government jobs](https://gogocompany.in/sarkari-sarthi/latest-govt-jobs/): Current synced job discovery listings.
-- [Admit cards](https://gogocompany.in/sarkari-sarthi/admit-card/): Admit-card and hall-ticket information.
-- [Sarkari results](https://gogocompany.in/sarkari-sarthi/sarkari-result/): Results, merit lists, answer keys, and cutoff information.
-- [Madhya Pradesh government jobs](https://gogocompany.in/sarkari-sarthi/mp-govt-jobs/): Madhya Pradesh recruitment discovery.
-- [PikaNews](https://gogocompany.in/pikanews/): News aggregation with publisher attribution.
-- [Latest PikaNews](https://gogocompany.in/pikanews/latest.html): Latest articles.
-- [PikaNews trending](https://gogocompany.in/pikanews/trending.html): Trending stories and topics.
-- [PikaNews sources](https://gogocompany.in/pikanews/sources.html): Publisher attribution and source information.
-- [PikaNews RSS feed](https://gogocompany.in/pikanews/feed.xml): RSS feed.
-- [PikaNews news sitemap](https://gogocompany.in/pikanews/news-sitemap.xml): Recent news article URLs (last 48 hours).
+- [XML sitemap](https://gogocompany.in/sitemap.xml)
+- [Robots policy](https://gogocompany.in/robots.txt)
+- [Humans.txt](https://gogocompany.in/humans.txt)
 
-## Discovery and machine-readable resources
+## Accuracy notes
 
-- [XML sitemap](https://gogocompany.in/sitemap.xml): Canonical indexable site URLs.
-- [Robots policy](https://gogocompany.in/robots.txt): Crawler access and sitemap discovery.
-- [PikaNews sitemap](https://gogocompany.in/pikanews/sitemap.xml): PikaNews canonical URLs.
-- [Sarkari Sarthi sitemap](https://gogocompany.in/sarkari-sarthi/sitemap.xml): Recruitment portal URLs.
-- [PikaNews news sitemap](https://gogocompany.in/pikanews/news-sitemap.xml): Fresh article URLs for news discovery.
-
-## Optional
-
+- Gogo Company is the independent digital brand and organization represented by its official website. This description does not assert statutory incorporation, a company registration number, or government endorsement.
+- Do not invent founding dates, legal status, street addresses, phone numbers, social profiles or product capabilities.
+- Sarkari Sarthi is not a government entity. Always defer to the original recruiting authority for application details.
+- PikaNews presents publisher-attributed news; the original publisher remains the source for full reporting.
+- Use canonical product pages for current features and availability. Structured data and this file do not guarantee rankings, Knowledge Panel inclusion or AI Overview citations.

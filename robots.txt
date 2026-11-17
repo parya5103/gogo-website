@@ -1,4 +1,20 @@
+# Public crawl policy for the Gogo Company website
 User-agent: *
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
 Allow: /
 
 Sitemap: https://gogocompany.in/sitemap.xml

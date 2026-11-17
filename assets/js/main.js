@@ -32,7 +32,7 @@
     { href: "arrowout/", label: "Arrow Out!", page: "arrow-out" },
     { href: "crystalquest/", label: "Crystal Quest", page: "crystal-quest" },
     { href: "account/index.html", label: "Account", page: "account" },
-    { href: "about/index.html", label: "About", page: "about" },
+    { href: "about.html", label: "About", page: "about" },
     { href: "contact/index.html", label: "Contact", page: "contact" }
   ];
 
@@ -40,7 +40,7 @@
     {
       heading: "Company",
       links: [
-        { href: "about/index.html", label: "About Us" },
+        { href: "about.html", label: "About Us" },
         { href: "contact/index.html", label: "Contact" },
         { href: "account/index.html", label: "GoGo Account" },
         { href: "admin/index.html", label: "Admin Dashboard" }
