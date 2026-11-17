@@ -45,8 +45,8 @@ function notificationOptions(notification, data, notificationId) {
     body: String(notification.body || data.body || ''),
     tag: notificationId,
     renotify: false,
-    icon: 'https://gogocompany.in/favicon.svg',
-    badge: 'https://gogocompany.in/favicon.svg',
+    icon: 'https://gogocompany.in/favicon.ico',
+    badge: 'https://gogocompany.in/favicon.ico',
     data: { url: link, notificationId: notificationId }
   };
 }
@@ -56,13 +56,17 @@ var messaging = firebase.messaging();
 messaging.onBackgroundMessage(function (payload) {
   var notification = (payload && payload.notification) || {};
   var data = (payload && payload.data) || {};
+
+  // FCM automatically displays notification payloads while the page is in the
+  // background. Showing them again here creates a duplicate OS popup. Only
+  // data-only messages need this worker to create a notification explicitly.
+  if (payload && payload.notification) return null;
+
   var notificationId = String(
     data.notificationId || data.campaignId || (payload && payload.messageId) || ('gogo-' + Date.now())
   );
   var title = String(notification.title || data.title || 'GoGo Company');
   var options = notificationOptions(notification, data, notificationId);
-  // The background handler is the sole popup owner while the page is hidden.
-  // Check by tag first so an FCM redelivery does not stack duplicate popups.
   return self.registration.getNotifications({ tag: notificationId }).then(function (existing) {
     if (existing && existing.length) return null;
     return self.registration.showNotification(title, options);
