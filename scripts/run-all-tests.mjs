@@ -870,6 +870,18 @@ runStep('Service worker click handler validates client URLs by hostname parsing,
   assert.ok(!sw.includes("addEventListener('fetch'"), 'no fetch handler may appear in the FCM worker');
 });
 
+runStep('FCM background notification payloads are not manually re-shown (prevents duplicate OS popups)', () => {
+  const sw = readFileSync(resolve(root, 'firebase-messaging-sw.js'), 'utf8');
+  const handlerStart = sw.indexOf('messaging.onBackgroundMessage(function (payload)');
+  const handlerEnd = sw.indexOf('// Optional standard Web Push support', handlerStart);
+  assert.ok(handlerStart !== -1 && handlerEnd > handlerStart, 'background handler is present');
+  const handler = sw.slice(handlerStart, handlerEnd);
+  assert.ok(handler.includes('if (payload && payload.notification) return null;'), 'FCM notification payload is left to Firebase automatic display');
+  assert.ok(handler.includes('self.registration.showNotification(title, options)'), 'data-only payloads still display a notification');
+  assert.ok(sw.includes("event.notification.data && event.notification.data.url"), 'notification click uses its stored destination');
+  assert.ok(sw.includes("'https://gogocompany.in/favicon.ico'"), 'service worker uses the deployed favicon asset');
+});
+
 runStep('Disable path still exists and clears stored state (turn-off behavior preserved)', () => {
   assert.equal(typeof GoGoNotifications.disable, 'function');
   assert.ok(notificationsModuleSrc.includes("storageRemove(CONFIG.storageKey)"), 'disable clears the stored device record');
