@@ -752,7 +752,7 @@ runStep('Onboarding popup lists all six GoGo categories and only prompts on an e
   for (const label of ["GoGo Company announcements","Sarkari Sarthi job alerts","Pika News breaking news","Crystal Quest updates","Arrow Out updates","Future GoGo product announcements"]) {
     assert.ok(notificationsModuleSrc.includes(label), `intro must list: ${label}`);
   }
-  assert.equal((notificationsModuleSrc.match(/Notification\\.requestPermission/g) || []).length, 1, 'native prompt only inside the Enable click path');
+  assert.equal((notificationsModuleSrc.match(/Notification\.requestPermission/g) || []).length, 1, 'native prompt only inside the Enable click path');
   assert.ok(notificationsModuleSrc.includes('visibilitychange'), 'permission rechecked when the visitor returns');
 });
 
@@ -843,7 +843,7 @@ runStep('Enable failure messages are accurate per failure stage and never leak t
 runStep('Permission is requested exactly once, through the compat wrapper, only from the click path', () => {
   // askPermission() is the single call site; enable() must call the wrapper,
   // never Notification.requestPermission directly.
-  assert.equal((notificationsModuleSrc.match(/Notification\\.requestPermission/g) || []).length, 1);
+  assert.equal((notificationsModuleSrc.match(/Notification\.requestPermission/g) || []).length, 1);
   assert.ok(notificationsModuleSrc.includes('function askPermission()'), 'callback-compatible wrapper exists');
   assert.ok(notificationsModuleSrc.includes('return askPermission()'), 'enable() uses the wrapper');
   assert.ok(notificationsModuleSrc.includes("typeof result.then === 'function'"), 'Promise-based browsers pass through the wrapper');
