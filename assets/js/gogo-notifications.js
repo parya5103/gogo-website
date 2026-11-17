@@ -418,6 +418,14 @@
     if (el && el.parentNode) el.parentNode.removeChild(el);
   }
 
+  function ensureIntroStyles() {
+    if (!hasDom() || document.getElementById('gogo-notifications-intro-styles')) return;
+    var style = document.createElement('style');
+    style.id = 'gogo-notifications-intro-styles';
+    style.textContent = '@keyframes gogoNoticeIn{from{opacity:0;transform:translate3d(0,12px,0) scale(.985)}to{opacity:1;transform:translate3d(0,0,0) scale(1)}}@media(max-width:480px){#gogo-notifications-intro{right:12px!important;bottom:max(12px,env(safe-area-inset-bottom))!important;width:calc(100% - 24px)!important;max-width:none!important;padding:15px!important;border-radius:17px!important}}@media(prefers-reduced-motion:reduce){#gogo-notifications-intro{animation:none!important}}';
+    (document.head || document.documentElement).appendChild(style);
+  }
+
   function buildIntroHtml(kind) {
     var statusText;
     if (kind === 'blocked') {
@@ -446,7 +454,7 @@
       '<button type="button" id="gogo-notifications-intro-enable" style="flex:1 1 auto;min-height:42px;border:0;border-radius:9px;background:linear-gradient(135deg,#4f6df5,#8a5cf6);color:#fff;font-size:14px;font-weight:600;cursor:pointer">Enable notifications</button>';
     var dismissLabel = kind === 'blocked' ? 'Got it' : 'Not now';
     return ''
-      + '<div id="gogo-notifications-intro" role="dialog" aria-label="GoGo notifications introduction" style="position:fixed;z-index:2147483000;right:16px;bottom:16px;max-width:340px;width:calc(100% - 32px);background:#141b33;border:1px solid rgba(120,140,255,.35);border-radius:14px;padding:16px;box-shadow:0 12px 40px rgba(0,0,0,.45);font-family:system-ui,-apple-system,\'Segoe UI\',Roboto,sans-serif;color:#eef1ff;box-sizing:border-box;text-align:left">'
+      + '<div id="gogo-notifications-intro" role="dialog" aria-label="GoGo notifications introduction" style="position:fixed;z-index:2147483000;right:16px;bottom:max(16px,env(safe-area-inset-bottom));max-width:380px;width:calc(100% - 32px);background:#141b33;border:1px solid rgba(120,140,255,.28);border-radius:18px;padding:16px;box-shadow:0 18px 48px rgba(0,0,0,.32);font-family:system-ui,-apple-system,\'Segoe UI\',Roboto,sans-serif;color:#eef1ff;box-sizing:border-box;text-align:left;animation:gogoNoticeIn .24s cubic-bezier(.2,.8,.2,1) both">'
       + '<div style="display:flex;align-items:center;gap:10px;margin:0 0 8px">'
       + '<span style="width:34px;height:34px;flex:0 0 34px;border-radius:10px;background:linear-gradient(135deg,#4f6df5,#8a5cf6);display:inline-flex;align-items:center;justify-content:center">'
       + '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>'
@@ -475,10 +483,30 @@
 
   function onIntroEnable() {
     if (state.busy) return;
+    var button = document.getElementById('gogo-notifications-intro-enable');
+    var dismiss = document.getElementById('gogo-notifications-intro-dismiss');
+    if (button) {
+      button.disabled = true;
+      button.setAttribute('aria-busy', 'true');
+      button.textContent = 'Enabling…';
+      button.style.opacity = '.78';
+      button.style.cursor = 'wait';
+    }
+    if (dismiss) dismiss.disabled = true;
     // The native permission prompt fires ONLY inside this explicit click
     // handler (via enable()); never on page load and never on a timer.
     enable().then(function (ok) {
-      if (!ok) return; // the popup status line already shows the exact error
+      if (!ok) {
+        if (button) {
+          button.disabled = false;
+          button.removeAttribute('aria-busy');
+          button.textContent = 'Enable notifications';
+          button.style.opacity = '1';
+          button.style.cursor = 'pointer';
+        }
+        if (dismiss) dismiss.disabled = false;
+        return;
+      }
       var record = loadOnboarding() || {};
       record.decision = 'enabled';
       record.decidedAt = now();
@@ -494,6 +522,7 @@
     if (kind === 'reminder') record.reminderShown = true;
     if (kind === 'blocked') record.blockedShown = true;
     saveOnboarding(record);
+    ensureIntroStyles();
     var wrap = document.createElement('div');
     wrap.innerHTML = buildIntroHtml(kind);
     var card = wrap.firstElementChild;
@@ -520,7 +549,7 @@
     if (plan.action === 'none') return;
     // Non-intrusive: the card appears a few seconds after the page settles,
     // never blocks input, and never steals focus.
-    var delay = plan.action === 'intro' ? 4000 : 1500;
+    var delay = plan.action === 'intro' ? 2200 : 1200;
     setTimeout(function () { showIntro(plan.action); }, delay);
   }
 
@@ -566,12 +595,14 @@
     if (state.sdkReady) return Promise.resolve();
     return loadScript(CONFIG.sdkBase + '/firebase-app-compat.js')
       .then(function () {
-        return CONFIG.authMode === 'anonymous'
-          ? loadScript(CONFIG.sdkBase + '/firebase-auth-compat.js')
-          : null;
-      })
-      .then(function () {
-        return loadScript(CONFIG.sdkBase + '/firebase-messaging-compat.js');
+        // firebase-app is the shared prerequisite; auth and messaging can
+        // download together instead of adding another serial round trip.
+        return Promise.all([
+          CONFIG.authMode === 'anonymous'
+            ? loadScript(CONFIG.sdkBase + '/firebase-auth-compat.js')
+            : Promise.resolve(),
+          loadScript(CONFIG.sdkBase + '/firebase-messaging-compat.js')
+        ]);
       })
       .then(function () {
         var fb = root.firebase;
@@ -748,15 +779,21 @@
       if (options.headers) {
         Object.keys(options.headers).forEach(function (k) { headers[k] = options.headers[k]; });
       }
+      var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      var timeout = setTimeout(function () {
+        if (controller) controller.abort();
+      }, 12000);
       return fetch(normalizeBase(CONFIG.apiBase) + path, {
         method: options.method || 'GET',
         headers: headers,
-        body: options.body || undefined
-      }).catch(function () {
+        body: options.body || undefined,
+        signal: controller ? controller.signal : undefined
+      }).catch(function (error) {
+        if (error && error.name === 'AbortError') throw new Error('API_TIMEOUT');
         // fetch() rejects with a bare TypeError on network/CORS failures;
         // classify it so the user sees a connection message, not raw noise.
         throw new Error('NETWORK_ERROR');
-      });
+      }).finally(function () { clearTimeout(timeout); });
     });
   }
 
@@ -839,6 +876,9 @@
     }
     if (code === 'NETWORK_ERROR') {
       return 'Network error: the GoGo Central backend could not be reached. Check your connection and try again.';
+    }
+    if (code === 'API_TIMEOUT') {
+      return 'GoGo Central is taking too long to respond. Please retry in a moment.';
     }
     if (code.indexOf('SW_REGISTER_FAILED') === 0) {
       return 'Could not register the background message worker. Reload the page and try again.';
