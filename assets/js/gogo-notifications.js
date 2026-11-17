@@ -62,7 +62,7 @@
     storageKey: 'gogoCentralNotifications.gogocompany-in'
   };
 
-  var state = { busy: false, sdkReady: false, messaging: null, swRegistration: null, visibilityWired: false };
+  var state = { busy: false, sdkReady: false, messaging: null, swRegistration: null, visibilityWired: false, foregroundHandlerAttached: false, lastForegroundMessageAt: 0 };
 
   // ------------------------- pure helpers (unit-tested) ---------------------
 
@@ -119,6 +119,77 @@
       }
     } catch (err) { /* fall through */ }
     return 'https://gogocompany.in/';
+  } 
+
+  // FCM registration tokens are opaque strings. Reject known demo values,
+  // serialized PushSubscriptions and obviously malformed values. The backend
+  // remains authoritative and also rejects non-FCM-shaped registrations.
+  function isPlausibleFcmToken(token) {
+    if (typeof token !== 'string') return false;
+    var value = token.trim();
+    if (!value || value !== token || value.indexOf('fcm_') === 0 ||
+        value.charAt(0) === '{' || value.charAt(0) === '[' ||
+        /\\s/.test(value) || value.length <= 100) return false;
+    return true;
+  }
+
+  function showToast(title, body, link) {
+    if (!hasDom() || !document.body || !document.createElement) return;
+    var old = document.getElementById('gogo-fcm-foreground-toast');
+    if (old && old.parentNode) old.parentNode.removeChild(old);
+    var toast = document.createElement('a');
+    toast.id = 'gogo-fcm-foreground-toast';
+    toast.href = safeUrl(link);
+    toast.setAttribute('role', 'status');
+    toast.setAttribute('aria-live', 'polite');
+    toast.style.cssText = 'position:fixed;z-index:2147483647;right:16px;bottom:16px;max-width:min(380px,calc(100vw - 32px));padding:14px 16px;border-radius:12px;background:#172554;color:#fff;text-decoration:none;box-shadow:0 8px 30px rgba(0,0,0,.28);font:14px/1.45 system-ui,sans-serif';
+    var heading = document.createElement('strong');
+    heading.textContent = title;
+    heading.style.display = 'block';
+    var detail = document.createElement('span');
+    detail.textContent = body;
+    detail.style.display = 'block';
+    detail.style.marginTop = '4px';
+    toast.appendChild(heading);
+    toast.appendChild(detail);
+    document.body.appendChild(toast);
+    setTimeout(function () {
+      if (toast.parentNode) toast.parentNode.removeChild(toast);
+    }, 9000);
+  }
+
+  function showForegroundNotification(payload) {
+    payload = payload || {};
+    var data = payload.data || {};
+    var notification = payload.notification || {};
+    var title = String(notification.title || data.title || 'GoGo Company');
+    var body = String(notification.body || data.body || '');
+    var targetUrl = safeUrl(data.url || data.deepLink || data.link || '/');
+    var tag = String(data.campaignId || data.notificationId || payload.messageId || 'gogo-foreground');
+    var options = {
+      body: body,
+      icon: '/favicon.svg',
+      badge: '/favicon.svg',
+      tag: tag,
+      renotify: true,
+      requireInteraction: true,
+      data: { url: targetUrl }
+    };
+    var registrationPromise = state.swRegistration
+      ? Promise.resolve(state.swRegistration)
+      : (swSupported() ? navigator.serviceWorker.ready : Promise.reject(new Error('SW_NOT_READY')));
+    showToast(title, body, targetUrl);
+    return registrationPromise.then(function (registration) {
+      if (!registration || !registration.showNotification) throw new Error('SW_NOTIFICATION_UNAVAILABLE');
+      return registration.showNotification(title, options);
+    }).catch(function (error) {
+      if (typeof console !== 'undefined' && console.warn) {
+        console.warn('[GoGo Notifications] Foreground OS notification failed.', {
+          error: String((error && error.message) || error || '').slice(0, 120)
+        });
+      }
+      return null;
+    });
   }
 
   // ------------------------- environment guards ------------------------------
@@ -501,6 +572,15 @@
         if (!fb || !fb.messaging) throw new Error('SDK_INIT_FAILED');
         if (!fb.apps.length) fb.initializeApp(CONFIG.firebaseConfig);
         state.messaging = fb.messaging();
+        // Foreground FCM messages do not reach onBackgroundMessage. Display
+        // one OS notification here and an accessible in-page toast.
+        if (!state.foregroundHandlerAttached && state.messaging &&
+            typeof state.messaging.onMessage === 'function') {
+          state.messaging.onMessage(function (payload) {
+            return showForegroundNotification(payload);
+          });
+          state.foregroundHandlerAttached = true;
+        }
         try {
           state.messaging.onTokenRefresh(function () { reRegisterSilently(); });
         } catch (err) { /* older SDKs */ }
@@ -677,6 +757,7 @@
   // ------------------------- enable / disable -----------------------------------
 
   function registerDevice(fcmToken) {
+    if (!isPlausibleFcmToken(fcmToken)) return Promise.reject(new Error('INVALID_FCM_TOKEN'));
     return apiFetch('/api/v1/devices/register', {
       method: 'POST',
       body: JSON.stringify(buildRegisterPayload(CONFIG, fcmToken))
@@ -771,8 +852,8 @@
     if (code.indexOf('messaging/token-subscribe-failed') !== -1 || code.indexOf('messaging/token-unsubscribe-failed') !== -1) {
       return 'Firebase could not complete push registration right now. Check your connection and try again in a moment.';
     }
-    if (code === 'NO_FCM_TOKEN') {
-      return 'Could not obtain a push token from this browser. Please try again later.';
+    if (code === 'NO_FCM_TOKEN' || code === 'INVALID_FCM_TOKEN') {
+      return 'Firebase did not return a valid browser registration token. No test token or PushSubscription data was sent to GoGo Central. Check the Firebase Web Push configuration and try again.';
     }
     if (code.indexOf('SDK_LOAD_FAILED') === 0) {
       return 'Could not download the messaging SDK. Check your connection and try again.';
@@ -867,6 +948,7 @@
       })
       .then(function (fcmToken) {
         if (!fcmToken) throw new Error('NO_FCM_TOKEN');
+        if (!isPlausibleFcmToken(fcmToken)) throw new Error('INVALID_FCM_TOKEN');
         setStatus('Registering this device with GoGo Central...');
         return registerDevice(fcmToken).then(function () { return fcmToken; });
       })
@@ -941,7 +1023,7 @@
       vapidKey: CONFIG.vapidPublicKey,
       serviceWorkerRegistration: state.swRegistration || undefined
     }).then(function (fcmToken) {
-      if (!fcmToken || fcmToken === stored.fcmToken) return null;
+      if (!isPlausibleFcmToken(fcmToken) || fcmToken === stored.fcmToken) return null;
       return registerDevice(fcmToken).then(function () {
         return setPreferences(true);
       });
@@ -950,16 +1032,69 @@
 
   // ------------------------- public API -------------------------------------------
 
+  function sendTestLocalNotification() {
+    if (!hasNotificationApi() || Notification.permission !== 'granted') {
+      return Promise.reject(new Error('NOTIFICATION_PERMISSION_NOT_GRANTED'));
+    }
+    var registrationPromise = state.swRegistration
+      ? Promise.resolve(state.swRegistration)
+      : (swSupported() ? navigator.serviceWorker.ready : Promise.reject(new Error('SW_NOT_READY')));
+    return registrationPromise.then(function (registration) {
+      if (!registration || !registration.showNotification) throw new Error('SW_NOTIFICATION_UNAVAILABLE');
+      return registration.showNotification('GoGo Company test notification', {
+        body: 'Local browser notification test succeeded.',
+        icon: '/favicon.svg',
+        badge: '/favicon.svg',
+        tag: 'gogo-local-notification-test-' + now(),
+        data: { url: 'https://gogocompany.in/' }
+      });
+    });
+  }
+
+  function getDiagnostics() {
+    var stored = loadStored();
+    var token = stored && typeof stored.fcmToken === 'string' ? stored.fcmToken : '';
+    var registration = state.swRegistration;
+    var active = registration && registration.active;
+    return {
+      origin: root.location ? root.location.origin : null,
+      permission: hasNotificationApi() ? Notification.permission : 'unsupported',
+      secureContext: root.isSecureContext === true,
+      messagingReady: state.sdkReady,
+      foregroundHandlerAttached: state.foregroundHandlerAttached,
+      serviceWorker: {
+        supported: swSupported(),
+        scope: registration ? registration.scope : null,
+        activeState: active ? active.state : null,
+        controller: !!(swSupported() && navigator.serviceWorker.controller)
+      },
+      token: {
+        present: !!token,
+        plausible: isPlausibleFcmToken(token),
+        length: token.length,
+        masked: token ? token.slice(0, 8) + '…' + token.slice(-6) : null,
+        registered: !!(stored && stored.deviceId),
+        verified: !!(stored && stored.verified)
+      },
+      apiBase: CONFIG.apiBase,
+      appId: CONFIG.appId
+    };
+  }
+
   var api = {
     config: CONFIG,
     state: state,
     enable: enable,
+    sendTestLocalNotification: sendTestLocalNotification,
+    getDiagnostics: getDiagnostics,
     disable: disable,
     mount: mount,
     refreshStatus: refreshStatus,
     internals: {
       validateConfig: validateConfig,
       normalizeBase: normalizeBase,
+      isPlausibleFcmToken: isPlausibleFcmToken,
+      showForegroundNotification: showForegroundNotification,
       buildRegisterPayload: buildRegisterPayload,
       buildPreferencePayload: buildPreferencePayload,
       safeUrl: safeUrl,
