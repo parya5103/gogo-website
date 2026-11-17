@@ -550,6 +550,7 @@ const gogoOwnedPages = [
   'index.html',
   '404.html',
   'about/index.html',
+  'about.html',
   'contact/index.html',
   'disclaimer/index.html',
   'account/index.html',
