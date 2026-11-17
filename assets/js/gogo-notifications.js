@@ -557,48 +557,6 @@
       String((error && error.name) || '').toLowerCase() === 'invalidstateerror';
   }
 
-  function deleteIndexedDbDatabase(name) {
-    return new Promise(function (resolve, reject) {
-      if (typeof indexedDB === 'undefined' || !indexedDB.deleteDatabase) {
-        resolve(false);
-        return;
-      }
-      var settled = false;
-      var timer = setTimeout(function () {
-        if (!settled) {
-          settled = true;
-          reject(new Error('IDB_DELETE_TIMEOUT: ' + name));
-        }
-      }, 5000);
-      var request;
-      try {
-        request = indexedDB.deleteDatabase(name);
-      } catch (err) {
-        clearTimeout(timer);
-        reject(err);
-        return;
-      }
-      request.onsuccess = function () {
-        if (settled) return;
-        settled = true;
-        clearTimeout(timer);
-        resolve(true);
-      };
-      request.onerror = function () {
-        if (settled) return;
-        settled = true;
-        clearTimeout(timer);
-        reject(request.error || new Error('IDB_DELETE_FAILED: ' + name));
-      };
-      request.onblocked = function () {
-        // Keep waiting for onsuccess; another tab may still hold the database.
-        if (typeof console !== 'undefined' && console.warn) {
-          console.warn('[GoGo Notifications] IndexedDB deletion is blocked by another tab:', name);
-        }
-      };
-    });
-  }
-
   function logFcmCredentialDiagnostics(error) {
     if (typeof console === 'undefined' || !console.error) return;
     console.error('[GoGo Notifications] FCM token registration failed after one clean-state retry.', {
@@ -615,6 +573,19 @@
     });
   }
 
+  function isFcmAuthenticationError(error) {
+    var message = String((error && (error.code || error.message || error.name)) || error || '').toLowerCase();
+    return message.indexOf('missing required authentication') !== -1 ||
+      message.indexOf('unauthorized') !== -1 ||
+      message.indexOf('permission denied') !== -1 ||
+      message.indexOf('api key not valid') !== -1 ||
+      message.indexOf('invalid api key') !== -1 ||
+      message.indexOf('sender id mismatch') !== -1 ||
+      message.indexOf('project number mismatch') !== -1 ||
+      message.indexOf('http 401') !== -1 ||
+      message.indexOf('http 403') !== -1;
+  }
+
   function getFcmTokenWithRecovery(registration) {
     var options = {
       vapidKey: CONFIG.vapidPublicKey,
@@ -623,7 +594,7 @@
     return state.messaging.getToken(options).catch(function (firstError) {
       if (!isRecoverableFcmError(firstError)) throw firstError;
       if (typeof console !== 'undefined' && console.warn) {
-        console.warn('[GoGo Notifications] Recovering a stale FCM push subscription/installation state.', firstError);
+        console.warn('[GoGo Notifications] Retrying FCM token acquisition after a subscription error.', firstError);
       }
       var pushManager = registration && registration.pushManager;
       return Promise.resolve(pushManager && pushManager.getSubscription
@@ -638,23 +609,19 @@
           });
         })
         .then(function () {
-          return Promise.all([
-            deleteIndexedDbDatabase('firebase-messaging-database'),
-            deleteIndexedDbDatabase('firebase-installations-database')
-          ]);
-        })
-        .then(function () {
+          // Do not delete Firebase IndexedDB databases here. The Firebase SDK
+          // may still hold live connections to them, making deletion blocked
+          // and preventing the retry from ever running.
           return state.messaging.getToken(options);
         })
         .catch(function (retryError) {
-          var retryText = String((retryError && (retryError.code || retryError.message || retryError.name)) || retryError || '').toLowerCase();
-          if (retryText.indexOf('missing required authentication') !== -1 ||
-              retryText.indexOf('token-subscribe-failed') !== -1 ||
-              retryText.indexOf('token-unsubscribe-failed') !== -1) {
+          if (isFcmAuthenticationError(retryError)) {
             logFcmCredentialDiagnostics(retryError);
             throw new Error('FCM_CREDENTIALS_MISMATCH: ' +
               String((retryError && (retryError.code || retryError.message)) || retryError).slice(0, 180));
           }
+          // Preserve transient/network token-subscribe failures as such;
+          // they are not proof of a Firebase project or credential mismatch.
           throw retryError;
         });
     });
@@ -799,6 +766,9 @@
     }
     if (code === 'SW_ACTIVATION_TIMEOUT' || code.indexOf('SW_READY_FAILED') === 0) {
       return 'The background notification worker did not become active in time. Reload this page and try again.';
+    }
+    if (code.indexOf('messaging/token-subscribe-failed') !== -1 || code.indexOf('messaging/token-unsubscribe-failed') !== -1) {
+      return 'Firebase could not complete push registration right now. Check your connection and try again in a moment.';
     }
     if (code === 'NO_FCM_TOKEN') {
       return 'Could not obtain a push token from this browser. Please try again later.';
