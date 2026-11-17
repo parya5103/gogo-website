@@ -170,7 +170,6 @@ jobs:
             git pull --rebase origin main
             git push
             echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
 
