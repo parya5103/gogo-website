@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: write
+  id-token: write
 
 # Shares the SAME concurrency group as sync-products.yml so the two
 # publishing workflows can never race each other into a failed push or an
@@ -145,6 +146,7 @@ jobs:
         run: node scripts/seo-sync-ping.mjs
 
       - name: Commit synced PikaNews if changed
+        id: publish
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -159,10 +161,34 @@ jobs:
             exit 1
           fi
           if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No PikaNews changes to publish."
           else
             git commit -m "sync: refresh PikaNews from parya5103/PikaNews main"
             git pull --rebase origin main
             git push
+            if ! git diff HEAD^ HEAD --quiet -- pikanews/data/latest.json pikanews/data/all_articles.json; then
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+            fi
           fi
 
+
+      - name: Send GoGo Central notification for newly published PikaNews articles
+        if: steps.publish.outputs.changed == 'true' && success()
+        env:
+          CENTRAL_API: https://gogo-central-backend.onrender.com
+        run: |
+          set -euo pipefail
+          OIDC_URL="${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=gogo-central-notifications"
+          OIDC_TOKEN=$(curl -fsS -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" "$OIDC_URL" | jq -r '.value')
+          EVENT_ID=$(sha256sum pikanews/data/latest.json | cut -d' ' -f1)
+          jq -n --arg eventId "$EVENT_ID" \
+            --arg title "PikaNews पर नई खबरें प्रकाशित" \
+            --arg body "PikaNews पर नई खबरें और जरूरी अपडेट प्रकाशित हुए हैं। पूरी खबर पढ़ें।" \
+            --arg deepLink "https://gogocompany.in/pikanews/" \
+            '{eventType:"important_news",eventId:$eventId,title:$title,body:$body,deepLink:$deepLink}' > /tmp/gogo-event.json
+          curl -fsS --max-time 20 -X POST "$CENTRAL_API/api/v1/automation/publish" \
+            -H "Authorization: Bearer $OIDC_TOKEN" -H "Content-Type: application/json" \
+            --data-binary @/tmp/gogo-event.json
