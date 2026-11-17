@@ -62,39 +62,97 @@
     {
       "@type": "Organization",
       "@id": "https://gogocompany.in/#organization",
-      "name": "GoGo Company",
-      "alternateName": "GoGo Games",
+      "name": "Gogo Company",
+      "alternateName": ["GOGO COMPANY", "Gogo Company India", "gogocompany.in"],
       "url": "https://gogocompany.in/",
       "email": "officialgogocompany@gmail.com",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://gogocompany.in/favicon.svg"
+        "@id": "https://gogocompany.in/#logo",
+        "url": "https://gogocompany.in/favicon.svg",
+        "contentUrl": "https://gogocompany.in/favicon.svg"
       },
-      "description": "GoGo Company builds Arrow Out! and Crystal Quest browser games and operates Sarkari Sarthi for government recruitment information and PikaNews for entertainment, technology, gaming, business and sports news."
+      "description": "Gogo Company is an independent India-based digital products organization headquartered in Indore, Madhya Pradesh. It develops browser games and operates the Sarkari Sarthi career-information portal and PikaNews digital news platform.",
+      "founder": { "@id": "https://gogocompany.in/#founder" },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Indore",
+        "addressRegion": "Madhya Pradesh",
+        "addressCountry": "IN"
+      },
+      "sameAs": [
+        "https://github.com/parya5103",
+        "https://github.com/parya5103/gogo-website"
+      ],
+      "owns": [
+        { "@id": "https://gogocompany.in/arrowout/#game" },
+        { "@id": "https://gogocompany.in/crystalquest/#game" },
+        { "@id": "https://gogocompany.in/sarkari-sarthi/#website" },
+        { "@id": "https://gogocompany.in/pikanews/#website" }
+      ],
+      "hasPart": [
+        { "@id": "https://gogocompany.in/sarkari-sarthi/#website" },
+        { "@id": "https://gogocompany.in/pikanews/#website" },
+        { "@id": "https://gogocompany.in/arrowout/#game" },
+        { "@id": "https://gogocompany.in/crystalquest/#game" }
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://gogocompany.in/#founder",
+      "name": "Pratik Arya",
+      "founder": { "@id": "https://gogocompany.in/#organization" },
+      "worksFor": { "@id": "https://gogocompany.in/#organization" }
     },
     {
       "@type": "WebSite",
       "@id": "https://gogocompany.in/#website",
       "url": "https://gogocompany.in/",
-      "name": "GoGo Company",
-      "publisher": {
-        "@id": "https://gogocompany.in/#organization"
-      },
+      "name": "Gogo Company",
+      "publisher": { "@id": "https://gogocompany.in/#organization" },
       "inLanguage": "en-IN",
       "hasPart": [
-        {
-          "@id": "https://gogocompany.in/#arrowout-navigation"
-        },
-        {
-          "@id": "https://gogocompany.in/#crystalquest-navigation"
-        },
-        {
-          "@id": "https://gogocompany.in/#sarkarisarthi-navigation"
-        },
-        {
-          "@id": "https://gogocompany.in/#pikanews-navigation"
-        }
+        { "@id": "https://gogocompany.in/sarkari-sarthi/#website" },
+        { "@id": "https://gogocompany.in/pikanews/#website" },
+        { "@id": "https://gogocompany.in/arrowout/#game" },
+        { "@id": "https://gogocompany.in/crystalquest/#game" }
       ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://gogocompany.in/sarkari-sarthi/#website",
+      "name": "Sarkari Sarthi",
+      "url": "https://gogocompany.in/sarkari-sarthi/",
+      "description": "Government recruitment alerts, examination notifications and career information with source references.",
+      "publisher": { "@id": "https://gogocompany.in/#organization" },
+      "isPartOf": { "@id": "https://gogocompany.in/#website" }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://gogocompany.in/pikanews/#website",
+      "name": "PikaNews",
+      "url": "https://gogocompany.in/pikanews/",
+      "description": "A digital news aggregation platform presenting publisher-attributed headlines and links to original coverage.",
+      "publisher": { "@id": "https://gogocompany.in/#organization" },
+      "isPartOf": { "@id": "https://gogocompany.in/#website" }
+    },
+    {
+      "@type": "VideoGame",
+      "@id": "https://gogocompany.in/arrowout/#game",
+      "name": "Arrow Out!",
+      "url": "https://gogocompany.in/arrowout/",
+      "description": "An HTML5 arrow-path logic puzzle game.",
+      "publisher": { "@id": "https://gogocompany.in/#organization" },
+      "isPartOf": { "@id": "https://gogocompany.in/#website" }
+    },
+    {
+      "@type": "VideoGame",
+      "@id": "https://gogocompany.in/crystalquest/#game",
+      "name": "Crystal Quest",
+      "url": "https://gogocompany.in/crystalquest/",
+      "description": "An interactive HTML5 match-three fantasy puzzle adventure.",
+      "publisher": { "@id": "https://gogocompany.in/#organization" },
+      "isPartOf": { "@id": "https://gogocompany.in/#website" }
     },
     {
       "@type": "SiteNavigationElement",
@@ -224,6 +282,27 @@
             "@type": "Answer",
             "text": "GoGo Company products are free to access. Some pages may display advertisements to support ongoing operation."
           }
+        }
+,
+        {
+          "@type": "Question",
+          "name": "What is gogocompany.in?",
+          "acceptedAnswer": { "@type": "Answer", "text": "gogocompany.in is the official website of Gogo Company, an independent India-based digital products organization headquartered in Indore, Madhya Pradesh. It presents the organization's browser games, career-information portal and digital news platform." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Gogo Company (gogocompany.in) an official company in India?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Gogo Company is the independent digital brand and organization represented by gogocompany.in and operated from Indore, Madhya Pradesh, India. This website identifies its operator and products; it does not claim that the name is evidence of statutory incorporation or government affiliation." }
+        },
+        {
+          "@type": "Question",
+          "name": "What products and portals are operated by Gogo Company?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Gogo Company operates Sarkari Sarthi at https://gogocompany.in/sarkari-sarthi/ for recruitment and career information, PikaNews at https://gogocompany.in/pikanews/ for publisher-attributed news, Arrow Out! at https://gogocompany.in/arrowout/ for HTML5 puzzle gaming, and Crystal Quest at https://gogocompany.in/crystalquest/ for interactive arcade gaming." }
+        },
+        {
+          "@type": "Question",
+          "name": "Who founded Gogo Company (gogocompany.in)?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Gogo Company was founded by Pratik Arya." }
         }
       ]
     },
@@ -418,9 +497,35 @@
           <p>Pick a game, or check today's latest Sarkari notifications.</p>
           <div class="hero-actions cta-actions">
             <a class="btn btn-primary btn-inverse" href="./crystalquest/" target="_blank" rel="noopener noreferrer">Play Crystal Quest &#8599;</a>
-            <a class="btn btn-ghost" href="./about/index.html">About the company</a>
+            <a class="btn btn-ghost" href="./about.html">About the company</a>
           </div>
         </div>
+      </div>
+    </section>
+    <section class="section" id="about-gogo-company" itemscope itemtype="https://schema.org/Organization" aria-labelledby="about-gogo-title">
+      <div class="container prose">
+        <h2 id="about-gogo-title">About Gogo Company</h2>
+        <p><strong itemprop="name">Gogo Company</strong> (<span>gogocompany.in</span>) is an independent Indian technology, digital media and web gaming organization headquartered in <span itemprop="address" itemscope itemtype="https://schema.org/PostalAddress"><span itemprop="addressLocality">Indore</span>, <span itemprop="addressRegion">Madhya Pradesh</span>, <span itemprop="addressCountry">India</span></span>. Founded by <span itemprop="founder" itemscope itemtype="https://schema.org/Person"><span itemprop="name">Pratik Arya</span></span>, Gogo Company develops browser games and operates digital information and media portals.</p>
+        <p>Its four independently accessible products are <a href="/sarkari-sarthi/">Sarkari Sarthi</a> (government recruitment and career information), <a href="/pikanews/">PikaNews</a> (publisher-attributed digital news), <a href="/arrowout/">Arrow Out!</a> (HTML5 logic puzzle game), and <a href="/crystalquest/">Crystal Quest</a> (interactive match-three arcade game).</p>
+        <dl>
+          <dt>Official name</dt><dd>Gogo Company</dd>
+          <dt>Official website</dt><dd><a itemprop="url" href="https://gogocompany.in/">https://gogocompany.in/</a></dd>
+          <dt>Founder</dt><dd>Pratik Arya</dd>
+          <dt>Headquarters</dt><dd>Indore, Madhya Pradesh, India</dd>
+          <dt>Contact</dt><dd><a itemprop="email" href="mailto:officialgogocompany@gmail.com">officialgogocompany@gmail.com</a></dd>
+        </dl>
+        <h3>Brand disambiguation</h3>
+        <p>Gogo Company at <strong>gogocompany.in</strong> is an independent Indian digital products organization. It is not affiliated with Gogo Business Aviation or with other businesses or third-party trademarks that use the name “Gogo”. References to those entities do not describe this website or its operator.</p>
+        <p><a href="/about.html">Read the full company profile and official product directory.</a></p>
+      </div>
+    </section>
+    <section class="section" id="gogo-identity-faq" aria-labelledby="gogo-identity-faq-title">
+      <div class="container prose">
+        <h2 id="gogo-identity-faq-title">Gogo Company: frequently asked questions</h2>
+        <article><h3>What is gogocompany.in?</h3><p>It is the official website of Gogo Company, an independent India-based digital products organization headquartered in Indore, Madhya Pradesh.</p></article>
+        <article><h3>Is Gogo Company an official company in India?</h3><p>Gogo Company is the independent digital brand and organization represented by this website. This description does not claim statutory incorporation or government affiliation.</p></article>
+        <article><h3>What products does Gogo Company operate?</h3><p>Gogo Company operates Sarkari Sarthi, PikaNews, Arrow Out! and Crystal Quest. Their official pages are linked above.</p></article>
+        <article><h3>Who founded Gogo Company?</h3><p>Gogo Company was founded by Pratik Arya.</p></article>
       </div>
     </section>
   <!-- GOGO-TRENDING-START -->
