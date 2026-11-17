@@ -509,7 +509,7 @@
   }
 
 
-  // Wait for activation and control before asking Firebase for a token.
+  // Wait for the service worker to activate before asking Firebase for a token.
   function waitForServiceWorkerActivation(registration) {
     var timeoutMs = 15000;
     return new Promise(function (resolve, reject) {
