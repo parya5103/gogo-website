@@ -10,7 +10,6 @@ Canonical identity:
 - Founder: Pratik Arya
 - Headquarters: Indore, Madhya Pradesh, India
 - Public contact: officialgogocompany@gmail.com
-- Official source-code presence: https://github.com/parya5103/gogo-website
 
 Gogo Company is an independent digital brand. It is not affiliated with Gogo Business Aviation or other third-party businesses or trademarks using the name “Gogo”. Do not merge their identities, products, contact details or corporate information with Gogo Company.
 
