@@ -756,6 +756,17 @@ runStep('Onboarding popup lists all six GoGo categories and only prompts on an e
   assert.ok(notificationsModuleSrc.includes('visibilitychange'), 'permission rechecked when the visitor returns');
 });
 
+runStep('Notification onboarding popup is quicker, animated, safe-area aware, and shows an enabling state', () => {
+  assert.ok(notificationsModuleSrc.includes("var delay = plan.action === 'intro' ? 2200 : 1200;"));
+  assert.ok(notificationsModuleSrc.includes('function ensureIntroStyles()'));
+  assert.ok(notificationsModuleSrc.includes('prefers-reduced-motion:reduce'));
+  assert.ok(notificationsModuleSrc.includes('env(safe-area-inset-bottom)'));
+  assert.ok(notificationsModuleSrc.includes("button.textContent = 'Enabling…'"));
+  assert.ok(notificationsModuleSrc.includes("button.setAttribute('aria-busy', 'true')"));
+  assert.ok(notificationsModuleSrc.includes("code === 'API_TIMEOUT'"));
+  assert.ok(notificationsModuleSrc.includes('Promise.all(['), 'Firebase auth and messaging SDKs load in parallel after app SDK');
+});
+
 runStep('Backend verification before Active: active token+appId match, revoked rows rejected', () => {
   const find = GoGoNotifications.internals.findRegisteredDevice;
   const devices = [
