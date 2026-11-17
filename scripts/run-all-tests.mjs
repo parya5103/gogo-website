@@ -775,6 +775,17 @@ runStep('Backend verification before Active: active token+appId match, revoked r
   assert.ok(notificationsModuleSrc.includes('verified: true'), 'verified flag persisted before Active is displayed');
 });
 
+runStep('FCM foreground delivery and token validation are wired fail-closed', () => {
+  assert.ok(notificationsModuleSrc.includes('state.messaging.onMessage(function (payload)'));
+  assert.ok(notificationsModuleSrc.includes('registration.showNotification(title, options)') || notificationsModuleSrc.includes('registration.showNotification(title, {'));
+  assert.ok(notificationsModuleSrc.includes('showToast(title, body, targetUrl)'));
+  assert.ok(notificationsModuleSrc.includes('function isPlausibleFcmToken(token)'));
+  assert.ok(notificationsModuleSrc.includes('INVALID_FCM_TOKEN'));
+  assert.ok(notificationsModuleSrc.includes('function sendTestLocalNotification()'));
+  assert.ok(notificationsModuleSrc.includes('function getDiagnostics()'));
+  assert.ok(notificationsModuleSrc.includes('foregroundHandlerAttached'));
+});
+
 runStep('Permission request outcomes classify distinctly: granted / denied / dismissed (default)', () => {
   const c = GoGoNotifications.internals.classifyPermissionResult;
   assert.equal(c('granted'), 'granted');
@@ -884,7 +895,7 @@ async function runEnableScenario({ supported, supportError } = {}) {
   let swRegisterCalls = 0;
   const fakeMessaging = {
     onTokenRefresh() {},
-    getToken() { return Promise.resolve('fcm-test-token-1234567890abcdef'); },
+    getToken() { return Promise.resolve('test-fcm-registration-token-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'); },
     deleteToken() { return Promise.resolve(true); },
   };
   // Real Firebase compat SDKs expose isSupported() as a STATIC on the
@@ -955,7 +966,7 @@ async function runEnableScenario({ supported, supportError } = {}) {
   globalThis.fetch = () => Promise.resolve({
     status: 200,
     json: () => Promise.resolve({
-      devices: [{ deviceId: 'd1', fcmToken: 'fcm-test-token-1234567890abcdef', appId: 'gogocompany-in', status: 'active' }],
+      devices: [{ deviceId: 'd1', fcmToken: 'test-fcm-registration-token-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', appId: 'gogocompany-in', status: 'active' }],
     }),
   });
   try {
