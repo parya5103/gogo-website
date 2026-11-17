@@ -1,5 +1,5 @@
 /*
- * GoGo Central Notifications — opt-in Firebase Cloud Messaging (web push)
+ * GoGo Central Notifications — opt-in Firebase Cloud Messaging (web push; optimized onboarding)
  * for the GoGo Company portal (account page).
  *
  * Design contract (gogo-central-backend docs/DEPLOYMENT.md):
