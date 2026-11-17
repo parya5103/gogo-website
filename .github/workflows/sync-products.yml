@@ -167,7 +167,7 @@ jobs:
             echo "No product changes to publish."
           else
             git commit -m "sync: refresh product apps from source repositories"
-            git pull --rebase origin main
+            git pull --rebase --autostash origin main
             git push
             if ! git diff HEAD^ HEAD --quiet -- arrowout crystalquest sarkari-sarthi free-online-games; then
               echo "changed=true" >> "$GITHUB_OUTPUT"
