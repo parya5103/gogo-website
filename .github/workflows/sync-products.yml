@@ -169,7 +169,7 @@ jobs:
             git commit -m "sync: refresh product apps from source repositories"
             git pull --rebase origin main
             git push
-            if ! git diff HEAD^ HEAD --quiet -- index.html; then
+            if ! git diff HEAD^ HEAD --quiet -- arrowout crystalquest sarkari-sarthi free-online-games; then
               echo "changed=true" >> "$GITHUB_OUTPUT"
             else
               echo "changed=false" >> "$GITHUB_OUTPUT"
