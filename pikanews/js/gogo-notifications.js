@@ -35,8 +35,7 @@
     // to Firebase Anonymous auth when the visitor opts in (requires the
     // Anonymous provider in the Firebase Console - see deployment docs).
     authMode: 'anonymous',
-    // FAIL-CLOSED deployment switches. BOTH stay empty until the backend is
-    // deployed and the Firebase Console Web Push VAPID key has been created.
+    // Production GoGo Central API (keep aligned with the deployed backend).
     apiBase: 'https://gogo-central-backend.onrender.com',
     vapidPublicKey: 'BPoY5jfIGXpbeW1hhL8iQ4WU5RP8S1EAvu5ywa6RST0QArzZT21ArnRgZQc-vj24ufEAaTALMDxUOOuNeu86xmE',
     // Background messaging worker, registered with a RELATIVE url so the
