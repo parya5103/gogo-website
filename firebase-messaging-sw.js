@@ -1,12 +1,20 @@
 /*
- * GoGo Central — FCM background service worker for the GoGo Company portal.
- * Scope: / (portal root). This worker installs NO fetch handler on purpose:
- * it cannot affect page loading, caching or offline behaviour. It only
- * displays FCM background messages and focuses/opens the notification link.
- * Links are restricted to gogocompany.in; anything else falls back to the
- * portal home page (defence in depth on top of the backend deepLink
- * allowlist).
+ * GoGo Central — FCM background service worker for GoGo Company.
+ * Root scope; intentionally no fetch handler so page caching/offline behaviour
+ * remains untouched. FCM messages are displayed by Firebase's background
+ * handler. The optional standard-push handler accepts only explicitly marked
+ * non-FCM payloads, preventing duplicate FCM notifications.
  */
+'use strict';
+
+self.addEventListener('install', function () {
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', function (event) {
+  event.waitUntil(self.clients.claim());
+});
+
 importScripts('https://www.gstatic.com/firebasejs/11.10.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/11.10.0/firebase-messaging-compat.js');
 
@@ -27,8 +35,19 @@ function safeUrl(raw) {
         (parsed.hostname === 'gogocompany.in' || parsed.hostname === 'www.gogocompany.in')) {
       return parsed.href;
     }
-  } catch (err) { /* fall through */ }
+  } catch (err) { /* use fallback */ }
   return SAFE_FALLBACK_URL;
+}
+
+function notificationOptions(notification, data, notificationId) {
+  var link = safeUrl(data.deepLink || data.link || notification.click_action || SAFE_FALLBACK_URL);
+  return {
+    body: String(notification.body || data.body || ''),
+    tag: notificationId,
+    renotify: false,
+    icon: '/favicon.svg',
+    data: { url: link, notificationId: notificationId }
+  };
 }
 
 var messaging = firebase.messaging();
@@ -37,17 +56,35 @@ messaging.onBackgroundMessage(function (payload) {
   var notification = (payload && payload.notification) || {};
   var data = (payload && payload.data) || {};
   var notificationId = String(
-    data.notificationId || data.campaignId || ('gogo-' + new Date().getTime())
+    data.notificationId || data.campaignId || (payload && payload.messageId) || ('gogo-' + Date.now())
   );
-  // tag collapses duplicate ecosystem-wide deliveries on one device.
-  var link = safeUrl(data.deepLink || data.link || notification.click_action || SAFE_FALLBACK_URL);
-  return self.registration.showNotification(String(notification.title || 'GoGo Company'), {
-    body: String(notification.body || ''),
-    tag: notificationId,
-    renotify: false,
-    icon: '/favicon.svg',
-    data: { url: link, notificationId: notificationId }
-  });
+  return self.registration.showNotification(
+    String(notification.title || data.title || 'GoGo Company'),
+    notificationOptions(notification, data, notificationId)
+  );
+});
+
+// Optional standard Web Push support for a future non-FCM sender.
+// Do not treat this subscription as an FCM token: GoGo Central's current
+// /devices/register contract requires an FCM registration token.
+self.addEventListener('push', function (event) {
+  if (!event.data) return;
+  var payload;
+  try { payload = event.data.json(); } catch (err) { return; }
+  var data = (payload && payload.data) || payload || {};
+  if (data.gogoStandardWebPush !== true) return;
+
+  var notification = payload.notification || data.notification || {};
+  var notificationId = String(data.notificationId || data.id || ('gogo-standard-' + Date.now()));
+  var title = String(notification.title || data.title || 'GoGo Company');
+  var options = notificationOptions(notification, data, notificationId);
+
+  event.waitUntil(
+    self.registration.getNotifications({ tag: notificationId }).then(function (existing) {
+      if (existing && existing.length) return null;
+      return self.registration.showNotification(title, options);
+    })
+  );
 });
 
 self.addEventListener('notificationclick', function (event) {
@@ -57,12 +94,13 @@ self.addEventListener('notificationclick', function (event) {
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function (clientList) {
       for (var i = 0; i < clientList.length; i++) {
         var client = clientList[i];
-        // Hostname-parsed validation (never substring matching: a tab on
-        // evil-gogocompany.in.attacker.example must not be focused).
         var clientHost = '';
         try { clientHost = new URL(client.url).hostname; } catch (err) { clientHost = ''; }
         if ((clientHost === 'gogocompany.in' || clientHost === 'www.gogocompany.in') &&
             'focus' in client) {
+          if (client.url !== target && 'navigate' in client) {
+            return client.navigate(target).then(function () { return client.focus(); });
+          }
           return client.focus();
         }
       }

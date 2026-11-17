@@ -39,7 +39,7 @@
     // FAIL-CLOSED deployment switches. BOTH stay empty until the backend is
     // deployed and the Firebase Console Web Push VAPID key has been created.
     apiBase: 'https://gogo-central-backend-mg6z.onrender.com',
-    vapidPublicKey: 'BPoY5jfIGXpbeW1hhL8iQ4WU5RP8S1EAvu5ywa6RST0QArzZT21ArnRgZQc-vj24ufEAaTALMDxUOOuNeu86xmE',
+    vapidPublicKey: 'BFdTAjQP9LoPNzduM54bPXvpq7ZwKgaiwUFdrgV0tRzJu8FOcQaWQrj-wE9qYXxp9c8YfgTQq-kNG-wDriDKz9Q',
     // Background messaging worker. Portal registers at scope '/' (no root
     // service worker existed before this one; it handles push + clicks only).
     swUrl: '/firebase-messaging-sw.js',
@@ -508,6 +508,126 @@
       });
   }
 
+
+  // Wait for the service worker to activate before asking Firebase for a token.
+  function waitForServiceWorkerActivation(registration) {
+    var timeoutMs = 15000;
+    return new Promise(function (resolve, reject) {
+      var settled = false;
+      var timer = setTimeout(function () {
+        finish(new Error('SW_ACTIVATION_TIMEOUT'));
+      }, timeoutMs);
+      function finish(error) {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        if (registration.installing) registration.installing.removeEventListener('statechange', check);
+        if (registration.waiting) registration.waiting.removeEventListener('statechange', check);
+        if (registration.active) registration.active.removeEventListener('statechange', check);
+        if (navigator.serviceWorker) navigator.serviceWorker.removeEventListener('controllerchange', check);
+        if (error) reject(error); else resolve(registration);
+      }
+      function check() {
+        // Firebase needs an activated registration, not necessarily a page
+        // controller (the first visit may still be awaiting clients.claim()).
+        var worker = registration.active;
+        if (worker && worker.state === 'activated') finish();
+      }
+      [registration.installing, registration.waiting, registration.active].forEach(function (worker) {
+        if (worker) worker.addEventListener('statechange', check);
+      });
+      if (navigator.serviceWorker) navigator.serviceWorker.addEventListener('controllerchange', check);
+      Promise.resolve(navigator.serviceWorker.ready).then(function (readyRegistration) {
+        if (readyRegistration && readyRegistration.active && readyRegistration.active.state === 'activated') {
+          registration = readyRegistration;
+        }
+        check();
+      }).catch(function (err) {
+        finish(new Error('SW_READY_FAILED: ' + String((err && err.message) || err).slice(0, 100)));
+      });
+      check();
+    });
+  }
+
+  function isRecoverableFcmError(error) {
+    var message = String((error && (error.code || error.message || error.name)) || error || '').toLowerCase();
+    return message.indexOf('token-subscribe-failed') !== -1 ||
+      message.indexOf('missing required authentication') !== -1 ||
+      message.indexOf('token-unsubscribe-failed') !== -1 ||
+      message.indexOf('invalidstateerror') !== -1 ||
+      String((error && error.name) || '').toLowerCase() === 'invalidstateerror';
+  }
+
+  function logFcmCredentialDiagnostics(error) {
+    if (typeof console === 'undefined' || !console.error) return;
+    console.error('[GoGo Notifications] FCM token registration failed after one clean-state retry.', {
+      projectId: CONFIG.firebaseConfig.projectId,
+      errorCode: String((error && (error.code || error.name)) || 'unknown'),
+      errorMessage: String((error && error.message) || error || '').slice(0, 240),
+      checklist: [
+        'Enable fcmregistrations.googleapis.com for Firebase project gen-lang-client-0566323659.',
+        'Enable firebaseinstallations.googleapis.com for Firebase project gen-lang-client-0566323659.',
+        'Check Google Cloud API key restrictions: the website referrer must allow this Firebase web app and required Firebase APIs.',
+        'Firebase Console > Project settings > Cloud Messaging > Web Push certificates: verify the active key matches CONFIG.vapidPublicKey.',
+        'Verify the Firebase Web App sender ID and app ID match this project, and that the root service worker is served with JavaScript MIME type.'
+      ]
+    });
+  }
+
+  function isFcmAuthenticationError(error) {
+    var message = String((error && (error.code || error.message || error.name)) || error || '').toLowerCase();
+    return message.indexOf('missing required authentication') !== -1 ||
+      message.indexOf('unauthorized') !== -1 ||
+      message.indexOf('permission denied') !== -1 ||
+      message.indexOf('api key not valid') !== -1 ||
+      message.indexOf('invalid api key') !== -1 ||
+      message.indexOf('sender id mismatch') !== -1 ||
+      message.indexOf('project number mismatch') !== -1 ||
+      message.indexOf('http 401') !== -1 ||
+      message.indexOf('http 403') !== -1;
+  }
+
+  function getFcmTokenWithRecovery(registration) {
+    var options = {
+      vapidKey: CONFIG.vapidPublicKey,
+      serviceWorkerRegistration: registration
+    };
+    return state.messaging.getToken(options).catch(function (firstError) {
+      if (!isRecoverableFcmError(firstError)) throw firstError;
+      if (typeof console !== 'undefined' && console.warn) {
+        console.warn('[GoGo Notifications] Retrying FCM token acquisition after a subscription error.', firstError);
+      }
+      var pushManager = registration && registration.pushManager;
+      return Promise.resolve(pushManager && pushManager.getSubscription
+        ? pushManager.getSubscription() : null)
+        .then(function (existingSubscription) {
+          if (!existingSubscription) return null;
+          return existingSubscription.unsubscribe().catch(function (unsubscribeError) {
+            if (typeof console !== 'undefined' && console.warn) {
+              console.warn('[GoGo Notifications] Existing PushSubscription could not be removed:', unsubscribeError);
+            }
+            return null;
+          });
+        })
+        .then(function () {
+          // Do not delete Firebase IndexedDB databases here. The Firebase SDK
+          // may still hold live connections to them, making deletion blocked
+          // and preventing the retry from ever running.
+          return state.messaging.getToken(options);
+        })
+        .catch(function (retryError) {
+          if (isFcmAuthenticationError(retryError)) {
+            logFcmCredentialDiagnostics(retryError);
+            throw new Error('FCM_CREDENTIALS_MISMATCH: ' +
+              String((retryError && (retryError.code || retryError.message)) || retryError).slice(0, 180));
+          }
+          // Preserve transient/network token-subscribe failures as such;
+          // they are not proof of a Firebase project or credential mismatch.
+          throw retryError;
+        });
+    });
+  }
+
   function getCurrentUser() {
     if (CONFIG.authMode === 'gogo-account') {
       var account = root.GoGoAccount;
@@ -642,6 +762,15 @@
     if (code === 'SESSION_EXPIRED') {
       return 'Your session expired. Sign in again, then tap Enable again.';
     }
+    if (code.indexOf('FCM_CREDENTIALS_MISMATCH') === 0) {
+      return 'Firebase could not authenticate this browser for push registration. The GoGo team must verify the Firebase project APIs, Web Push VAPID certificate and Google Cloud API-key restrictions. Please try again later.';
+    }
+    if (code === 'SW_ACTIVATION_TIMEOUT' || code.indexOf('SW_READY_FAILED') === 0) {
+      return 'The background notification worker did not become active in time. Reload this page and try again.';
+    }
+    if (code.indexOf('messaging/token-subscribe-failed') !== -1 || code.indexOf('messaging/token-unsubscribe-failed') !== -1) {
+      return 'Firebase could not complete push registration right now. Check your connection and try again in a moment.';
+    }
     if (code === 'NO_FCM_TOKEN') {
       return 'Could not obtain a push token from this browser. Please try again later.';
     }
@@ -729,11 +858,11 @@
         });
       })
       .then(function (registration) {
-        state.swRegistration = registration;
-        setStatus('Getting this device push token...');
-        return state.messaging.getToken({
-          vapidKey: CONFIG.vapidPublicKey,
-          serviceWorkerRegistration: registration
+        setStatus('Waiting for the background worker to activate...');
+        return waitForServiceWorkerActivation(registration).then(function (activeRegistration) {
+          state.swRegistration = activeRegistration;
+          setStatus('Getting this device push token...');
+          return getFcmTokenWithRecovery(activeRegistration);
         });
       })
       .then(function (fcmToken) {
