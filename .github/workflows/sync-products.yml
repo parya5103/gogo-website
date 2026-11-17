@@ -167,9 +167,9 @@ jobs:
             echo "No product changes to publish."
           else
             git commit -m "sync: refresh product apps from source repositories"
-            git pull --rebase origin main
+            git pull --rebase --autostash origin main
             git push
-            if ! git diff HEAD^ HEAD --quiet -- index.html; then
+            if ! git diff HEAD^ HEAD --quiet -- arrowout crystalquest sarkari-sarthi free-online-games; then
               echo "changed=true" >> "$GITHUB_OUTPUT"
             else
               echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -185,7 +185,7 @@ jobs:
           set -euo pipefail
           OIDC_URL="${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=gogo-central-notifications"
           OIDC_TOKEN=$(curl -fsS -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" "$OIDC_URL" | jq -r '.value')
-          EVENT_ID=$(sha256sum index.html | cut -d' ' -f1)
+          EVENT_ID=$(git rev-parse HEAD)
           jq -n --arg eventId "$EVENT_ID" \
             --arg title "GoGo Company में नया अपडेट" \
             --arg body "GoGo के products और website में नया update प्रकाशित हुआ है। अभी देखें।" \
