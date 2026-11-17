@@ -129,7 +129,7 @@
     var value = token.trim();
     if (!value || value !== token || value.indexOf('fcm_') === 0 ||
         value.charAt(0) === '{' || value.charAt(0) === '[' ||
-        /\\s/.test(value) || value.length <= 100) return false;
+        /\s/.test(value) || value.length <= 100) return false;
     return true;
   }
 
