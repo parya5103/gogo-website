@@ -7,6 +7,10 @@ on:
     # already pushed fresh news_json/ data before we publish it.
     - cron: '10,40 * * * *'
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sync-pikanews.yml'
 
 permissions:
   contents: write
@@ -25,6 +29,9 @@ jobs:
     steps:
       - name: Checkout central site
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Re-runs must start from the latest main to avoid replaying a stale commit.
+          ref: main
 
       - name: Checkout PikaNews source (main branch)
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
