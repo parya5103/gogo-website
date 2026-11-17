@@ -896,7 +896,7 @@ runStep('Disable path still exists and clears stored state (turn-off behavior pr
 // fetch). No network, no real Firebase. They assert actual behavior, not
 // source-code string matching.
 // ---------------------------------------------------------------------------
-async function runEnableScenario({ supported, supportError } = {}) {
+async function runEnableScenario({ supported, supportError, initialPermission = 'default' } = {}) {
   const saved = {};
   const setGlobal = (name, value) => {
     saved[name] = Object.getOwnPropertyDescriptor(globalThis, name);
@@ -956,7 +956,11 @@ async function runEnableScenario({ supported, supportError } = {}) {
     addEventListener: () => {},
     body: { appendChild: () => {} },
   });
-  setGlobal('Notification', { permission: 'default', requestPermission: () => Promise.resolve('granted') });
+  let permissionRequestCalls = 0;
+  setGlobal('Notification', {
+    get permission() { return initialPermission; },
+    requestPermission: () => { permissionRequestCalls++; return Promise.resolve('granted'); }
+  });
   setGlobal('PushManager', function FakePushManager() {});
   setGlobal('navigator', {
     serviceWorker: {
@@ -983,7 +987,7 @@ async function runEnableScenario({ supported, supportError } = {}) {
   });
   try {
     const result = await win.GoGoNotifications.enable();
-    return { result, elements, order, swRegisterCalls };
+    return { result, elements, order, swRegisterCalls, permissionRequestCalls };
   } finally {
     globalThis.fetch = savedFetch;
     for (const [name, descriptor] of Object.entries(saved)) {
@@ -992,6 +996,13 @@ async function runEnableScenario({ supported, supportError } = {}) {
     }
   }
 }
+
+await runStepAsync('Behavior: an already-granted browser permission skips a second permission prompt and completes FCM setup', async () => {
+  const scenario = await runEnableScenario({ supported: true, initialPermission: 'granted' });
+  assert.equal(scenario.result, true, 'enable() must proceed when browser permission is already granted');
+  assert.equal(scenario.permissionRequestCalls, 0, 'requestPermission() must not be called again after grant');
+  assert.equal(scenario.swRegisterCalls, 1, 'FCM setup continues to service-worker registration');
+});
 
 await runStepAsync('Behavior: isSupported() resolving true lets enable() proceed to service-worker registration and complete', async () => {
   const scenario = await runEnableScenario({ supported: true });
