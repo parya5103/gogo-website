@@ -940,8 +940,15 @@ async function runEnableScenario({ supported, supportError } = {}) {
       register: () => {
         swRegisterCalls++;
         order.push('sw-register-called');
-        return Promise.resolve({ scope: '/' });
+        const activeWorker = { state: 'activated', addEventListener() {}, removeEventListener() {} };
+        return Promise.resolve({ scope: '/', active: activeWorker });
       },
+      ready: Promise.resolve({
+        scope: '/',
+        active: { state: 'activated', addEventListener() {}, removeEventListener() {} },
+      }),
+      addEventListener() {},
+      removeEventListener() {},
     },
   });
   const savedFetch = globalThis.fetch;
