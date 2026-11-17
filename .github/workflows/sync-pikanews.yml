@@ -161,7 +161,7 @@ jobs:
           # entries so git add stages a fresh tree (gitlink entries from a
           # broken sync would otherwise be skipped silently).
           git rm -r --cached --ignore-unmatch --quiet pikanews || true
-          git add pikanews sitemap.xml index.html sarkari-sarthi/latest-govt-jobs sarkari-sarthi/admit-card sarkari-sarthi/sarkari-result sarkari-sarthi/mp-govt-jobs free-online-games
+          git add -A pikanews sitemap.xml index.html sarkari-sarthi free-online-games
           if git ls-files -s | grep -q '^160000'; then
             echo "::error::gitlink (embedded repository) entries present in index - refusing to publish"
             git ls-files -s | grep '^160000' || true
@@ -172,7 +172,7 @@ jobs:
             echo "No PikaNews changes to publish."
           else
             git commit -m "sync: refresh PikaNews from parya5103/PikaNews main"
-            git pull --rebase origin main
+            git pull --rebase --autostash origin main
             git push
             if ! git diff HEAD^ HEAD --quiet -- pikanews/data/latest.json pikanews/data/all_articles.json; then
               echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -196,6 +196,6 @@ jobs:
             --arg body "PikaNews पर नई खबरें और जरूरी अपडेट प्रकाशित हुए हैं। पूरी खबर पढ़ें।" \
             --arg deepLink "https://gogocompany.in/pikanews/" \
             '{eventType:"important_news",eventId:$eventId,title:$title,body:$body,deepLink:$deepLink}' > /tmp/gogo-event.json
-          curl -fsS --max-time 20 -X POST "$CENTRAL_API/api/v1/automation/publish" \
+          curl --fail-with-body -sS --connect-timeout 10 --max-time 60 --retry 2 --retry-connrefused --retry-delay 5 -X POST "$CENTRAL_API/api/v1/automation/publish" \
             -H "Authorization: Bearer $OIDC_TOKEN" -H "Content-Type: application/json" \
             --data-binary @/tmp/gogo-event.json
