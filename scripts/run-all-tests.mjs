@@ -752,7 +752,7 @@ runStep('Onboarding popup lists all six GoGo categories and only prompts on an e
   for (const label of ["GoGo Company announcements","Sarkari Sarthi job alerts","Pika News breaking news","Crystal Quest updates","Arrow Out updates","Future GoGo product announcements"]) {
     assert.ok(notificationsModuleSrc.includes(label), `intro must list: ${label}`);
   }
-  assert.equal((notificationsModuleSrc.match(/requestPermission/g) || []).length, 1, 'native prompt only inside the Enable click path');
+  assert.equal((notificationsModuleSrc.match(/Notification\.requestPermission/g) || []).length, 1, 'native prompt only inside the Enable click path');
   assert.ok(notificationsModuleSrc.includes('visibilitychange'), 'permission rechecked when the visitor returns');
 });
 
@@ -832,7 +832,7 @@ runStep('Enable failure messages are accurate per failure stage and never leak t
   assert.ok(m(new Error('VERIFY_FAILED_NOT_FOUND')).includes('confirm'));
   assert.notEqual(m(new Error('REGISTER_FAILED_500')), m(new Error('PREFERENCE_FAILED_429')));
   // No sensitive runtime values in any message.
-  for (const e of ['PERMISSION_DENIED', 'PERMISSION_DISMISSED', 'SUPPORT_CHECK_FAILED: x', 'MESSAGING_UNSUPPORTED', 'NETWORK_ERROR', 'SW_REGISTER_FAILED: x', 'ANON_AUTH_FAILED: auth/x', 'SDK_LOAD_FAILED: x', 'SDK_INIT_FAILED', 'NO_FCM_TOKEN', 'SESSION_EXPIRED', 'REGISTER_FAILED_500', 'PREFERENCE_FAILED_429', 'VERIFY_FAILED_NOT_FOUND']) {
+  for (const e of ['PERMISSION_DENIED', 'PERMISSION_STATE_MISMATCH', 'PERMISSION_DISMISSED', 'SUPPORT_CHECK_FAILED: x', 'MESSAGING_UNSUPPORTED', 'NETWORK_ERROR', 'SW_REGISTER_FAILED: x', 'ANON_AUTH_FAILED: auth/x', 'SDK_LOAD_FAILED: x', 'SDK_INIT_FAILED', 'NO_FCM_TOKEN', 'SESSION_EXPIRED', 'REGISTER_FAILED_500', 'PREFERENCE_FAILED_429', 'VERIFY_FAILED_NOT_FOUND']) {
     const msg = m(new Error(e));
     assert.ok(!msg.includes('Bearer'), `no Authorization material in ${e}`);
     assert.ok(!msg.includes('fcmToken'), `no FCM token in ${e}`);
@@ -843,7 +843,7 @@ runStep('Enable failure messages are accurate per failure stage and never leak t
 runStep('Permission is requested exactly once, through the compat wrapper, only from the click path', () => {
   // askPermission() is the single call site; enable() must call the wrapper,
   // never Notification.requestPermission directly.
-  assert.equal((notificationsModuleSrc.match(/requestPermission/g) || []).length, 1);
+  assert.equal((notificationsModuleSrc.match(/Notification\.requestPermission/g) || []).length, 1);
   assert.ok(notificationsModuleSrc.includes('function askPermission()'), 'callback-compatible wrapper exists');
   assert.ok(notificationsModuleSrc.includes('return askPermission()'), 'enable() uses the wrapper');
   assert.ok(notificationsModuleSrc.includes("typeof result.then === 'function'"), 'Promise-based browsers pass through the wrapper');
@@ -896,7 +896,7 @@ runStep('Disable path still exists and clears stored state (turn-off behavior pr
 // fetch). No network, no real Firebase. They assert actual behavior, not
 // source-code string matching.
 // ---------------------------------------------------------------------------
-async function runEnableScenario({ supported, supportError } = {}) {
+async function runEnableScenario({ supported, supportError, initialPermission = 'default' } = {}) {
   const saved = {};
   const setGlobal = (name, value) => {
     saved[name] = Object.getOwnPropertyDescriptor(globalThis, name);
@@ -956,7 +956,11 @@ async function runEnableScenario({ supported, supportError } = {}) {
     addEventListener: () => {},
     body: { appendChild: () => {} },
   });
-  setGlobal('Notification', { permission: 'default', requestPermission: () => Promise.resolve('granted') });
+  let permissionRequestCalls = 0;
+  setGlobal('Notification', {
+    get permission() { return initialPermission; },
+    requestPermission: () => { permissionRequestCalls++; return Promise.resolve('granted'); }
+  });
   setGlobal('PushManager', function FakePushManager() {});
   setGlobal('navigator', {
     serviceWorker: {
@@ -983,7 +987,7 @@ async function runEnableScenario({ supported, supportError } = {}) {
   });
   try {
     const result = await win.GoGoNotifications.enable();
-    return { result, elements, order, swRegisterCalls };
+    return { result, elements, order, swRegisterCalls, permissionRequestCalls };
   } finally {
     globalThis.fetch = savedFetch;
     for (const [name, descriptor] of Object.entries(saved)) {
@@ -992,6 +996,13 @@ async function runEnableScenario({ supported, supportError } = {}) {
     }
   }
 }
+
+await runStepAsync('Behavior: an already-granted browser permission skips a second permission prompt and completes FCM setup', async () => {
+  const scenario = await runEnableScenario({ supported: true, initialPermission: 'granted' });
+  assert.equal(scenario.result, true, 'enable() must proceed when browser permission is already granted');
+  assert.equal(scenario.permissionRequestCalls, 0, 'requestPermission() must not be called again after grant');
+  assert.equal(scenario.swRegisterCalls, 1, 'FCM setup continues to service-worker registration');
+});
 
 await runStepAsync('Behavior: isSupported() resolving true lets enable() proceed to service-worker registration and complete', async () => {
   const scenario = await runEnableScenario({ supported: true });

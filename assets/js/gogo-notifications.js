@@ -542,6 +542,12 @@
   // (older Safari) into a Promise; Promise-based browsers pass through.
   // Resolving twice is harmless: only the first settle wins.
   function askPermission() {
+    // Do not re-request permission when the browser has already granted it.
+    // Some browser/webview combinations can return a stale "denied" result
+    // from requestPermission() even while the effective permission is granted.
+    // The current Permission API state is authoritative for this preflight.
+    if (Notification.permission === 'granted') return Promise.resolve('granted');
+    if (Notification.permission === 'denied') return Promise.resolve('denied');
     return new Promise(function (resolve, reject) {
       try {
         var result = Notification.requestPermission(function (permission) {
@@ -819,6 +825,9 @@
     if (code === 'PERMISSION_DENIED') {
       return 'Notifications are BLOCKED for gogocompany.in in your browser settings. Tap the padlock icon in the address bar, open Site settings, set Notifications to Allow, then tap Enable again.';
     }
+    if (code === 'PERMISSION_STATE_MISMATCH') {
+      return 'Your browser already reports notifications as allowed, but its permission prompt returned a conflicting result. Reload the page and try Enable again. If it continues, GoGo will need to inspect the browser and Firebase registration error.';
+    }
     if (code === 'PERMISSION_DISMISSED') {
       return 'The permission prompt was closed without an answer. Tap Enable again to allow notifications.';
     }
@@ -896,7 +905,13 @@
     return askPermission()
       .then(function (permission) {
         var outcome = classifyPermissionResult(permission);
-        if (outcome === 'denied') throw new Error('PERMISSION_DENIED');
+        if (outcome === 'denied') {
+          // Avoid falsely telling a user to change browser settings when the
+          // effective browser permission is already granted. This mismatch
+          // points to a stale/inconsistent requestPermission result instead.
+          if (Notification.permission === 'granted') throw new Error('PERMISSION_STATE_MISMATCH');
+          throw new Error('PERMISSION_DENIED');
+        }
         if (outcome === 'dismissed') throw new Error('PERMISSION_DISMISSED');
         setStatus('Loading the messaging SDK...');
         return ensureSdk();
