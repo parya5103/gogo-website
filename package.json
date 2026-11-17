@@ -18,7 +18,7 @@
     "@firebase/eslint-plugin-security-rules": "latest",
     "@firebase/rules-unit-testing": "^4.0.1",
     "esbuild": "^0.25.0",
-    "eslint": "^9.21.0",
+    "eslint": "^10.14.0",
     "vitest": "^5.1.0"
   }
 }
