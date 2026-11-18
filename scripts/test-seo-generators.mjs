@@ -43,10 +43,10 @@ for (const unsupported of ["admit-card", "sarkari-result", "mp-govt-jobs"]) {
 
 const sarkariHome = readFileSync("sarkari-sarthi/index.html", "utf8");
 const pikaHome = readFileSync("pikanews/index.html", "utf8");
-assert.match(sarkariHome, /<title>Latest Government Jobs 2026 \\| Sarkari Sarthi<\\/title>/);
+assert.match(sarkariHome, /<title>Latest Government Jobs 2026 \| Sarkari Sarthi<\/title>/);
 assert.doesNotMatch(sarkariHome, /name="keywords"/i);
 assert.doesNotMatch(sarkariHome, /Admit Cards|Sarkari Results|answer keys/i);
-assert.match(pikaHome, /<title>Latest News Today \\| PikaNews<\\/title>/);
+assert.match(pikaHome, /<title>Latest News Today \| PikaNews<\/title>/);
 const medicalHub = HUBS.find(h => h.slug === "medical-govt-jobs");
 const medicalPage = renderHub(medicalHub, [{title:"Medical Recruitment",url:"https://example.gov.in/job",source:"Secondary source"}]);
 assert.match(medicalPage, /secondary employment sources/);
