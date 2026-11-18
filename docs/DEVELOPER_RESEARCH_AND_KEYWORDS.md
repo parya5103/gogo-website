@@ -127,7 +127,8 @@ No Hindi-language site, translations, hreflang, new URL structure, keyword stuff
 
 ### Search Console verification snapshot
 - Connected and readable Search Console property: `sc-domain:gogocompany.in`.
-- For 2026-10-19 through 2026-11-15: 3 clicks, 90 impressions, 3.33% CTR, average position 6.94 (small early sample; comparison period had no data).
+- For 2026-10-19 through 2026-11-15: 3 clicks, 90 impressions, 3.33% CTR, average position 6.94 (small early sample; comparison period had no data). The latest settled query rows through 2026-11-16 showed only branded/navigation terms (gogo company, go company, go go company, pikanews, arrowout) plus one irrelevant long-tail query; no meaningful non-brand target keyword was yet producing clicks.
+- Query rows exposed only 33.3% of total clicks and 38.9% of impressions (66.7% / 61.1% hidden), so query-level totals must not be inferred by summing visible rows.
 - Four submitted sitemaps were readable with zero reported warnings/errors: root sitemap (21 URLs), Sarkari Sarthi sitemap (185 submitted), PikaNews sitemap (1,016 submitted), and PikaNews News sitemap (99 submitted). Google no longer returns indexed counts in the sitemap report.
 - Sitemap URL performance showed 4/21 root sitemap URLs, 5/202 sampled Sarkari Sarthi URLs, and no impressions for the first 100 PikaNews News sitemap URLs in the selected range. This is not proof that every zero-impression URL is unindexed.
 - URL Inspection passed for the homepage, PikaNews homepage, Sarkari Sarthi homepage and Crystal Quest homepage. Arrow Out About, PikaNews Bollywood category and a sampled PikaNews article were reported as unknown to Google at inspection time.
