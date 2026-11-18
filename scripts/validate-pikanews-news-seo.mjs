@@ -29,7 +29,8 @@ for (const block of blocks) {
   assert.ok(article, "Every news sitemap URL must contain NewsArticle JSON-LD");
   assert.equal(article.publisher?.name, "PikaNews", "NewsArticle publisher must be PikaNews");
   assert.ok(!article.dateModified || Date.parse(article.dateModified) >= Date.parse(article.datePublished), "dateModified must be a meaningful editorial modification date");
-  assert.match(html, /<meta name="robots" content="index, follow">/, "News sitemap URLs must be indexable");
+  const robots = html.match(/<meta name="robots" content="([^"]+)"/i)?.[1] || "";
+  assert.ok(/index, follow/i.test(robots) && !/noindex/i.test(robots), "News sitemap URLs must be indexable");
   assert.ok(article.speakable && article.speakable["@type"] === "SpeakableSpecification", "NewsArticle must expose speakable selectors");
 }
 console.log("PikaNews SEO validation passed: fresh news sitemap, canonical pages, NewsArticle and speakable metadata.");
