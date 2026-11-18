@@ -1,8 +1,8 @@
 {
-  "last_updated": "2026-11-17T18:20:20.309159",
-  "total_jobs": 224,
-  "active_jobs": 199,
-  "expired_jobs": 25,
+  "last_updated": "2026-11-18T04:39:45.124695",
+  "total_jobs": 227,
+  "active_jobs": 201,
+  "expired_jobs": 26,
   "jobs": [
     {
       "id": "5ccd399e8537b84c5a77d05981e8dc67",
@@ -2915,50 +2915,6 @@
       "published_date": null,
       "original_source_url": "https://allgovernmentjobs.in/sctimst-recruitment-2026-walk-in-interview-for-senior-project-engineer-posts/44992",
       "last_verified": "2026-10-30T02:48:41.275840",
-      "status": "active",
-      "recruitment_board": null,
-      "state": null,
-      "district": null,
-      "minimum_qualification": null,
-      "age_min": null,
-      "age_max": null,
-      "age_relaxation": null,
-      "salary": null,
-      "pay_scale": null,
-      "application_fee": null,
-      "selection_process": null,
-      "employment_type": null,
-      "official_website": null,
-      "description_summary": null,
-      "verification_status": "secondary_source_only"
-    },
-    {
-      "id": "3ae08eb3dff16932974d128f61beff06",
-      "title": "BOB Recruitment 2026 - Apply Online for 11 Senior Manager Manager and Chief Manager Posts",
-      "url": "https://allgovernmentjobs.in/bob-recruitment-2026-apply-online-for-11-senior-manager-and-manager-posts/44987",
-      "source": "allgovernmentjobs.in",
-      "description": "Bank of Baroda (BOB) has announced the latest job notification for the recruitment of 11 Senior Manager, Manager, and Chief Manager positions. Candidates who have qualified with Any Degree, postgraduation, MBA, MCA, CA, PGDM can grab this chance and apply for the BOB Recruitment 2026 . If you are looking for more details like the age limit, selection process, salary structure, education details, application fee, and how to apply, they are mentioned below. The application process has already b...",
-      "pdf_link": null,
-      "important_dates": {
-        "last_date": "17-11-2026",
-        "found_date": "17-11-2026"
-      },
-      "category": "General",
-      "skills": [],
-      "scraped_at": "2026-10-30T02:48:41.275882",
-      "links": [],
-      "organization": null,
-      "department": null,
-      "location": null,
-      "vacancies": null,
-      "advertisement_no": null,
-      "qualification": null,
-      "age_limit": null,
-      "official_notification_url": null,
-      "official_application_url": null,
-      "published_date": null,
-      "original_source_url": "https://allgovernmentjobs.in/bob-recruitment-2026-apply-online-for-11-senior-manager-and-manager-posts/44987",
-      "last_verified": "2026-10-30T02:48:41.275882",
       "status": "active",
       "recruitment_board": null,
       "state": null,
@@ -8497,9 +8453,15 @@
       "description_summary": null,
       "published_date": null,
       "original_source_url": "https://allgovernmentjobs.in/sgpgims-notification-2026-apply-for-02-senior-project-assistant-and-data-entry-operator-posts/45333",
-      "last_verified": "2026-11-17T18:20:25.645120",
+      "last_verified": "2026-11-17T19:34:56.518238",
       "status": "active",
-      "verification_status": "secondary_source_only"
+      "verification_status": "secondary_source_only",
+      "source_refs": [
+        {
+          "source": "allgovernmentjobs.in",
+          "url": "https://allgovernmentjobs.in/sgpgims-notification-2026-apply-for-02-senior-project-assistant-and-data-entry-operator-posts/45333"
+        }
+      ]
     },
     {
       "id": "32f7953b97c87a80a3ba1df8fdba8255",
@@ -8541,9 +8503,15 @@
       "description_summary": null,
       "published_date": null,
       "original_source_url": "https://allgovernmentjobs.in/gbpnihe-notification-2026-apply-online-for-nursing-assistant-pharmacist-posts/45334",
-      "last_verified": "2026-11-17T18:20:25.645105",
+      "last_verified": "2026-11-17T19:34:56.518238",
       "status": "active",
-      "verification_status": "secondary_source_only"
+      "verification_status": "secondary_source_only",
+      "source_refs": [
+        {
+          "source": "allgovernmentjobs.in",
+          "url": "https://allgovernmentjobs.in/gbpnihe-notification-2026-apply-online-for-nursing-assistant-pharmacist-posts/45334"
+        }
+      ]
     },
     {
       "id": "270af19bf96e5f0e67f95731d6003d10",
@@ -8586,9 +8554,15 @@
       "description_summary": null,
       "published_date": null,
       "original_source_url": "https://allgovernmentjobs.in/iit-jodhpur-notification-2026-apply-online-for-project-associate-i-posts/45335",
-      "last_verified": "2026-11-17T18:20:25.645091",
+      "last_verified": "2026-11-17T19:34:56.518238",
       "status": "active",
-      "verification_status": "secondary_source_only"
+      "verification_status": "secondary_source_only",
+      "source_refs": [
+        {
+          "source": "allgovernmentjobs.in",
+          "url": "https://allgovernmentjobs.in/iit-jodhpur-notification-2026-apply-online-for-project-associate-i-posts/45335"
+        }
+      ]
     },
     {
       "id": "9535ddc7738142d9af51e159c38c91a4",
@@ -8631,9 +8605,15 @@
       "description_summary": null,
       "published_date": null,
       "original_source_url": "https://allgovernmentjobs.in/dlsa-west-champaran-notification-2026-apply-offline-for-150-para-legal-volunteer-posts/45336",
-      "last_verified": "2026-11-17T18:20:25.645074",
+      "last_verified": "2026-11-17T19:34:56.518238",
       "status": "active",
-      "verification_status": "secondary_source_only"
+      "verification_status": "secondary_source_only",
+      "source_refs": [
+        {
+          "source": "allgovernmentjobs.in",
+          "url": "https://allgovernmentjobs.in/dlsa-west-champaran-notification-2026-apply-offline-for-150-para-legal-volunteer-posts/45336"
+        }
+      ]
     },
     {
       "id": "9f1ca09aff109861e5d9d2caa7687f2a",
@@ -8676,9 +8656,15 @@
       "description_summary": null,
       "published_date": null,
       "original_source_url": "https://allgovernmentjobs.in/tmc-notification-2026-walk-in-interview-for-various-senior-resident-posts/45340",
-      "last_verified": "2026-11-17T18:20:25.645047",
+      "last_verified": "2026-11-17T19:34:56.518238",
       "status": "active",
-      "verification_status": "secondary_source_only"
+      "verification_status": "secondary_source_only",
+      "source_refs": [
+        {
+          "source": "allgovernmentjobs.in",
+          "url": "https://allgovernmentjobs.in/tmc-notification-2026-walk-in-interview-for-various-senior-resident-posts/45340"
+        }
+      ]
     },
     {
       "id": "597fce78f63aad882646c5c36e1ddd37",
@@ -8721,9 +8707,15 @@
       "description_summary": null,
       "published_date": null,
       "original_source_url": "https://allgovernmentjobs.in/iit-delhi-notification-2026-apply-offline-for-ml-engineer-posts/45332",
-      "last_verified": "2026-11-17T18:20:25.645137",
+      "last_verified": "2026-11-17T19:34:56.518238",
       "status": "active",
-      "verification_status": "secondary_source_only"
+      "verification_status": "secondary_source_only",
+      "source_refs": [
+        {
+          "source": "allgovernmentjobs.in",
+          "url": "https://allgovernmentjobs.in/iit-delhi-notification-2026-apply-offline-for-ml-engineer-posts/45332"
+        }
+      ]
     },
     {
       "id": "88120c3f2abee42e4d9e7fa94ae1d201",
@@ -8767,9 +8759,15 @@
       "description_summary": null,
       "published_date": null,
       "original_source_url": "https://allgovernmentjobs.in/iit-kanpur-jobs-2026-apply-online-for-project-engineer-posts/45337",
-      "last_verified": "2026-11-17T18:20:25.649724",
+      "last_verified": "2026-11-17T19:34:56.518238",
       "status": "active",
-      "verification_status": "secondary_source_only"
+      "verification_status": "secondary_source_only",
+      "source_refs": [
+        {
+          "source": "allgovernmentjobs.in",
+          "url": "https://allgovernmentjobs.in/iit-kanpur-jobs-2026-apply-online-for-project-engineer-posts/45337"
+        }
+      ]
     },
     {
       "id": "6ec670ff89dc842ccb722f6967638e1f",
@@ -8812,7 +8810,151 @@
       "description_summary": null,
       "published_date": null,
       "original_source_url": "https://allgovernmentjobs.in/dhs-theni-recruitment-2026-apply-offline-for-76-pharmacist-medical-officer-dental-assistant-and-other-posts/45338",
-      "last_verified": "2026-11-17T18:20:25.647424",
+      "last_verified": "2026-11-17T19:34:56.518238",
+      "status": "active",
+      "verification_status": "secondary_source_only",
+      "source_refs": [
+        {
+          "source": "allgovernmentjobs.in",
+          "url": "https://allgovernmentjobs.in/dhs-theni-recruitment-2026-apply-offline-for-76-pharmacist-medical-officer-dental-assistant-and-other-posts/45338"
+        }
+      ]
+    },
+    {
+      "id": "5324a64c048e5daff6716245c3fbe782",
+      "title": "RSSB Notification 2026 - Apply Online for 874 Junior Engineer Posts",
+      "url": "https://allgovernmentjobs.in/rssb-notification-2026-apply-online-for-874-junior-engineer-posts/45342",
+      "source": "allgovernmentjobs.in",
+      "description": "The Rajasthan Staff Selection Board (RSSB), Jaipur, has officially released the notification to fill the vacancies of 874 Junior Engineer posts. Interested and eligibile candidates can use this opportunity to apply for these posts before the last date of application. Candidates who have completed their B.E./B. Tech, Diploma in Mechanical, Electrical, Civil Engineering can apply for the RSSB Notification 2026 . The interested applicants can apply in online mode. Here we have mentioned the educ...",
+      "pdf_link": null,
+      "important_dates": {
+        "last_date": "17-12-2026",
+        "found_date": "18-11-2026"
+      },
+      "category": "Engineering",
+      "skills": [
+        "Data Entry"
+      ],
+      "scraped_at": "2026-11-18T04:39:49.317801",
+      "links": [],
+      "organization": null,
+      "department": null,
+      "recruitment_board": null,
+      "location": null,
+      "state": null,
+      "district": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "minimum_qualification": null,
+      "age_limit": null,
+      "age_min": null,
+      "age_max": null,
+      "age_relaxation": null,
+      "salary": null,
+      "pay_scale": null,
+      "application_fee": null,
+      "selection_process": null,
+      "employment_type": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "official_website": null,
+      "description_summary": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/rssb-notification-2026-apply-online-for-874-junior-engineer-posts/45342",
+      "last_verified": "2026-11-18T04:39:49.317801",
+      "status": "active",
+      "verification_status": "secondary_source_only"
+    },
+    {
+      "id": "f2833228317d04606923b10122942eab",
+      "title": "NIPER Ahmedabad Jobs 2026 - Apply Online for Junior Research Fellow Posts",
+      "url": "https://allgovernmentjobs.in/niper-ahmedabad-jobs-2026-apply-online-for-junior-research-fellow-posts/45341",
+      "source": "allgovernmentjobs.in",
+      "description": "The National Institute of Pharmaceutical Education and Research, Ahmedabad (NIPER Ahmedabad) has officially released the notification to fill the vacancy for 01 Junior Research Fellow post. Interested and eligibile candidates can use this opportunity to apply for this post before the last date of application. Candidates who have completed their M. Pharm and M.Sc. can apply for the NIPER Ahmedabad Jobs 2026 . The interested applicants can apply in online mode. Here, we have mentioned the educa...",
+      "pdf_link": null,
+      "important_dates": {
+        "last_date": "30-11-2026",
+        "found_date": "17-11-2026"
+      },
+      "category": "General",
+      "skills": [
+        "Data Entry"
+      ],
+      "scraped_at": "2026-11-18T04:39:49.324579",
+      "links": [],
+      "organization": null,
+      "department": null,
+      "recruitment_board": null,
+      "location": null,
+      "state": null,
+      "district": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "minimum_qualification": null,
+      "age_limit": null,
+      "age_min": null,
+      "age_max": null,
+      "age_relaxation": null,
+      "salary": null,
+      "pay_scale": null,
+      "application_fee": null,
+      "selection_process": null,
+      "employment_type": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "official_website": null,
+      "description_summary": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/niper-ahmedabad-jobs-2026-apply-online-for-junior-research-fellow-posts/45341",
+      "last_verified": "2026-11-18T04:39:49.324579",
+      "status": "active",
+      "verification_status": "secondary_source_only"
+    },
+    {
+      "id": "0da8bfa0e4d82cd911130b00d021ad34",
+      "title": "NHSRC Notification 2026 - Apply Online for Various Consultant Posts",
+      "url": "https://allgovernmentjobs.in/nhsrc-notification-2026-apply-online-for-various-consultant-posts/45343",
+      "source": "allgovernmentjobs.in",
+      "description": "National Health Systems Resource Centre (NHSRC) has announced the official notification for 2026. Allotted various vacancies for Consultant Jobs. Candidates who have qualified with an MBBS or BDS can use this chance and apply for these posts. Here we provide more details about the age limit, selection process, salary structure, education details, application fee, and how to apply for the NHSRC Notification 2026 . Interested and eligible candidates can apply before the application deadline. If...",
+      "pdf_link": null,
+      "important_dates": {
+        "last_date": "08-12-2026",
+        "found_date": "17-11-2026"
+      },
+      "category": "General",
+      "skills": [
+        "Data Entry"
+      ],
+      "scraped_at": "2026-11-18T04:39:49.317775",
+      "links": [],
+      "organization": null,
+      "department": null,
+      "recruitment_board": null,
+      "location": null,
+      "state": null,
+      "district": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "minimum_qualification": null,
+      "age_limit": null,
+      "age_min": null,
+      "age_max": null,
+      "age_relaxation": null,
+      "salary": null,
+      "pay_scale": null,
+      "application_fee": null,
+      "selection_process": null,
+      "employment_type": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "official_website": null,
+      "description_summary": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/nhsrc-notification-2026-apply-online-for-various-consultant-posts/45343",
+      "last_verified": "2026-11-18T04:39:49.317775",
       "status": "active",
       "verification_status": "secondary_source_only"
     },
@@ -9829,6 +9971,50 @@
       "published_date": null,
       "original_source_url": "https://allgovernmentjobs.in/cmho-south-bastar-dantewada-notification-2026-apply-online-for-paediatric-specialist-posts/45017",
       "last_verified": "2026-10-31T02:39:39.524956",
+      "status": "expired",
+      "recruitment_board": null,
+      "state": null,
+      "district": null,
+      "minimum_qualification": null,
+      "age_min": null,
+      "age_max": null,
+      "age_relaxation": null,
+      "salary": null,
+      "pay_scale": null,
+      "application_fee": null,
+      "selection_process": null,
+      "employment_type": null,
+      "official_website": null,
+      "description_summary": null,
+      "verification_status": "expired"
+    },
+    {
+      "id": "3ae08eb3dff16932974d128f61beff06",
+      "title": "BOB Recruitment 2026 - Apply Online for 11 Senior Manager Manager and Chief Manager Posts",
+      "url": "https://allgovernmentjobs.in/bob-recruitment-2026-apply-online-for-11-senior-manager-and-manager-posts/44987",
+      "source": "allgovernmentjobs.in",
+      "description": "Bank of Baroda (BOB) has announced the latest job notification for the recruitment of 11 Senior Manager, Manager, and Chief Manager positions. Candidates who have qualified with Any Degree, postgraduation, MBA, MCA, CA, PGDM can grab this chance and apply for the BOB Recruitment 2026 . If you are looking for more details like the age limit, selection process, salary structure, education details, application fee, and how to apply, they are mentioned below. The application process has already b...",
+      "pdf_link": null,
+      "important_dates": {
+        "last_date": "17-11-2026",
+        "found_date": "17-11-2026"
+      },
+      "category": "General",
+      "skills": [],
+      "scraped_at": "2026-10-30T02:48:41.275882",
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/bob-recruitment-2026-apply-online-for-11-senior-manager-and-manager-posts/44987",
+      "last_verified": "2026-10-30T02:48:41.275882",
       "status": "expired",
       "recruitment_board": null,
       "state": null,
