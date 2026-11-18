@@ -19,7 +19,7 @@ export async function generateNewsSitemap({ root = ROOT, now = new Date() } = {}
   const dirs = await readdir(join(root, "pikanews/news"), { withFileTypes: true });
   const slugs = dirs.filter(entry => entry.isDirectory()).map(entry => entry.name);
   const candidates = latest.filter(item => {
-    if (!item || !item.id || !item.title || !item.summary || !item.url || !item.source) return false;
+    if (!item || !item.id || !item.title) return false;
     if (item.thin === true || String(item.category).toLowerCase() === "trending") return false;
     if (item.content_type !== "original_editorial" || item.editorial_reviewed !== true) return false;
     if (typeof item.editorial_content !== "string" || item.editorial_content.trim().length < 500) return false;
