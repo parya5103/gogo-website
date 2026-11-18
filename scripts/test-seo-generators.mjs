@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { decodeEntities, parseGoogleTrendsRss, renderTrendingSection, safeUrl, serializeJsonLd as serializeHomeJsonLd } from "./update-trending-seo.mjs";
 import { renderHub, escapeHtml, serializeJsonLd as serializeHubJsonLd, HUBS } from "./generate-pseo-hubs.mjs";
 
@@ -29,7 +30,7 @@ assert.match(page,/FAQPage/);
 assert.match(page,/Recruitment &lt;2026&gt;/);
 assert.match(page,/rel="canonical"/);
 assert.doesNotMatch(page,/\[TODO\]|placeholder/i);
-console.log("SEO generator tests passed.");
+
 
 
 assert.ok(HUBS.some(h => h.slug === "latest-govt-jobs"), "latest government jobs hub must remain");
@@ -39,3 +40,14 @@ assert.ok(HUBS.some(h => h.slug === "teaching-govt-jobs"), "teaching jobs hub sh
 for (const unsupported of ["admit-card", "sarkari-result", "mp-govt-jobs"]) {
   assert.ok(!HUBS.some(h => h.slug === unsupported), unsupported + " hub must not target unsupported or empty product sections");
 }
+
+const sarkariHome = readFileSync("sarkari-sarthi/index.html", "utf8");
+const pikaHome = readFileSync("pikanews/index.html", "utf8");
+assert.match(sarkariHome, /<title>Latest Government Jobs 2026 \\| Sarkari Sarthi<\\/title>/);
+assert.doesNotMatch(sarkariHome, /name="keywords"/i);
+assert.doesNotMatch(sarkariHome, /Admit Cards|Sarkari Results|answer keys/i);
+assert.match(pikaHome, /<title>Latest News Today \\| PikaNews<\\/title>/);
+const medicalHub = HUBS.find(h => h.slug === "medical-govt-jobs");
+const medicalPage = renderHub(medicalHub, [{title:"Medical Recruitment",url:"https://example.gov.in/job",source:"Secondary source"}]);
+assert.match(medicalPage, /secondary employment sources/);
+console.log("SEO generator tests passed.");
