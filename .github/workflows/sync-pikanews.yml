@@ -100,6 +100,16 @@ jobs:
           test -f pikanews/data/gaming.json
           test -f pikanews/data/business.json
           test -f pikanews/data/sports.json
+          # FCM notification click targets must use an exact HTTPS GoGo origin.
+          test -f pikanews/firebase-messaging-sw.js
+          if grep -Fq 'client.url.indexOf' pikanews/firebase-messaging-sw.js; then
+            echo "::error::PikaNews FCM worker still uses unsafe URL substring matching"
+            exit 1
+          fi
+          grep -Fq 'function isTrustedClientUrl' pikanews/firebase-messaging-sw.js
+          grep -Fq "parsed.protocol === 'https:'" pikanews/firebase-messaging-sw.js
+          grep -Fq "parsed.hostname === 'gogocompany.in'" pikanews/firebase-messaging-sw.js
+          grep -Fq 'parsed.origin === self.location.origin' pikanews/firebase-messaging-sw.js
           # Sitemaps and feed must reference the production domain.
           grep -q 'gogocompany.in/pikanews/' pikanews/sitemap.xml
           grep -q 'gogocompany.in/pikanews/' pikanews/feed.xml

@@ -140,6 +140,18 @@ jobs:
             echo "::error::Sarkari Sarthi notifications module synced without its service worker"
             exit 1
           fi
+          # Reject substring-based FCM client URL allowlists in every published app.
+          for worker in arrowout/fcm/firebase-messaging-sw.js crystalquest/fcm/firebase-messaging-sw.js sarkari-sarthi/firebase-messaging-sw.js; do
+            test -f "$worker"
+            if grep -Fq 'client.url.indexOf' "$worker"; then
+              echo "::error::$worker still uses unsafe URL substring matching"
+              exit 1
+            fi
+            grep -Fq 'function isTrustedClientUrl' "$worker"
+            grep -Fq "parsed.protocol === 'https:'" "$worker"
+            grep -Fq "parsed.hostname === 'gogocompany.in'" "$worker"
+            grep -Fq 'parsed.origin === self.location.origin' "$worker"
+          done
           echo "All key product files verified."
 
       - name: Generate fresh homepage trends and programmatic SEO hubs
