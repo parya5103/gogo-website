@@ -5,9 +5,10 @@ import { readFile } from "node:fs/promises";
 const read = path => readFile(new URL("../" + path, import.meta.url), "utf8");
 const pages = [
   ["sarkari-sarthi/latest-govt-jobs/index.html", "Latest Government Jobs in India"],
-  ["sarkari-sarthi/admit-card/index.html", "Sarkari Admit Cards & Exam Hall Tickets"],
-  ["sarkari-sarthi/sarkari-result/index.html", "Sarkari Results, Merit Lists & Cutoffs"],
-  ["sarkari-sarthi/mp-govt-jobs/index.html", "Madhya Pradesh Government Jobs"],
+  ["sarkari-sarthi/medical-govt-jobs/index.html", "Medical Government Jobs in India"],
+  ["sarkari-sarthi/engineering-govt-jobs/index.html", "Engineering Government Jobs in India"],
+  ["sarkari-sarthi/teaching-govt-jobs/index.html", "Teaching Government Jobs in India"],
+  ["sarkari-sarthi/administrative-govt-jobs/index.html", "Administrative Government Jobs in India"],
   ["free-online-games/index.html", "Play Free Online Browser Games"]
 ];
 const homepage = await read("index.html");
@@ -64,4 +65,5 @@ for (const [path, h1] of pages) {
   const canonical = html.match(/<link rel="canonical" href="([^"]+)"/i)?.[1];
   assert.ok(canonical && sitemap.includes("<loc>" + canonical + "</loc>"), path + " canonical missing from sitemap");
 }
-console.log("SEO build validation passed: homepage, list semantics, contrast tokens, 5 canonical hubs and sitemap.");
+for (const stale of ["sarkari-sarthi/admit-card/index.html", "sarkari-sarthi/sarkari-result/index.html", "sarkari-sarthi/mp-govt-jobs/index.html"]) { await assert.rejects(read(stale)); }
+console.log("SEO build validation passed: homepage, list semantics, contrast tokens, supported category hubs and sitemap.");
