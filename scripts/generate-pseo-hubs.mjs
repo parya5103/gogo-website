@@ -1,16 +1,17 @@
 #!/usr/bin/env node
-import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { readFile, writeFile, mkdir, rm } from "node:fs/promises";
 import { dirname } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const ROOT = process.cwd();
 const DOMAIN = "https://gogocompany.in";
-const HUBS = [
-  { path: "sarkari-sarthi/latest-govt-jobs/index.html", slug: "latest-govt-jobs", title: "Latest Govt Jobs 2026 | Sarkari Naukri Updates", description: "Find current government job notifications, eligibility details and application links. Verify every vacancy with its original recruiting authority.", h1: "Latest Government Jobs in India", keywords: /job|recruit|vacan|bharti|notification|apply|appointment/i, kind: "jobs", faq: [["Where can I find the latest government jobs?", "Browse the current listings on Sarkari Sarthi and confirm every detail in the original recruiting authority notification."],["How should I verify a vacancy?", "Open the source notification and check eligibility, dates, fees and the official application website before applying."]] },
-  { path: "sarkari-sarthi/admit-card/index.html", slug: "admit-card", title: "Sarkari Admit Card 2026 Download | Hall Tickets", description: "Find admit card and exam hall ticket updates. Check the recruiting authority website for official download links and exam instructions.", h1: "Sarkari Admit Cards & Exam Hall Tickets", keywords: /admit.?card|hall.?ticket|call.?letter/i, kind: "jobs", faq: [["Where should I download an admit card?", "Use the official recruiting authority or examination portal linked from the relevant notice."],["What should I check before an exam?", "Confirm the exam date, reporting time, venue, permitted documents and instructions on the official admit card."]] },
-  { path: "sarkari-sarthi/sarkari-result/index.html", slug: "sarkari-result", title: "Sarkari Result 2026 | Merit Lists & Cutoffs", description: "Explore examination result, merit list, answer key and cutoff updates. Confirm published results with the official examination authority.", h1: "Sarkari Results, Merit Lists & Cutoffs", keywords: /result|merit.?list|cut.?off|answer.?key/i, kind: "jobs", faq: [["Where can I verify an examination result?", "Check the official examination authority website and use the result notice or candidate login it provides."],["Are cutoff marks guaranteed in advance?", "No. Cutoffs vary by examination, category, vacancies and official evaluation; rely only on published authority data."]] },
-  { path: "sarkari-sarthi/mp-govt-jobs/index.html", slug: "mp-govt-jobs", title: "MP Govt Jobs 2026 | MPESB & State Bharti", description: "Browse Madhya Pradesh government recruitment updates, including MPESB and state vacancies, with source links and verification guidance.", h1: "Madhya Pradesh Government Jobs", keywords: /madhya.?pradesh|\bmpesb\b|vyapam|mp.?govt|mp.?police|mp.?bharti/i, kind: "jobs", faq: [["Where can I check Madhya Pradesh recruitment notices?", "Use Sarkari Sarthi to discover listings, then verify the notification on MPESB or the responsible Madhya Pradesh department website."],["Does every listing mean applications are open?", "No. Check the official notice and application dates before treating a listing as open."]] },
-  { path: "free-online-games/index.html", slug: "free-online-games", title: "Free Online Browser Games | Play on Mobile & PC", description: "Play free browser puzzle games on mobile and desktop. Try Arrow Out! and Crystal Quest without downloading a traditional app.", h1: "Play Free Online Browser Games", keywords: null, kind: "games", faq: [["Can I play these games without downloading an app?", "Yes. Arrow Out! and Crystal Quest are playable in supported web browsers."],["Do the games work on mobile and desktop?", "The games are designed for supported modern mobile and desktop browsers; device and browser capabilities can vary."]] }
+export const HUBS = [
+  { path: "sarkari-sarthi/latest-govt-jobs/index.html", slug: "latest-govt-jobs", title: "Latest Govt Jobs 2026 | Sarkari Naukri Updates", description: "Find current government job notifications, eligibility details and application links. Check every vacancy with its original recruiting authority.", h1: "Latest Government Jobs in India", keywords: /job|recruit|vacan|bharti|notification|apply|appointment/i, kind: "jobs", faq: [["Where can I find the latest government jobs?", "Browse the current listings on Sarkari Sarthi and confirm every detail in the original recruiting authority notification."], ["How should I verify a vacancy?", "Open the source notification and check eligibility, dates, fees and the official application website before applying."]] },
+  { path: "sarkari-sarthi/medical-govt-jobs/index.html", slug: "medical-govt-jobs", title: "Medical Govt Jobs 2026 | Sarkari Sarthi", description: "Browse medical government job vacancies and healthcare recruitment notices. Check eligibility, dates and source details in each original notification.", h1: "Medical Government Jobs in India", keywords: /medical|health|nursing|doctor|hospital|pharma|healthcare/i, kind: "jobs", faq: [["Where can I find medical government recruitment?", "Browse medical listings on Sarkari Sarthi, then verify the vacancy and application process with the recruiting authority."], ["What should I check before applying?", "Confirm the required qualification, registration, experience, age limit and last date in the original notice."]] },
+  { path: "sarkari-sarthi/engineering-govt-jobs/index.html", slug: "engineering-govt-jobs", title: "Engineering Govt Jobs 2026 | Sarkari Sarthi", description: "Find engineering and technical government job vacancies, including relevant recruitment notices. Check qualifications, deadlines and source details before applying.", h1: "Engineering Government Jobs in India", keywords: /engineering|engineer|technical|technician|mechanical|civil|electrical/i, kind: "jobs", faq: [["Where can I find engineering government jobs?", "Browse engineering and technical listings, then confirm the role and application details with the recruiting authority."], ["Which qualification applies?", "Requirements vary by post; read the original notification for the accepted branch, degree, diploma and experience."]] },
+  { path: "sarkari-sarthi/teaching-govt-jobs/index.html", slug: "teaching-govt-jobs", title: "Teaching Govt Jobs 2026 | Sarkari Sarthi", description: "Browse teaching government job vacancies and education recruitment notices. Confirm qualifications, dates and application steps with the original authority.", h1: "Teaching Government Jobs in India", keywords: /teaching|teacher|education|school|faculty|professor|lecturer/i, kind: "jobs", faq: [["Where can I find teaching government vacancies?", "Use the teaching listings as a discovery aid and verify the recruitment notice with the school, university or authority."], ["Are eligibility rules the same for every post?", "No. Check the post-specific qualification, teacher eligibility requirements and age rules in the original notice."]] },
+  { path: "sarkari-sarthi/administrative-govt-jobs/index.html", slug: "administrative-govt-jobs", title: "Administrative Govt Jobs 2026 | Sarkari Sarthi", description: "Find administrative government job vacancies and public-sector office recruitment notices. Check role requirements, deadlines and original source details before applying.", h1: "Administrative Government Jobs in India", keywords: /administrative|administration|office|assistant|clerk|secretariat|officer/i, kind: "jobs", faq: [["What are administrative government jobs?", "These listings may include office, coordination, clerical and administrative roles; check the exact duties in the original notice."], ["How do I verify an administrative vacancy?", "Confirm the organisation, advertisement number, eligibility and application route with the recruiting authority."]] },
+  { path: "free-online-games/index.html", slug: "free-online-games", title: "Free Online Browser Games | Play on Mobile & PC", description: "Play free browser puzzle games on mobile and desktop. Try Arrow Out! and Crystal Quest without downloading a traditional app.", h1: "Play Free Online Browser Games", keywords: null, kind: "games", faq: [["Can I play these games without downloading an app?", "Yes. Arrow Out! and Crystal Quest are playable in supported web browsers."], ["Do the games work on mobile and desktop?", "The games are designed for supported modern mobile and desktop browsers; device and browser capabilities can vary."]] }
 ];
 
 export function escapeHtml(value = "") {
@@ -23,6 +24,9 @@ export function serializeJsonLd(value) {
 }
 function safeUrl(value) { try { const url = new URL(value); return ["https:","http:"].includes(url.protocol) ? url.href : null; } catch { return null; } }
 async function readJson(path, fallback) { try { return JSON.parse(await readFile(path,"utf8")); } catch { return fallback; } }
+const MIN_HUB_JOBS = 5;
+const STALE_HUB_PATHS = ["sarkari-sarthi/admit-card", "sarkari-sarthi/sarkari-result", "sarkari-sarthi/mp-govt-jobs"];
+
 function jobCard(job) {
   const url = safeUrl(job.url || job.original_source_url);
   if (!url) return "";
@@ -58,7 +62,7 @@ export function renderHub(hub, jobs = []) {
     '<header class="hero"><h1>' + escapeHtml(hub.h1) + '</h1><p>' + escapeHtml(hub.description) + '</p></header><section aria-labelledby="listing-title"><h2 id="listing-title">' + (hub.kind==="games"?"Choose a free browser game":"Latest matching updates") + '</h2>' +
     (cards ? '<div class="hub-grid">' + cards + '</div>' : fallback) + '</section><section class="hub-guide"><h2>' + (hub.kind==="games"?"What makes these browser games easy to start?":"How to use these updates safely") + '</h2>' +
     (hub.kind==="games" ? '<p>Both titles open directly in a modern browser. Arrow Out! focuses on planning clear paths through a puzzle board; Crystal Quest is a match-three fantasy adventure. Use the links above to open the game page and review its controls before playing.</p>' :
-      '<p>Listings are discovery aids, not a substitute for the recruiting authority\'s notice. Open the original source, confirm the organisation and advertisement number, check eligibility and age rules, review fees and dates, and apply only through an official application portal.</p><ol><li>Read the complete notification and its corrigenda.</li><li>Confirm the last date, exam schedule and required documents.</li><li>Check that the application domain belongs to the recruiting authority.</li><li>Save the submitted application and payment receipt where applicable.</li></ol>') +
+      '<p>Listings are discovery aids, not a substitute for the recruiting authority\'s notice. Some records may originate from secondary employment sources and are not necessarily official or independently verified. Check the source and verification labels, open the original notice, confirm eligibility, fees and dates, and apply only through the recruiting authority\'s official portal.</p><ol><li>Read the complete notification and its corrigenda.</li><li>Confirm the last date, exam schedule and required documents.</li><li>Check that the application domain belongs to the recruiting authority.</li><li>Save the submitted application and payment receipt where applicable.</li></ol>') +
     '</section><section class="faq"><h2>Frequently asked questions</h2>' +
     hub.faq.map(([q,a])=>'<details><summary>' + escapeHtml(q) + '</summary><p>' + escapeHtml(a) + '</p></details>').join("") +
     '</section><footer><div class="wrap"><p><a href="/">GoGo Company</a> · <a href="/sarkari-sarthi/">Sarkari Sarthi</a> · <a href="/pikanews/">PikaNews</a> · <a href="/arrowout/">Arrow Out!</a> · <a href="/crystalquest/">Crystal Quest</a></p><p class="muted">Always verify recruitment details with the original authority. GoGo Company is not a government agency.</p></div></footer></main></body></html>\n';
@@ -69,17 +73,36 @@ export async function generateHubs(root = ROOT) {
   const sitemapPath = root + "/sitemap.xml";
   let sitemap = await readFile(sitemapPath,"utf8");
   const today = new Date().toISOString().slice(0,10);
+  const removeLocs = new Set(STALE_HUB_PATHS.map(path => DOMAIN + "/" + path + "/"));
+  const removeSitemapBlocks = () => {
+    sitemap = sitemap.replace(/<url>[\s\S]*?<\/url>/g, block => {
+      const loc = block.match(/<loc>([^<]+)<\/loc>/)?.[1];
+      return removeLocs.has(loc) ? "" : block;
+    });
+  };
+  for (const path of STALE_HUB_PATHS) {
+    await rm(resolve(root,path),{recursive:true,force:true});
+  }
+  removeSitemapBlocks();
+  const generated = [];
   for (const hub of HUBS) {
     const jobs = hub.keywords ? allJobs.filter(job => hub.keywords.test([job.title,job.description,job.category,job.state,job.location].filter(Boolean).join(" "))) : [];
+    const loc = DOMAIN + "/" + hub.path.replace(/index\.html$/,"");
+    if (hub.kind === "jobs" && jobs.length < MIN_HUB_JOBS) {
+      await rm(resolve(root,hub.path),{recursive:true,force:true});
+      removeLocs.add(loc);
+      removeSitemapBlocks();
+      continue;
+    }
     const path = root + "/" + hub.path;
     await mkdir(dirname(path),{recursive:true});
     await writeFile(path,renderHub(hub,jobs));
-    const loc = DOMAIN + "/" + hub.path.replace(/index\.html$/,"");
     const block = '<url><loc>' + loc + '</loc><lastmod>' + today + '</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>';
     if (!sitemap.includes("<loc>"+loc+"</loc>")) sitemap = sitemap.replace("</urlset>", "  "+block+"\n</urlset>");
+    generated.push(hub.path);
   }
   await writeFile(sitemapPath,sitemap.endsWith("\n")?sitemap:sitemap+"\n");
-  console.log("Generated",HUBS.length,"programmatic SEO hubs.");
-  return HUBS.map(hub=>hub.path);
+  console.log("Generated",generated.length,"programmatic SEO hubs.");
+  return generated;
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) await generateHubs();
