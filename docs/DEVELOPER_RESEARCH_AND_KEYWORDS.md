@@ -133,3 +133,15 @@ No Hindi-language site, translations, hreflang, new URL structure, keyword stuff
 - Sitemap URL performance showed 4/21 root sitemap URLs, 5/202 sampled Sarkari Sarthi URLs, and no impressions for the first 100 PikaNews News sitemap URLs in the selected range. This is not proof that every zero-impression URL is unindexed.
 - URL Inspection passed for the homepage, PikaNews homepage, Sarkari Sarthi homepage and Crystal Quest homepage. Arrow Out About, PikaNews Bollywood category and a sampled PikaNews article were reported as unknown to Google at inspection time.
 - CrUX has no Core Web Vitals field record for `https://gogocompany.in` on PHONE or ALL devices. Do not report this as a CWV pass or failure; use Lighthouse lab runs and real Android device testing until field data is available.
+
+
+### On-page crawl audit (8 live URLs, 2026-11-19)
+
+- Audit summary: 8 URLs fetched, 7 indexable, 1 canonicalised, 6 total issues (0 critical, 0 high, 1 medium, 5 low). All audited pages returned HTTP 200 and had a viewport declaration. No missing image alt text or structured-data parsing errors were reported.
+- GoGo homepage: no on-page issues; 792 words, 19 internal links, self-canonical.
+- Arrow Out game page: no on-page issues; 790 words, self-canonical. Its guide page has 608 words and a self-canonical, but lacked structured data; PR #44 adds matching WebPage/FAQPage JSON-LD.
+- Crystal Quest: no on-page issues; 454 words, self-canonical.
+- PikaNews homepage: 541 words and self-canonical; the prior title was 67 characters and was shortened in this branch to reduce SERP truncation. Bollywood category page had no on-page issues and 539 words.
+- Sarkari Sarthi homepage baseline: title 75 characters, meta description 190 characters, and 293 words. The existing PR keyword enhancement replaces this with a concise title/description and adds visible explanatory content.
+- `/about/` is a legacy duplicate canonicalised to `/about.html`; the homepage already links to the canonical `/about.html` company profile. Do not treat the legacy alias as a separate indexable company page.
+- Live HTML response times in this crawl ranged from 143–230 ms, but this is fetch latency only, not a Core Web Vitals or real-device performance result.
