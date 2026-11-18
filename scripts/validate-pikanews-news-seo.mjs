@@ -6,7 +6,7 @@ import { join } from "node:path";
 const root = process.cwd();
 const sitemap = await readFile(join(root, "pikanews/news-sitemap.xml"), "utf8");
 const blocks = [...sitemap.matchAll(/<url>([\s\S]*?)<\/url>/gi)].map(match => match[1]);
-assert.ok(blocks.length > 0, "At least one recent PikaNews article should be discoverable");
+// An empty News sitemap is valid while the newsroom has no reviewed original editorial.\n// Aggregated RSS excerpts must never be added merely to keep this sitemap non-empty.
 assert.ok(blocks.length <= 1000, "Google News sitemap must contain at most 1,000 URLs");
 assert.match(sitemap, /xmlns:news=["']http:\/\/www\.google\.com\/schemas\/sitemap-news\/0\.9["']/);
 const dirs = await readdir(join(root, "pikanews/news"), { withFileTypes: true });
@@ -26,6 +26,9 @@ for (const block of blocks) {
   const schemas = [...html.matchAll(/<script\s+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)].map(m => { try { return JSON.parse(m[1]); } catch { return null; } }).filter(Boolean);
   const article = schemas.find(s => s["@type"] === "NewsArticle");
   assert.ok(article, "Every news sitemap URL must contain NewsArticle JSON-LD");
+  assert.equal(article.publisher?.name, "PikaNews, a digital platform by GoGo Company", "NewsArticle publisher must be PikaNews");
+  assert.ok(!article.dateModified || Date.parse(article.dateModified) >= Date.parse(article.datePublished), "dateModified must be a meaningful editorial modification date");
+  assert.match(html, /<meta name="robots" content="index, follow">/, "News sitemap URLs must be indexable");
   assert.ok(article.speakable && article.speakable["@type"] === "SpeakableSpecification", "NewsArticle must expose speakable selectors");
 }
 console.log("PikaNews SEO validation passed: fresh news sitemap, canonical pages, NewsArticle and speakable metadata.");
