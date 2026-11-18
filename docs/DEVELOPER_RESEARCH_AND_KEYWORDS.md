@@ -111,7 +111,7 @@ No Hindi-language site, translations, hreflang, new URL structure, keyword stuff
 ### PikaNews
 - Current feed pipeline is an automated third-party aggregation service, not an original-reporting newsroom. Existing category pages already contain crawlable category-specific introductions and publisher-attribution guidance.
 - Individual aggregated story pages remain accessible to readers but are `noindex,follow`, excluded from regular and Google News sitemaps, and do not receive NewsArticle JSON-LD.
-- A future story can become indexable only when the record explicitly identifies original editorial content, has review approval, at least 500 characters of substantive original text, a named author and a valid publication date.
+- A future story can become indexable only when the record explicitly identifies original editorial content, has review approval, at least 1,200 characters of substantive original text, a named author and a valid publication date.
 - NewsArticle publisher is PikaNews; `dateModified` is emitted only from explicit `modified_at` / `updated_at`, never from collection time. The regular sitemap prefers a real modification date and falls back to publication date.
 - The GoGo post-sync enhancer preserves article-level noindex instead of overriding it to index. The GoGo News sitemap builder independently checks editorial eligibility, schema and robots state.
 
