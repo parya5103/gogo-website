@@ -80,7 +80,7 @@ for (const [path, keyword] of keywordPages) {
   assert.match(html, keyword, path + " must include its relevant keyword naturally");
   const title = html.match(/<title>([^<]+)<\/title>/i)?.[1] || "";
   const description = html.match(/<meta name="description" content="([^"]*)"/i)?.[1] || "";
-  assert.ok(title.length <= 75, path + " title exceeds 75 characters");
+  assert.ok(title.length <= 60, path + " title exceeds 60 characters");
   assert.ok(description.length <= 155, path + " description exceeds 155 characters");
 }
 console.log("SEO build validation passed: homepage, list semantics, contrast tokens, 5 canonical hubs and sitemap.");
