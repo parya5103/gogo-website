@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { decodeEntities, parseGoogleTrendsRss, renderTrendingSection, safeUrl, serializeJsonLd as serializeHomeJsonLd } from "./update-trending-seo.mjs";
-import { renderHub, escapeHtml, serializeJsonLd as serializeHubJsonLd } from "./generate-pseo-hubs.mjs";
+import { renderHub, escapeHtml, serializeJsonLd as serializeHubJsonLd, HUBS } from "./generate-pseo-hubs.mjs";
 
 assert.equal(decodeEntities("&amp;lt;script&amp;gt;"), "&lt;script&gt;", "RSS entities must be decoded exactly once");
 assert.equal(decodeEntities("&#x110000;"), "&#x110000;", "Out-of-range numeric entities must remain inert");
@@ -30,3 +30,12 @@ assert.match(page,/Recruitment &lt;2026&gt;/);
 assert.match(page,/rel="canonical"/);
 assert.doesNotMatch(page,/\[TODO\]|placeholder/i);
 console.log("SEO generator tests passed.");
+
+
+assert.ok(HUBS.some(h => h.slug === "latest-govt-jobs"), "latest government jobs hub must remain");
+assert.ok(HUBS.some(h => h.slug === "medical-govt-jobs"), "medical jobs hub should target supported inventory");
+assert.ok(HUBS.some(h => h.slug === "engineering-govt-jobs"), "engineering jobs hub should target supported inventory");
+assert.ok(HUBS.some(h => h.slug === "teaching-govt-jobs"), "teaching jobs hub should target supported inventory");
+for (const unsupported of ["admit-card", "sarkari-result", "mp-govt-jobs"]) {
+  assert.ok(!HUBS.some(h => h.slug === unsupported), unsupported + " hub must not target unsupported or empty product sections");
+}
