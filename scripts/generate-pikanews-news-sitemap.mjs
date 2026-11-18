@@ -21,6 +21,9 @@ export async function generateNewsSitemap({ root = ROOT, now = new Date() } = {}
   const candidates = latest.filter(item => {
     if (!item || !item.id || !item.title || !item.summary || !item.url || !item.source) return false;
     if (item.thin === true || String(item.category).toLowerCase() === "trending") return false;
+    if (item.content_type !== "original_editorial" || item.editorial_reviewed !== true) return false;
+    if (typeof item.editorial_content !== "string" || item.editorial_content.trim().length < 500) return false;
+    if (typeof item.author !== "string" || !item.author.trim()) return false;
     const published = new Date(item.published_at).getTime();
     const age = now.getTime() - published;
     return Number.isFinite(published) && age >= -5 * 60 * 1000 && age <= WINDOW_MS;
@@ -36,7 +39,8 @@ export async function generateNewsSitemap({ root = ROOT, now = new Date() } = {}
     const articleSchema = [...html.matchAll(/<script\s+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)]
       .map(match => { try { return JSON.parse(match[1]); } catch { return null; } })
       .find(schema => schema && schema["@type"] === "NewsArticle");
-    if (!canonical || !canonical.startsWith(SITE + "/pikanews/news/") || !articleSchema) continue;
+    const robots = html.match(/<meta name="robots" content="([^"]+)"/i)?.[1] || "";
+    if (!canonical || !canonical.startsWith(SITE + "/pikanews/news/") || !articleSchema || /noindex/i.test(robots)) continue;
     entries.push(
       "  <url>\n" +
       "    <loc>" + xml(canonical) + "</loc>\n" +
