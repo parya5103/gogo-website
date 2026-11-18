@@ -22,7 +22,7 @@ export async function generateNewsSitemap({ root = ROOT, now = new Date() } = {}
     if (!item || !item.id || !item.title) return false;
     if (item.thin === true || String(item.category).toLowerCase() === "trending") return false;
     if (item.content_type !== "original_editorial" || item.editorial_reviewed !== true) return false;
-    if (typeof item.editorial_content !== "string" || item.editorial_content.trim().length < 500) return false;
+    if (typeof item.editorial_content !== "string" || item.editorial_content.trim().length < 1200) return false;
     if (typeof item.author !== "string" || !item.author.trim()) return false;
     if (!["Person", "Organization"].includes(item.author_type)) return false;
     const published = new Date(item.published_at).getTime();
