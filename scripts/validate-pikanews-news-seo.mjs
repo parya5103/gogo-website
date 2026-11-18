@@ -27,7 +27,7 @@ for (const block of blocks) {
   const article = schemas.find(s => s["@type"] === "NewsArticle");
   assert.ok(article, "Every news sitemap URL must contain NewsArticle JSON-LD");
   const description = html.match(/<meta\s+name=["\x27]description["\x27][^>]*content=["\x27]([^"\x27]*)["\x27]/i)?.[1] || "";
-  assert.ok(description.length >= 70 && description.length <= 160, "Article meta description must be 70–160 characters");
+  assert.ok(description.length >= 70 && description.length <= 160, "Article meta description must be 70–160 characters: " + loc + " (got " + description.length + ")");
   assert.equal(article.description, description, "NewsArticle JSON-LD description must match the HTML meta description");
   assert.ok(article.speakable && article.speakable["@type"] === "SpeakableSpecification", "NewsArticle must expose speakable selectors");
 }
