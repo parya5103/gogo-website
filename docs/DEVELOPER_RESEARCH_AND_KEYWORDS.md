@@ -113,6 +113,7 @@ No Hindi-language site, translations, hreflang, new URL structure, keyword stuff
 - Individual aggregated story pages remain accessible to readers but are `noindex,follow`, excluded from regular and Google News sitemaps, and do not receive NewsArticle JSON-LD.
 - A future story can become indexable only when the record explicitly identifies original editorial content, has review approval, at least 1,200 characters of substantive original text, a named author and a valid publication date.
 - NewsArticle publisher is PikaNews; `dateModified` is emitted only from explicit `modified_at` / `updated_at`, never from collection time. The regular sitemap prefers a real modification date and falls back to publication date.
+- Article hero images reserve 1200×675 dimensions and load eagerly with high priority; category cards reserve 640×360 dimensions, prioritize the first visible image and lazy-load subsequent cards.
 - The GoGo post-sync enhancer preserves article-level noindex instead of overriding it to index. The GoGo News sitemap builder independently checks editorial eligibility, schema and robots state.
 
 ### Arrow Out! and Crystal Quest
