@@ -14,6 +14,10 @@ const homepage = await read("index.html");
 const sharedJs = await read("assets/js/main.js");
 const css = await read("assets/css/style.css");
 const sitemap = await read("sitemap.xml");
+assert.match(homepage, /GoGo Company builds mobile-friendly browser games and digital products/);
+for (const productPath of ["arrowout", "crystalquest", "sarkari-sarthi", "pikanews"]) {
+  assert.ok(homepage.includes('href="./' + productPath + '/'), "homepage must link to " + productPath);
+}
 assert.match(homepage, /id=["']critical-css["']/);
 assert.match(homepage, /rel=["']preload["'][^>]*assets\/css\/style\.css/);
 assert.match(homepage, /<main id=["']main["']>/);
