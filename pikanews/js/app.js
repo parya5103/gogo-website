@@ -317,7 +317,7 @@ async function performSearch(e) {
         
         // Render results
         searchResults.innerHTML = results.map(article => `
-            <div class="search-result-item" onclick="openArticle('${article.id}')">
+            <div class="search-result-item" onclick="openArticle(${Utils.escapeJsString(article.id)})">
                 <div class="search-result-title">${Utils.escapeHtml(article.title)}</div>
                 <div class="search-result-meta">
                     <span>${Utils.escapeHtml(article.source)}</span> • 
@@ -385,7 +385,7 @@ function renderBookmarks() {
         return `
             <div class="bookmark-item">
                 ${article.image_url ? `
-                    <img src="${Utils.escapeHtml(article.image_url)}" alt="${Utils.escapeHtml(article.title)}" class="bookmark-image" onerror="this.style.display='none'">
+                    <img src="${Utils.escapeHtml(article.image_url)}" alt="${Utils.escapeHtml(article.title)}" class="bookmark-image" onerror="this.onerror=null;this.src='images/pikanews-logo.svg'">
                 ` : `
                     <div class="bookmark-image" style="background: var(--bg-tertiary); display: flex; align-items: center; justify-content: center;">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 24px; height: 24px; color: var(--text-muted);"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg>
@@ -398,7 +398,7 @@ function renderBookmarks() {
                         <span>${Utils.formatDate(article.published_at)}</span>
                     </div>
                 </div>
-                <button class="bookmark-remove" onclick="removeBookmark('${article.id}')" title="Remove bookmark">
+                <button class="bookmark-remove" onclick="removeBookmark(${Utils.escapeJsString(article.id)})" title="Remove bookmark">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
                         <line x1="18" y1="6" x2="6" y2="18"/>
                         <line x1="6" y1="6" x2="18" y2="18"/>
@@ -543,7 +543,7 @@ function openArticleModal(article) {
         </div>
         
         ${article.image_url ? `
-            <img src="${Utils.escapeHtml(article.image_url)}" alt="${Utils.escapeHtml(article.title)}" class="article-image" onerror="this.style.display='none'">
+            <img src="${Utils.escapeHtml(article.image_url)}" alt="${Utils.escapeHtml(article.title)}" class="article-image" onerror="this.onerror=null;this.src='images/pikanews-logo.svg'">
         ` : ''}
         
         <div class="article-body">
@@ -559,13 +559,13 @@ function openArticleModal(article) {
                 <span>Source: ${Utils.escapeHtml(Utils.getDomain(article.url))}</span>
             </div>
             <div class="article-actions">
-                <button class="article-action-btn ${isBookmarked(article.id) ? 'bookmarked' : ''}" onclick="toggleBookmark('${article.id}')">
+                <button class="article-action-btn ${isBookmarked(article.id) ? 'bookmarked' : ''}" onclick="toggleBookmark(${Utils.escapeJsString(article.id)})">
                     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
                     </svg>
                     <span>Bookmark</span>
                 </button>
-                <button class="article-action-btn" onclick="shareArticle('${article.id}')">
+                <button class="article-action-btn" onclick="shareArticle(${Utils.escapeJsString(article.id)})">
                     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="18" cy="5" r="3"/>
                         <circle cx="6" cy="12" r="3"/>
@@ -791,13 +791,13 @@ async function loadFeaturedNews() {
                         </span>
                     </div>
                     <div class="news-card-actions">
-                        <button class="news-card-action" aria-label="Read article: ${Utils.escapeHtml(article.title)}" onclick="openArticle('${article.id}')">
+                        <button class="news-card-action" aria-label="Read article: ${Utils.escapeHtml(article.title)}" onclick="openArticle(${Utils.escapeJsString(article.id)})">
                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M5 12h14M12 5l7 7-7 7"/>
                             </svg>
                             <span>Read</span>
                         </button>
-                        <button class="news-card-action" aria-label="Bookmark ${Utils.escapeHtml(article.title)}" onclick="toggleBookmark('${article.id}')">
+                        <button class="news-card-action" aria-label="Bookmark ${Utils.escapeHtml(article.title)}" onclick="toggleBookmark(${Utils.escapeJsString(article.id)})">
                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
                             </svg>
@@ -856,13 +856,13 @@ async function loadLatestNews() {
                         </span>
                     </div>
                     <div class="news-card-actions">
-                        <button class="news-card-action" aria-label="Read article: ${Utils.escapeHtml(article.title)}" onclick="openArticle('${article.id}')">
+                        <button class="news-card-action" aria-label="Read article: ${Utils.escapeHtml(article.title)}" onclick="openArticle(${Utils.escapeJsString(article.id)})">
                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M5 12h14M12 5l7 7-7 7"/>
                             </svg>
                             <span>Read</span>
                         </button>
-                        <button class="news-card-action" aria-label="Bookmark ${Utils.escapeHtml(article.title)}" onclick="toggleBookmark('${article.id}')">
+                        <button class="news-card-action" aria-label="Bookmark ${Utils.escapeHtml(article.title)}" onclick="toggleBookmark(${Utils.escapeJsString(article.id)})">
                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
                             </svg>
@@ -921,13 +921,13 @@ async function loadTrendingNews() {
                         </span>
                     </div>
                     <div class="news-card-actions">
-                        <button class="news-card-action" aria-label="Read article: ${Utils.escapeHtml(article.title)}" onclick="openArticle('${article.id}')">
+                        <button class="news-card-action" aria-label="Read article: ${Utils.escapeHtml(article.title)}" onclick="openArticle(${Utils.escapeJsString(article.id)})">
                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M5 12h14M12 5l7 7-7 7"/>
                             </svg>
                             <span>Read</span>
                         </button>
-                        <button class="news-card-action" aria-label="Bookmark ${Utils.escapeHtml(article.title)}" onclick="toggleBookmark('${article.id}')">
+                        <button class="news-card-action" aria-label="Bookmark ${Utils.escapeHtml(article.title)}" onclick="toggleBookmark(${Utils.escapeJsString(article.id)})">
                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
                             </svg>
@@ -989,13 +989,13 @@ async function loadCategoryNews() {
                             </span>
                         </div>
                         <div class="news-card-actions">
-                            <button class="news-card-action" aria-label="Read article: ${Utils.escapeHtml(article.title)}" onclick="openArticle('${article.id}')">
+                            <button class="news-card-action" aria-label="Read article: ${Utils.escapeHtml(article.title)}" onclick="openArticle(${Utils.escapeJsString(article.id)})">
                                 <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M5 12h14M12 5l7 7-7 7"/>
                                 </svg>
                                 <span>Read</span>
                             </button>
-                            <button class="news-card-action" aria-label="Bookmark ${Utils.escapeHtml(article.title)}" onclick="toggleBookmark('${article.id}')">
+                            <button class="news-card-action" aria-label="Bookmark ${Utils.escapeHtml(article.title)}" onclick="toggleBookmark(${Utils.escapeJsString(article.id)})">
                                 <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
                                 </svg>
