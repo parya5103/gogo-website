@@ -120,6 +120,11 @@ jobs:
           test -f crystalquest/js/main.js
           test -f crystalquest/styles.css
           test -f crystalquest/icon.svg
+          test -f crystalquest/icon-192.png
+          test -f crystalquest/icon-512.png
+          test -f crystalquest/icon-512-maskable.png
+          test -f crystalquest/privacy.html
+          test -f crystalquest/terms.html
           test -f sarkari-sarthi/index.html
           test -f sarkari-sarthi/script.js
           test -f sarkari-sarthi/style.css
