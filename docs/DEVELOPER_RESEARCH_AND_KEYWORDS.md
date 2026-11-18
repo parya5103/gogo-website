@@ -118,7 +118,7 @@ No Hindi-language site, translations, hreflang, new URL structure, keyword stuff
 ### Arrow Out! and Crystal Quest
 - Arrow Out already has a crawlable About/how-to-play page, server-rendered explanatory text and a no-JavaScript fallback; its game entry point is not the only discoverable content.
 - Arrow Out's current renderer already scales its Canvas for device pixel ratio and uses Pointer Events in its input path. Do not add a second input/render loop or change the puzzle engine without measured evidence.
-- Crystal Quest is a DOM/CSS-driven match-3 board rather than a Canvas renderer; apply touch/input and frame-budget improvements to its actual rendering architecture, not by introducing an unnecessary Canvas rewrite.
+- Crystal Quest uses a Canvas 2D renderer with device-pixel-ratio scaling capped at 2, a requestAnimationFrame render loop, and Pointer Events for board interaction. Preserve this architecture; do not add duplicate input/render loops.
 - Real-device Android performance testing remains a release verification task; repository-level checks cannot substitute for a physical low/mid-range phone.
 
 ### GoGo Central Backend security
