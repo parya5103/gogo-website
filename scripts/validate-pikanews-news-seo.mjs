@@ -26,9 +26,10 @@ for (const block of blocks) {
   const schemas = [...html.matchAll(/<script\s+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)].map(m => { try { return JSON.parse(m[1]); } catch { return null; } }).filter(Boolean);
   const article = schemas.find(s => s["@type"] === "NewsArticle");
   assert.ok(article, "Every news sitemap URL must contain NewsArticle JSON-LD");
-  const description = html.match(/<meta\s+name=["\x27]description["\x27][^>]*content=["\x27]([^"\x27]*)["\x27]/i)?.[1] || "";
-  assert.ok(description.length >= 70 && description.length <= 160, "Article meta description must be 70–160 characters: " + loc + " (got " + description.length + ")");
-  assert.equal(article.description, description, "NewsArticle JSON-LD description must match the HTML meta description");
+  const description = html.match(/<meta\b(?=[^>]*\bname=["\x27]description["\x27])[^>]*\bcontent="([^"]*)"/i)?.[1] || "";
+  const decodedDescription = description.replaceAll("&amp;", "&").replaceAll("&#x27;", "'").replaceAll("&#39;", "'");
+  assert.ok(decodedDescription.length >= 70 && decodedDescription.length <= 160, "Article meta description must be 70–160 characters: " + loc + " (got " + decodedDescription.length + ")");
+  assert.equal(article.description, decodedDescription, "NewsArticle JSON-LD description must match the HTML meta description");
   assert.ok(article.speakable && article.speakable["@type"] === "SpeakableSpecification", "NewsArticle must expose speakable selectors");
 }
 console.log("PikaNews SEO validation passed: fresh news sitemap, canonical pages, NewsArticle and speakable metadata.");
