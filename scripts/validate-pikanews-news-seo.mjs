@@ -27,7 +27,7 @@ for (const block of blocks) {
   const schemas = [...html.matchAll(/<script\s+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)].map(m => { try { return JSON.parse(m[1]); } catch { return null; } }).filter(Boolean);
   const article = schemas.find(s => s["@type"] === "NewsArticle");
   assert.ok(article, "Every news sitemap URL must contain NewsArticle JSON-LD");
-  assert.equal(article.publisher?.name, "PikaNews, a digital platform by GoGo Company", "NewsArticle publisher must be PikaNews");
+  assert.equal(article.publisher?.name, "PikaNews", "NewsArticle publisher must be PikaNews");
   assert.ok(!article.dateModified || Date.parse(article.dateModified) >= Date.parse(article.datePublished), "dateModified must be a meaningful editorial modification date");
   assert.match(html, /<meta name="robots" content="index, follow">/, "News sitemap URLs must be indexable");
   assert.ok(article.speakable && article.speakable["@type"] === "SpeakableSpecification", "NewsArticle must expose speakable selectors");
