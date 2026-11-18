@@ -139,7 +139,7 @@ No Hindi-language site, translations, hreflang, new URL structure, keyword stuff
 
 - Audit summary: 8 URLs fetched, 7 indexable, 1 canonicalised, 6 total issues (0 critical, 0 high, 1 medium, 5 low). All audited pages returned HTTP 200 and had a viewport declaration. No missing image alt text or structured-data parsing errors were reported.
 - GoGo homepage: no on-page issues; 792 words, 19 internal links, self-canonical.
-- Arrow Out game page: no on-page issues; 790 words, self-canonical. Its guide page has 608 words and a self-canonical, but lacked structured data; PR #44 adds matching WebPage/FAQPage JSON-LD.
+- Arrow Out game page: no on-page issues; 790 words, self-canonical. Its guide page has 608 words and a self-canonical, but lacked structured data; PR #44 adds matching WebPage/FAQPage JSON-LD, a GoGo favicon and regression checks for guide metadata.
 - Crystal Quest: no on-page issues; 454 words, self-canonical.
 - PikaNews homepage: 541 words and self-canonical; the prior title was 67 characters and was shortened in this branch to reduce SERP truncation. Bollywood category page had no on-page issues and 539 words.
 - Sarkari Sarthi homepage baseline: title 75 characters, meta description 190 characters, and 293 words. The existing PR keyword enhancement replaces this with a concise title/description and adds visible explanatory content.
