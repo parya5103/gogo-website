@@ -64,4 +64,19 @@ for (const [path, h1] of pages) {
   const canonical = html.match(/<link rel="canonical" href="([^"]+)"/i)?.[1];
   assert.ok(canonical && sitemap.includes("<loc>" + canonical + "</loc>"), path + " canonical missing from sitemap");
 }
+const keywordPages = [
+  ["sarkari-sarthi/index.html", /sarkari naukri 2026/i],
+  ["pikanews/index.html", /aaj ki Bollywood khabar/i],
+  ["arrowout/index.html", /arrow wala puzzle game/i],
+  ["crystalquest/index.html", /candy-crush-style gem adventure/i]
+];
+for (const [path, keyword] of keywordPages) {
+  const html = await read(path);
+  assert.match(html, /id=["']gogo-search-intent["']/i, path + " must include visible search-intent content");
+  assert.match(html, keyword, path + " must include its relevant keyword naturally");
+  const title = html.match(/<title>([^<]+)<\/title>/i)?.[1] || "";
+  const description = html.match(/<meta name="description" content="([^"]*)"/i)?.[1] || "";
+  assert.ok(title.length <= 75, path + " title exceeds 75 characters");
+  assert.ok(description.length <= 155, path + " description exceeds 155 characters");
+}
 console.log("SEO build validation passed: homepage, list semantics, contrast tokens, 5 canonical hubs and sitemap.");
