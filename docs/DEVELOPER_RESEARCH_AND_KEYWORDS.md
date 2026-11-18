@@ -125,6 +125,8 @@ No Hindi-language site, translations, hreflang, new URL structure, keyword stuff
 ### GoGo Central Backend security
 - The current backend contains server-side Firebase ID-token verification with revocation checks, server-derived admin RBAC, strict Zod request schemas, HTTPS-origin CORS allowlisting, rate limiting, production sandbox-auth blocking and an executable security regression suite.
 - These are repository-level findings, not a fresh proof of the currently deployed Render configuration. Verify the live service's environment, health and CI/deployment state before declaring production security complete.
+- The current Render service is live on commit `e27eef9`; the sampled 2026-11-18 to 2026-11-19 ERROR log query returned no entries. Render's `healthCheckPath` is blank, so configure a public 2xx health endpoint as a separate operational hardening step after verifying the exact route.
+- `SEC-18` remains marked partially fixed in `SECURITY.md`; do not label the entire security backlog fully closed.
 
 ### Search Console verification snapshot
 - Connected and readable Search Console property: `sc-domain:gogocompany.in`.
