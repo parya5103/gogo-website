@@ -98,3 +98,37 @@ Research direction: keep the current dependency-free HTML5/Canvas game architect
 ## Explicit non-goals
 
 No Hindi-language site, translations, hreflang, new URL structure, keyword stuffing, invented news/job data, game logic changes, new dependencies, or changes to existing production API contracts.
+
+
+## Additional verified implementation findings (2026-11-19)
+
+### Sarkari Sarthi
+- Existing detail-page generation already avoids emitting JobPosting JSON-LD when the job is expired/cancelled or lacks required official-source facts.
+- Closed job detail pages remain available as reference pages with a visible closed-state banner and `noindex,follow`; closed/unverified entries are excluded from the active job sitemap.
+- The frontend already excludes records whose application deadline has passed. The follow-up patch additionally excludes explicit `verification_status=expired|cancelled` and `status=closed` from live search results.
+- Sitemap `lastmod` now prefers `modified_at` / `updated_at`, falls back to the source-verification timestamp, validates the date, and never substitutes the current build time. Invalid timestamps are omitted.
+
+### PikaNews
+- Current feed pipeline is an automated third-party aggregation service, not an original-reporting newsroom. Existing category pages already contain crawlable category-specific introductions and publisher-attribution guidance.
+- Individual aggregated story pages remain accessible to readers but are `noindex,follow`, excluded from regular and Google News sitemaps, and do not receive NewsArticle JSON-LD.
+- A future story can become indexable only when the record explicitly identifies original editorial content, has review approval, at least 500 characters of substantive original text, a named author and a valid publication date.
+- NewsArticle publisher is PikaNews; `dateModified` is emitted only from explicit `modified_at` / `updated_at`, never from collection time. The regular sitemap prefers a real modification date and falls back to publication date.
+- The GoGo post-sync enhancer preserves article-level noindex instead of overriding it to index. The GoGo News sitemap builder independently checks editorial eligibility, schema and robots state.
+
+### Arrow Out! and Crystal Quest
+- Arrow Out already has a crawlable About/how-to-play page, server-rendered explanatory text and a no-JavaScript fallback; its game entry point is not the only discoverable content.
+- Arrow Out's current renderer already scales its Canvas for device pixel ratio and uses Pointer Events in its input path. Do not add a second input/render loop or change the puzzle engine without measured evidence.
+- Crystal Quest is a DOM/CSS-driven match-3 board rather than a Canvas renderer; apply touch/input and frame-budget improvements to its actual rendering architecture, not by introducing an unnecessary Canvas rewrite.
+- Real-device Android performance testing remains a release verification task; repository-level checks cannot substitute for a physical low/mid-range phone.
+
+### GoGo Central Backend security
+- The current backend contains server-side Firebase ID-token verification with revocation checks, server-derived admin RBAC, strict Zod request schemas, HTTPS-origin CORS allowlisting, rate limiting, production sandbox-auth blocking and an executable security regression suite.
+- These are repository-level findings, not a fresh proof of the currently deployed Render configuration. Verify the live service's environment, health and CI/deployment state before declaring production security complete.
+
+### Search Console verification snapshot
+- Connected and readable Search Console property: `sc-domain:gogocompany.in`.
+- For 2026-10-19 through 2026-11-15: 3 clicks, 90 impressions, 3.33% CTR, average position 6.94 (small early sample; comparison period had no data).
+- Four submitted sitemaps were readable with zero reported warnings/errors: root sitemap (21 URLs), Sarkari Sarthi sitemap (185 submitted), PikaNews sitemap (1,016 submitted), and PikaNews News sitemap (99 submitted). Google no longer returns indexed counts in the sitemap report.
+- Sitemap URL performance showed 4/21 root sitemap URLs, 5/202 sampled Sarkari Sarthi URLs, and no impressions for the first 100 PikaNews News sitemap URLs in the selected range. This is not proof that every zero-impression URL is unindexed.
+- URL Inspection passed for the homepage, PikaNews homepage, Sarkari Sarthi homepage and Crystal Quest homepage. Arrow Out About, PikaNews Bollywood category and a sampled PikaNews article were reported as unknown to Google at inspection time.
+- CrUX has no Core Web Vitals field record for `https://gogocompany.in` on PHONE or ALL devices. Do not report this as a CWV pass or failure; use Lighthouse lab runs and real Android device testing until field data is available.
