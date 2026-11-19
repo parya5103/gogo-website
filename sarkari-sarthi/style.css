@@ -2249,3 +2249,23 @@ a:focus-visible {
         display: none;
     }
 }
+
+
+/* Mobile navigation backdrop and scroll lock */
+.menu-backdrop {
+    display: none;
+    position: fixed;
+    inset: var(--header-height) 0 0;
+    width: 100%;
+    height: calc(100dvh - var(--header-height));
+    padding: 0;
+    border: 0;
+    background: rgba(8, 20, 34, 0.58);
+    z-index: 998;
+    cursor: pointer;
+}
+.menu-backdrop.active { display: block; }
+body.menu-open { overflow: hidden; }
+@supports not (height: 100dvh) {
+    .menu-backdrop { height: calc(100vh - var(--header-height)); }
+}
