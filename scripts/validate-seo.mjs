@@ -39,7 +39,9 @@ for(const url of locs){const u=new URL(url);assert.equal(u.protocol,"https:");as
 const robots=await read("robots.txt");
 assert.ok(robots.includes("Sitemap: https://gogocompany.in/sitemap.xml"));
 const index=await read("sitemap-index.xml");
-for(const p of ["sitemap.xml","sarkari-sarthi/sitemap.xml","pikanews/sitemap.xml","pikanews/news-sitemap.xml"])assert.ok(index.includes(p),"Sitemap index missing "+p);
+for(const p of ["sitemap.xml","sarkari-sarthi/sitemap.xml","pikanews/sitemap.xml"])assert.ok(index.includes(p),"Sitemap index missing "+p);
+assert.ok(!index.includes("pikanews/news-sitemap.xml"),"Empty Google News sitemap must not be advertised in the sitemap index");
+assert.ok(!robots.includes("Sitemap: https://gogocompany.in/pikanews/news-sitemap.xml"),"Empty Google News sitemap must not be advertised in root robots.txt");
 
 for(const [path,target] of [["arrow-out/index.html","https://gogocompany.in/arrowout/"],["crystal-quest/index.html","https://gogocompany.in/crystalquest/"],["sarkari/index.html","https://gogocompany.in/sarkari-sarthi/"]]){
  const html=await read(path);assert.match(html,/noindex, follow/);assert.ok(html.includes('<link rel="canonical" href="'+target+'">'));assert.ok(html.includes('content="0; url='+target+'"'));assert.match(html,/window\.location\.replace/);assert.match(html,/window\.location\.search/);assert.match(html,/window\.location\.hash/);
