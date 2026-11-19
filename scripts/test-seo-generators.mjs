@@ -38,7 +38,7 @@ const keywordSection = renderKeywordSection({
 assert.match(keywordSection, /Latest Sarkari Naukri Updates/);
 assert.match(keywordSection, /sarkari naukri 2026/);
 assert.match(keywordSection, /<details>/);
-assert.doesNotMatch(renderKeywordSection({heading:"Safe",intro:'</section><script>alert("x")</script>'}), /<script>/);
+assert.doesNotMatch(renderKeywordSection({heading:"Safe",intro:'</section><script>alert("x")</script>'}), /<script\\b/i);
 const keywordPage = addKeywordSection("<html><body><footer>Footer</footer></body></html>", {
   heading: "Free Arrow Puzzle Game Online",
   intro: "Play an arrow wala puzzle game."
