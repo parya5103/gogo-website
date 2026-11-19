@@ -8,12 +8,12 @@ This plan covers GoGo Company, Sarkari Sarthi, PikaNews, Arrow Out! and Crystal 
 
 ## Search-intent implementation in this branch
 
-The post-sync SEO enhancer now adds one visible, escaped, idempotent search-intent section with concise FAQs to the four product landing pages:
+The post-sync SEO enhancer adds visible, escaped, idempotent search-intent sections with concise FAQs to the Sarkari Sarthi and PikaNews landing pages and the crawlable Arrow Out guide. Crystal Quest keeps its full-screen game shell free of extra content overlays; its match-3 search intent is carried by its title, description and VideoGame metadata.
 
 - **Sarkari Sarthi:** latest government jobs, govt job vacancy, sarkari naukri 2026, central government jobs, Madhya Pradesh government jobs, admit cards and sarkari results. Vacancy eligibility and dates must always be checked against the original official notice.
 - **PikaNews:** Bollywood news today, gaming news India, technology news India, business news India, and natural Hinglish queries such as “aaj ki Bollywood khabar”. Articles retain publisher attribution and original-source links; this does not claim PikaNews is the original publisher.
-- **Arrow Out!:** arrow puzzle game online, free arrow puzzle game, arrow wala puzzle game, 1,000 arrow-path logic levels and no-download browser play.
-- **Crystal Quest:** match 3 puzzle game, online match 3 game, free match-3 puzzle game, magical gems and a candy-crush-style gem adventure. Copy explicitly distinguishes the original game from Candy Crush.
+- **Arrow Out!:** arrow puzzle game online, free arrow puzzle game, arrow wala puzzle game, 1,000 arrow-path logic levels and no-download browser play. Visible search-intent copy lives on `/arrowout/about.html`, not inside the full-screen gameplay shell.
+- **Crystal Quest:** match 3 puzzle game, online match 3 game, free match-3 puzzle game, magical gems and a candy-crush-style gem adventure. Title/description and VideoGame metadata carry the search intent; no long text block is injected into the full-screen game UI. Copy explicitly distinguishes the original game from Candy Crush.
 
 Keyword phrases are used in context, not repeated as a keyword list. Existing canonical URLs and product routes are preserved. Meta descriptions are kept within 155 characters for these landing pages. Automated validation checks the visible content, target phrase and metadata lengths.
 
