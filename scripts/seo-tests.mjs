@@ -186,13 +186,19 @@ check('sitemap.xml: all indexable gogo pages, product roots and arrowout sub-pag
 });
 
 // robots.txt
-check('robots.txt: nothing blocked, all four sitemaps declared and resolvable', () => {
+check('robots.txt: nothing blocked, exactly three active sitemaps declared and resolvable', () => {
   const rb = read('robots.txt');
   assert(rb.includes('User-agent: *'), 'missing User-agent: *');
-  assert(!/^\s*Disallow:/m.test(rb), 'unexpected Disallow directive');
-  const sitemapLines = rb.split('\n').filter((l) => l.trim().startsWith('Sitemap:'));
-  assert(sitemapLines.length >= 4, 'expected 4 Sitemap directives, found ' + sitemapLines.length);
-  assert(rb.includes('Sitemap: https://gogocompany.in/pikanews/news-sitemap.xml'), 'robots.txt must declare the PikaNews news sitemap');
+  assert(!/^\\s*Disallow:/m.test(rb), 'unexpected Disallow directive');
+  const sitemapLines = rb.split('\\n').filter((l) => l.trim().startsWith('Sitemap:'));
+  const expected = [
+    'Sitemap: https://gogocompany.in/sitemap.xml',
+    'Sitemap: https://gogocompany.in/sarkari-sarthi/sitemap.xml',
+    'Sitemap: https://gogocompany.in/pikanews/sitemap.xml',
+  ];
+  assert(sitemapLines.length === expected.length, 'expected ' + expected.length + ' Sitemap directives, found ' + sitemapLines.length);
+  for (const line of expected) assert(sitemapLines.includes(line), 'robots.txt missing active sitemap: ' + line);
+  assert(!rb.includes('news-sitemap.xml'), 'robots.txt must not advertise the empty PikaNews news sitemap');
   for (const line of sitemapLines) {
     const url = line.replace('Sitemap:', '').trim();
     assert(url.startsWith('https://'), 'sitemap URL not https: ' + url);
