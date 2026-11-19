@@ -34,7 +34,8 @@ let noindexedAggregates = 0;
 for (const dir of newsDirs.filter(entry => entry.isDirectory())) {
   const html = await read("pikanews/news/" + dir.name + "/index.html");
   const article = schemas(html).find(schema => schema["@type"] === "NewsArticle");
-  const robots = html.match(/<meta\\s+name=["']robots["']\\s+content=["']([^"']*)["']/i)?.[1] || "";
+  const robotsTag = html.match(/<meta\\b(?=[^>]*\\bname=["']robots["'])[^>]*>/i)?.[0] || "";
+  const robots = robotsTag.match(/\\bcontent=["']([^"']*)["']/i)?.[1] || "";
   if (!article) {
     assert.match(robots, /noindex/i, "Aggregated static PikaNews pages without NewsArticle schema must remain noindex");
     noindexedAggregates++;
