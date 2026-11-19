@@ -125,7 +125,7 @@ jobs:
           if "gogo-notifications.js" not in html:
               if "</body>" not in html:
                   raise SystemExit("Cannot safely inject GoGo notifications script: </body> missing")
-              html = html.replace("</body>", "    " + tag + "\\n</body>", 1)
+              html = html.replace("</body>", "    " + tag + "\n</body>", 1)
               page.write_text(html, encoding="utf-8")
           PY
 
