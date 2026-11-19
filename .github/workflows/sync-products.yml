@@ -114,6 +114,20 @@ jobs:
               cp "$SARKARI_NOTIFICATION_BACKUP/$file" "sarkari-sarthi/$file"
             fi
           done
+          # The upstream homepage does not yet load the centrally managed
+          # opt-in module. Keep the same script include used by the prior live
+          # portal so the preserved FCM module remains active after the sync.
+          python - <<'PY'
+          from pathlib import Path
+          page = Path("sarkari-sarthi/index.html")
+          html = page.read_text(encoding="utf-8")
+          tag = '<script src="gogo-notifications.js"></script>'
+          if "gogo-notifications.js" not in html:
+              if "</body>" not in html:
+                  raise SystemExit("Cannot safely inject GoGo notifications script: </body> missing")
+              html = html.replace("</body>", "    " + tag + "\\n</body>", 1)
+              page.write_text(html, encoding="utf-8")
+          PY
 
       - name: Apply persistent SEO enhancements after sync
         run: node scripts/apply-seo-enhancements.mjs
