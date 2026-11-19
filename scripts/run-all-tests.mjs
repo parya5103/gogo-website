@@ -729,6 +729,7 @@ runStep('Sync workflows keep the service-worker guard (with the notifications al
   assert.ok(!productsYml.includes('repository: parya5103/Sarkari-Sarthi'), 'legacy hyphenated repository must never be used for product publishing');
   assert.ok(productsYml.includes('SARKARI_NOTIFICATION_BACKUP'), 'central Sarkari notification assets must be backed up before rsync --delete');
   assert.ok(productsYml.includes('cp "$SARKARI_NOTIFICATION_BACKUP/$file" "sarkari-sarthi/$file"'), 'missing upstream notification assets must be restored after sync');
+  assert.ok(productsYml.includes('<script src="gogo-notifications.js"></script>'), 'Sarkari homepage must load the centrally managed opt-in notifications module');
 });
 
 runStep('Onboarding state machine: first-visit intro, one 3-day reminder, never nags', () => {
