@@ -22,7 +22,7 @@ export function addKeywordSection(html, config) {
   const section = renderKeywordSection(config);
   // Only inject into a real content container. Never treat a game's in-app
   // action bar or a footer inside a fixed-height game shell as page content.
-  const mainClose = html.search(/<\\/main\\s*>/i);
+  const mainClose = html.search(/<\/main\s*>/i);
   if (mainClose < 0) return html;
-  return html.slice(0, mainClose) + section + "\\n" + html.slice(mainClose);
+  return html.slice(0, mainClose) + section + "\n" + html.slice(mainClose);
 }
