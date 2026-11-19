@@ -725,6 +725,8 @@ runStep('Sync workflows keep the service-worker guard (with the notifications al
   assert.ok(productsYml.includes('arrowout/fcm/firebase-messaging-sw.js'), 'arrowout pairing check present');
   assert.ok(productsYml.includes('crystalquest/fcm/firebase-messaging-sw.js'), 'crystalquest pairing check present');
   assert.ok(productsYml.includes('sarkari-sarthi/firebase-messaging-sw.js'), 'sarkari pairing check present');
+  assert.ok(productsYml.includes('repository: parya5103/sarkarisarthi'), 'Sarkari Sarthi must sync from the current source repository');
+  assert.ok(!productsYml.includes('repository: parya5103/Sarkari-Sarthi'), 'legacy hyphenated repository must never be used for product publishing');
 });
 
 runStep('Onboarding state machine: first-visit intro, one 3-day reminder, never nags', () => {
