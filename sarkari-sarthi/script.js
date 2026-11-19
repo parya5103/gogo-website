@@ -1182,12 +1182,29 @@ function openWhatsappChannel() {
  */
 function toggleMobileMenu() {
     const navMenu = document.querySelector('.nav-menu');
-    if (navMenu) {
-        const isOpen = navMenu.classList.toggle('active');
-        if (mobileMenuToggle) {
-            mobileMenuToggle.classList.toggle('active', isOpen);
-            mobileMenuToggle.setAttribute('aria-expanded', String(isOpen));
-        }
+    if (!navMenu) return;
+
+    const isOpen = !navMenu.classList.contains('active');
+    let backdrop = document.getElementById('menuBackdrop');
+    if (!backdrop) {
+        backdrop = document.createElement('button');
+        backdrop.type = 'button';
+        backdrop.id = 'menuBackdrop';
+        backdrop.className = 'menu-backdrop';
+        backdrop.setAttribute('aria-label', 'Close navigation menu');
+        backdrop.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(backdrop);
+        backdrop.addEventListener('click', () => {
+            if (navMenu.classList.contains('active')) toggleMobileMenu();
+        });
+    }
+
+    navMenu.classList.toggle('active', isOpen);
+    backdrop.classList.toggle('active', isOpen);
+    document.body.classList.toggle('menu-open', isOpen);
+    if (mobileMenuToggle) {
+        mobileMenuToggle.classList.toggle('active', isOpen);
+        mobileMenuToggle.setAttribute('aria-expanded', String(isOpen));
     }
 }
 
