@@ -3,6 +3,8 @@ name: Sync product apps
 on:
   schedule:
     - cron: '45 0 * * *'  # 06:15 IST daily - after Sarkari-Sarthi's 05:00 IST update
+    # Workflow-file pushes also allow an immediate safe publish after a
+    # source-side data-quality or static-page rebuild when needed.
   workflow_dispatch:
   push:
     branches: [main]

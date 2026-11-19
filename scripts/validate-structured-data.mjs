@@ -29,14 +29,26 @@ assert.ok(injector.includes('(validThrough && new Date(validThrough) <= new Date
 assert.ok(injector.includes('description.split(/\\n+/)'), "Job descriptions must be serialized as escaped HTML paragraphs");
 const newsDirs = await readdir(join(root, "pikanews/news"), { withFileTypes: true });
 let checked = 0;
+let noindex = 0;
+let inspected = 0;
 for (const dir of newsDirs.filter(entry => entry.isDirectory())) {
   const html = await read("pikanews/news/" + dir.name + "/index.html");
   const article = schemas(html).find(schema => schema["@type"] === "NewsArticle");
-  if (!article) continue;
+  const robotsTag = [...html.matchAll(/<meta\b[^>]*>/gi)]
+    .map(match => match[0])
+    .find(tag => /\bname=["']robots["']/i.test(tag));
+  const robots = robotsTag?.match(/\bcontent=["']([^"']+)["']/i)?.[1] || "";
+  inspected++;
+  if (!article) {
+    assert.match(robots, /noindex/i, `Aggregated or non-editorial PikaNews page ${dir.name} without NewsArticle schema must be noindex`);
+    noindex++;
+    continue;
+  }
+  assert.doesNotMatch(robots, /noindex/i, "A qualifying original editorial NewsArticle must not be noindex");
   assert.equal(article.publisher?.name, "PikaNews", "NewsArticle publisher must match the PikaNews publication");
   assert.equal(article.speakable?.["@type"], "SpeakableSpecification", "NewsArticle should expose speakable content selectors");
   assert.ok(article.mainEntityOfPage, "NewsArticle must identify its canonical page");
   checked++;
 }
-assert.ok(checked > 0, "At least one static PikaNews NewsArticle should be validated");
-console.log("Structured data validation passed: two games, guarded job detail schema, and " + checked + " PikaNews articles.");
+assert.ok(inspected > 0, "At least one static PikaNews article page should be inspected");
+console.log("Structured data validation passed: two games, guarded job detail schema, " + checked + " qualifying PikaNews NewsArticle pages and " + noindex + " noindex aggregated/thin pages.");
