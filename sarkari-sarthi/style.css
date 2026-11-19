@@ -2007,9 +2007,12 @@ a:focus-visible {
         position: fixed;
         top: var(--header-height);
         left: 0;
-        right: 0;
+        right: auto;
+        width: min(360px, calc(100vw - 32px));
         background: var(--surface-card);
         border-bottom: 1px solid var(--border-strong);
+        border-right: 1px solid var(--border-strong);
+        border-radius: 0 0 14px 0;
         box-shadow: var(--shadow-heavy);
         flex-direction: column;
         align-items: stretch;
@@ -2017,7 +2020,26 @@ a:focus-visible {
         padding: 1.25rem 20px 1.5rem;
         max-height: calc(100vh - var(--header-height));
         overflow-y: auto;
+        z-index: 1000;
+    }
+
+    .menu-backdrop {
+        position: fixed;
+        inset: 0;
         z-index: 999;
+        border: 0;
+        padding: 0;
+        background: rgba(7, 15, 28, 0.58);
+        cursor: pointer;
+    }
+
+    .menu-backdrop[hidden] {
+        display: none;
+    }
+
+    body.menu-open {
+        overflow: hidden;
+        overscroll-behavior: none;
     }
 
     .nav-menu.active {
