@@ -71,9 +71,10 @@ for (const [path, h1] of pages) {
 const keywordPages = [
   ["sarkari-sarthi/index.html", /sarkari naukri 2026/i],
   ["pikanews/index.html", /aaj ki Bollywood khabar/i],
-  ["arrowout/index.html", /arrow wala puzzle game/i],
-  ["crystalquest/index.html", /candy-crush-style gem adventure/i]
+  ["arrowout/about.html", /arrow wala puzzle game/i]
 ];
+const crystal = await read("crystalquest/index.html");
+assert.match(crystal, /<meta name="description" content="[^"]*(match-3|match 3)[^"]*candy-crush-style/i, "Crystal Quest must expose truthful match-3 search intent in its metadata");
 for (const [path, keyword] of keywordPages) {
   const html = await read(path);
   assert.match(html, /id=["']gogo-search-intent["']/i, path + " must include visible search-intent content");
