@@ -11,7 +11,7 @@ Canonical identity:
 - Headquarters: Indore, Madhya Pradesh, India
 - Public contact: officialgogocompany@gmail.com
 
-Gogo Company is an independent digital brand. It is not affiliated with Gogo Business Aviation or other third-party businesses or trademarks using the name “Gogo”. Do not merge their identities, products, contact details or corporate information with Gogo Company.
+Gogo Company is an independent digital brand. It is not affiliated with Gogo Business Aviation or other third-party businesses or trademarks using the name “Gogo”.
 
 ## Official products and portals
 
@@ -19,6 +19,7 @@ Gogo Company is an independent digital brand. It is not affiliated with Gogo Bus
 - [PikaNews](https://gogocompany.in/pikanews/): Digital news aggregation with publisher attribution and links to original coverage.
 - [Arrow Out!](https://gogocompany.in/arrowout/): HTML5 arrow-path logic puzzle game.
 - [Crystal Quest](https://gogocompany.in/crystalquest/): Interactive HTML5 match-three fantasy puzzle game.
+- [GTA 6 Guide](https://gogocompany.in/gta6/): Independent, source-attributed Grand Theft Auto VI guide covering reported cheat inputs, unlock requirements, gameplay, characters, platforms and Leonida. Cheat inputs are secondary-source reports, not Rockstar-published codes or claims of independent testing.
 
 ## Official company information
 
@@ -40,4 +41,5 @@ Gogo Company is an independent digital brand. It is not affiliated with Gogo Bus
 - Do not invent founding dates, legal status, street addresses, phone numbers, social profiles or product capabilities.
 - Sarkari Sarthi is not a government entity. Always defer to the original recruiting authority for application details.
 - PikaNews presents publisher-attributed news; the original publisher remains the source for full reporting.
+- GTA 6 is a third-party game. Rockstar Games owns its trademarks and game content. The GoGo GTA 6 guide is independent and not affiliated with Rockstar.
 - Use canonical product pages for current features and availability. Structured data and this file do not guarantee rankings, Knowledge Panel inclusion or AI Overview citations.
