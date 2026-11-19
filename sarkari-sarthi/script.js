@@ -481,7 +481,7 @@ function applyFilters() {
         if (savedOnly) parts.push('Saved on this device');
         summaryEl.textContent = parts.length > 0
             ? `Showing ${filteredJobs.length} matching notification${filteredJobs.length === 1 ? '' : 's'} (${parts.join(' · ')})`
-            : `Showing ${filteredJobs.length} verified active recruitment notification${filteredJobs.length === 1 ? '' : 's'} across India`;
+            : `Showing ${filteredJobs.length} recruitment listing${filteredJobs.length === 1 ? '' : 's'}. Check each source label and the official notification before applying.`;
     }
 
     handleSort();
@@ -1075,8 +1075,16 @@ function updateJobCounts() {
     });
 
     const totalActiveEl = document.getElementById('totalActiveJobsCount');
-    if (totalActiveEl && jobsData.length > 0) {
-        totalActiveEl.textContent = `${jobsData.length}+`;
+    if (totalActiveEl) {
+        totalActiveEl.textContent = String(jobsData.length);
+    }
+
+    const needsReviewEl = document.getElementById('needsReviewJobsCount');
+    if (needsReviewEl) {
+        const needsReviewCount = jobsData.filter(job =>
+            String(job.verification_status || '').toLowerCase() === 'needs_review'
+        ).length;
+        needsReviewEl.textContent = String(needsReviewCount);
     }
 }
 
@@ -1182,29 +1190,12 @@ function openWhatsappChannel() {
  */
 function toggleMobileMenu() {
     const navMenu = document.querySelector('.nav-menu');
-    if (!navMenu) return;
-
-    const isOpen = !navMenu.classList.contains('active');
-    let backdrop = document.getElementById('menuBackdrop');
-    if (!backdrop) {
-        backdrop = document.createElement('button');
-        backdrop.type = 'button';
-        backdrop.id = 'menuBackdrop';
-        backdrop.className = 'menu-backdrop';
-        backdrop.setAttribute('aria-label', 'Close navigation menu');
-        backdrop.setAttribute('aria-hidden', 'true');
-        document.body.appendChild(backdrop);
-        backdrop.addEventListener('click', () => {
-            if (navMenu.classList.contains('active')) toggleMobileMenu();
-        });
-    }
-
-    navMenu.classList.toggle('active', isOpen);
-    backdrop.classList.toggle('active', isOpen);
-    document.body.classList.toggle('menu-open', isOpen);
-    if (mobileMenuToggle) {
-        mobileMenuToggle.classList.toggle('active', isOpen);
-        mobileMenuToggle.setAttribute('aria-expanded', String(isOpen));
+    if (navMenu) {
+        const isOpen = navMenu.classList.toggle('active');
+        if (mobileMenuToggle) {
+            mobileMenuToggle.classList.toggle('active', isOpen);
+            mobileMenuToggle.setAttribute('aria-expanded', String(isOpen));
+        }
     }
 }
 

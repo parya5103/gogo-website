@@ -2,6 +2,9 @@ package com.aaryapratik.arrowout.nativeapp.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aaryapratik.arrowout.nativeapp.data.GameRepository
+import com.aaryapratik.arrowout.nativeapp.core.config.GameFeatureFlags
+import com.aaryapratik.arrowout.nativeapp.data.local.SettingsStore
+import com.aaryapratik.arrowout.nativeapp.data.local.NativeSettings
 import com.aaryapratik.arrowout.nativeapp.di.IoDispatcher
 import com.aaryapratik.arrowout.nativeapp.domain.engine.ArrowPuzzleEngine
 import com.aaryapratik.arrowout.nativeapp.domain.model.*
@@ -12,6 +15,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -21,6 +26,7 @@ import java.util.TimeZone
 
 @HiltViewModel class ArrowOutViewModel @Inject constructor(
  private val repository:GameRepository,
+ private val settingsStore:SettingsStore,
  @IoDispatcher private val io:CoroutineDispatcher
 ):ViewModel(){
  private val engine=ArrowPuzzleEngine()
@@ -30,6 +36,9 @@ import java.util.TimeZone
  val isRestoring=_isRestoring.asStateFlow()
  private val _importMessage=MutableStateFlow("")
  val importMessage=_importMessage.asStateFlow()
+ val settings=settingsStore.settings.stateIn(viewModelScope,SharingStarted.WhileSubscribed(5_000),NativeSettings())
+ fun setDarkTheme(enabled:Boolean){viewModelScope.launch(io){settingsStore.setDarkTheme(enabled)}}
+ fun setHapticsEnabled(enabled:Boolean){viewModelScope.launch(io){settingsStore.setHapticsEnabled(enabled)}}
  private val saveQueue=Channel<ArrowGameState>(Channel.CONFLATED)
  init{
   viewModelScope.launch(io){
@@ -55,6 +64,9 @@ import java.util.TimeZone
    ArrowUiEvent.Undo->{_uiState.update{engine.undo(it)};saveQueue.trySend(_uiState.value)}
    is ArrowUiEvent.SelectLevel->{if(event.level in 1.._uiState.value.unlockedLevel)openLevel(event.level)else _uiState.update{it.copy(message="Unlock level ${event.level} first")}}
    ArrowUiEvent.DailyChallenge->startDaily()
+   ArrowUiEvent.ShowSolution->{if(GameFeatureFlags.showSolution)_uiState.update{engine.showSolution(it)}}
+   ArrowUiEvent.ClearSolution->{_uiState.update{engine.clearSolution(it)};saveQueue.trySend(_uiState.value)}
+   is ArrowUiEvent.MarkStorySeen->{if(GameFeatureFlags.guardianStories){_uiState.update{it.copy(storySeenWorlds=(it.storySeenWorlds+event.worldId).distinct())};saveQueue.trySend(_uiState.value)}}
    ArrowUiEvent.ExitDaily->{
     val current=_uiState.value
     if(current.isDaily)viewModelScope.launch(io){
