@@ -14,6 +14,10 @@ const homepage = await read("index.html");
 const sharedJs = await read("assets/js/main.js");
 const css = await read("assets/css/style.css");
 const sitemap = await read("sitemap.xml");
+assert.match(homepage, /GoGo Company builds mobile-friendly browser games and digital products/);
+for (const productPath of ["arrowout", "crystalquest", "sarkari-sarthi", "pikanews"]) {
+  assert.ok(homepage.includes('href="./' + productPath + '/'), "homepage must link to " + productPath);
+}
 assert.match(homepage, /id=["']critical-css["']/);
 assert.match(homepage, /rel=["']preload["'][^>]*assets\/css\/style\.css/);
 assert.match(homepage, /<main id=["']main["']>/);
@@ -63,5 +67,21 @@ for (const [path, h1] of pages) {
   assert.ok(description.length <= 155, path + " meta description exceeds 155 characters");
   const canonical = html.match(/<link rel="canonical" href="([^"]+)"/i)?.[1];
   assert.ok(canonical && sitemap.includes("<loc>" + canonical + "</loc>"), path + " canonical missing from sitemap");
+}
+const keywordPages = [
+  ["sarkari-sarthi/index.html", /sarkari naukri 2026/i],
+  ["pikanews/index.html", /aaj ki Bollywood khabar/i],
+  ["arrowout/about.html", /arrow wala puzzle game/i]
+];
+const crystal = await read("crystalquest/index.html");
+assert.match(crystal, /<meta name="description" content="[^"]*(match-3|match 3)[^"]*candy-crush-style/i, "Crystal Quest must expose truthful match-3 search intent in its metadata");
+for (const [path, keyword] of keywordPages) {
+  const html = await read(path);
+  assert.match(html, /id=["']gogo-search-intent["']/i, path + " must include visible search-intent content");
+  assert.match(html, keyword, path + " must include its relevant keyword naturally");
+  const title = html.match(/<title>([^<]+)<\/title>/i)?.[1] || "";
+  const description = html.match(/<meta name="description" content="([^"]*)"/i)?.[1] || "";
+  assert.ok(title.length <= 60, path + " title exceeds 60 characters");
+  assert.ok(description.length <= 155, path + " description exceeds 155 characters");
 }
 console.log("SEO build validation passed: homepage, list semantics, contrast tokens, 5 canonical hubs and sitemap.");

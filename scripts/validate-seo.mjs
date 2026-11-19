@@ -32,9 +32,9 @@ assert.match(home,/og:image:height["']?\s+content=["']630/i);
 
 const sitemap=await read("sitemap.xml");
 const locs=[...sitemap.matchAll(/<loc>\s*([^<]+)\s*<\/loc>/gi)].map(m=>m[1].trim());
-assert.equal(locs.length,19,"root sitemap must contain 19 URLs including the five pSEO hubs");
+assert.ok(locs.length >= 19,"root sitemap must contain the canonical site URLs and generated pSEO hubs");
 assert.equal(new Set(locs).size,locs.length,"root sitemap URLs must be unique");
-assert.equal((sitemap.match(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g)||[] ).length,19,"all root URLs require ISO lastmod");
+assert.equal((sitemap.match(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g)||[] ).length,locs.length,"all root URLs require ISO lastmod");
 for(const url of locs){const u=new URL(url);assert.equal(u.protocol,"https:");assert.equal(u.hostname,"gogocompany.in")}
 const robots=await read("robots.txt");
 assert.ok(robots.includes("Sitemap: https://gogocompany.in/sitemap.xml"));

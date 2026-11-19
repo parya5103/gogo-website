@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { decodeEntities, parseGoogleTrendsRss, renderTrendingSection, safeUrl, serializeJsonLd as serializeHomeJsonLd } from "./update-trending-seo.mjs";
 import { renderHub, escapeHtml, serializeJsonLd as serializeHubJsonLd } from "./generate-pseo-hubs.mjs";
+import { addKeywordSection, renderKeywordSection } from "./seo-keyword-content.mjs";
 
 assert.equal(decodeEntities("&amp;lt;script&amp;gt;"), "&lt;script&gt;", "RSS entities must be decoded exactly once");
 assert.equal(decodeEntities("&#x110000;"), "&#x110000;", "Out-of-range numeric entities must remain inert");
@@ -29,4 +30,19 @@ assert.match(page,/FAQPage/);
 assert.match(page,/Recruitment &lt;2026&gt;/);
 assert.match(page,/rel="canonical"/);
 assert.doesNotMatch(page,/\[TODO\]|placeholder/i);
+const keywordSection = renderKeywordSection({
+  heading: "Latest Sarkari Naukri Updates",
+  intro: "Find latest govt jobs and sarkari naukri 2026.",
+  faqs: [["Where to check?","Verify every notice on the official source."]]
+});
+assert.match(keywordSection, /Latest Sarkari Naukri Updates/);
+assert.match(keywordSection, /sarkari naukri 2026/);
+assert.match(keywordSection, /<details>/);
+assert.doesNotMatch(renderKeywordSection({heading:"Safe",intro:'</section><script>alert("x")</script>'}), /<script\\b/i);
+const keywordPage = addKeywordSection("<html><body><footer>Footer</footer></body></html>", {
+  heading: "Free Arrow Puzzle Game Online",
+  intro: "Play an arrow wala puzzle game."
+});
+assert.ok(keywordPage.indexOf("seo-keyword-content") < keywordPage.indexOf("<footer>"), "keyword context should be placed before the footer");
+assert.equal(addKeywordSection(keywordPage,{heading:"Duplicate",intro:"Duplicate"}), keywordPage, "keyword section injection must be idempotent");
 console.log("SEO generator tests passed.");
