@@ -45,7 +45,7 @@ jobs:
       - name: Checkout Sarkari Sarthi published site (gh-pages branch)
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          repository: parya5103/Sarkari-Sarthi
+          repository: parya5103/sarkarisarthi
           ref: gh-pages
           path: src-sarkari
 

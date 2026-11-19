@@ -15,7 +15,7 @@ All four products run directly under gogocompany.in:
 | --- | --- | --- |
 | Arrow Out! (full game) | https://gogocompany.in/arrowout/ | github.com/parya5103/Fletch_Game (branch `main`) |
 | Crystal Quest (full game) | https://gogocompany.in/crystalquest/ | github.com/parya5103/crystal-quest-web (branch `main`) |
-| Sarkari Sarthi (full portal) | https://gogocompany.in/sarkari-sarthi/ | github.com/parya5103/Sarkari-Sarthi (branch `gh-pages`) |
+| Sarkari Sarthi (full portal) | https://gogocompany.in/sarkari-sarthi/ | github.com/parya5103/sarkarisarthi (branch `gh-pages`) |
 | PikaNews (news portal) | https://gogocompany.in/pikanews/ | github.com/parya5103/PikaNews (branch `main`) |
 
 Old product paths redirect to the new ones (query strings preserved by
