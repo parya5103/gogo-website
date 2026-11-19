@@ -10,7 +10,7 @@ const HUBS = [
   { path: "sarkari-sarthi/admit-card/index.html", slug: "admit-card", title: "Sarkari Admit Card 2026 Download | Hall Tickets", description: "Find admit card and exam hall ticket updates. Check the recruiting authority website for official download links and exam instructions.", h1: "Sarkari Admit Cards & Exam Hall Tickets", keywords: /admit.?card|hall.?ticket|call.?letter/i, kind: "jobs", faq: [["Where should I download an admit card?", "Use the official recruiting authority or examination portal linked from the relevant notice."],["What should I check before an exam?", "Confirm the exam date, reporting time, venue, permitted documents and instructions on the official admit card."]] },
   { path: "sarkari-sarthi/sarkari-result/index.html", slug: "sarkari-result", title: "Sarkari Result 2026 | Merit Lists & Cutoffs", description: "Explore examination result, merit list, answer key and cutoff updates. Confirm published results with the official examination authority.", h1: "Sarkari Results, Merit Lists & Cutoffs", keywords: /result|merit.?list|cut.?off|answer.?key/i, kind: "jobs", faq: [["Where can I verify an examination result?", "Check the official examination authority website and use the result notice or candidate login it provides."],["Are cutoff marks guaranteed in advance?", "No. Cutoffs vary by examination, category, vacancies and official evaluation; rely only on published authority data."]] },
   { path: "sarkari-sarthi/mp-govt-jobs/index.html", slug: "mp-govt-jobs", title: "MP Govt Jobs 2026 | MPESB & State Bharti", description: "Browse Madhya Pradesh government recruitment updates, including MPESB and state vacancies, with source links and verification guidance.", h1: "Madhya Pradesh Government Jobs", keywords: /madhya.?pradesh|\bmpesb\b|vyapam|mp.?govt|mp.?police|mp.?bharti/i, kind: "jobs", faq: [["Where can I check Madhya Pradesh recruitment notices?", "Use Sarkari Sarthi to discover listings, then verify the notification on MPESB or the responsible Madhya Pradesh department website."],["Does every listing mean applications are open?", "No. Check the official notice and application dates before treating a listing as open."]] },
-  { path: "free-online-games/index.html", slug: "free-online-games", title: "Free Online Browser Games | Play on Mobile & PC", description: "Play free browser puzzle games on mobile and desktop. Try Arrow Out! and Crystal Quest without downloading a traditional app.", h1: "Play Free Online Browser Games", keywords: null, kind: "games", faq: [["Can I play these games without downloading an app?", "Yes. Arrow Out! and Crystal Quest are playable in supported web browsers."],["Do the games work on mobile and desktop?", "The games are designed for supported modern mobile and desktop browsers; device and browser capabilities can vary."]] }
+  { path: "free-online-games/index.html", slug: "free-online-games", title: "Free Online Browser Games | Play on Mobile & PC", description: "Play two free browser puzzle games on mobile or PC: Arrow Out! has 1,000 tap-away levels; Crystal Quest has 27 match-3 fantasy levels.", h1: "Play Free Online Browser Games", keywords: null, kind: "games", faq: [["Can I play these games without downloading an app?", "Yes. Arrow Out! and Crystal Quest are playable in supported web browsers."],["Do the games work on mobile and desktop?", "The games are designed for supported modern mobile and desktop browsers; device and browser capabilities can vary."]] }
 ];
 
 export function escapeHtml(value = "") {
@@ -29,6 +29,37 @@ function jobCard(job) {
   return '<article class="hub-card"><h3><a href="' + escapeHtml(url) + '" rel="noopener noreferrer">' + escapeHtml(job.title || "Recruitment notice") + '</a></h3>' +
     '<p>' + escapeHtml((job.description || "Open the source listing for recruitment details.").slice(0, 260)) + '</p>' +
     '<p class="hub-meta">Source: ' + escapeHtml(job.source || "Source listing") + (job.category ? " · " + escapeHtml(job.category) : "") + '</p></article>';
+}
+function gameGuide() {
+  return `<section class="hub-guide">
+<h2>Choose the puzzle style that fits you</h2>
+<div class="hub-grid">
+<article class="hub-card">
+<h3>Arrow Out! — a tap-away arrow puzzle</h3>
+<p>Arrow Out! is a path-planning puzzle. Tap an arrow only when its route to the edge of the board is clear; another arrow in the corridor blocks it. Plan the removal order, clear every arrow and work through 1,000 levels. The game also includes daily challenges, hints, undo and board controls for larger puzzles.</p>
+<p><a href="/arrowout/about.html">Read the complete Arrow Out! game guide</a> before you play.</p>
+</article>
+<article class="hub-card">
+<h3>Crystal Quest — a 27-level match-3 adventure</h3>
+<p>Crystal Quest is a fantasy gem-matching game. Swap neighbouring gems to make matches of three or more, then use larger patterns to create special gems: line clears, colour clears, area blasts and seeker crystals. The campaign includes Guardian encounters, Crystal Resonance stages and a daily challenge.</p>
+<p><a href="/crystalquest/guide.html">Read the Crystal Quest match-3 guide</a> for special-gem rules and level tips.</p>
+</article>
+</div>
+</section>
+<section class="hub-guide">
+<h2>How to start playing</h2>
+<ol>
+<li>Choose a game above and open its page. Both games run in a supported modern browser.</li>
+<li>In Arrow Out!, study each arrow's direction and tap only when its exit path is clear.</li>
+<li>In Crystal Quest, tap a gem and then a neighbouring gem, or drag between adjacent cells, to make a match.</li>
+<li>Check the game's own instructions for level objectives, controls and available features.</li>
+</ol>
+<p>No account is required to start either game. Progress is stored in browser storage on the current device, so clearing browser data can remove a local save. Crystal Quest and Arrow Out! support offline play after their required game files have been cached; for the most reliable offline use, open each game while online first and follow its install or cache instructions.</p>
+</section>
+<section class="hub-guide">
+<h2>Which game should you try first?</h2>
+<p>Choose Arrow Out! if you enjoy spatial reasoning, planning and finding a safe order to clear a crowded board. Choose Crystal Quest if you prefer matching gems, building special combinations and completing level objectives within a move limit. Both are free to start and designed for phone and desktop browsers.</p>
+</section>`;
 }
 function gameCards() {
   return '<article class="hub-card"><h3><a href="/arrowout/">Arrow Out! — Free Arrow Puzzle Game</a></h3><p>Solve arrow-path logic puzzles across a large level collection with touch-friendly controls.</p></article>' +
@@ -56,10 +87,9 @@ export function renderHub(hub, jobs = []) {
     '<style>:root{color-scheme:light;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#172033;background:#f7f8fc}*{box-sizing:border-box}body{margin:0;line-height:1.65}.wrap{max-width:1080px;margin:auto;padding:24px 20px}.top{background:#101827;color:#fff}.top a{color:#bfdbfe}.crumb{font-size:.95rem}.hero{padding:38px 0 24px}.hero h1{font-size:clamp(2rem,5vw,3rem);line-height:1.15}.hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}.hub-card{background:#fff;border:1px solid #dce2ec;border-radius:14px;padding:20px;overflow-wrap:anywhere}.hub-card h2,.hub-card h3{margin-top:0}.hub-card a{color:#1e40af}.hub-meta,.muted{color:#596579}.hub-empty{background:#fff;padding:20px;border-left:4px solid #1e40af}.faq{margin-top:36px}.faq details{background:#fff;border:1px solid #dce2ec;border-radius:10px;padding:14px;margin:10px 0}footer{border-top:1px solid #dce2ec;margin-top:40px}</style>' +
     '<script type="application/ld+json">' + serializeJsonLd(schema) + '</script></head><body><header class="top"><div class="wrap"><a href="/">GoGo Company</a></div></header><main class="wrap"><nav class="crumb" aria-label="Breadcrumb">' + crumbRoot + ' / ' + escapeHtml(hub.h1) + '</nav>' +
     '<header class="hero"><h1>' + escapeHtml(hub.h1) + '</h1><p>' + escapeHtml(hub.description) + '</p></header><section aria-labelledby="listing-title"><h2 id="listing-title">' + (hub.kind==="games"?"Choose a free browser game":"Latest matching updates") + '</h2>' +
-    (cards ? '<div class="hub-grid">' + cards + '</div>' : fallback) + '</section><section class="hub-guide"><h2>' + (hub.kind==="games"?"What makes these browser games easy to start?":"How to use these updates safely") + '</h2>' +
-    (hub.kind==="games" ? '<p>Both titles open directly in a modern browser. Arrow Out! focuses on planning clear paths through a puzzle board; Crystal Quest is a match-three fantasy adventure. Use the links above to open the game page and review its controls before playing.</p>' :
-      '<p>Listings are discovery aids, not a substitute for the recruiting authority\'s notice. Open the original source, confirm the organisation and advertisement number, check eligibility and age rules, review fees and dates, and apply only through an official application portal.</p><ol><li>Read the complete notification and its corrigenda.</li><li>Confirm the last date, exam schedule and required documents.</li><li>Check that the application domain belongs to the recruiting authority.</li><li>Save the submitted application and payment receipt where applicable.</li></ol>') +
-    '</section><section class="faq"><h2>Frequently asked questions</h2>' +
+    (cards ? '<div class="hub-grid">' + cards + '</div>' : fallback) + '</section>' +
+    (hub.kind==="games" ? gameGuide() : '<section class="hub-guide"><h2>How to use these updates safely</h2><p>Listings are discovery aids, not a substitute for the recruiting official recruitment notice. Open the original source, confirm the organisation and advertisement number, check eligibility and age rules, review fees and dates, and apply only through an official application portal.</p><ol><li>Read the complete notification and its corrigenda.</li><li>Confirm the last date, exam schedule and required documents.</li><li>Check that the application domain belongs to the recruiting authority.</li><li>Save the submitted application and payment receipt where applicable.</li></ol></section>') +
+    '<section class="faq"><h2>Frequently asked questions</h2>' +
     hub.faq.map(([q,a])=>'<details><summary>' + escapeHtml(q) + '</summary><p>' + escapeHtml(a) + '</p></details>').join("") +
     '</section><footer><div class="wrap"><p><a href="/">GoGo Company</a> · <a href="/sarkari-sarthi/">Sarkari Sarthi</a> · <a href="/pikanews/">PikaNews</a> · <a href="/arrowout/">Arrow Out!</a> · <a href="/crystalquest/">Crystal Quest</a></p><p class="muted">Always verify recruitment details with the original authority. GoGo Company is not a government agency.</p></div></footer></main></body></html>\n';
 }

@@ -30,6 +30,18 @@ assert.match(page,/FAQPage/);
 assert.match(page,/Recruitment &lt;2026&gt;/);
 assert.match(page,/rel="canonical"/);
 assert.doesNotMatch(page,/\[TODO\]|placeholder/i);
+const gamesHub = {path:"free-online-games/index.html",slug:"free-online-games",title:"Free Online Browser Games | Play on Mobile & PC",description:"Play two free browser puzzle games on mobile or PC: Arrow Out! has 1,000 tap-away levels; Crystal Quest has 27 match-3 fantasy levels.",h1:"Play Free Online Browser Games",kind:"games",faq:[["Can I play these games without downloading an app?","Yes. Both games run in supported browsers."]]};
+const gamesPage = renderHub(gamesHub);
+for (const phrase of [
+  "Choose the puzzle style that fits you",
+  "Arrow Out! — a tap-away arrow puzzle",
+  "Crystal Quest — a 27-level match-3 adventure",
+  "Read the complete Arrow Out! game guide",
+  "Read the Crystal Quest match-3 guide",
+  "How to start playing",
+  "Which game should you try first?"
+]) assert.ok(gamesPage.includes(phrase), "Generated games hub is missing: " + phrase);
+
 const keywordSection = renderKeywordSection({
   heading: "Latest Sarkari Naukri Updates",
   intro: "Find latest govt jobs and sarkari naukri 2026.",
