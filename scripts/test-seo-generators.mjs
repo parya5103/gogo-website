@@ -39,10 +39,13 @@ assert.match(keywordSection, /Latest Sarkari Naukri Updates/);
 assert.match(keywordSection, /sarkari naukri 2026/);
 assert.match(keywordSection, /<details>/);
 assert.doesNotMatch(renderKeywordSection({heading:"Safe",intro:'</section><script>alert("x")</script>'}), /<script\\b/i);
-const keywordPage = addKeywordSection("<html><body><footer>Footer</footer></body></html>", {
+const keywordPage = addKeywordSection("<html><body><main><article>Content</article></main><footer>Footer</footer></body></html>", {
   heading: "Free Arrow Puzzle Game Online",
   intro: "Play an arrow wala puzzle game."
 });
-assert.ok(keywordPage.indexOf("seo-keyword-content") < keywordPage.indexOf("<footer>"), "keyword context should be placed before the footer");
+assert.ok(keywordPage.indexOf("seo-keyword-content") < keywordPage.indexOf("</main>"), "keyword context should stay inside the semantic content area");
+assert.ok(keywordPage.indexOf("seo-keyword-content") > keywordPage.indexOf("<main>"), "keyword context must not precede main content");
 assert.equal(addKeywordSection(keywordPage,{heading:"Duplicate",intro:"Duplicate"}), keywordPage, "keyword section injection must be idempotent");
+const gameShell = '<html><body><div id="app"><footer class="game-controls">Controls</footer></div></body></html>';
+assert.equal(addKeywordSection(gameShell,{heading:"No game injection",intro:"Do not alter gameplay."}), gameShell, "game shells without a semantic main must remain untouched");
 console.log("SEO generator tests passed.");
