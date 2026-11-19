@@ -82,6 +82,16 @@ jobs:
       - name: Publish Sarkari Sarthi into /sarkari-sarthi/
         run: |
           mkdir -p sarkari-sarthi
+          # These GoGo Central FCM assets are maintained centrally until the
+          # product source ships its own copies. Preserve them across rsync
+          # --delete; prefer upstream files automatically if they are added.
+          SARKARI_NOTIFICATION_BACKUP="$RUNNER_TEMP/sarkari-notifications"
+          mkdir -p "$SARKARI_NOTIFICATION_BACKUP"
+          for file in firebase-messaging-sw.js gogo-notifications.js; do
+            if [ -f "sarkari-sarthi/$file" ]; then
+              cp "sarkari-sarthi/$file" "$SARKARI_NOTIFICATION_BACKUP/$file"
+            fi
+          done
           rsync -a --delete --delete-excluded \
             --exclude '.git' \
             --exclude '.github' \
@@ -99,6 +109,27 @@ jobs:
             --exclude 'tests' \
             --exclude 'CNAME' \
             src-sarkari/ sarkari-sarthi/
+          for file in firebase-messaging-sw.js gogo-notifications.js; do
+            if [ ! -f "sarkari-sarthi/$file" ] && [ -f "$SARKARI_NOTIFICATION_BACKUP/$file" ]; then
+              cp "$SARKARI_NOTIFICATION_BACKUP/$file" "sarkari-sarthi/$file"
+            fi
+          done
+          # The upstream homepage does not yet load the centrally managed
+          # opt-in module. Keep the same script include used by the prior live
+          # portal so the preserved FCM module remains active after the sync.
+          python - <<'PY'
+          from pathlib import Path
+          page = Path("sarkari-sarthi/index.html")
+          html = page.read_text(encoding="utf-8")
+          tag = '<script src="gogo-notifications.js"></script>'
+          if tag not in html:
+              if "</body>" not in html:
+                  raise SystemExit("Cannot safely inject GoGo notifications script: </body> missing")
+              html = html.replace("</body>", "    " + tag + "\n</body>", 1)
+              page.write_text(html, encoding="utf-8")
+          PY
+          test -f sarkari-sarthi/gogo-notifications.js
+          grep -Fq '<script src="gogo-notifications.js"></script>' sarkari-sarthi/index.html
 
       - name: Apply persistent SEO enhancements after sync
         run: node scripts/apply-seo-enhancements.mjs
