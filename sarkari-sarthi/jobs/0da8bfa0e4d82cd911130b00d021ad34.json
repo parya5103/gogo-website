@@ -13,12 +13,15 @@
   "skills": [
     "Data Entry"
   ],
-  "scraped_at": "2026-11-18T04:39:49.317775",
+  "scraped_at": "2026-11-18T04:38:04.851144",
   "links": [],
   "organization": null,
   "department": null,
   "recruitment_board": null,
+  "job_title": null,
+  "work_mode": null,
   "location": null,
+  "country": null,
   "state": null,
   "district": null,
   "vacancies": null,
@@ -39,8 +42,10 @@
   "official_website": null,
   "description_summary": null,
   "published_date": null,
+  "description_complete": null,
+  "date_posted_verified": null,
   "original_source_url": "https://allgovernmentjobs.in/nhsrc-notification-2026-apply-online-for-various-consultant-posts/45343",
-  "last_verified": "2026-11-18T04:39:49.317775",
+  "last_verified": "2026-11-18T04:38:04.851144",
   "status": "active",
   "verification_status": "secondary_source_only"
 }
