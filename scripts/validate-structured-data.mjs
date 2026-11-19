@@ -37,7 +37,7 @@ for (const dir of newsDirs.filter(entry => entry.isDirectory())) {
   const robotsTag = html.match(/<meta\\b(?=[^>]*\\bname=["']robots["'])[^>]*>/i)?.[0] || "";
   const robots = robotsTag.match(/\\bcontent=["']([^"']*)["']/i)?.[1] || "";
   if (!article) {
-    assert.match(robots, /noindex/i, "Aggregated static PikaNews pages without NewsArticle schema must remain noindex");
+    assert.match(robots, /noindex/i, "Aggregated static PikaNews page " + dir.name + " without NewsArticle schema must remain noindex");
     noindexedAggregates++;
     staticPages++;
     continue;
