@@ -12,7 +12,7 @@ const DOMAIN="https://gogocompany.in";
 const KEY_FILE=resolve(ROOT,"indexnow-key.txt");
 const KEY_LOCATION=DOMAIN+"/indexnow-key.txt";
 const ROOT_SITEMAP=resolve(ROOT,"sitemap.xml");
-const SITEMAPS=["sitemap.xml","sarkari-sarthi/sitemap.xml","pikanews/sitemap.xml","pikanews/news-sitemap.xml"];
+const SITEMAPS=["sitemap.xml","sarkari-sarthi/sitemap.xml","pikanews/sitemap.xml"];
 
 function git(args){try{return execFileSync("git",args,{cwd:ROOT,encoding:"utf8"}).trim()}catch{return ""}}
 function changedPaths(){
