@@ -5,6 +5,8 @@ on:
     # Every 30 minutes at :10 and :40 UTC - 10 minutes after the
     # PikaNews news_collector runs (:00/:30 UTC), so the collector has
     # already pushed fresh news_json/ data before we publish it.
+    # A workflow-file push also provides a safe immediate refresh after
+    # source-side static page regeneration when scheduled events are delayed.
     - cron: '10,40 * * * *'
   workflow_dispatch:
   push:
