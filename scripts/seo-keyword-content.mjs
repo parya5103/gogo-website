@@ -20,9 +20,9 @@ export function addKeywordSection(html, config) {
   const id = config?.id || "gogo-search-intent";
   if (html.includes(`id="${id}"`)) return html;
   const section = renderKeywordSection(config);
-  const footer = html.search(/<footer\b/i);
-  if (footer >= 0) return html.slice(0, footer) + section + "\n\n" + html.slice(footer);
-  const bodyEnd = html.search(/<\/body>/i);
-  if (bodyEnd >= 0) return html.slice(0, bodyEnd) + section + "\n" + html.slice(bodyEnd);
-  return html + "\n" + section + "\n";
+  // Only inject into a real content container. Never treat a game's in-app
+  // action bar or a footer inside a fixed-height game shell as page content.
+  const mainClose = html.search(/<\\/main\\s*>/i);
+  if (mainClose < 0) return html;
+  return html.slice(0, mainClose) + section + "\\n" + html.slice(mainClose);
 }
