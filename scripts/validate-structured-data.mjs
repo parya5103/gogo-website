@@ -40,7 +40,7 @@ for (const dir of newsDirs.filter(entry => entry.isDirectory())) {
   const robots = robotsTag?.match(/\bcontent=["']([^"']+)["']/i)?.[1] || "";
   inspected++;
   if (!article) {
-    assert.match(robots, /noindex/i, "Aggregated or non-editorial PikaNews page ${dir.name} without NewsArticle schema must be noindex");
+    assert.match(robots, /noindex/i, `Aggregated or non-editorial PikaNews page ${dir.name} without NewsArticle schema must be noindex`);
     noindex++;
     continue;
   }
