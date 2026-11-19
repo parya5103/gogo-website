@@ -2007,7 +2007,8 @@ a:focus-visible {
         position: fixed;
         top: var(--header-height);
         left: 0;
-        right: 0;
+        right: auto;
+        width: min(88vw, 360px);
         background: var(--surface-card);
         border-bottom: 1px solid var(--border-strong);
         box-shadow: var(--shadow-heavy);
