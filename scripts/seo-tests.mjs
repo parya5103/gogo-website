@@ -189,8 +189,8 @@ check('sitemap.xml: all indexable gogo pages, product roots and arrowout sub-pag
 check('robots.txt: nothing blocked, exactly three active sitemaps declared and resolvable', () => {
   const rb = read('robots.txt');
   assert(rb.includes('User-agent: *'), 'missing User-agent: *');
-  assert(!/^\\s*Disallow:/m.test(rb), 'unexpected Disallow directive');
-  const sitemapLines = rb.split('\\n').filter((l) => l.trim().startsWith('Sitemap:'));
+  assert(!/^\s*Disallow:/m.test(rb), 'unexpected Disallow directive');
+  const sitemapLines = rb.split('\n').filter((l) => l.trim().startsWith('Sitemap:'));
   const expected = [
     'Sitemap: https://gogocompany.in/sitemap.xml',
     'Sitemap: https://gogocompany.in/sarkari-sarthi/sitemap.xml',
