@@ -68,6 +68,23 @@ for (const [path, h1] of pages) {
   const canonical = html.match(/<link rel="canonical" href="([^"]+)"/i)?.[1];
   assert.ok(canonical && sitemap.includes("<loc>" + canonical + "</loc>"), path + " canonical missing from sitemap");
 }
+const gta6 = await read("gta6/index.html");
+const gtaTitle = gta6.match(/<title>([^<]+)<\/title>/i)?.[1] || "";
+assert.ok(gtaTitle.length > 0 && gtaTitle.length <= 60, "GTA 6 title must fit a concise search snippet");
+assert.match(gta6, /"@type":"Article"[\s\S]*?"image":/);
+assert.match(gta6, /"publisher":\{"@type":"Organization","name":"GoGo Company","url":"https:\/\/gogocompany\.in\/","logo":\{"@type":"ImageObject"/);
+
+const gamesHub = await read("free-online-games/index.html");
+for (const phrase of [
+  "Choose the puzzle style that fits you",
+  "Arrow Out! — a tap-away arrow puzzle",
+  "Crystal Quest — a 27-level match-3 adventure",
+  "Read the complete Arrow Out! game guide",
+  "Read the Crystal Quest match-3 guide"
+]) {
+  assert.ok(gamesHub.includes(phrase), "free games hub is missing useful player guidance: " + phrase);
+}
+
 const keywordPages = [
   ["sarkari-sarthi/index.html", /sarkari naukri 2026/i],
   ["pikanews/index.html", /aaj ki Bollywood khabar/i],
