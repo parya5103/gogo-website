@@ -51,6 +51,7 @@
       links: [
         { href: "arrowout/", label: "Arrow Out!" },
         { href: "crystalquest/", label: "Crystal Quest" },
+        { href: "gta6/", label: "GTA 6 Guide" },
         { href: "sarkari-sarthi/", label: "Sarkari Sarthi" },
         { href: "pikanews/", label: "PikaNews" }
       ]
