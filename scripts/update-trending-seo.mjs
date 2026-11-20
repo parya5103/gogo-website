@@ -61,53 +61,24 @@ function renderList(items, emptyText) {
   return '<ul class="trending-list">' + items.map(item => '<li><a href="' + escapeHtml(item.url) + '">' + escapeHtml(item.title) + '</a>' +
     (item.source ? '<span class="trending-source"> · ' + escapeHtml(item.source) + '</span>' : '') + '</li>').join("") + '</ul>';
 }
-export function renderTrendingSection({ jobs = [], news = [], trends = [] } = {}) {
-  const jobItems = jobs.slice(0, 6).map(job => ({ title: job.title, url: safeUrl(job.url || job.original_source_url), source: job.source }));
-  const newsItems = news.slice(0, 6).map(item => ({ title: item.title, url: safeUrl(item.url), source: item.source }));
-  const trendTags = trends.slice(0, 10).map(item => '<li><a href="' + escapeHtml(item.link || DOMAIN + "/pikanews/trending.html") + '">' + escapeHtml(item.title) + '</a></li>').join("");
-  return START + '\n<section class="section gogo-trending" aria-labelledby="gogo-trending-title">\n' +
-    '<div class="container"><div class="section-head"><h2 id="gogo-trending-title">Today on GoGo Company</h2><p>Fresh links from the latest synced public listings and publisher-attributed news. Check original sources before acting on time-sensitive information.</p></div>\n' +
-    '<div class="trending-grid"><section aria-labelledby="trending-jobs"><h3 id="trending-jobs">🔥 Trending Sarkari Jobs &amp; Exams Today</h3>' +
-    renderList(jobItems, "No current job listings are available in the synced feed. Visit Sarkari Sarthi for the latest collection.") +
-    '<p><a href="/sarkari-sarthi/">Browse all Sarkari Sarthi updates</a></p></section>\n' +
-    '<section aria-labelledby="trending-news"><h3 id="trending-news">⚡ Breaking &amp; Trending News (PikaNews Live)</h3>' +
-    renderList(newsItems, "The latest PikaNews headlines will appear here after the next successful feed sync.") +
-    (trendTags ? '<h4>Trending searches in India</h4><ul class="trending-tags">' + trendTags + '</ul>' : '') +
-    '<p><a href="/pikanews/trending.html">Explore PikaNews trending</a></p></section>\n' +
-    '<section aria-labelledby="trending-games"><h3 id="trending-games">🎮 Most Played Free Browser Games</h3><ul class="trending-list">' +
-    '<li><a href="/arrowout/">Play Arrow Out! — free arrow puzzle game online</a></li>' +
-    '<li><a href="/crystalquest/">Play Crystal Quest — free Match-3 puzzle adventure</a></li></ul></section></div></div></section>\n' + END;
+export function renderTrendingSection() {
+  return START + '\\n<section class="section gogo-trending" aria-labelledby="gogo-trending-title">\\n' +
+    '<div class="container"><div class="section-head"><h2 id="gogo-trending-title">Explore GoGo Company products</h2><p>Choose a product by the task you want to do. Each product has its own instructions, support information and detailed pages.</p></div>' +
+    '<div class="trending-grid">' +
+    '<section aria-labelledby="gogo-arrow-out"><h3 id="gogo-arrow-out">Arrow Out! — logic puzzle</h3><p>Plan a safe order to clear directional arrows from a crowded board. Learn the controls, hints and puzzle rules in the game guide.</p><p><a href="/arrowout/">Play Arrow Out!</a> · <a href="/arrowout/about.html">Read the game guide</a></p></section>' +
+    '<section aria-labelledby="gogo-crystal-quest"><h3 id="gogo-crystal-quest">Crystal Quest — match-3 adventure</h3><p>Match neighbouring gems, create special combinations and work through a fantasy puzzle campaign.</p><p><a href="/crystalquest/">Play Crystal Quest</a> · <a href="/crystalquest/guide.html">Read the strategy guide</a></p></section>' +
+    '<section aria-labelledby="gogo-sarkari-sarthi"><h3 id="gogo-sarkari-sarthi">Sarkari Sarthi — recruitment information</h3><p>Discover recruitment notices and exam updates. Always check the original recruiting authority notification before applying.</p><p><a href="/sarkari-sarthi/">Explore Sarkari Sarthi</a> · <a href="/disclaimer/">Read our information disclaimer</a></p></section>' +
+    '<section aria-labelledby="gogo-pikanews"><h3 id="gogo-pikanews">PikaNews — publisher-attributed news</h3><p>Browse headlines by topic and continue to the original publisher for full reporting and context.</p><p><a href="/pikanews/">Explore PikaNews</a> · <a href="/pikanews/sources.html">See our source policy</a></p></section>' +
+    '<section aria-labelledby="gogo-gta-guide"><h3 id="gogo-gta-guide">GTA 6 — independent reference guide</h3><p>Review a structured guide that distinguishes official announcements from information that remains unconfirmed.</p><p><a href="/gta6/">Open the GTA 6 guide</a></p></section>' +
+    '</div></div></section>\\n' + END;
 }
-export async function updateTrendingSeo(root = ROOT, trendItems) {
-  const trends = trendItems ?? await fetchTrends();
-  const manifest = await readJson(root + "/sarkari-sarthi/jobs/job_manifest.json", { jobs: [] });
-  const rawNews = await readJson(root + "/pikanews/data/latest.json", []);
-  const jobs = (Array.isArray(manifest.jobs) ? manifest.jobs : []).filter(job =>
-    job && String(job.status || "").toLowerCase() === "active" && safeUrl(job.url || job.original_source_url))
-    .sort((a, b) => Date.parse(b.published_date || b.scraped_at || b.last_verified || 0) - Date.parse(a.published_date || a.scraped_at || a.last_verified || 0));
-  const news = (Array.isArray(rawNews) ? rawNews : []).filter(item =>
-    item && item.thin !== true && item.title && safeUrl(item.url))
-    .sort((a, b) => Date.parse(b.published_at || b.collection_timestamp || 0) - Date.parse(a.published_at || a.collection_timestamp || 0));
-  const section = renderTrendingSection({ jobs, news, trends });
+export async function updateTrendingSeo(root = ROOT) {
+  const section = renderTrendingSection();
   let html = await readFile(root + "/index.html", "utf8");
-  const markerPattern = /<!-- GOGO-TRENDING-START -->[\s\S]*?<!-- GOGO-TRENDING-END -->/;
-  html = markerPattern.test(html) ? html.replace(markerPattern, section) : html.replace(/<\/main>/i, section + "\n</main>");
-  const scriptPattern = /<script\s+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/i;
-  const match = html.match(scriptPattern);
-  if (match) {
-    try {
-      const graph = JSON.parse(match[1]);
-      graph["@graph"] = Array.isArray(graph["@graph"]) ? graph["@graph"].filter(node => node["@id"] !== DOMAIN + "/#daily-updates") : [];
-      const entries = [
-        ...jobs.slice(0, 6).map(job => ({ name: job.title, url: safeUrl(job.url || job.original_source_url) })),
-        ...news.slice(0, 6).map(item => ({ name: item.title, url: safeUrl(item.url) }))
-      ].filter(item => item.url).map((item, index) => ({ "@type": "ListItem", position: index + 1, name: item.name, url: item.url }));
-      graph["@graph"].push({ "@type": "ItemList", "@id": DOMAIN + "/#daily-updates", name: "Latest GoGo Company updates", dateModified: new Date().toISOString(), numberOfItems: entries.length, itemListElement: entries });
-      html = html.replace(match[0], '<script type="application/ld+json">\n' + serializeJsonLd(graph, 2) + '\n</script>');
-    } catch (error) { console.warn("Existing homepage JSON-LD was not changed:", error.message); }
-  }
-  await writeFile(root + "/index.html", html.endsWith("\n") ? html : html + "\n");
-  console.log("Trending homepage section updated:", jobs.length, "active jobs;", news.length, "news items;", trends.length, "trending terms.");
-  return { jobs: jobs.length, news: news.length, trends: trends.length };
+  const markerPattern = /<!-- GOGO-TRENDING-START -->[\\s\\S]*?<!-- GOGO-TRENDING-END -->/;
+  html = markerPattern.test(html) ? html.replace(markerPattern, section) : html.replace(/<\\/main>/i, section + "\\n</main>");
+  await writeFile(root + "/index.html", html.endsWith("\\n") ? html : html + "\\n");
+  console.log("Homepage product directory refreshed; external feed headlines are kept on their dedicated product pages.");
+  return { products: 5 };
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) await updateTrendingSeo();
