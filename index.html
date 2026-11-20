@@ -50,6 +50,7 @@
     .skip-link:focus{top:0}.hero-actions{display:flex;flex-wrap:wrap;gap:12px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 22px;border-radius:12px;font-weight:700;text-decoration:none}
     @media(max-width:760px){.header-inner{flex-wrap:wrap}.nav-toggle{display:inline-flex}.hero{padding:38px 0 44px}.hero-actions{display:grid;grid-template-columns:1fr}.hero-actions .btn{width:100%}}
   </style>
+  <link rel="stylesheet" href="./assets/css/gogo-home-react.css">
   <link rel="preload" href="./assets/css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="./assets/css/style.css"></noscript>
   <link rel="preload" href="./assets/css/gogo-account.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -370,127 +371,8 @@
 </head>
 <body class="theme-gogo page-body" data-page="home">
   <main id="main">
-    <section class="hero">
-      <div class="container hero-inner">
-        <p class="kicker">GoGo Company</p>
-        <h1>Play. Prepare.<br>Grow with <span class="accent">GoGo</span>.</h1>
-        <p class="lead">GoGo Company builds mobile-friendly browser games and digital products. Play Arrow Out! and Crystal Quest, explore our GTA 6 guide, check government recruitment information with Sarkari Sarthi, or read publisher-attributed headlines on PikaNews.</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="./arrowout/">Play Arrow Out!</a>
-          <a class="btn btn-ghost" href="./crystalquest/">Play Crystal Quest</a>
-          <a class="btn btn-ghost" href="./gta6/">Explore GTA 6</a>
-          <a class="btn btn-ghost" href="./sarkari-sarthi/">Sarkari Sarthi Jobs</a>
-          <a class="btn btn-ghost" href="./pikanews/">Read PikaNews</a>
-          <a class="btn btn-ghost" href="./account/">GoGo Account &amp; Cloud Save</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="section-head">
-          <h2>Our products</h2>
-          <p>Everything we make is free to use, straight in your browser. Our browser games, GTA 6 reference guide, Sarkari Sarthi portal and PikaNews aggregator are available on gogocompany.in. Choose a quick logic challenge with Arrow Out!, a gem-matching adventure in Crystal Quest, explore the GTA 6 guide for release, map and official resources, check recruitment details on Sarkari Sarthi, or browse publisher-attributed headlines on PikaNews.</p>
-        </div>
-        <div class="card-grid">
-          <article class="card">
-            <div class="icon" aria-hidden="true">&#8592;</div>
-            <h3>Arrow Out! - Puzzle Game</h3>
-            <p>A minimalist arrow-path puzzle game. Tap pieces to launch them out of a crowded board - 1000 levels, hints and daily challenges.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="./arrowout/">Play now &#8599;</a>
-            </div>
-          </article>
-          <article class="card">
-            <div class="icon" aria-hidden="true">&#9825;</div>
-            <h3>Crystal Quest - Match-3 Game</h3>
-            <p>Match gems through 27 handcrafted levels across 3 regions, with a story mode, daily challenge and offline PWA support.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="./crystalquest/">Play now &#8599;</a>
-            </div>
-          </article>
-          <article class="card">
-            <div class="icon" aria-hidden="true">&#127918;</div>
-            <h3>GTA 6 - Complete Game Guide</h3>
-            <p>Explore the GTA 6 guide with current release information, official Rockstar links, map and launch-gallery resources, plus clearly attributed community cheat references.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="./gta6/">Explore GTA 6 Guide &#8599;</a>
-            </div>
-          </article>
-          <article class="card">
-            <div class="icon" aria-hidden="true">&#9737;</div>
-            <h3>Sarkari Sarthi - Job Tracker</h3>
-            <p>Recruitment notices, admit cards and result updates with source links and verification labels. Check the original recruiting authority notice before applying.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="./sarkari-sarthi/">Open portal &#8599;</a>
-            </div>
-          </article>
-          <article class="card">
-            <div class="icon" aria-hidden="true">&#128240;</div>
-            <h3>PikaNews - News Aggregator</h3>
-            <p>Publisher-attributed headlines and brief summaries across entertainment, technology, gaming, business and sports. Follow the source link for the publisher’s full report; update timing varies by source.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="./pikanews/">Read news &#8599;</a>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="section-head">
-          <h2>Why GoGo Company</h2>
-        </div>
-        <div class="card-grid">
-          <article class="card">
-            <h3>Free to use</h3>
-            <ul class="feature-list">
-              <li>No downloads or installs required</li>
-              <li>No paywalls in any game</li>
-              <li>Works on phones and desktops</li>
-            </ul>
-          </article>
-          <article class="card">
-            <h3>Made for mobile</h3>
-            <ul class="feature-list">
-              <li>Touch-first controls</li>
-              <li>Fast loading, light pages</li>
-              <li>Offline support in games where possible</li>
-            </ul>
-          </article>
-          <article class="card">
-            <h3>Honest information</h3>
-            <ul class="feature-list">
-              <li>Sarkari listings link official government sites</li>
-              <li>No invented vacancies or dates</li>
-              <li>Clear disclaimers everywhere</li>
-            </ul>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <div class="container ad-slot-reservation">
-      <aside class="ad-slot" hidden data-ad-slot="home-mid" aria-label="Advertisement">
-        <p class="ad-label">Advertisement</p>
-        <ins class="adsbygoogle" style="display:block" data-ad-format="auto" data-full-width-responsive="true"></ins>
-      </aside>
-    </div>
-
-    <section class="section">
-      <div class="container">
-        <div class="cta-band">
-          <h2>Ready when you are</h2>
-          <p>Pick a game, or check today's latest Sarkari notifications.</p>
-          <div class="hero-actions cta-actions">
-            <a class="btn btn-primary btn-inverse" href="./crystalquest/">Play Crystal Quest &#8599;</a>
-            <a class="btn btn-ghost" href="./gta6/">Explore GTA 6 Guide</a>
-            <a class="btn btn-ghost" href="./about.html">About the company</a>
-          </div>
-        </div>
-      </div>
-    </section>
+    <div id="gogo-react-root" aria-live="off"></div>
+    <noscript><section class="container prose"><h1>GoGo Company — Games, Tools and Guides</h1><p>Explore five independent digital experiences from GoGo Company.</p><ul><li><a href="./arrowout/">Arrow Out! puzzle game</a></li><li><a href="./crystalquest/">Crystal Quest match-3 adventure</a></li><li><a href="./sarkari-sarthi/">Sarkari Sarthi recruitment information</a></li><li><a href="./pikanews/">PikaNews publisher-linked headlines</a></li><li><a href="./gta6/">GTA 6 independent guide</a></li></ul></section></noscript>
     <section class="section" id="about-gogo-company" itemscope itemtype="https://schema.org/Organization" aria-labelledby="about-gogo-title">
       <div class="container prose">
         <h2 id="about-gogo-title">About Gogo Company</h2>
@@ -537,6 +419,7 @@
       </div>
     </section>
 </main>
+  <script type="module" src="./assets/js/gogo-home-react.js"></script>
   <script src="./assets/js/main.js" defer></script>
   <script src="./assets/js/ads.js" defer></script>
   <script src="./assets/js/gogo-notifications.min.js" defer></script>
