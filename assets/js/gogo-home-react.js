@@ -77,7 +77,7 @@ function Closing(){
  return h("section",{className:"gh-closing"},h("div",{className:"gh-shell gh-closing-inner"},h("div",null,h("p",{className:"gh-overline"},"YOUR NEXT CLICK STARTS SOMETHING"),h("h2",null,"Curiosity looks good ",h("em",null,"on you.")),h("p",null,"Choose a game, explore a guide or discover something useful.")),h("a",{className:"gh-button gh-button-light",href:"#products"},"Explore the collection",h("span",null,"↗"))));
 }
 function App(){
- return h(React.Fragment,null,h(Header),h("main",{id:"main",className:"gh-main"},h(Hero),h(Products),h(Principles),h(Closing)));
+ return h(React.Fragment,null,h(Hero),h(Products),h(Principles),h(Closing));
 }
 const root=document.getElementById("gogo-react-root");
 if(root){createRoot(root).render(h(App));}
