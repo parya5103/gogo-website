@@ -243,9 +243,14 @@
   }
 
   function init() {
-    document.body.insertAdjacentHTML("afterbegin", buildSkipLink());
-    document.body.insertAdjacentHTML("afterbegin", buildHeader());
-    document.body.insertAdjacentHTML("beforeend", buildFooter());
+    // The React/SSG homepage owns its accessible navigation and footer.
+    // Keep the shared account loader active, but do not inject duplicate chrome.
+    var isReactHome = document.body.hasAttribute("data-gogo-react-home");
+    if (!isReactHome) {
+      document.body.insertAdjacentHTML("afterbegin", buildSkipLink());
+      document.body.insertAdjacentHTML("afterbegin", buildHeader());
+      document.body.insertAdjacentHTML("beforeend", buildFooter());
+    }
     ensureAccountAssets();
     initBackToTop();
 
