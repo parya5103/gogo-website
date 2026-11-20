@@ -23,7 +23,7 @@ const ProductCard = defineComponent({
         <div className="tag-row">{props.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
         <a className="text-link" href={props.href}>{props.featured ? 'Explore' : 'Discover'} {props.name}<span aria-hidden="true"> ↗</span></a>
       </div>
-      <div className={'art-board openui-art openui-art-' + props.tone} aria-hidden="true">
+      <div className={'art-board ' + ({ violet: 'arrows-art', blue: 'career-art', purple: 'gem-art', orange: 'news-art' }[props.tone])} aria-hidden="true">
         {props.tone === 'violet' ? <><span>↗</span><span>↘</span><span>↖</span><span>↗</span><span>↙</span><span>↘</span></> : null}
         {props.tone === 'blue' ? <div className="paper"><b>CAREER UPDATE</b><i/><i/><i/><span>✓ VERIFIED SOURCE</span></div> : null}
         {props.tone === 'purple' ? <><i>✦</i><i>◆</i><i>✧</i><i>◆</i><i>✦</i></> : null}
@@ -37,7 +37,7 @@ const ProductGrid = defineComponent({
   name: 'ProductGrid',
   description: 'Responsive grid containing GoGo product tiles.',
   props: z.object({ items: z.array(ProductCard.ref) }),
-  component: ({ props, renderNode }) => <div className="bento-grid">{renderNode(props.items)}</div>,
+  component: ({ props, renderNode }) => <div className="bento-grid">{renderNode(props.items)}<article className="account-tile"><span className="account-icon" aria-hidden="true">◎</span><div><span className="eyebrow">ONE ACCOUNT · YOUR CHOICE</span><h3>GoGo Account &amp; Cloud Save</h3><p>Optional sign-in to sync supported game progress across your devices. Guest play remains available.</p><button type="button" data-gogo-open-account="true" className="text-link">Explore account <span aria-hidden="true">↗</span></button></div></article></div>,
 });
 
 const library = createLibrary({ root: 'ProductGrid', components: [ProductGrid, ProductCard] });
@@ -58,10 +58,6 @@ export default function OpenUIProductGrid() {
         <p>Pick a destination. Each product has its own purpose, experience and support.</p>
       </div>
       <Renderer library={library} response={response} isStreaming={false} onError={(errors) => { if (errors.length) console.error('OpenUI static product layout error:', errors); }} />
-      <article className="account-tile">
-        <span className="account-icon" aria-hidden="true">◎</span>
-        <div><span className="eyebrow">ONE ACCOUNT · YOUR CHOICE</span><h3>GoGo Account &amp; Cloud Save</h3><p>Optional sign-in to sync supported game progress across your devices. Guest play remains available.</p><button type="button" data-gogo-open-account="true" className="text-link">Explore account <span aria-hidden="true">↗</span></button></div>
-      </article>
     </section>
   );
 }
