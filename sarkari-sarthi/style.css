@@ -2024,6 +2024,21 @@ a:focus-visible {
         display: flex;
     }
 
+    .menu-backdrop:not([hidden]) {
+        display: block;
+        position: fixed;
+        inset: var(--header-height) 0 0;
+        z-index: 998;
+        background: rgba(10, 16, 28, 0.56);
+        -webkit-backdrop-filter: blur(2px);
+        backdrop-filter: blur(2px);
+    }
+
+    body.menu-open {
+        overflow: hidden;
+        touch-action: none;
+    }
+
     .nav-link {
         padding: 12px 10px;
         font-size: 1rem;
