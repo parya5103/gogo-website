@@ -226,7 +226,8 @@ check('PikaNews aggregated hubs and story pages remain noindex until original ed
     const html = read('pikanews/' + page);
     assert((robotsOf(html) || '').includes('noindex'), page + ' must remain noindex until editorial review thresholds are met');
     assert(canonicalOf(html) === 'https://gogocompany.in/pikanews/' + (page === 'index.html' ? '' : page), page + ' canonical mismatch');
-    assert(!sm.includes('https://gogocompany.in/pikanews/' + (page === 'index.html' ? '' : page)), page + ' must not be included in the PikaNews sitemap while noindex');
+    const sitemapUrl = 'https://gogocompany.in/pikanews/' + (page === 'index.html' ? '' : page);
+    assert(!sm.includes('<loc>' + sitemapUrl + '</loc>'), page + ' must not be included in the PikaNews sitemap while noindex');
   }
   const article = read('pikanews/news/cathie-wood-s-ark-invest-was-a-big-buyer-of-anthropic-during-b5e0cfa7/index.html');
   assert((robotsOf(article) || '').includes('noindex'), 'syndicated excerpt pages should remain noindex');
