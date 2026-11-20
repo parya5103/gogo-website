@@ -26,7 +26,7 @@ jobs:
           node-version: 22
       - name: Install Playwright (no project dependency changes)
         run: npm install --no-save --no-package-lock --no-audit --no-fund --legacy-peer-deps playwright@1.56.1
-      - name: Install Chromium headless shell and system dependencies
+      - name: Build prerendered homepage for browser regression\n        run: npm run build:site\n      - name: Install Chromium headless shell and system dependencies
         run: npx playwright install --with-deps --only-shell chromium
       - name: Start local static server
         run: |
