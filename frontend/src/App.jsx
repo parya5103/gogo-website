@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 
 const products = [
   { id:'arrow', name:'Arrow Out!', eyebrow:'LOGIC PUZZLE · BROWSER GAME', desc:'Read the paths, plan each move and clear the board. A minimalist puzzle built for satisfying, focused play.', href:'/arrowout/', tags:['1,000 levels','Offline PWA'], featured:true, tone:'violet', art:'arrows' },
@@ -37,7 +37,7 @@ function Navbar() {
   return <header className="site-nav">
     <div className="nav-inner">
       <a className="brand" href="/" aria-label="GoGo Company home"><span className="brand-mark">G<span>.</span></span><span>GoGo <b>Company</b></span></a>
-      <button className="mobile-menu" type="button" aria-expanded={open} aria-controls="primary-nav" onClick={()=>setOpen(!open)} aria-label={open?'Close navigation':'Open navigation'}><span/><span/><span/></button>
+      <button ref={menuButtonRef} className="mobile-menu" type="button" aria-expanded={open} aria-controls="primary-nav" onClick={()=>setOpen(!open)} aria-label={open?'Close navigation':'Open navigation'}><span/><span/><span/></button>
       <nav id="primary-nav" className={open?'nav-links is-open':'nav-links'} aria-label="Primary navigation">
         <a href="#products" onClick={close}>Products</a><a href="#today" onClick={close}>Live updates</a><a href="/about/" onClick={close}>About</a><a href="/contact/" onClick={close}>Contact</a>
       </nav>
