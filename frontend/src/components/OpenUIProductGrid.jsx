@@ -9,7 +9,7 @@ const ProductCard = defineComponent({
     name: z.string(),
     eyebrow: z.string(),
     description: z.string(),
-    href: z.string().regex(/^\\/[a-z0-9-]+\\/$/),
+    href: z.string().regex(/^\/[a-z0-9-]+\/$/),
     featured: z.boolean(),
     tone: z.enum(['violet', 'blue', 'purple', 'orange']),
     tags: z.array(z.string()),
