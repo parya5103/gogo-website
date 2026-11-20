@@ -25,6 +25,9 @@ for (const policyPath of ["/about.html", "/contact/", "/privacy-policy/", "/term
   assert.ok(homepage.includes('href="' + policyPath + '"'), "homepage must expose trust/policy link " + policyPath);
 }
 assert.match(homepage, /GOGO-TRENDING-START[\s\S]*GOGO-TRENDING-END/);
+for (const guideUrl of ["/arrowout/strategy.html", "/crystalquest/strategy.html"]) {
+  assert.ok(homepage.includes('href="' + guideUrl + '"'), "homepage must link to original game strategy guide " + guideUrl);
+}
 assert.match(sharedJs, /nav \+=\s*['"]<li/);
 assert.match(sharedJs, /links \+=\s*['"]<li/);
 assert.match(css, /--accent:\s*#1e40af/i);
