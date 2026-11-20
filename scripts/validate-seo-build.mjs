@@ -109,6 +109,8 @@ assert.equal(crystalStrategy, crystalStrategySource, "published Crystal Quest st
 assert.match(crystalStrategy, /Crystal Resonance|Guardian shield colour/i);
 assert.match(crystalStrategy, /FAQPage/);
 assert.ok(sitemap.includes("<loc>https://gogocompany.in/crystalquest/strategy.html</loc>"), "Crystal Quest strategy guide must be included in sitemap");
+const crystalGuide = await read("crystalquest/guide.html");
+assert.match(crystalGuide, /href="strategy\\.html"/, "Crystal Quest base guide must link to the strategy guide after product sync");
 
 const keywordPages = [
   ["sarkari-sarthi/index.html", /sarkari naukri 2026/i],
