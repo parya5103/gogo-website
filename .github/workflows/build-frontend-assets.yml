@@ -32,6 +32,14 @@ on:
       - 'assets/js/gogo-notifications.min.js'
       - 'package.json'
       - 'package-lock.json'
+      - 'frontend/**'
+      - 'vite.config.js'
+      - 'scripts/prerender-home.mjs'
+      - 'scripts/publish-site-build.mjs'
+      - 'scripts/test-site-build.mjs'
+      - 'scripts/update-trending-seo.mjs'
+      - 'scripts/validate-seo-build.mjs'
+      - 'assets/js/main.js'
       - '.github/workflows/build-frontend-assets.yml'
   workflow_dispatch:
 
