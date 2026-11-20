@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const products = [
   { id:'arrow', name:'Arrow Out!', eyebrow:'LOGIC PUZZLE · BROWSER GAME', desc:'Read the paths, plan each move and clear the board. A minimalist puzzle built for satisfying, focused play.', href:'/arrowout/', tags:['1,000 levels','Offline PWA'], featured:true, tone:'violet', art:'arrows' },
@@ -18,19 +18,22 @@ function Icon({name,size=20}) {
   };
   return <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{paths[name] || paths.spark}</svg>;
 }
-function useTheme() {
+const ThemeContext = createContext(null);
+function ThemeProvider({children}) {
   const [theme,setTheme] = useState(() => typeof document !== 'undefined' && document.documentElement.classList.contains('dark') ? 'dark' : 'light');
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
     document.documentElement.dataset.theme = theme;
     try { localStorage.setItem('gogo-theme', theme); } catch (_) {}
   },[theme]);
-  return [theme,setTheme];
+  return <ThemeContext.Provider value={{theme,setTheme}}>{children}</ThemeContext.Provider>;
 }
+function useTheme() { return useContext(ThemeContext); }
 function Navbar() {
   const [theme,setTheme] = useTheme();
   const [open,setOpen] = useState(false);
   const close = () => setOpen(false);
+  useEffect(() => { if (!open) return; const onKey = event => { if (event.key === 'Escape') setOpen(false); }; document.addEventListener('keydown', onKey); return () => document.removeEventListener('keydown', onKey); }, [open]);
   return <header className="site-nav">
     <div className="nav-inner">
       <a className="brand" href="/" aria-label="GoGo Company home"><span className="brand-mark">G<span>.</span></span><span>GoGo <b>Company</b></span></a>
@@ -77,9 +80,9 @@ function TodayOnGoGo({feeds={}}) {
 function WhyGoGo(){const values=[['01','Useful by design','Clear journeys and practical details without unnecessary friction.'],['02','Built for every screen','Responsive, touch-friendly experiences with lightweight interfaces.'],['03','Honest by default','Source references, publisher attribution and transparent product boundaries.']];return <section className="section-shell why-section"><span className="eyebrow">THE GoGo STANDARD</span><h2>Thoughtful experiences.<br/><em>Clear intentions.</em></h2><div className="why-grid">{values.map(([n,t,d])=><article key={n}><b>{n}</b><h3>{t}</h3><p>{d}</p></article>)}</div></section>}
 function AboutDisambiguation(){return <section className="section-shell about-section" id="about-gogo-company"><div className="about-card"><span className="eyebrow">ABOUT THE ORGANIZATION</span><h2>Meet <em>GoGo Company.</em></h2><p><strong>GoGo Company</strong> (gogocompany.in) is an independent Indian technology, digital media and web gaming organization founded by Pratik Arya and headquartered in Indore, Madhya Pradesh, India.</p><dl><div><dt>Official identity</dt><dd>Independent digital products organization</dd></div><div><dt>Founder</dt><dd>Pratik Arya</dd></div><div><dt>Headquarters</dt><dd>Indore, Madhya Pradesh, India</dd></div><div><dt>Contact</dt><dd><a href="mailto:officialgogocompany@gmail.com">officialgogocompany@gmail.com</a></dd></div></dl></div><aside className="disambiguation-card"><span className="eyebrow">BRAND DISAMBIGUATION</span><h3>One name. A distinct identity.</h3><p>GoGo Company at gogocompany.in is independent and is not affiliated with Gogo Business Aviation or any other third-party business or trademark using a similar name.</p><a href="/about/">Read the full company profile <Icon name="arrow" size={16}/></a></aside></section>}
 function FaqAccordion(){const faq=[['What is GoGo Company?','GoGo Company is an independent Indian technology, digital media and web gaming organization headquartered in Indore, Madhya Pradesh.'],['Which products does GoGo Company operate?','GoGo Company operates Arrow Out!, Crystal Quest, Sarkari Sarthi and PikaNews.'],['Is Sarkari Sarthi a government website?','No. Sarkari Sarthi is an independent information portal. Always verify recruitment details with the original recruiting authority.'],['Does PikaNews publish original reporting?','PikaNews is a publisher-attributed news aggregator. It links readers to original publishers for full reporting.'],['Can I use the games without an account?','Yes. Guest play is available. GoGo Account and Cloud Save are optional for supported game progress.']];return <section className="section-shell faq-section"><span className="eyebrow">GOOD TO KNOW</span><h2>Frequently asked <em>questions.</em></h2><div className="faq-list">{faq.map(([q,a])=><details key={q}><summary>{q}<span>+</span></summary><p>{a}</p></details>)}</div></section>}
-function AdSlot(){return <div className="section-shell ad-reservation"><aside className="ad-slot" aria-label="Advertisement"><span>ADVERTISEMENT</span><div>Space reserved for advertising when consent and publisher approval requirements are met.</div></aside></div>}
+function AdSlot(){return <div className="section-shell ad-reservation"><aside className="ad-slot min-h-[250px]" aria-label="Advertisement"><span>ADVERTISEMENT</span><div>Space reserved for advertising when consent and publisher approval requirements are met.</div></aside></div>}
 function NotificationBanner(){return <aside className="notification-banner section-shell"><div><Icon name="spark"/><span><b>Stay in the loop.</b> Optional GoGo updates are available through your account settings.</span></div><button type="button" data-gogo-open-account="true">Manage preferences <Icon name="arrow" size={16}/></button></aside>}
 function Footer(){return <footer className="site-footer"><div className="section-shell footer-main"><div><a className="brand footer-brand" href="/"><span className="brand-mark">G<span>.</span></span><span>GoGo <b>Company</b></span></a><p>Independent digital products, browser games and information experiences from India.</p><small>© {new Date().getFullYear()} GoGo Company. All rights reserved.</small></div><div><b>Explore</b><a href="/arrowout/">Arrow Out!</a><a href="/crystalquest/">Crystal Quest</a><a href="/sarkari-sarthi/">Sarkari Sarthi</a><a href="/pikanews/">PikaNews</a></div><div><b>Company</b><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/account/">GoGo Account</a></div><div><b>Policies</b><a href="/privacy-policy/">Privacy Policy</a><a href="/terms-and-conditions/">Terms &amp; Conditions</a><a href="/disclaimer/">Disclaimer</a></div></div></footer>}
 export default function App({initialFeeds={}}) {
- return <><Navbar/><main id="main"><HeroSection/><BentoProductGrid/><TodayOnGoGo feeds={initialFeeds||{}}/><WhyGoGo/><AdSlot/><AboutDisambiguation/><FaqAccordion/><NotificationBanner/></main><Footer/></>;
+ return <ThemeProvider><Navbar/><main id="main"><HeroSection/><BentoProductGrid/><TodayOnGoGo feeds={initialFeeds||{}}/><WhyGoGo/><AdSlot/><AboutDisambiguation/><FaqAccordion/><NotificationBanner/></main><Footer/></ThemeProvider>;
 }
