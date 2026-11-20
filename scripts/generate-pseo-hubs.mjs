@@ -117,15 +117,15 @@ export async function generateHubs(root = ROOT) {
   }
   let pikanewsHtml = "";
   try { pikanewsHtml = await readFile(root + "/pikanews/index.html", "utf8"); } catch {}
-  const pikanewsRobots = pikanewsHtml.match(/<meta\\b(?=[^>]*\\bname=["']robots["'])[^>]*>/i)?.[0] || "";
-  const pikanewsRobotsContent = pikanewsRobots.match(/\\bcontent=["']([^"']*)["']/i)?.[1] || "";
-  if (/\\bnoindex\\b/i.test(pikanewsRobotsContent)) {
+  const pikanewsNoindex = /<meta\\s+name=["']robots["']\\s+content=["'][^"']*\\bnoindex\\b/i.test(pikanewsHtml);
+  if (pikanewsNoindex) {
     const pikanewsLoc = DOMAIN + "/pikanews/";
-    const escapedPikanewsLoc = pikanewsLoc.replace(/[.*+?^${}()|[\\]\\\\]/g,"\\\\  await writeFile(sitemapPath,sitemap.endsWith("\n")?sitemap:sitemap+"\n");");
-    const pikanewsUrlBlock = new RegExp("<url>\\\\s*(?:(?!<url>).)*?<loc>" + escapedPikanewsLoc + "</loc>(?:(?!<url>).)*?</url>\\\\s*","g");
-    sitemap = sitemap.replace(pikanewsUrlBlock, "");
+    const sitemapParts = sitemap.split("<url>");
+    sitemap = sitemapParts[0] + "<url>" + sitemapParts.slice(1)
+      .filter(block => !block.includes("<loc>" + pikanewsLoc + "</loc>"))
+      .join("<url>");
   }
-  await writeFile(sitemapPath,sitemap.endsWith("\n")?sitemap:sitemap+"\n");
+  await writeFile(sitemapPath,sitemap.endsWith("\\n")?sitemap:sitemap+"\\n");
   console.log("Generated",HUBS.length,"programmatic SEO hubs.");
   return HUBS.map(hub=>hub.path);
 }
