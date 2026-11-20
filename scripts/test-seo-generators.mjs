@@ -27,10 +27,12 @@ assert.match(page,/<h1>Latest Government Jobs in India<\/h1>/);
 assert.match(page,/CollectionPage/);
 assert.match(page,/FAQPage/);
 assert.match(page,/Recruitment &lt;2026&gt;/);
-assert.match(page,/rel="canonical"/);\nassert.match(page,/<meta name="robots" content="noindex,follow,max-image-preview:large">/,"thin job hubs must stay out of the index");
+assert.match(page,/rel="canonical"/);
+assert.match(page,/<meta name="robots" content="noindex,follow,max-image-preview:large">/,"thin job hubs must stay out of the index");
 assert.doesNotMatch(page,/\[TODO\]|placeholder/i);
 const gamesHub = {path:"free-online-games/index.html",slug:"free-online-games",title:"Free Online Browser Games | Play on Mobile & PC",description:"Play two free browser puzzle games on mobile or PC: Arrow Out! has 1,000 tap-away levels; Crystal Quest has 27 match-3 fantasy levels.",h1:"Play Free Online Browser Games",kind:"games",faq:[["Can I play these games without downloading an app?","Yes. Both games run in supported browsers."]]};
-const gamesPage = renderHub(gamesHub);\nassert.match(gamesPage,/<meta name="robots" content="index,follow,max-image-preview:large">/,"substantial games hub may be indexed");
+const gamesPage = renderHub(gamesHub);
+assert.match(gamesPage,/<meta name="robots" content="index,follow,max-image-preview:large">/,"substantial games hub may be indexed");
 for (const phrase of [
   "Choose the puzzle style that fits you",
   "Arrow Out! — a tap-away arrow puzzle",
