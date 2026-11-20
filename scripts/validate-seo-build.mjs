@@ -157,7 +157,7 @@ assert.doesNotMatch(homepage, /target=["']_blank["']/i, "same-site homepage navi
 
 assert.match(homepage, /id=["']gogo-react-root["']/, "homepage must mount the React product experience");
 assert.match(homepage, /assets\/js\/gogo-home-react\.js/, "homepage must load the React entry module");
-assert.match(reactHomepage, /className:"gh-hero"[,\s\S]*aria-labelledby:"home-hero-title"/, "React hero must expose an accessible heading relationship");
+assert.match(reactHomepage, /className:"gh-hero"[,\s\S]*"aria-labelledby":"home-hero-title"/, "React hero must expose an accessible heading relationship");
 assert.match(reactHomepage, /id:"home-hero-title"/, "React hero must provide its referenced heading id");
 assert.match(reactHomepage, /className:"gh-product-grid"/, "React homepage must expose the product launchpad grid");
 for (const productPath of ["arrowout", "crystalquest", "sarkari-sarthi", "pikanews", "gta6"]) {
