@@ -112,6 +112,14 @@ assert.equal(crystalStrategy, crystalStrategySource, "published Crystal Quest st
 assert.match(crystalStrategy, /Crystal Resonance|Guardian shield colour/i);
 assert.match(crystalStrategy, /FAQPage/);
 assert.ok(sitemap.includes("<loc>https://gogocompany.in/crystalquest/strategy.html</loc>"), "Crystal Quest strategy guide must be included in sitemap");
+const arrowGame = await read("arrowout/index.html");
+for (const href of ["about.html", "strategy.html", "privacy.html", "../"]) {
+  assert.ok(arrowGame.includes('href="' + href + '"'), "Arrow Out game screen must expose help/site link " + href);
+}
+const crystalGame = await read("crystalquest/index.html");
+for (const href of ["guide.html", "strategy.html", "privacy.html", "terms.html", "../"]) {
+  assert.ok(crystalGame.includes('href="' + href + '"'), "Crystal Quest game screen must expose help/site link " + href);
+}
 const crystalGuide = await read("crystalquest/guide.html");
 assert.match(crystalGuide, /href="strategy\.html"/, "Crystal Quest base guide must link to the strategy guide after product sync");
 
