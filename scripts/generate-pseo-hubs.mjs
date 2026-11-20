@@ -115,6 +115,16 @@ export async function generateHubs(root = ROOT) {
       sitemap = sitemap.replace("</urlset>", "  "+sitemapBlock+"\n</urlset>");
     }
   }
+  let pikanewsHtml = "";
+  try { pikanewsHtml = await readFile(root + "/pikanews/index.html", "utf8"); } catch {}
+  const pikanewsRobots = pikanewsHtml.match(/<meta\\b(?=[^>]*\\bname=["']robots["'])[^>]*>/i)?.[0] || "";
+  const pikanewsRobotsContent = pikanewsRobots.match(/\\bcontent=["']([^"']*)["']/i)?.[1] || "";
+  if (/\\bnoindex\\b/i.test(pikanewsRobotsContent)) {
+    const pikanewsLoc = DOMAIN + "/pikanews/";
+    const escapedPikanewsLoc = pikanewsLoc.replace(/[.*+?^${}()|[\\]\\\\]/g,"\\\\  await writeFile(sitemapPath,sitemap.endsWith("\n")?sitemap:sitemap+"\n");");
+    const pikanewsUrlBlock = new RegExp("<url>\\\\s*(?:(?!<url>).)*?<loc>" + escapedPikanewsLoc + "</loc>(?:(?!<url>).)*?</url>\\\\s*","g");
+    sitemap = sitemap.replace(pikanewsUrlBlock, "");
+  }
   await writeFile(sitemapPath,sitemap.endsWith("\n")?sitemap:sitemap+"\n");
   console.log("Generated",HUBS.length,"programmatic SEO hubs.");
   return HUBS.map(hub=>hub.path);
