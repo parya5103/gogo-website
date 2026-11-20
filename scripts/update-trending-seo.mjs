@@ -83,9 +83,14 @@ export async function updateTrendingSeo(root = ROOT) {
   // The company homepage stays a stable, original product/company directory.
   const file = root + "/index.html";
   let html = await readFile(file, "utf8");
-  const markerPattern = /<!-- GOGO-TRENDING-START -->[\\s\\S]*?<!-- GOGO-TRENDING-END -->/;
-  html = html.replace(markerPattern, "");
-  const scriptPattern = /<script\\s+type=["']application\\/ld\\+json["'][^>]*>([\\s\\S]*?)<\\/script>/i;
+  const startMarker = "<!-- GOGO-TRENDING-START -->";
+  const endMarker = "<!-- GOGO-TRENDING-END -->";
+  const startAt = html.indexOf(startMarker);
+  const endAt = html.indexOf(endMarker, startAt);
+  if (startAt >= 0 && endAt >= 0) {
+    html = html.slice(0, startAt) + html.slice(endAt + endMarker.length);
+  }
+  const scriptPattern = /<script\s+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/i;
   const match = html.match(scriptPattern);
   if (match) {
     try {
@@ -93,12 +98,12 @@ export async function updateTrendingSeo(root = ROOT) {
       graph["@graph"] = Array.isArray(graph["@graph"])
         ? graph["@graph"].filter(node => node["@id"] !== DOMAIN + "/#daily-updates")
         : [];
-      html = html.replace(match[0], '<script type="application/ld+json>\\n' + serializeJsonLd(graph, 2) + '\\n</script>');
+      html = html.replace(match[0], '<script type="application/ld+json">\n' + serializeJsonLd(graph, 2) + '\n</script>');
     } catch (error) {
       console.warn("Existing homepage JSON-LD was not changed:", error.message);
     }
   }
-  await writeFile(file, html.endsWith("\\n") ? html : html + "\\n");
+  await writeFile(file, html.endsWith("\n") ? html : html + "\n");
   console.log("Homepage kept as a stable company and product directory; live feeds remain on their own portals.");
   return { homepageFeedsDisabled: true };
 }
