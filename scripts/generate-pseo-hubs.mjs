@@ -32,8 +32,8 @@ export function isQualityJob(job) {
     job.age_limit, dates.last_date || job.last_date, job.official_notification_url,
     job.official_application_url, job.salary || job.pay_scale, job.selection_process
   ];
-  return evidence.filter(value => value != null && String(value).trim() !== "").length >= 4
-    && safeUrl(job.official_notification_url || job.official_application_url || job.url || job.original_source_url);
+  return Boolean(evidence.filter(value => value != null && String(value).trim() !== "").length >= 4
+    && safeUrl(job.official_notification_url || job.official_application_url || job.url || job.original_source_url));
 }
 async function readJson(path, fallback) { try { return JSON.parse(await readFile(path,"utf8")); } catch { return fallback; } }
 function jobCard(job) {
