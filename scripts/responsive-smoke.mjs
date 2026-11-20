@@ -149,9 +149,8 @@ try {
       if (item.label === "PikaNews") {
         await page.locator(".mobile-menu-close").click();
       } else if (item.label === "Sarkari Sarthi") {
-        // The backdrop covers the toggle while the drawer is open; tap its
-        // exposed right edge to close the overlay as a user would.
-        await page.locator("#menuBackdrop").click({ position: { x: 385, y: 420 }, timeout: 5000 });
+        // Tap a point that is actually outside the full-width dropdown.
+        await clickExposedSarkariBackdrop(page);
       } else {
         await toggle.click();
       }
@@ -184,6 +183,35 @@ try {
     await page.waitForTimeout(80);
     if ((await toggle.getAttribute("aria-expanded")) !== "true") throw new Error("Enter did not open menu / aria-expanded");
     return toggle;
+  }
+
+  async function clickExposedSarkariBackdrop(page) {
+    const point = await page.evaluate(() => {
+      const backdrop = document.querySelector("#menuBackdrop");
+      const menu = document.querySelector("#navMenu");
+      if (!backdrop || !menu) return { error: "backdrop or menu element missing" };
+      const b = backdrop.getBoundingClientRect();
+      const m = menu.getBoundingClientRect();
+      // The Sarkari menu is a full-width dropdown. The old fixed y=420
+      // coordinate often landed inside the menu itself, not on the exposed
+      // backdrop. Choose a real uncovered point below the drawer.
+      const x = Math.round(Math.min(b.right - 5, innerWidth - 5));
+      const y = Math.round(Math.min(b.bottom - 5, m.bottom + 8));
+      const hit = document.elementFromPoint(x, y);
+      return {
+        x, y, backdropLeft: b.left, backdropTop: b.top,
+        menuBottom: m.bottom, backdropBottom: b.bottom,
+        hitId: hit?.id || "", hitClass: typeof hit?.className === "string" ? hit.className : ""
+      };
+    });
+    if (point.error) throw new Error(point.error);
+    if (point.y <= point.menuBottom || point.hitId !== "menuBackdrop") {
+      throw new Error("could not locate an exposed backdrop hit target: " + JSON.stringify(point));
+    }
+    await page.locator("#menuBackdrop").click({
+      position: { x: point.x - point.backdropLeft, y: point.y - point.backdropTop },
+      timeout: 5000
+    });
   }
 
   for (const item of [
@@ -227,7 +255,7 @@ try {
     await page.goto(base + "/sarkari-sarthi/", { waitUntil: "domcontentloaded" });
     const toggle = page.locator("#mobileMenuToggle");
     await toggle.click();
-    await page.locator("#menuBackdrop").click({ position: { x: 385, y: 420 }, force: true });
+    await clickExposedSarkariBackdrop(page);
     await page.waitForTimeout(80);
     if (await page.locator("#navMenu").evaluate(el => el.classList.contains("active"))) throw new Error("backdrop did not close menu");
     if ((await toggle.getAttribute("aria-expanded")) !== "false") throw new Error("aria-expanded did not reset");
