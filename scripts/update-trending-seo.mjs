@@ -62,7 +62,7 @@ function renderList(items, emptyText) {
     (item.source ? '<span class="trending-source"> · ' + escapeHtml(item.source) + '</span>' : '') + '</li>').join("") + '</ul>';
 }
 export function renderTrendingSection() {
-  return START + '\\n<section class="section gogo-trending" aria-labelledby="gogo-trending-title">\\n' +
+  return START + '\n<section class="section gogo-trending" aria-labelledby="gogo-trending-title">\n' +
     '<div class="container"><div class="section-head"><h2 id="gogo-trending-title">Explore GoGo Company products</h2><p>Choose a product by the task you want to do. Each product has its own instructions, support information and detailed pages.</p></div>' +
     '<div class="trending-grid">' +
     '<section aria-labelledby="gogo-arrow-out"><h3 id="gogo-arrow-out">Arrow Out! — logic puzzle</h3><p>Plan a safe order to clear directional arrows from a crowded board. Learn the controls, hints and puzzle rules in the game guide.</p><p><a href="/arrowout/">Play Arrow Out!</a> · <a href="/arrowout/about.html">Read the game guide</a></p></section>' +
@@ -70,14 +70,14 @@ export function renderTrendingSection() {
     '<section aria-labelledby="gogo-sarkari-sarthi"><h3 id="gogo-sarkari-sarthi">Sarkari Sarthi — recruitment information</h3><p>Discover recruitment notices and exam updates. Always check the original recruiting authority notification before applying.</p><p><a href="/sarkari-sarthi/">Explore Sarkari Sarthi</a> · <a href="/disclaimer/">Read our information disclaimer</a></p></section>' +
     '<section aria-labelledby="gogo-pikanews"><h3 id="gogo-pikanews">PikaNews — publisher-attributed news</h3><p>Browse headlines by topic and continue to the original publisher for full reporting and context.</p><p><a href="/pikanews/">Explore PikaNews</a> · <a href="/pikanews/sources.html">See our source policy</a></p></section>' +
     '<section aria-labelledby="gogo-gta-guide"><h3 id="gogo-gta-guide">GTA 6 — independent reference guide</h3><p>Review a structured guide that distinguishes official announcements from information that remains unconfirmed.</p><p><a href="/gta6/">Open the GTA 6 guide</a></p></section>' +
-    '</div></div></section>\\n' + END;
+    '</div></div></section>\n' + END;
 }
 export async function updateTrendingSeo(root = ROOT) {
   const section = renderTrendingSection();
   let html = await readFile(root + "/index.html", "utf8");
-  const markerPattern = /<!-- GOGO-TRENDING-START -->[\\s\\S]*?<!-- GOGO-TRENDING-END -->/;
-  html = markerPattern.test(html) ? html.replace(markerPattern, section) : html.replace(/<\\/main>/i, section + "\\n</main>");
-  await writeFile(root + "/index.html", html.endsWith("\\n") ? html : html + "\\n");
+  const markerPattern = /<!-- GOGO-TRENDING-START -->[\s\S]*?<!-- GOGO-TRENDING-END -->/;
+  html = markerPattern.test(html) ? html.replace(markerPattern, section) : html.replace(/<\/main>/i, section + "\n</main>");
+  await writeFile(root + "/index.html", html.endsWith("\n") ? html : html + "\n");
   console.log("Homepage product directory refreshed; external feed headlines are kept on their dedicated product pages.");
   return { products: 5 };
 }
