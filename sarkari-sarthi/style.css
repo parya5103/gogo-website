@@ -2007,7 +2007,8 @@ a:focus-visible {
         position: fixed;
         top: var(--header-height);
         left: 0;
-        right: 0;
+        right: auto;
+        width: min(360px, 88vw);
         background: var(--surface-card);
         border-bottom: 1px solid var(--border-strong);
         box-shadow: var(--shadow-heavy);
@@ -2027,7 +2028,10 @@ a:focus-visible {
     .menu-backdrop:not([hidden]) {
         display: block;
         position: fixed;
-        inset: var(--header-height) 0 0;
+        top: var(--header-height);
+        right: 0;
+        bottom: 0;
+        left: min(360px, 88vw);
         z-index: 998;
         background: rgba(10, 16, 28, 0.56);
         -webkit-backdrop-filter: blur(2px);
