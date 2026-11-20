@@ -112,3 +112,22 @@ Write from the visitor's task: play, explore, read, check. Describe Sarkari Sart
 - **Do:** Keep the homepage visually distinct while preserving each product's own design system.
 - **Don't:** Expose repository links, admin-only destinations or implementation details in public marketing navigation.
 - **Don't:** Use unsupported claims, fake live-status indicators or decorative motion that competes with product choices.
+
+
+## Product family design boundaries
+
+The homepage remains the portfolio's digital launchpad. Each product keeps its own visual voice and existing runtime architecture; the shared polish layer is intentionally additive and route-scoped.
+
+- **Sarkari Sarthi:** high-trust recruitment workspace. Preserve navy/blue/teal trust cues, source-verification labels, clear deadlines, readable job cards and explicit official-source checks.
+- **PikaNews:** restrained newsroom/editorial hierarchy. Preserve publisher attribution, category navigation, clear source links and the existing editorial typography.
+- **Arrow Out!:** focused puzzle arcade. Polish controls and supporting surfaces only; never obscure, resize or restyle the puzzle board or change game logic.
+- **Crystal Quest:** fantasy adventure menu. Polish the home/menu surfaces only; preserve the canvas, board, HUD, save format, levels and gameplay renderer.
+- **GTA 6 Guide:** dark Leonida editorial palette. Keep official-source vs third-party reporting distinctions visible and preserve the guide's current information architecture.
+
+### Shared implementation rule
+
+The assets/css/product-polish.css file is a progressive enhancement layer. It must not become a second owner of product tokens, override game-engine geometry, change route behavior, or hide loading/error/empty states. Each product page opts in with a data-gogo-premium body attribute. Existing product styles remain the source of truth.
+
+### Open-source reference use
+
+Use shadcn/ui for composable and accessible interaction patterns, HyperUI for responsive layout ideas, Magic UI for restrained motion inspiration, and Headless UI for accessible interaction behavior. Adapt patterns to the repository's existing vanilla HTML/CSS/JavaScript architecture; do not import a framework solely to copy a visual component.
