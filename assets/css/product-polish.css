@@ -1,0 +1,158 @@
+/* GoGo Company — product-family polish layer.
+   Open-source inspiration: composable shadcn patterns, HyperUI spacing and
+   Magic UI restraint. Original tokens and product behavior remain canonical. */
+
+/* Shared interaction finish: no product logic or layout ownership changes. */
+:where(body[data-gogo-premium]) :where(a,button,[role="button"]) {
+  -webkit-tap-highlight-color: transparent;
+}
+:where(body[data-gogo-premium]) :where(a,button):focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+:where(body[data-gogo-premium]) button {
+  touch-action: manipulation;
+}
+@media (prefers-reduced-motion: no-preference) {
+  :where(body[data-gogo-premium]) :where(.job-card,.news-card,.category-card,.gta-card,.gta-section,.feature-card) {
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  :where(body[data-gogo-premium]) :where(.job-card,.news-card,.category-card,.gta-card):hover {
+    transform: translateY(-3px);
+  }
+}
+
+/* Sarkari Sarthi — calm, high-trust recruitment workspace. */
+body[data-gogo-premium="sarkari"] .hero {
+  isolation: isolate;
+}
+body[data-gogo-premium="sarkari"] .hero-content {
+  max-width: 920px;
+}
+body[data-gogo-premium="sarkari"] .hero-title {
+  text-wrap: balance;
+}
+body[data-gogo-premium="sarkari"] .hero-trust-strip {
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 18px;
+}
+body[data-gogo-premium="sarkari"] .jobs-dashboard-header {
+  align-items: end;
+  gap: 20px;
+}
+body[data-gogo-premium="sarkari"] .jobs-grid {
+  align-items: stretch;
+}
+body[data-gogo-premium="sarkari"] .job-card {
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(15,41,66,.07);
+}
+body[data-gogo-premium="sarkari"] .job-card:focus-visible {
+  outline: 3px solid #0d9488;
+  outline-offset: 3px;
+}
+body[data-gogo-premium="sarkari"] .search-container,
+body[data-gogo-premium="sarkari"] .filter-container {
+  border-radius: 16px;
+}
+body[data-gogo-premium="sarkari"] .modal-content {
+  border-radius: 20px;
+}
+
+/* PikaNews — editorial hierarchy, clear source-first reading. */
+body[data-gogo-premium="pika"] .header {
+  box-shadow: 0 5px 24px rgba(25,27,30,.045);
+}
+body[data-gogo-premium="pika"] .news-section,
+body[data-gogo-premium="pika"] .category-section {
+  scroll-margin-top: 88px;
+}
+body[data-gogo-premium="pika"] .news-card {
+  border-radius: 10px;
+  overflow: hidden;
+}
+body[data-gogo-premium="pika"] .news-card img {
+  transition: transform .35s ease;
+}
+@media (hover:hover) and (prefers-reduced-motion:no-preference) {
+  body[data-gogo-premium="pika"] .news-card:hover img {
+    transform: scale(1.025);
+  }
+}
+body[data-gogo-premium="pika"] .category-card {
+  border-radius: 9px;
+}
+body[data-gogo-premium="pika"] .section-header {
+  gap: 14px;
+}
+
+/* Arrow Out! — polish controls only; the puzzle board and engine are untouched. */
+body[data-gogo-premium="arrow"] #app :where(button,.btn) {
+  font-weight: 750;
+  letter-spacing: .01em;
+}
+body[data-gogo-premium="arrow"] #app :where(button,.btn):focus-visible {
+  outline-color: #91a7ff;
+  outline-offset: 3px;
+}
+body[data-gogo-premium="arrow"] #app :where(.panel,.modal,.dialog,.menu-card) {
+  border-radius: 18px;
+}
+
+/* Crystal Quest — fantasy menu polish only; board, canvas and game HUD untouched. */
+body[data-gogo-premium="crystal"] #screen-home .home-inner {
+  width: min(100%, 560px);
+}
+body[data-gogo-premium="crystal"] #screen-home .home-actions {
+  width: min(100%, 460px);
+}
+body[data-gogo-premium="crystal"] #screen-home .home-grid {
+  gap: 10px;
+}
+body[data-gogo-premium="crystal"] #screen-home .home-actions .btn {
+  min-height: 48px;
+}
+body[data-gogo-premium="crystal"] #screen-home .home-actions .btn-primary {
+  box-shadow: 0 7px 0 #0b6b78, 0 14px 30px rgba(23,168,180,.25);
+}
+body[data-gogo-premium="crystal"] #screen-home .home-foot {
+  line-height: 1.65;
+}
+
+/* GTA 6 — editorial guide finish; preserve its existing Leonida palette. */
+body[data-gogo-premium="gta"] .gta-section,
+body[data-gogo-premium="gta"] .gta-card {
+  box-shadow: 0 14px 34px rgba(0,0,0,.14);
+}
+body[data-gogo-premium="gta"] .gta-section h2 {
+  text-wrap: balance;
+}
+body[data-gogo-premium="gta"] .gta-button {
+  min-height: 44px;
+  transition: transform .18s ease, filter .18s ease;
+}
+body[data-gogo-premium="gta"] .gta-button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+}
+body[data-gogo-premium="gta"] .gta-table-wrap {
+  scrollbar-gutter: stable;
+}
+@media (max-width: 640px) {
+  body[data-gogo-premium="gta"] .gta-wrap {
+    padding-inline: 16px;
+  }
+  body[data-gogo-premium="gta"] .gta-toc a,
+  body[data-gogo-premium="gta"] .gta-button {
+    min-height: 44px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  body[data-gogo-premium] *,
+  body[data-gogo-premium] *::before,
+  body[data-gogo-premium] *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
