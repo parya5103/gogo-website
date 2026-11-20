@@ -21,9 +21,6 @@ on:
       - 'scripts/update-trending-seo.mjs'
       - 'scripts/validate-seo-build.mjs'
       - 'assets/js/main.js'
-      - 'sarkari-sarthi/jobs/job_manifest.json'
-      - 'pikanews/data/latest.json'
-      - 'pikanews/data/trending.json'
       - '.github/workflows/build-frontend-assets.yml'
   pull_request:
     branches: [main]
