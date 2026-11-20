@@ -102,6 +102,14 @@ assert.match(arrowStrategy, /Trace the entire|trace the complete|trace its head 
 assert.match(arrowStrategy, /FAQPage/);
 assert.ok(sitemap.includes("<loc>https://gogocompany.in/arrowout/strategy.html</loc>"), "Arrow Out strategy guide must be included in sitemap");
 
+const crystalStrategySource = await read("scripts/content/crystalquest-strategy.html");
+const crystalStrategy = await read("crystalquest/strategy.html");
+assert.ok(crystalStrategySource.length > 9000, "central Crystal Quest strategy guide source must remain substantive");
+assert.equal(crystalStrategy, crystalStrategySource, "published Crystal Quest strategy guide must match its central source after post-sync enhancements");
+assert.match(crystalStrategy, /Crystal Resonance|Guardian shield colour/i);
+assert.match(crystalStrategy, /FAQPage/);
+assert.ok(sitemap.includes("<loc>https://gogocompany.in/crystalquest/strategy.html</loc>"), "Crystal Quest strategy guide must be included in sitemap");
+
 const keywordPages = [
   ["sarkari-sarthi/index.html", /sarkari naukri 2026/i],
   ["arrowout/about.html", /arrow wala puzzle game/i]
