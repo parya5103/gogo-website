@@ -78,36 +78,33 @@ export function renderTrendingSection({ jobs = [], news = [], trends = [] } = {}
     '<li><a href="/arrowout/">Play Arrow Out! — free arrow puzzle game online</a></li>' +
     '<li><a href="/crystalquest/">Play Crystal Quest — free Match-3 puzzle adventure</a></li></ul></section></div></div></section>\n' + END;
 }
-export async function updateTrendingSeo(root = ROOT, trendItems) {
-  const trends = trendItems ?? await fetchTrends();
-  const manifest = await readJson(root + "/sarkari-sarthi/jobs/job_manifest.json", { jobs: [] });
-  const rawNews = await readJson(root + "/pikanews/data/latest.json", []);
-  const jobs = (Array.isArray(manifest.jobs) ? manifest.jobs : []).filter(job =>
-    job && String(job.status || "").toLowerCase() === "active" && safeUrl(job.url || job.original_source_url))
-    .sort((a, b) => Date.parse(b.published_date || b.scraped_at || b.last_verified || 0) - Date.parse(a.published_date || a.scraped_at || a.last_verified || 0));
-  const news = (Array.isArray(rawNews) ? rawNews : []).filter(item =>
-    item && item.thin !== true && item.title && safeUrl(item.url))
-    .sort((a, b) => Date.parse(b.published_at || b.collection_timestamp || 0) - Date.parse(a.published_at || a.collection_timestamp || 0));
-  const section = renderTrendingSection({ jobs, news, trends });
-  let html = await readFile(root + "/index.html", "utf8");
-  const markerPattern = /<!-- GOGO-TRENDING-START -->[\s\S]*?<!-- GOGO-TRENDING-END -->/;
-  html = markerPattern.test(html) ? html.replace(markerPattern, section) : html.replace(/<\/main>/i, section + "\n</main>");
+export async function updateTrendingSeo(root = ROOT) {
+  // Live job/news/trending feeds belong on their dedicated product pages.
+  // The company homepage stays a stable, original product/company directory.
+  const file = root + "/index.html";
+  let html = await readFile(file, "utf8");
+  const startMarker = "<!-- GOGO-TRENDING-START -->";
+  const endMarker = "<!-- GOGO-TRENDING-END -->";
+  const startAt = html.indexOf(startMarker);
+  const endAt = html.indexOf(endMarker, startAt);
+  if (startAt >= 0 && endAt >= 0) {
+    html = html.slice(0, startAt) + html.slice(endAt + endMarker.length);
+  }
   const scriptPattern = /<script\s+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/i;
   const match = html.match(scriptPattern);
   if (match) {
     try {
       const graph = JSON.parse(match[1]);
-      graph["@graph"] = Array.isArray(graph["@graph"]) ? graph["@graph"].filter(node => node["@id"] !== DOMAIN + "/#daily-updates") : [];
-      const entries = [
-        ...jobs.slice(0, 6).map(job => ({ name: job.title, url: safeUrl(job.url || job.original_source_url) })),
-        ...news.slice(0, 6).map(item => ({ name: item.title, url: safeUrl(item.url) }))
-      ].filter(item => item.url).map((item, index) => ({ "@type": "ListItem", position: index + 1, name: item.name, url: item.url }));
-      graph["@graph"].push({ "@type": "ItemList", "@id": DOMAIN + "/#daily-updates", name: "Latest GoGo Company updates", dateModified: new Date().toISOString(), numberOfItems: entries.length, itemListElement: entries });
+      graph["@graph"] = Array.isArray(graph["@graph"])
+        ? graph["@graph"].filter(node => node["@id"] !== DOMAIN + "/#daily-updates")
+        : [];
       html = html.replace(match[0], '<script type="application/ld+json">\n' + serializeJsonLd(graph, 2) + '\n</script>');
-    } catch (error) { console.warn("Existing homepage JSON-LD was not changed:", error.message); }
+    } catch (error) {
+      console.warn("Existing homepage JSON-LD was not changed:", error.message);
+    }
   }
-  await writeFile(root + "/index.html", html.endsWith("\n") ? html : html + "\n");
-  console.log("Trending homepage section updated:", jobs.length, "active jobs;", news.length, "news items;", trends.length, "trending terms.");
-  return { jobs: jobs.length, news: news.length, trends: trends.length };
+  await writeFile(file, html.endsWith("\n") ? html : html + "\n");
+  console.log("Homepage kept as a stable company and product directory; live feeds remain on their own portals.");
+  return { homepageFeedsDisabled: true };
 }
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) await updateTrendingSeo();

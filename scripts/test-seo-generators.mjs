@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { decodeEntities, parseGoogleTrendsRss, renderTrendingSection, safeUrl, serializeJsonLd as serializeHomeJsonLd } from "./update-trending-seo.mjs";
-import { renderHub, escapeHtml, serializeJsonLd as serializeHubJsonLd } from "./generate-pseo-hubs.mjs";
+import { renderHub, escapeHtml, isQualityJob, serializeJsonLd as serializeHubJsonLd } from "./generate-pseo-hubs.mjs";
 import { addKeywordSection, renderKeywordSection } from "./seo-keyword-content.mjs";
 
 assert.equal(decodeEntities("&amp;lt;script&amp;gt;"), "&lt;script&gt;", "RSS entities must be decoded exactly once");
@@ -16,6 +16,17 @@ assert.equal(trends.length,1);
 assert.equal(trends[0].title,"SSC & Railway");
 assert.equal(safeUrl("javascript:alert(1)"),null);
 assert.equal(escapeHtml('<script>'),"&lt;script&gt;");
+const qualityJob = {
+  status:"active", verification_status:"official_verified",
+  description:"A verified recruitment notice with detailed post information, eligibility, dates, application instructions and selection details. ".repeat(2),
+  organization:"Example Recruiting Authority", vacancies:12, qualification:"Graduate",
+  official_notification_url:"https://example.gov.in/notice.pdf",
+  url:"https://example.gov.in/notice"
+};
+assert.equal(isQualityJob(qualityJob),true,"only substantial official records should qualify for recruitment hubs");
+assert.equal(isQualityJob({...qualityJob,verification_status:"needs_review"}),false);
+assert.equal(isQualityJob({...qualityJob,description:"Short listing"}),false);
+assert.equal(isQualityJob({...qualityJob,qualification:null,vacancies:null,official_notification_url:null}),false);
 const section = renderTrendingSection({jobs:[{title:"A & B Job",url:"https://example.gov.in/job"}],news:[{title:"News <one>",url:"https://publisher.example/story",source:"Publisher"}],trends});
 assert.match(section,/GOGO-TRENDING-START/);
 assert.match(section,/A &amp; B Job/);
@@ -30,6 +41,10 @@ assert.match(page,/FAQPage/);
 assert.match(page,/Recruitment &lt;2026&gt;/);
 assert.match(page,/rel="canonical"/);
 assert.doesNotMatch(page,/\[TODO\]|placeholder/i);
+const thinHubPage = renderHub(hub,[{title:"One listing only",url:"https://example.gov.in/one"}]);
+assert.match(thinHubPage,/name="robots" content="noindex,follow"/,"job hubs with fewer than five active listings must stay out of search");
+const substantialHubPage = renderHub(hub,Array.from({length:5},(_,i)=>({title:"Recruitment "+i,url:"https://example.gov.in/job/"+i})));
+assert.match(substantialHubPage,/name="robots" content="index,follow,max-image-preview:large"/,"job hubs with five or more active listings may be indexed");
 const gamesHub = {path:"free-online-games/index.html",slug:"free-online-games",title:"Free Online Browser Games | Play on Mobile & PC",description:"Play two free browser puzzle games on mobile or PC: Arrow Out! has 1,000 tap-away levels; Crystal Quest has 27 match-3 fantasy levels.",h1:"Play Free Online Browser Games",kind:"games",faq:[["Can I play these games without downloading an app?","Yes. Both games run in supported browsers."]]};
 const gamesPage = renderHub(gamesHub);
 for (const phrase of [

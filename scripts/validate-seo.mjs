@@ -32,7 +32,10 @@ assert.match(home,/og:image:height["']?\s+content=["']630/i);
 
 const sitemap=await read("sitemap.xml");
 const locs=[...sitemap.matchAll(/<loc>\s*([^<]+)\s*<\/loc>/gi)].map(m=>m[1].trim());
-assert.ok(locs.length >= 19,"root sitemap must contain the canonical site URLs and generated pSEO hubs");
+assert.ok(locs.length >= 14,"root sitemap must retain the core canonical site and product URLs");
+for (const requiredUrl of ["https://gogocompany.in/","https://gogocompany.in/about.html","https://gogocompany.in/gta6/","https://gogocompany.in/arrowout/","https://gogocompany.in/crystalquest/","https://gogocompany.in/sarkari-sarthi/","https://gogocompany.in/pikanews/"]) {
+ assert.ok(locs.includes(requiredUrl),"root sitemap missing core URL "+requiredUrl);
+}
 assert.equal(new Set(locs).size,locs.length,"root sitemap URLs must be unique");
 assert.equal((sitemap.match(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g)||[] ).length,locs.length,"all root URLs require ISO lastmod");
 for(const url of locs){const u=new URL(url);assert.equal(u.protocol,"https:");assert.equal(u.hostname,"gogocompany.in")}
@@ -49,7 +52,19 @@ for(const [path,target] of [["arrow-out/index.html","https://gogocompany.in/arro
 const css=await read("assets/css/ads.css");assert.match(css,/min-height/);assert.match(css,/aspect-ratio/);assert.match(css,/contain:\s*layout style/);
 const sarkari=await read("sarkari-sarthi/index.html");assert.match(sarkari,/CollectionPage/);assert.match(sarkari,/Dataset/);assert.match(sarkari,/sarkari-schema-injector\.js/);
 const module=await read("sarkari-sarthi/assets/js/sarkari-schema-injector.js");assert.match(module,/official_verified/);assert.match(module,/data-job-detail-page/);
-const pika=await read("pikanews/index.html");assert.match(pika,/application\/rss\+xml/);
+const pika=await read("pikanews/index.html");
+assert.match(pika,/application\/rss\+xml/);
+assert.match(pika,/news-discovery service, not a newsroom/);
+assert.match(pika,/How to use a news discovery feed/);
+assert.match(pika,/does not independently report or verify every linked story/);
+const pikaApp=await read("pikanews/js/app.js");
+assert.match(pikaApp,/Feed timestamp unavailable/);
+const verificationGuide=await read("sarkari-sarthi/verification-guide.html");
+assert.match(verificationGuide,/How to verify a government job notification in India/);
+assert.match(verificationGuide,/Never pay a person or unrelated website/);
+assert.match(verificationGuide,/not a government agency/);
+const sarkariSitemap=await read("sarkari-sarthi/sitemap.xml");
+assert.match(sarkariSitemap,/sarkari-sarthi\/verification-guide\.html/);
 let dirs=[];try{dirs=await readdir("pikanews/news",{withFileTypes:true})}catch{}
 let articleCount=0;
 for(const dir of dirs.filter(x=>x.isDirectory())){

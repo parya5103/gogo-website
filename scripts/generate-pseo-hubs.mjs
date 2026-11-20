@@ -22,6 +22,19 @@ export function serializeJsonLd(value) {
   })[character]);
 }
 function safeUrl(value) { try { const url = new URL(value); return ["https:","http:"].includes(url.protocol) ? url.href : null; } catch { return null; } }
+export function isQualityJob(job) {
+  if (!job || String(job.status || "").toLowerCase() !== "active") return false;
+  if (String(job.verification_status || "").toLowerCase() !== "official_verified") return false;
+  if (String(job.description || "").trim().length < 180) return false;
+  const dates = job.important_dates || {};
+  const evidence = [
+    job.organization, job.vacancies, job.qualification || job.minimum_qualification,
+    job.age_limit, dates.last_date || job.last_date, job.official_notification_url,
+    job.official_application_url, job.salary || job.pay_scale, job.selection_process
+  ];
+  return Boolean(evidence.filter(value => value != null && String(value).trim() !== "").length >= 4
+    && safeUrl(job.official_notification_url || job.official_application_url || job.url || job.original_source_url));
+}
 async function readJson(path, fallback) { try { return JSON.parse(await readFile(path,"utf8")); } catch { return fallback; } }
 function jobCard(job) {
   const url = safeUrl(job.url || job.original_source_url);
@@ -69,6 +82,7 @@ export function renderHub(hub, jobs = []) {
   const cards = hub.kind === "games" ? gameCards() : jobs.map(jobCard).filter(Boolean).slice(0, 24).join("\n");
   const fallback = hub.kind === "games" ? "" : '<p class="hub-empty">No matching live entries are available in the current synced dataset. Browse the <a href="/sarkari-sarthi/">Sarkari Sarthi portal</a> for the latest collection. This page will populate when matching records are published.</p>';
   const url = DOMAIN + "/" + hub.path.replace(/index\.html$/, "");
+  const isIndexable = hub.kind === "games" || jobs.length >= 5;
   const faqs = hub.faq.map(([q,a]) => ({ "@type":"Question", name:q, acceptedAnswer:{"@type":"Answer",text:a} }));
   const schema = { "@context":"https://schema.org","@graph":[
     {"@type":"CollectionPage","@id":url+"#collection","url":url,"name":hub.title,"description":hub.description,"inLanguage":"en-IN","dateModified":new Date().toISOString(),"mainEntity":{"@id":url+"#items"},"breadcrumb":{"@id":url+"#breadcrumb"}},
@@ -82,7 +96,7 @@ export function renderHub(hub, jobs = []) {
   const crumbRoot = hub.kind==="games" ? '<a href="/">Home</a>' : '<a href="/">Home</a> / <a href="/sarkari-sarthi/">Sarkari Sarthi</a>';
   return '<!doctype html>\n<html lang="en-IN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
     '<title>' + escapeHtml(hub.title.slice(0,60)) + '</title><meta name="description" content="' + escapeHtml(hub.description.slice(0,155)) + '">' +
-    '<meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="' + escapeHtml(url) + '">' +
+    '<meta name="robots" content="' + (isIndexable ? "index,follow,max-image-preview:large" : "noindex,follow") + '"><link rel="canonical" href="' + escapeHtml(url) + '">' +
     '<meta property="og:type" content="website"><meta property="og:title" content="' + escapeHtml(hub.title) + '"><meta property="og:description" content="' + escapeHtml(hub.description) + '"><meta property="og:url" content="' + escapeHtml(url) + '">' +
     '<style>:root{color-scheme:light;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#172033;background:#f7f8fc}*{box-sizing:border-box}body{margin:0;line-height:1.65}.wrap{max-width:1080px;margin:auto;padding:24px 20px}.top{background:#101827;color:#fff}.top a{color:#bfdbfe}.crumb{font-size:.95rem}.hero{padding:38px 0 24px}.hero h1{font-size:clamp(2rem,5vw,3rem);line-height:1.15}.hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}.hub-card{background:#fff;border:1px solid #dce2ec;border-radius:14px;padding:20px;overflow-wrap:anywhere}.hub-card h2,.hub-card h3{margin-top:0}.hub-card a{color:#1e40af}.hub-meta,.muted{color:#596579}.hub-empty{background:#fff;padding:20px;border-left:4px solid #1e40af}.faq{margin-top:36px}.faq details{background:#fff;border:1px solid #dce2ec;border-radius:10px;padding:14px;margin:10px 0}footer{border-top:1px solid #dce2ec;margin-top:40px}</style>' +
     '<script type="application/ld+json">' + serializeJsonLd(schema) + '</script></head><body><header class="top"><div class="wrap"><a href="/">GoGo Company</a></div></header><main class="wrap"><nav class="crumb" aria-label="Breadcrumb">' + crumbRoot + ' / ' + escapeHtml(hub.h1) + '</nav>' +
@@ -95,7 +109,7 @@ export function renderHub(hub, jobs = []) {
 }
 export async function generateHubs(root = ROOT) {
   const manifest = await readJson(root + "/sarkari-sarthi/jobs/job_manifest.json", {jobs:[]});
-  const allJobs = (Array.isArray(manifest.jobs)?manifest.jobs:[]).filter(job => job && String(job.status||"").toLowerCase()==="active" && safeUrl(job.url||job.original_source_url));
+  const allJobs = (Array.isArray(manifest.jobs)?manifest.jobs:[]).filter(isQualityJob);
   const sitemapPath = root + "/sitemap.xml";
   let sitemap = await readFile(sitemapPath,"utf8");
   const today = new Date().toISOString().slice(0,10);
@@ -105,8 +119,12 @@ export async function generateHubs(root = ROOT) {
     await mkdir(dirname(path),{recursive:true});
     await writeFile(path,renderHub(hub,jobs));
     const loc = DOMAIN + "/" + hub.path.replace(/index\.html$/,"");
-    const block = '<url><loc>' + loc + '</loc><lastmod>' + today + '</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>';
-    if (!sitemap.includes("<loc>"+loc+"</loc>")) sitemap = sitemap.replace("</urlset>", "  "+block+"\n</urlset>");
+    const indexable = hub.kind === "games" || jobs.length >= 5;
+    sitemap = sitemap.replace(/<url>[\s\S]*?<\/url>/g, block => block.includes("<loc>" + loc + "</loc>") ? "" : block);
+    if (indexable) {
+      const block = '<url><loc>' + loc + '</loc><lastmod>' + today + '</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>';
+      sitemap = sitemap.replace("</urlset>", "  " + block + "\n</urlset>");
+    }
   }
   await writeFile(sitemapPath,sitemap.endsWith("\n")?sitemap:sitemap+"\n");
   console.log("Generated",HUBS.length,"programmatic SEO hubs.");
