@@ -98,6 +98,7 @@ const keywordPages = [
 ];
 const pikanews = await read("pikanews/index.html");
 assert.match(pikanews, /<meta name="robots" content="noindex,follow">/i, "aggregated PikaNews listings must remain noindex until original editorial thresholds are met");
+assert.ok(!sitemap.includes("<loc>https://gogocompany.in/pikanews/</loc>"), "noindex PikaNews homepage must not appear in the root sitemap");
 assert.doesNotMatch(pikanews, /id=["']gogo-search-intent["']/i, "keyword-stuffed SEO sections must not be injected into the aggregated PikaNews homepage");
 const crystal = await read("crystalquest/index.html");
 assert.match(crystal, /<meta name="description" content="[^"]*(match-3|match 3)[^"]*candy-crush-style/i, "Crystal Quest must expose truthful match-3 search intent in its metadata");
