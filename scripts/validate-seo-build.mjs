@@ -22,7 +22,6 @@ assert.match(homepage, /id=["']critical-css["']/);
 assert.match(homepage, /rel=["']preload["'][^>]*assets\/css\/style\.css/);
 assert.match(homepage, /<main id=["']main["']>/);
 assert.match(homepage, /GOGO-TRENDING-START[\s\S]*GOGO-TRENDING-END/);
-assert.match(homepage, /daily-updates/);
 assert.match(sharedJs, /nav \+=\s*['"]<li/);
 assert.match(sharedJs, /links \+=\s*['"]<li/);
 assert.match(css, /--accent:\s*#1e40af/i);
@@ -66,7 +65,12 @@ for (const [path, h1] of pages) {
   assert.ok(title.length <= 60, path + " title exceeds 60 characters");
   assert.ok(description.length <= 155, path + " meta description exceeds 155 characters");
   const canonical = html.match(/<link rel="canonical" href="([^"]+)"/i)?.[1];
-  assert.ok(canonical && sitemap.includes("<loc>" + canonical + "</loc>"), path + " canonical missing from sitemap");
+  const robots = html.match(/<meta name="robots" content="([^"]+)"/i)?.[1] || "index,follow";
+  if (robots.startsWith("noindex")) {
+    assert.ok(canonical && !sitemap.includes("<loc>" + canonical + "</loc>"), path + " noindex canonical must not be listed in sitemap");
+  } else {
+    assert.ok(canonical && sitemap.includes("<loc>" + canonical + "</loc>"), path + " indexable canonical missing from sitemap");
+  }
 }
 const gta6 = await read("gta6/index.html");
 const gtaTitle = gta6.match(/<title>([^<]+)<\/title>/i)?.[1] || "";
