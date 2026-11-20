@@ -7,6 +7,7 @@
 
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve, join } from 'node:path';
+import { runInNewContext } from 'node:vm';
 
 const root = process.cwd();
 let passed = 0;
@@ -206,6 +207,31 @@ check('robots.txt: nothing blocked, exactly three active sitemaps declared and r
     else if (path.endsWith('/')) path += 'sitemap.xml';
     assert(existsSync(resolve(root, path)), 'declared sitemap missing in repo: ' + path);
   }
+});
+
+// PikaNews is a publisher-attributed aggregator. Keep listings noindex until editorial review thresholds are met.
+check('PikaNews aggregated hubs and story pages remain noindex until original editorial thresholds are met', () => {
+  const pages = [
+    'index.html', 'latest.html', 'trending.html', 'bollywood.html',
+    'hollywood.html', 'entertainment.html', 'technology.html',
+    'gaming.html', 'business.html', 'sports.html',
+  ];
+  const sm = read('pikanews/sitemap.xml');
+  const pikaHome = read('pikanews/index.html');
+  assert((pikaHome.match(/name="description"/g) || []).length === 1, 'PikaNews homepage must have exactly one meta description');
+  assert((pikaHome.match(/rel="canonical"/g) || []).length === 1, 'PikaNews homepage must have exactly one canonical');
+  assert((pikaHome.match(/property="og:title"/g) || []).length === 1, 'PikaNews homepage must have exactly one Open Graph title');
+  assert((pikaHome.match(/property="og:description"/g) || []).length === 1, 'PikaNews homepage must have exactly one Open Graph description');
+  for (const page of pages) {
+    const html = read('pikanews/' + page);
+    assert((robotsOf(html) || '').includes('noindex'), page + ' must remain noindex until editorial review thresholds are met');
+    assert(canonicalOf(html) === 'https://gogocompany.in/pikanews/' + (page === 'index.html' ? '' : page), page + ' canonical mismatch');
+    const sitemapUrl = 'https://gogocompany.in/pikanews/' + (page === 'index.html' ? '' : page);
+    assert(!sm.includes('<loc>' + sitemapUrl + '</loc>'), page + ' must not be included in the PikaNews sitemap while noindex');
+  }
+  const article = read('pikanews/news/cathie-wood-s-ark-invest-was-a-big-buyer-of-anthropic-during-b5e0cfa7/index.html');
+  assert((robotsOf(article) || '').includes('noindex'), 'syndicated excerpt pages should remain noindex');
+  assert(!sm.includes('/pikanews/news/'), 'thin syndicated story pages must not be added to the standard sitemap');
 });
 
 // PikaNews sub-sitemaps (synced folder, verified on every test run)
