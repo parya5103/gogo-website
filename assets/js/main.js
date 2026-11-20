@@ -31,6 +31,7 @@
     { href: "pikanews/", label: "PikaNews", page: "pikanews" },
     { href: "arrowout/", label: "Arrow Out!", page: "arrow-out" },
     { href: "crystalquest/", label: "Crystal Quest", page: "crystal-quest" },
+    { href: "gta6/", label: "GTA 6 Guide", page: "gta6" },
     { href: "account/index.html", label: "Account", page: "account" },
     { href: "about.html", label: "About", page: "about" },
     { href: "contact/index.html", label: "Contact", page: "contact" }
@@ -43,7 +44,6 @@
         { href: "about.html", label: "About Us" },
         { href: "contact/index.html", label: "Contact" },
         { href: "account/index.html", label: "GoGo Account" },
-        { href: "admin/index.html", label: "Admin Dashboard" }
       ]
     },
     {
@@ -142,7 +142,7 @@
       '<div class="footer-brand">' +
       LOGO_SVG +
       '<span><span class="accent">GoGo</span> Company</span></div>' +
-      '<p class="footer-tag">Games, Sarkari exam updates and news from GoGo Company.</p>' +
+      '<p class="footer-tag">Browser games, career information and digital media from GoGo Company.</p>' +
       '<p class="footer-mail">Email: <a href="mailto:' + EMAIL + '">' + EMAIL + "</a></p>" +
       '<div class="footer-cols" role="navigation" aria-label="Footer navigation">' + cols + "</div>" +
       '<p class="footer-copy">&copy; <span id="footer-year">2026</span> GoGo Company. All rights reserved.</p>' +

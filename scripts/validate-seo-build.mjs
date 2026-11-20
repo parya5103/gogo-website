@@ -146,4 +146,10 @@ for (const [path, keyword] of keywordPages) {
   assert.ok(title.length <= 60, path + " title exceeds 60 characters");
   assert.ok(description.length <= 155, path + " description exceeds 155 characters");
 }
+
+assert.ok(sharedJs.includes('href: "gta6/", label: "GTA 6 Guide"'), "GTA 6 must be reachable from the shared primary navigation");
+assert.doesNotMatch(sharedJs, /Admin Dashboard/, "public footer must not expose the admin dashboard link");
+assert.ok(sharedJs.includes("Browser games, career information and digital media"), "footer tagline must describe the current product mix");
+assert.doesNotMatch(homepage, /target=["']_blank["']/i, "same-site homepage navigation should not open unnecessary new tabs");
+
 console.log("SEO build validation passed: homepage, list semantics, contrast tokens, 5 canonical hubs and sitemap.");
