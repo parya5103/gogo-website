@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Learn practical Arrow Out! puzzle strategies: trace exit lanes, clear blockers safely, manage hearts and hints, and solve dense arrow boards.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#101a3c">
+  <title>Arrow Out Strategy Guide: Solve Hard Arrow Puzzles</title>
+  <link rel="canonical" href="https://gogocompany.in/arrowout/strategy.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Arrow Out Strategy Guide: Solve Hard Arrow Puzzles">
+  <meta property="og:description" content="A practical guide to reading arrow lanes, planning safe removals and solving dense Arrow Out! boards.">
+  <meta property="og:url" content="https://gogocompany.in/arrowout/strategy.html">
+  <meta property="og:image" content="https://gogocompany.in/arrowout/docs/screenshot-home.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Arrow Out Strategy Guide">
+  <meta name="twitter:description" content="Plan safe arrow removals and solve crowded boards with a repeatable method.">
+  <style>
+    *{box-sizing:border-box}body{margin:0;padding:clamp(16px,4vw,40px) 14px 48px;font:16px/1.7 system-ui,-apple-system,"Segoe UI",sans-serif;color:#e8ecff;background:radial-gradient(ellipse at 50% 0%,#25366d 0%,#111a3c 42%,#090d20 100%)}main{max-width:820px;margin:auto;padding:clamp(20px,4vw,42px);background:rgba(20,27,61,.88);border:1px solid #354779;border-radius:22px;box-shadow:0 18px 48px rgba(0,0,0,.28)}h1{font-size:clamp(1.85rem,5vw,2.65rem);line-height:1.15;letter-spacing:-.035em}h2{margin-top:2rem;color:#9aeaf2;font-size:1.3rem}h3{color:#c7d2fe}a{color:#9aeaf2;overflow-wrap:anywhere}.lead{font-size:1.1rem;color:#cbd5f5}.callout{padding:14px 18px;border-left:4px solid #75e6dc;background:#101a38;border-radius:10px}li{margin:.45rem 0}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}.button{display:inline-flex;align-items:center;min-height:46px;padding:10px 18px;border-radius:12px;background:#91a8ff;color:#101a3c;font-weight:750;text-decoration:none}.muted{color:#aab7d7;font-size:.9rem} :focus-visible{outline:3px solid #a5fff4;outline-offset:3px}@media(max-width:420px){main{padding:20px 16px;border-radius:16px}}
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {"@type":"Article","@id":"https://gogocompany.in/arrowout/strategy.html#article","headline":"Arrow Out Strategy Guide: Solve Hard Arrow Puzzles","description":"A practical, original strategy guide to reading arrow lanes and planning safe removals in Arrow Out!.","mainEntityOfPage":"https://gogocompany.in/arrowout/strategy.html","author":{"@type":"Organization","name":"GoGo Company","url":"https://gogocompany.in/"},"publisher":{"@type":"Organization","name":"GoGo Company","url":"https://gogocompany.in/","logo":{"@type":"ImageObject","url":"https://gogocompany.in/favicon.svg"}},"inLanguage":"en-IN"},
+      {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"GoGo Company","item":"https://gogocompany.in/"},{"@type":"ListItem","position":2,"name":"Arrow Out!","item":"https://gogocompany.in/arrowout/"},{"@type":"ListItem","position":3,"name":"Strategy Guide","item":"https://gogocompany.in/arrowout/strategy.html"}]},
+      {"@type":"FAQPage","mainEntity":[
+        {"@type":"Question","name":"What should I check before tapping an arrow?","acceptedAnswer":{"@type":"Answer","text":"Trace the arrow's direction from its head to the nearest board edge and check whether another arrow occupies that exit corridor."}},
+        {"@type":"Question","name":"Should I use a hint immediately?","acceptedAnswer":{"@type":"Answer","text":"First scan the board for an arrow with a visibly clear route. Save a hint for when several lanes overlap or you cannot identify a safe next move."}},
+        {"@type":"Question","name":"What happens when I tap a blocked arrow?","acceptedAnswer":{"@type":"Answer","text":"A blocked tap costs one heart. Use undo for a deliberate correction after a successful launch, and restart if you want to reset the current board."}}
+      ]}
+    ]
+  }
+  </script>
+</head>
+<body>
+<main>
+  <nav aria-label="Breadcrumb"><a href="/">GoGo Company</a> / <a href="./">Arrow Out!</a> / Strategy guide</nav>
+  <article>
+    <h1>Arrow Out! Strategy Guide: A Clear Method for Solving Crowded Boards</h1>
+    <p class="lead">Arrow Out! is a path-planning puzzle: each arrow must leave the board in the direction its head points, and another arrow in that corridor can block it. The challenge is not simply finding an arrow that points outward. It is finding a safe removal order that keeps the remaining routes open.</p>
+    <p>This guide turns that rule into a repeatable method. It is written for the current browser game and focuses on decisions you can make by inspecting the board—no random tapping or memorised level answers required.</p>
+
+    <h2>1. Read the exit lane, not just the arrowhead</h2>
+    <p>Start at an arrowhead and mentally extend a straight line in its pointing direction until it reaches the nearest board edge. That line is its exit lane. If any part of another arrow occupies the lane, the arrow is blocked. A winding arrow body can be far from its own head and still cross a different arrow's exit lane, so inspect the full corridor rather than looking only at nearby heads.</p>
+    <ul>
+      <li>Scan one direction at a time: up, right, down, then left. This makes it easier to notice clear lanes that are easy to overlook.</li>
+      <li>Check the entire path to the edge. A gap near the head does not prove the far end of the lane is clear.</li>
+      <li>When two arrows appear to compete for the same space, check which one can leave first without relying on the other moving.</li>
+    </ul>
+
+    <h2>2. Remove independent arrows first</h2>
+    <p>Look for arrows whose exit lanes do not cross any remaining arrow. These are your safe starting moves. Removing one can expose a lane for another arrow, so after every successful move pause and scan again. Treat the board as a changing set of dependencies: one arrow may need another arrow to leave before its own corridor becomes clear.</p>
+    <p class="callout"><strong>Useful habit:</strong> after each launch, re-check the arrows that pointed toward the newly cleared space. Do not assume the rest of the board is unchanged—one removal can unlock more than one route.</p>
+
+    <h2>3. Work from open edges toward crowded areas</h2>
+    <p>On a dense board, begin with the least obstructed outer lanes and work inward when the board allows it. This is a heuristic, not a fixed rule: an edge arrow can still be blocked by a winding path, and an interior arrow may have a completely open exit. Always let the visible corridor decide. If several safe moves exist, prefer one that appears to release the most blocked lanes, then inspect the board again.</p>
+
+    <h2>4. Use zoom and fit controls as puzzle tools</h2>
+    <p>Large boards can contain many long paths. Zoom in when you need to distinguish overlapping segments, then use the board's fit control to restore a whole-board view. Pan across the board instead of making a decision from a cropped section. A route can look open in the visible area while an obstruction sits farther along the lane.</p>
+
+    <h2>5. Protect your hearts and use hints deliberately</h2>
+    <p>A blocked tap costs one of the level's three hearts. Before tapping, trace the complete exit lane. The game provides three free hints per level; use them when a careful scan still leaves several plausible choices. A hint is most valuable when it confirms a safe move you could not confidently identify, rather than replacing every board scan.</p>
+    <p>Undo brings back your last launched arrow. It is useful when you want to reconsider a successful move, but it does not replace checking the corridor before a tap. Restart resets the current board if you want to begin the level again.</p>
+
+    <h2>6. A repeatable checklist for difficult levels</h2>
+    <ol>
+      <li>Fit the board so you can understand the overall layout.</li>
+      <li>Choose one arrow and trace its head direction all the way to the edge.</li>
+      <li>Confirm that no other arrow crosses or occupies that exit lane.</li>
+      <li>Look for a safe move that may open lanes for several other arrows.</li>
+      <li>Launch one arrow, then scan the changed board again.</li>
+      <li>Zoom in for ambiguous crossings; use a hint only when the safe order is still unclear.</li>
+    </ol>
+
+    <h2>Common mistakes to avoid</h2>
+    <ul>
+      <li><strong>Tapping by direction alone:</strong> an arrow pointing toward an edge is not necessarily free to leave.</li>
+      <li><strong>Checking only the head:</strong> another arrow's winding body may cross the exit lane farther away.</li>
+      <li><strong>Rushing after a clear:</strong> the next best move can change after each arrow is removed.</li>
+      <li><strong>Ignoring the full board:</strong> use zoom and pan, but return to a whole-board view to understand how paths relate.</li>
+      <li><strong>Spending hints too early:</strong> scan systematically first so hints remain available for genuinely confusing positions.</li>
+    </ul>
+
+    <h2>Frequently asked questions</h2>
+    <h3>Is there always a solution?</h3>
+    <p>The current campaign's level-generation and validation process checks that generated boards have a complete removal order. That does not mean every move is safe; the player still needs to discover the correct sequence.</p>
+    <h3>Can I play on a phone?</h3>
+    <p>Yes. Arrow Out! is designed for touch as well as desktop input. On large boards, use the on-screen zoom and fit controls to inspect paths more comfortably.</p>
+    <h3>Where can I learn the basic rules?</h3>
+    <p>Read the <a href="about.html">Arrow Out! how-to-play guide</a> for controls, hearts, hints, progression and game features. Then <a href="./">open the game</a> and practise the lane-checking method above.</p>
+
+    <div class="actions"><a class="button" href="./">Play Arrow Out!</a><a class="button" href="about.html">Basic rules &amp; FAQ</a><a class="button" href="/free-online-games/">Explore more browser games</a></div>
+    <p class="muted">This is an independent player guide from GoGo Company. Game behaviour can change as the game is updated; use the instructions shown in the current build if they differ from this page.</p>
+  </article>
+</main>
+</body>
+</html>
