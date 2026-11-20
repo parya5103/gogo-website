@@ -87,10 +87,17 @@ for (const phrase of [
   "Arrow Out! — a tap-away arrow puzzle",
   "Crystal Quest — a 27-level match-3 adventure",
   "Read the complete Arrow Out! game guide",
+  "Arrow Out! strategy guide",
   "Read the Crystal Quest match-3 guide"
 ]) {
   assert.ok(gamesHub.includes(phrase), "free games hub is missing useful player guidance: " + phrase);
 }
+
+const arrowStrategy = await read("arrowout/strategy.html");
+assert.match(arrowStrategy, /<link rel="canonical" href="https:\/\/gogocompany\.in\/arrowout\/strategy\.html"/);
+assert.match(arrowStrategy, /Trace the entire|trace the complete|trace its head direction/i);
+assert.match(arrowStrategy, /FAQPage/);
+assert.ok(sitemap.includes("<loc>https://gogocompany.in/arrowout/strategy.html</loc>"), "Arrow Out strategy guide must be included in sitemap");
 
 const keywordPages = [
   ["sarkari-sarthi/index.html", /sarkari naukri 2026/i],
