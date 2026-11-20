@@ -32,10 +32,11 @@ assert.match(home,/og:image:height["']?\s+content=["']630/i);
 
 const sitemap=await read("sitemap.xml");
 const locs=[...sitemap.matchAll(/<loc>\s*([^<]+)\s*<\/loc>/gi)].map(m=>m[1].trim());
-assert.ok(locs.length >= 19,"root sitemap must contain the canonical site URLs and generated pSEO hubs");
+assert.ok(locs.length >= 17,"root sitemap must contain core product/legal pages and only eligible generated hubs");
 assert.equal(new Set(locs).size,locs.length,"root sitemap URLs must be unique");
 assert.equal((sitemap.match(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g)||[] ).length,locs.length,"all root URLs require ISO lastmod");
 for(const url of locs){const u=new URL(url);assert.equal(u.protocol,"https:");assert.equal(u.hostname,"gogocompany.in")}
+for(const path of ["sarkari-sarthi/latest-govt-jobs/index.html","sarkari-sarthi/admit-card/index.html","sarkari-sarthi/sarkari-result/index.html","sarkari-sarthi/mp-govt-jobs/index.html"]){const page=await read(path);const url="https://gogocompany.in/"+path.replace(/index\.html$/,"");const robots=page.match(/<meta name="robots" content="([^"]+)"/i)?.[1]||"";if(robots.startsWith("noindex"))assert.ok(!locs.includes(url),"noindex pSEO pages must not appear in sitemap: "+url)}
 const robots=await read("robots.txt");
 assert.ok(robots.includes("Sitemap: https://gogocompany.in/sitemap.xml"));
 const index=await read("sitemap-index.xml");

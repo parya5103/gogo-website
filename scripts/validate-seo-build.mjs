@@ -21,8 +21,10 @@ for (const productPath of ["arrowout", "crystalquest", "sarkari-sarthi", "pikane
 assert.match(homepage, /id=["']critical-css["']/);
 assert.match(homepage, /rel=["']preload["'][^>]*assets\/css\/style\.css/);
 assert.match(homepage, /<main id=["']main["']>/);
+for (const policyPath of ["/about.html", "/contact/", "/privacy-policy/", "/terms-and-conditions/", "/disclaimer/"]) {
+  assert.ok(homepage.includes('href="' + policyPath + '"'), "homepage must expose trust/policy link " + policyPath);
+}
 assert.match(homepage, /GOGO-TRENDING-START[\s\S]*GOGO-TRENDING-END/);
-assert.match(homepage, /daily-updates/);
 assert.match(sharedJs, /nav \+=\s*['"]<li/);
 assert.match(sharedJs, /links \+=\s*['"]<li/);
 assert.match(css, /--accent:\s*#1e40af/i);
@@ -66,7 +68,12 @@ for (const [path, h1] of pages) {
   assert.ok(title.length <= 60, path + " title exceeds 60 characters");
   assert.ok(description.length <= 155, path + " meta description exceeds 155 characters");
   const canonical = html.match(/<link rel="canonical" href="([^"]+)"/i)?.[1];
-  assert.ok(canonical && sitemap.includes("<loc>" + canonical + "</loc>"), path + " canonical missing from sitemap");
+  const robots = html.match(/<meta name="robots" content="([^"]+)"/i)?.[1] || "index,follow";
+  if (robots.startsWith("noindex")) {
+    assert.ok(canonical && !sitemap.includes("<loc>" + canonical + "</loc>"), path + " noindex canonical must not be listed in sitemap");
+  } else {
+    assert.ok(canonical && sitemap.includes("<loc>" + canonical + "</loc>"), path + " indexable canonical missing from sitemap");
+  }
 }
 const gta6 = await read("gta6/index.html");
 const gtaTitle = gta6.match(/<title>([^<]+)<\/title>/i)?.[1] || "";
@@ -87,9 +94,12 @@ for (const phrase of [
 
 const keywordPages = [
   ["sarkari-sarthi/index.html", /sarkari naukri 2026/i],
-  ["pikanews/index.html", /aaj ki Bollywood khabar/i],
   ["arrowout/about.html", /arrow wala puzzle game/i]
 ];
+const pikanews = await read("pikanews/index.html");
+assert.match(pikanews, /<meta name="robots" content="noindex,follow">/i, "aggregated PikaNews listings must remain noindex until original editorial thresholds are met");
+assert.ok(!sitemap.includes("<loc>https://gogocompany.in/pikanews/</loc>"), "noindex PikaNews homepage must not appear in the root sitemap");
+assert.doesNotMatch(pikanews, /id=["']gogo-search-intent["']/i, "keyword-stuffed SEO sections must not be injected into the aggregated PikaNews homepage");
 const crystal = await read("crystalquest/index.html");
 assert.match(crystal, /<meta name="description" content="[^"]*(match-3|match 3)[^"]*candy-crush-style/i, "Crystal Quest must expose truthful match-3 search intent in its metadata");
 for (const [path, keyword] of keywordPages) {

@@ -65,7 +65,7 @@ function gameCards() {
   return '<article class="hub-card"><h3><a href="/arrowout/">Arrow Out! — Free Arrow Puzzle Game</a></h3><p>Solve arrow-path logic puzzles across a large level collection with touch-friendly controls.</p></article>' +
     '<article class="hub-card"><h3><a href="/crystalquest/">Crystal Quest — Free Match-3 Adventure</a></h3><p>Match magical gems through a 27-level fantasy puzzle adventure with supported PWA offline play.</p></article>';
 }
-export function renderHub(hub, jobs = []) {
+export function renderHub(hub, jobs = [], indexable = hub.kind === "games" || jobs.length >= 4) {
   const cards = hub.kind === "games" ? gameCards() : jobs.map(jobCard).filter(Boolean).slice(0, 24).join("\n");
   const fallback = hub.kind === "games" ? "" : '<p class="hub-empty">No matching live entries are available in the current synced dataset. Browse the <a href="/sarkari-sarthi/">Sarkari Sarthi portal</a> for the latest collection. This page will populate when matching records are published.</p>';
   const url = DOMAIN + "/" + hub.path.replace(/index\.html$/, "");
@@ -82,7 +82,7 @@ export function renderHub(hub, jobs = []) {
   const crumbRoot = hub.kind==="games" ? '<a href="/">Home</a>' : '<a href="/">Home</a> / <a href="/sarkari-sarthi/">Sarkari Sarthi</a>';
   return '<!doctype html>\n<html lang="en-IN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
     '<title>' + escapeHtml(hub.title.slice(0,60)) + '</title><meta name="description" content="' + escapeHtml(hub.description.slice(0,155)) + '">' +
-    '<meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="' + escapeHtml(url) + '">' +
+    '<meta name="robots" content="' + (indexable ? "index,follow" : "noindex,follow") + ',max-image-preview:large"><link rel="canonical" href="' + escapeHtml(url) + '">' +
     '<meta property="og:type" content="website"><meta property="og:title" content="' + escapeHtml(hub.title) + '"><meta property="og:description" content="' + escapeHtml(hub.description) + '"><meta property="og:url" content="' + escapeHtml(url) + '">' +
     '<style>:root{color-scheme:light;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#172033;background:#f7f8fc}*{box-sizing:border-box}body{margin:0;line-height:1.65}.wrap{max-width:1080px;margin:auto;padding:24px 20px}.top{background:#101827;color:#fff}.top a{color:#bfdbfe}.crumb{font-size:.95rem}.hero{padding:38px 0 24px}.hero h1{font-size:clamp(2rem,5vw,3rem);line-height:1.15}.hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}.hub-card{background:#fff;border:1px solid #dce2ec;border-radius:14px;padding:20px;overflow-wrap:anywhere}.hub-card h2,.hub-card h3{margin-top:0}.hub-card a{color:#1e40af}.hub-meta,.muted{color:#596579}.hub-empty{background:#fff;padding:20px;border-left:4px solid #1e40af}.faq{margin-top:36px}.faq details{background:#fff;border:1px solid #dce2ec;border-radius:10px;padding:14px;margin:10px 0}footer{border-top:1px solid #dce2ec;margin-top:40px}</style>' +
     '<script type="application/ld+json">' + serializeJsonLd(schema) + '</script></head><body><header class="top"><div class="wrap"><a href="/">GoGo Company</a></div></header><main class="wrap"><nav class="crumb" aria-label="Breadcrumb">' + crumbRoot + ' / ' + escapeHtml(hub.h1) + '</nav>' +
@@ -103,10 +103,27 @@ export async function generateHubs(root = ROOT) {
     const jobs = hub.keywords ? allJobs.filter(job => hub.keywords.test([job.title,job.description,job.category,job.state,job.location].filter(Boolean).join(" "))) : [];
     const path = root + "/" + hub.path;
     await mkdir(dirname(path),{recursive:true});
-    await writeFile(path,renderHub(hub,jobs));
+    const indexable = hub.kind === "games" || jobs.length >= 4;
+    await writeFile(path,renderHub(hub,jobs,indexable));
     const loc = DOMAIN + "/" + hub.path.replace(/index\.html$/,"");
-    const block = '<url><loc>' + loc + '</loc><lastmod>' + today + '</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>';
-    if (!sitemap.includes("<loc>"+loc+"</loc>")) sitemap = sitemap.replace("</urlset>", "  "+block+"\n</urlset>");
+    const escapedLoc = loc.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+    const urlBlock = new RegExp("<url>\\s*(?:(?!<url>).)*?<loc>" + escapedLoc + "</loc>(?:(?!<url>).)*?</url>\\s*","g");
+    if (!indexable) {
+      sitemap = sitemap.replace(urlBlock, "");
+    } else if (!sitemap.includes("<loc>"+loc+"</loc>")) {
+      const sitemapBlock = '<url><loc>' + loc + '</loc><lastmod>' + today + '</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>';
+      sitemap = sitemap.replace("</urlset>", "  "+sitemapBlock+"\n</urlset>");
+    }
+  }
+  let pikanewsHtml = "";
+  try { pikanewsHtml = await readFile(root + "/pikanews/index.html", "utf8"); } catch {}
+  const pikanewsNoindex = /<meta\s+name=["']robots["']\s+content=["'][^"']*\bnoindex\b/i.test(pikanewsHtml);
+  if (pikanewsNoindex) {
+    const pikanewsLoc = DOMAIN + "/pikanews/";
+    const sitemapParts = sitemap.split("<url>");
+    sitemap = sitemapParts[0] + "<url>" + sitemapParts.slice(1)
+      .filter(block => !block.includes("<loc>" + pikanewsLoc + "</loc>"))
+      .join("<url>");
   }
   await writeFile(sitemapPath,sitemap.endsWith("\n")?sitemap:sitemap+"\n");
   console.log("Generated",HUBS.length,"programmatic SEO hubs.");
