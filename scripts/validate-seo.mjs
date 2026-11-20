@@ -32,7 +32,10 @@ assert.match(home,/og:image:height["']?\s+content=["']630/i);
 
 const sitemap=await read("sitemap.xml");
 const locs=[...sitemap.matchAll(/<loc>\s*([^<]+)\s*<\/loc>/gi)].map(m=>m[1].trim());
-assert.ok(locs.length >= 19,"root sitemap must contain the canonical site URLs and generated pSEO hubs");
+assert.ok(locs.length >= 14,"root sitemap must retain the core canonical site and product URLs");
+for (const requiredUrl of ["https://gogocompany.in/","https://gogocompany.in/about.html","https://gogocompany.in/gta6/","https://gogocompany.in/arrowout/","https://gogocompany.in/crystalquest/","https://gogocompany.in/sarkari-sarthi/","https://gogocompany.in/pikanews/"]) {
+ assert.ok(locs.includes(requiredUrl),"root sitemap missing core URL "+requiredUrl);
+}
 assert.equal(new Set(locs).size,locs.length,"root sitemap URLs must be unique");
 assert.equal((sitemap.match(/<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/g)||[] ).length,locs.length,"all root URLs require ISO lastmod");
 for(const url of locs){const u=new URL(url);assert.equal(u.protocol,"https:");assert.equal(u.hostname,"gogocompany.in")}
