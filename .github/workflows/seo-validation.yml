@@ -7,6 +7,8 @@ on:
       - 'index.html'
       - 'assets/css/style.css'
       - 'package.json'
+      - 'frontend/**'
+      - 'vite.config.js'
       - 'free-online-games/**'
       - 'sitemap*.xml'
       - 'robots.txt'
@@ -46,9 +48,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+      - name: Install build dependencies
+        run: npm install --no-save --no-package-lock --no-audit --no-fund
+      - name: Build the prerendered homepage
+        run: npm run build:site
       - name: Check Node.js script syntax
         run: |
           node --version
+          node --check scripts/prerender-home.mjs
+          node --check scripts/publish-site-build.mjs
           node --check scripts/apply-seo-enhancements.mjs
           node --check scripts/update-seo-sitemaps.mjs
           node --check scripts/seo-sync-ping.mjs
