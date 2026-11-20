@@ -21,6 +21,9 @@ for (const productPath of ["arrowout", "crystalquest", "sarkari-sarthi", "pikane
 assert.match(homepage, /id=["']critical-css["']/);
 assert.match(homepage, /rel=["']preload["'][^>]*assets\/css\/style\.css/);
 assert.match(homepage, /<main id=["']main["']>/);
+for (const policyPath of ["/about.html", "/contact/", "/privacy-policy/", "/terms-and-conditions/", "/disclaimer/"]) {
+  assert.ok(homepage.includes('href="' + policyPath + '"'), "homepage must expose trust/policy link " + policyPath);
+}
 assert.match(homepage, /GOGO-TRENDING-START[\s\S]*GOGO-TRENDING-END/);
 assert.match(sharedJs, /nav \+=\s*['"]<li/);
 assert.match(sharedJs, /links \+=\s*['"]<li/);
