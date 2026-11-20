@@ -40,7 +40,9 @@ for (const phrase of [
   "Arrow Out! — a tap-away arrow puzzle",
   "Crystal Quest — a 27-level match-3 adventure",
   "Read the complete Arrow Out! game guide",
+  "Arrow Out! strategy guide",
   "Read the Crystal Quest match-3 guide",
+  "Crystal Quest strategy guide",
   "How to start playing",
   "Which game should you try first?"
 ]) assert.ok(gamesPage.includes(phrase), "Generated games hub is missing: " + phrase);
