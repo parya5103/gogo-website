@@ -13,7 +13,9 @@
   },
   "dependencies": {
     "express": "^5.1.0",
-    "firebase": "^11.4.0"
+    "firebase": "^11.4.0",
+    "@openuidev/react-lang": "^1.1.1",
+    "zod": "^4.0.0"
   },
   "devDependencies": {
     "@firebase/eslint-plugin-security-rules": "latest",
