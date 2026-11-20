@@ -25,7 +25,7 @@ async function getFeeds() {
     .filter(job => job && job.status === 'active' && safeUrl(job.url))
     .filter(job => { const last = parseDate(job.important_dates?.last_date); return !last || last >= new Date(); })
     .slice(0, 3)
-    .map(job => ({ id: String(job.id || job.title), title: String(job.title || 'Recruitment notice').slice(0, 180), organization: String(job.organization || job.source || '').slice(0, 100), url: safeUrl(job.url), lastDate: job.important_dates?.last_date || '' }));
+    .map(job => ({ id: String(job.id || job.title), title: String(job.title || 'Recruitment notice').slice(0, 180), organization: String(job.organization || '').slice(0, 100), source: String(job.source || 'Recruitment source').slice(0, 80), url: safeUrl(job.url), lastDate: job.important_dates?.last_date || '' }));
   const news = await json(ROOT + '/pikanews/data/latest.json', []);
   const stories = (Array.isArray(news) ? news : []).filter(item => item && item.title && safeUrl(item.url))
     .slice(0, 3).map(item => ({ id: String(item.id || item.url), title: String(item.title).slice(0, 180), source: String(item.source || 'Original publisher').slice(0, 80), url: safeUrl(item.url), published_at: item.published_at || '' }));
