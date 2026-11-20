@@ -30,6 +30,10 @@ assert.match(page,/FAQPage/);
 assert.match(page,/Recruitment &lt;2026&gt;/);
 assert.match(page,/rel="canonical"/);
 assert.doesNotMatch(page,/\[TODO\]|placeholder/i);
+const thinHubPage = renderHub(hub,[{title:"One listing only",url:"https://example.gov.in/one"}]);
+assert.match(thinHubPage,/name="robots" content="noindex,follow"/,"job hubs with fewer than five active listings must stay out of search");
+const substantialHubPage = renderHub(hub,Array.from({length:5},(_,i)=>({title:"Recruitment "+i,url:"https://example.gov.in/job/"+i})));
+assert.match(substantialHubPage,/name="robots" content="index,follow,max-image-preview:large"/,"job hubs with five or more active listings may be indexed");
 const gamesHub = {path:"free-online-games/index.html",slug:"free-online-games",title:"Free Online Browser Games | Play on Mobile & PC",description:"Play two free browser puzzle games on mobile or PC: Arrow Out! has 1,000 tap-away levels; Crystal Quest has 27 match-3 fantasy levels.",h1:"Play Free Online Browser Games",kind:"games",faq:[["Can I play these games without downloading an app?","Yes. Both games run in supported browsers."]]};
 const gamesPage = renderHub(gamesHub);
 for (const phrase of [
