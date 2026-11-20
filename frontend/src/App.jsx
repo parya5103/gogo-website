@@ -19,7 +19,7 @@ function Icon({name,size=20}) {
   return <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{paths[name] || paths.spark}</svg>;
 }
 function useTheme() {
-  const [theme,setTheme] = useState(() => document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+  const [theme,setTheme] = useState(() => typeof document !== 'undefined' && document.documentElement.classList.contains('dark') ? 'dark' : 'light');
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
     document.documentElement.dataset.theme = theme;
@@ -65,7 +65,7 @@ function BentoProductGrid() {
 function HeroSection() {
  return <section className="hero-section"><div className="hero-grid-bg"/><div className="hero-inner section-shell"><div className="hero-copy"><span className="hero-kicker"><i/> INDEPENDENT DIGITAL STUDIO · INDIA</span><h1>Play. Prepare.<br/><em>Grow with GoGo.</em></h1><p>Original games, practical career information and publisher-attributed stories — thoughtfully brought together in one place.</p><div className="hero-ctas"><a className="button button-primary" href="#products">Explore products <Icon name="arrow"/></a><a className="button button-secondary" href="/about/">Meet GoGo Company</a></div><div className="hero-points"><span><Icon name="check" size={16}/> Made for real screens</span><span><Icon name="check" size={16}/> Clear source attribution</span></div></div><div className="hero-visual" aria-hidden="true"><div className="visual-orbit orbit-one"/><div className="visual-orbit orbit-two"/><div className="visual-core"><span className="brand-mark">G<span>.</span></span><b>ONE HOME</b><small>FOUR EXPERIENCES</small></div><span className="orbit-chip chip-a">01 · PLAY</span><span className="orbit-chip chip-b">02 · PREPARE</span><span className="orbit-chip chip-c">03 · DISCOVER</span><span className="orbit-chip chip-d">04 · EXPLORE</span></div></div></section>;
 }
-function safeDate(value) { if(!value) return ''; const date=new Date(value); return Number.isNaN(date.getTime())?'':date.toLocaleDateString('en-IN',{day:'numeric',month:'short'}); }
+function safeDate(value) { if(!value) return ''; const date=new Date(value); return Number.isNaN(date.getTime())?'':date.toLocaleDateString('en-IN',{day:'numeric',month:'short',timeZone:'UTC'}); }
 function TodayOnGoGo({feeds={}}) {
  const jobs=(feeds.jobs||[]).slice(0,3), news=(feeds.news||[]).slice(0,3), trends=(feeds.trends||[]).slice(0,8);
  return <section className="section-shell live-section" id="today" aria-labelledby="today-title"><div className="section-heading"><div><span className="eyebrow">FRESH FROM THE NETWORK</span><h2 id="today-title">Today on <em>GoGo Company.</em></h2></div><p>Feed snapshots are sourced from their respective portals. Check the original source for full details.</p></div>
