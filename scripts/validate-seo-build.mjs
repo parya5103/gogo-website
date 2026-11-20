@@ -13,6 +13,8 @@ const pages = [
 const homepage = await read("index.html");
 const sharedJs = await read("assets/js/main.js");
 const css = await read("assets/css/style.css");
+const reactHomepage = await read("assets/js/gogo-home-react.js");
+const reactHomepageCss = await read("assets/css/gogo-home-react.css");
 const sitemap = await read("sitemap.xml");
 assert.match(homepage, /Discover original browser games, practical career information and publisher-linked stories/, "homepage hero must accurately describe GoGo product categories");
 assert.match(homepage, /verification labels[\s\S]*original recruiting authority notice/i, "Sarkari Sarthi homepage copy must explain verification and official-source checks");
@@ -153,17 +155,16 @@ assert.ok(sharedJs.includes("Browser games, career information and digital media
 assert.doesNotMatch(homepage, /target=["']_blank["']/i, "same-site homepage navigation should not open unnecessary new tabs");
 
 
-const homeHero = homepage.slice(homepage.indexOf('<section class="hero"'), homepage.indexOf('<section class="section product-section"'));
-assert.match(homeHero, /aria-labelledby="home-hero-title"/, "homepage hero must have a programmatic heading");
-assert.match(homeHero, /class="hero-showcase"/, "homepage must expose the product launchpad");
+assert.match(homepage, /id=["']gogo-react-root["']/, "homepage must mount the React product experience");
+assert.match(homepage, /assets\/js\/gogo-home-react\.js/, "homepage must load the React entry module");
+assert.match(reactHomepage, /className:"gh-hero"[,\s\S]*aria-labelledby:"home-hero-title"/, "React hero must expose an accessible heading relationship");
+assert.match(reactHomepage, /id:"home-hero-title"/, "React hero must provide its referenced heading id");
+assert.match(reactHomepage, /className:"gh-product-grid"/, "React homepage must expose the product launchpad grid");
 for (const productPath of ["arrowout", "crystalquest", "sarkari-sarthi", "pikanews", "gta6"]) {
-  assert.ok(homeHero.includes('href="./' + productPath + '/'), "homepage launchpad must link to " + productPath);
+  assert.ok(reactHomepage.includes('href:"./' + productPath + '/'), "React launchpad must link to " + productPath);
 }
-assert.match(homepage, /class="card-grid product-grid"/, "homepage product shelf must use the dedicated responsive product grid");
-assert.doesNotMatch(homepage, /target=["']_blank["']/i, "same-site homepage links must not open unnecessary new tabs");
-assert.match(css, /GoGo homepage: Digital Launchpad art direction/);
-assert.match(css, /@media \(max-width: 680px\)[\s\S]*product-grid/);
-assert.match(css, /@media \(prefers-reduced-motion: reduce\)[\s\S]*showcase-link/);
+assert.match(reactHomepageCss, /@media\(max-width:680px\)[\s\S]*gh-product-grid/, "React product cards must adapt to mobile screens");
+assert.match(reactHomepageCss, /@media\(prefers-reduced-motion:reduce\)[\s\S]*transition:none/, "React homepage must respect reduced-motion preferences");
 assert.match(homepage, /<title>GoGo Company/);
 
 console.log("SEO build validation passed: homepage, list semantics, contrast tokens, 5 canonical hubs and sitemap.");
