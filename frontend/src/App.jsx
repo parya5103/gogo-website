@@ -30,7 +30,7 @@ function ThemeProvider({children}) {
 }
 function useTheme() { return useContext(ThemeContext); }
 function Navbar() {
-  const [theme,setTheme] = useTheme();
+  const {theme,setTheme} = useTheme();
   const [open,setOpen] = useState(false);
   const close = () => setOpen(false);
   useEffect(() => { if (!open) return; const onKey = event => { if (event.key === 'Escape') setOpen(false); }; document.addEventListener('keydown', onKey); return () => document.removeEventListener('keydown', onKey); }, [open]);
