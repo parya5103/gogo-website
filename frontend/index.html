@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+  <script>
+    (() => {
+      try {
+        const saved = localStorage.getItem('gogo-theme');
+        const theme = saved === 'light' || saved === 'dark' ? saved :
+          (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+        document.documentElement.dataset.theme = theme;
+      } catch (_) { document.documentElement.dataset.theme = 'light'; }
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta name="author" content="GoGo Company">
+  <meta name="theme-color" content="#f7f8fc">
+  <title>GoGo Company | Play, Prepare & Grow</title>
+  <meta name="description" content="Explore GoGo Company: Arrow Out! and Crystal Quest browser games, Sarkari Sarthi career information and publisher-attributed PikaNews.">
+  <link rel="canonical" href="https://gogocompany.in/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+  <link rel="dns-prefetch" href="//firestore.googleapis.com">
+  <link rel="dns-prefetch" href="//identitytoolkit.googleapis.com">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GoGo Company">
+  <meta property="og:title" content="GoGo Company | Play, Prepare & Grow">
+  <meta property="og:description" content="Games, career information and publisher-attributed stories from GoGo Company, an independent Indian digital products organization.">
+  <meta property="og:url" content="https://gogocompany.in/">
+  <meta property="og:image" content="https://gogocompany.in/assets/seo/gogo-company-social.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="GoGo Company | Play, Prepare & Grow">
+  <meta name="twitter:description" content="Discover games, career information and publisher-attributed news from GoGo Company.">
+  <meta name="twitter:image" content="https://gogocompany.in/assets/seo/gogo-company-social.svg">
+  <script type="application/ld+json" id="gogo-organization-jsonld">
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"Organization","@id":"https://gogocompany.in/#organization","name":"Gogo Company","alternateName":["GOGO COMPANY","Gogo Company India","gogocompany.in"],"url":"https://gogocompany.in/","email":"officialgogocompany@gmail.com","description":"Gogo Company is an independent India-based technology, digital media and web gaming organization headquartered in Indore, Madhya Pradesh. Founded by Pratik Arya.","founder":{"@id":"https://gogocompany.in/#founder"},"address":{"@type":"PostalAddress","addressLocality":"Indore","addressRegion":"Madhya Pradesh","addressCountry":"IN"},"owns":[{"@id":"https://gogocompany.in/arrowout/#game"},{"@id":"https://gogocompany.in/crystalquest/#game"},{"@id":"https://gogocompany.in/sarkari-sarthi/#website"},{"@id":"https://gogocompany.in/pikanews/#website"}]},
+    {"@type":"Person","@id":"https://gogocompany.in/#founder","name":"Pratik Arya","worksFor":{"@id":"https://gogocompany.in/#organization"}},
+    {"@type":"WebSite","@id":"https://gogocompany.in/#website","url":"https://gogocompany.in/","name":"GoGo Company","publisher":{"@id":"https://gogocompany.in/#organization"},"inLanguage":"en-IN"},
+    {"@type":"WebSite","@id":"https://gogocompany.in/sarkari-sarthi/#website","name":"Sarkari Sarthi","url":"https://gogocompany.in/sarkari-sarthi/","publisher":{"@id":"https://gogocompany.in/#organization"}},
+    {"@type":"WebSite","@id":"https://gogocompany.in/pikanews/#website","name":"PikaNews","url":"https://gogocompany.in/pikanews/","publisher":{"@id":"https://gogocompany.in/#organization"}},
+    {"@type":"VideoGame","@id":"https://gogocompany.in/arrowout/#game","name":"Arrow Out!","url":"https://gogocompany.in/arrowout/","publisher":{"@id":"https://gogocompany.in/#organization"}},
+    {"@type":"VideoGame","@id":"https://gogocompany.in/crystalquest/#game","name":"Crystal Quest","url":"https://gogocompany.in/crystalquest/","publisher":{"@id":"https://gogocompany.in/#organization"}},
+    {"@type":"FAQPage","@id":"https://gogocompany.in/#faq","mainEntity":[
+      {"@type":"Question","name":"What is GoGo Company?","acceptedAnswer":{"@type":"Answer","text":"GoGo Company is an independent Indian technology, digital media and web gaming organization headquartered in Indore, Madhya Pradesh."}},
+      {"@type":"Question","name":"Which products does GoGo Company operate?","acceptedAnswer":{"@type":"Answer","text":"GoGo Company operates Arrow Out!, Crystal Quest, Sarkari Sarthi and PikaNews."}},
+      {"@type":"Question","name":"Is Sarkari Sarthi a government website?","acceptedAnswer":{"@type":"Answer","text":"No. Sarkari Sarthi is an independent information portal. Readers should verify every notice with the original recruiting authority."}},
+      {"@type":"Question","name":"Does PikaNews publish original reporting?","acceptedAnswer":{"@type":"Answer","text":"PikaNews is a publisher-attributed news aggregator that links to original publishers."}}
+    ]}
+  ]}
+  </script>
+</head>
+<body class="theme-gogo">
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <div id="root"><!-- prerendered homepage is inserted here during the production build --></div>
+  <script type="module" src="/src/main.jsx"></script>
+  <script src="/assets/js/main.js" defer></script>
+  <script src="/assets/js/ads.js" defer></script>
+  <script src="/assets/js/gogo-notifications.min.js" defer></script>
+</body>
+</html>
