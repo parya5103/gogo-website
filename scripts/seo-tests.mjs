@@ -159,7 +159,7 @@ check('sitemap.xml: locs absolute, unique, targets exist, no noindex URLs', () =
     else if (path.endsWith('/')) path += 'index.html';
     assert(existsSync(resolve(root, path)), 'sitemap target missing in repo: ' + path);
   }
-  const forbidden = ['/account/', '/admin/', '/unsubscribe/', '/404.html', '/arrow-out/', '/crystal-quest/', '/sarkari/'];
+  const forbidden = ['/account/', '/admin/', '/unsubscribe/', '/404.html', '/arrow-out/', '/crystal-quest/', '/sarkari/', '/pikanews/'];
   for (const f of forbidden) {
     assert(!locs.some((l) => l.endsWith(f)), 'noindex/redirect URL must not be in sitemap: ' + f);
   }
@@ -180,7 +180,6 @@ check('sitemap.xml: all indexable gogo pages, product roots and arrowout sub-pag
     'https://gogocompany.in/arrowout/privacy.html',
     'https://gogocompany.in/crystalquest/',
     'https://gogocompany.in/sarkari-sarthi/',
-    'https://gogocompany.in/pikanews/',
   ];
   for (const u of must) assert(sm.includes(u), 'sitemap missing ' + u);
 });
