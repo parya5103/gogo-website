@@ -93,7 +93,10 @@ for (const phrase of [
   assert.ok(gamesHub.includes(phrase), "free games hub is missing useful player guidance: " + phrase);
 }
 
+const arrowStrategySource = await read("scripts/content/arrowout-strategy.html");
 const arrowStrategy = await read("arrowout/strategy.html");
+assert.ok(arrowStrategySource.length > 9000, "central Arrow Out strategy guide source must remain substantive");
+assert.equal(arrowStrategy, arrowStrategySource, "published Arrow Out strategy guide must match its central source after post-sync enhancements");
 assert.match(arrowStrategy, /<link rel="canonical" href="https:\/\/gogocompany\.in\/arrowout\/strategy\.html"/);
 assert.match(arrowStrategy, /Trace the entire|trace the complete|trace its head direction/i);
 assert.match(arrowStrategy, /FAQPage/);
