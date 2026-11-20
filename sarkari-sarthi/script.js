@@ -142,6 +142,7 @@ function toggleBookmark(jobId) {
 
 // Global variables
 let jobsData = [];
+let needsReviewJobsCount = 0;
 let jobsLoadFailed = false; // true when the job manifest could not be loaded (no fake fallback jobs)
 let filteredJobs = [];
 let currentPage = 1;
@@ -355,23 +356,37 @@ function getRecordTimestamp(job) {
  * Filter out jobs whose last date has already passed, so closed
  * vacancies are never displayed as active openings.
  */
+function isJobSearchEligible(job, now) {
+    const status = String(job.status || '').toLowerCase();
+    const verificationStatus = String(job.verification_status || '').toLowerCase();
+    if (['cancelled', 'expired', 'closed'].includes(status)) return false;
+    if (!['official_verified', 'secondary_source_only'].includes(verificationStatus)) return false;
+    const verifiedAt = Date.parse(job.last_verified || '');
+    if (!Number.isFinite(verifiedAt)) return false;
+    const nowMs = now instanceof Date ? now.getTime() : Date.parse(now);
+    if (!Number.isFinite(nowMs)) return false;
+    return nowMs >= verifiedAt && nowMs - verifiedAt <= 14 * 24 * 60 * 60 * 1000;
+}
+
 function filterExpiredJobs(jobs) {
     const now = new Date();
-    now.setHours(0, 0, 0, 0);
+    const today = new Date(now);
+    today.setHours(0, 0, 0, 0);
     return jobs.filter(job => {
         // Server-side normalized status (Phase B) is authoritative when
         // present; the date check below remains a safety net for old
         // records that never passed through normalize_job.
         const status = String(job.status || '').toLowerCase();
-        const verificationStatus = String(job.verification_status || '').toLowerCase();
-        if (['cancelled', 'expired', 'closed'].includes(status)
-            || ['cancelled', 'expired'].includes(verificationStatus)) return false;
+        if (['cancelled', 'expired', 'closed'].includes(status)) return false;
+        // Needs-review, unknown, and verification records older than 14 days
+        // are withheld from search until the source is checked again.
+        if (!isJobSearchEligible(job, now)) return false;
         const lastDateStr = job.important_dates && job.important_dates.last_date;
         const lastDate = parseJobDate(lastDateStr);
         // Keep jobs without a parseable last date: absence of a date is
         // not evidence that a vacancy has closed.
         if (!lastDate) return true;
-        return lastDate >= now;
+        return lastDate >= today;
     });
 }
 
@@ -413,12 +428,20 @@ async function loadJobs() {
         const response = await fetch('jobs/job_manifest.json');
         if (response.ok) {
             const manifest = await response.json();
-            jobsData = filterExpiredJobs(manifest.jobs || []);
+            const allJobs = Array.isArray(manifest.jobs) ? manifest.jobs : [];
+            const now = new Date();
+            needsReviewJobsCount = allJobs.filter(job => {
+                const status = String(job.status || '').toLowerCase();
+                return !['cancelled', 'expired', 'closed'].includes(status)
+                    && !isJobSearchEligible(job, now);
+            }).length;
+            jobsData = filterExpiredJobs(allJobs);
             populateCategoryFilter();
         } else {
             // Manifest missing or unreachable: show an honest error
             // state. Never fall back to hard-coded sample jobs.
             jobsData = [];
+            needsReviewJobsCount = 0;
             jobsLoadFailed = true;
         }
 
@@ -436,6 +459,7 @@ async function loadJobs() {
         console.error('Error loading jobs:', error);
         // Honest error state: no fake sample-job fallback.
         jobsData = [];
+        needsReviewJobsCount = 0;
         jobsLoadFailed = true;
 
         jobsData.forEach(job => {
@@ -1088,10 +1112,7 @@ function updateJobCounts() {
 
     const needsReviewEl = document.getElementById('needsReviewJobsCount');
     if (needsReviewEl) {
-        const needsReviewCount = jobsData.filter(job =>
-            String(job.verification_status || '').toLowerCase() === 'needs_review'
-        ).length;
-        needsReviewEl.textContent = String(needsReviewCount);
+        needsReviewEl.textContent = String(needsReviewJobsCount);
     }
 }
 
