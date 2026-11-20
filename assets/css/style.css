@@ -696,3 +696,299 @@ body.theme-gogo input, body.theme-gogo select, body.theme-gogo textarea { accent
 .trending-list a, .trending-tags a { color: var(--link); font-weight: 650; }
 .trending-source { color: var(--text-dim); font-size: .9rem; }
 .trending-empty { color: var(--text-dim); }
+
+
+/* ===== GoGo homepage: Digital Launchpad art direction =====
+   Scoped to the company homepage; product applications keep their own systems. */
+body.theme-gogo.page-body[data-page="home"] {
+  --home-hero: #101827;
+  --home-hero-deep: #0b1425;
+  --home-hero-text: #f5f8ff;
+  --home-hero-muted: #bdc9dc;
+  --home-hero-accent: #8ce4df;
+}
+body.theme-gogo.page-body[data-page="home"] .site-header {
+  background: rgba(255,255,255,.94);
+  border-bottom-color: #dfe5ef;
+}
+body.theme-gogo.page-body[data-page="home"] .hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(56px, 7vw, 88px) 0;
+  color: var(--home-hero-text);
+  border: 0;
+  background:
+    radial-gradient(ellipse at 76% 10%, rgba(70,103,190,.24), transparent 34rem),
+    radial-gradient(ellipse at 8% 100%, rgba(39,179,174,.13), transparent 30rem),
+    linear-gradient(118deg, var(--home-hero) 0%, var(--home-hero-deep) 100%);
+}
+body.theme-gogo.page-body[data-page="home"] .hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .24;
+  background-image: linear-gradient(rgba(145,170,210,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(145,170,210,.12) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: linear-gradient(90deg, transparent, #000 45%, #000);
+}
+body.theme-gogo.page-body[data-page="home"] .hero-layout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(320px, .92fr);
+  gap: clamp(28px, 5vw, 68px);
+  align-items: center;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+body.theme-gogo.page-body[data-page="home"] .hero-copy { min-width: 0; max-width: 660px; }
+body.theme-gogo.page-body[data-page="home"] .hero .kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  margin: 0 0 20px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #c6d3e8;
+  font-size: .76rem;
+  letter-spacing: .13em;
+}
+body.theme-gogo.page-body[data-page="home"] .kicker-mark,
+body.theme-gogo.page-body[data-page="home"] .showcase-pulse {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  border-radius: 50%;
+  background: var(--home-hero-accent);
+  box-shadow: 0 0 0 4px rgba(140,228,223,.12);
+}
+body.theme-gogo.page-body[data-page="home"] .hero h1 {
+  max-width: 12ch;
+  margin: 0;
+  color: var(--home-hero-text);
+  font-size: clamp(2.8rem, 6.2vw, 5.15rem);
+  line-height: .99;
+  letter-spacing: -.065em;
+  font-weight: 780;
+}
+body.theme-gogo.page-body[data-page="home"] .hero h1 .accent { color: var(--home-hero-accent); }
+body.theme-gogo.page-body[data-page="home"] .hero p.lead {
+  max-width: 52ch;
+  margin: 24px 0 0;
+  color: var(--home-hero-muted);
+  font-size: clamp(1rem, 1.6vw, 1.13rem);
+  line-height: 1.8;
+}
+body.theme-gogo.page-body[data-page="home"] .hero-actions { gap: 12px; margin-top: 28px; }
+body.theme-gogo.page-body[data-page="home"] .hero .btn {
+  min-height: 50px;
+  padding: 12px 22px;
+  border-radius: 12px;
+  font-size: .96rem;
+}
+body.theme-gogo.page-body[data-page="home"] .hero .btn-primary {
+  color: #0d1b2b;
+  background: var(--home-hero-accent);
+  border-color: var(--home-hero-accent);
+  box-shadow: 0 8px 24px rgba(85,202,194,.16);
+}
+body.theme-gogo.page-body[data-page="home"] .hero .btn-primary:hover { color: #0d1b2b; background: #b0f1eb; }
+body.theme-gogo.page-body[data-page="home"] .hero .btn-ghost {
+  color: #edf3ff;
+  border-color: #52627d;
+  background: rgba(255,255,255,.035);
+}
+body.theme-gogo.page-body[data-page="home"] .hero .btn-ghost:hover {
+  color: #fff;
+  border-color: var(--home-hero-accent);
+  background: rgba(140,228,223,.08);
+}
+body.theme-gogo.page-body[data-page="home"] .hero-footnote {
+  margin: 18px 0 0;
+  color: #92a2bb;
+  font-size: .83rem;
+}
+body.theme-gogo.page-body[data-page="home"] .hero-showcase {
+  min-width: 0;
+  padding: clamp(18px, 2.6vw, 26px);
+  border: 1px solid rgba(142,169,211,.25);
+  border-radius: 26px;
+  background: linear-gradient(155deg, rgba(27,43,70,.92), rgba(13,25,45,.96));
+  box-shadow: 0 28px 70px rgba(0,0,0,.24), inset 0 1px rgba(255,255,255,.06);
+}
+body.theme-gogo.page-body[data-page="home"] .showcase-topline,
+body.theme-gogo.page-body[data-page="home"] .showcase-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #9eafca;
+  font-size: .66rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+}
+body.theme-gogo.page-body[data-page="home"] .showcase-topline > span:first-child { display: inline-flex; align-items: center; gap: 9px; }
+body.theme-gogo.page-body[data-page="home"] .showcase-pulse { width: 7px; height: 7px; flex-basis: 7px; }
+body.theme-gogo.page-body[data-page="home"] .showcase-edition { color: #7185a6; }
+body.theme-gogo.page-body[data-page="home"] .showcase-heading {
+  margin: 22px 0 14px;
+  color: #f5f8ff;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -.035em;
+}
+body.theme-gogo.page-body[data-page="home"] .showcase-links { display: grid; gap: 7px; }
+body.theme-gogo.page-body[data-page="home"] .showcase-link {
+  display: grid;
+  grid-template-columns: 40px minmax(0,1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  min-height: 62px;
+  padding: 9px 10px;
+  border: 1px solid transparent;
+  border-radius: 13px;
+  color: #f3f6fd;
+  text-decoration: none;
+  transition: background .16s ease, border-color .16s ease, transform .16s ease;
+}
+body.theme-gogo.page-body[data-page="home"] .showcase-link:hover {
+  color: #fff;
+  background: rgba(255,255,255,.065);
+  border-color: rgba(151,180,226,.22);
+  transform: translateX(3px);
+}
+body.theme-gogo.page-body[data-page="home"] .showcase-link:focus-visible { outline: 3px solid var(--home-hero-accent); outline-offset: 3px; }
+body.theme-gogo.page-body[data-page="home"] .showcase-symbol {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(153,178,218,.22);
+  border-radius: 11px;
+  background: rgba(255,255,255,.07);
+  color: var(--home-hero-accent);
+  font-size: 1.25rem;
+}
+body.theme-gogo.page-body[data-page="home"] .showcase-copy { display: grid; gap: 2px; min-width: 0; }
+body.theme-gogo.page-body[data-page="home"] .showcase-copy strong { font-size: .91rem; line-height: 1.3; }
+body.theme-gogo.page-body[data-page="home"] .showcase-copy small { overflow-wrap: anywhere; color: #9eafc7; font-size: .76rem; line-height: 1.4; }
+body.theme-gogo.page-body[data-page="home"] .showcase-kind {
+  color: #8da2c2;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .59rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+body.theme-gogo.page-body[data-page="home"] .showcase-bottom {
+  margin-top: 17px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(153,178,218,.18);
+  color: #778ba9;
+  font-size: .59rem;
+}
+body.theme-gogo.page-body[data-page="home"] .product-section { background: #f0f3f9; }
+body.theme-gogo.page-body[data-page="home"] .product-section .section-head { max-width: 70ch; }
+body.theme-gogo.page-body[data-page="home"] .section-eyebrow,
+body.theme-gogo.page-body[data-page="home"] .product-eyebrow {
+  margin: 0 0 10px;
+  color: #5368a4;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .13em;
+}
+body.theme-gogo.page-body[data-page="home"] .product-section .section-head h2 {
+  max-width: 17ch;
+  margin: 0;
+  color: #18233a;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -.05em;
+}
+body.theme-gogo.page-body[data-page="home"] .product-section .section-head > p:last-child {
+  max-width: 62ch;
+  margin-top: 16px;
+  color: #5b6679;
+}
+body.theme-gogo.page-body[data-page="home"] .product-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0,1fr));
+  gap: 18px;
+}
+body.theme-gogo.page-body[data-page="home"] .product-grid .product-card {
+  grid-column: span 2;
+  min-width: 0;
+  padding: 24px;
+  border-radius: 20px;
+  border-color: #e0e6f0;
+  background: #fff;
+  box-shadow: 0 12px 34px rgba(25,43,77,.055);
+}
+body.theme-gogo.page-body[data-page="home"] .product-grid .product-card:nth-child(-n+2) { grid-column: span 3; }
+body.theme-gogo.page-body[data-page="home"] .product-card .product-eyebrow { min-height: 1em; }
+body.theme-gogo.page-body[data-page="home"] .product-card h3 {
+  margin: 0;
+  color: #1b2942;
+  font-size: 1.22rem;
+  letter-spacing: -.025em;
+}
+body.theme-gogo.page-body[data-page="home"] .product-card p:not(.product-eyebrow) {
+  color: #5b6679;
+  line-height: 1.7;
+}
+body.theme-gogo.page-body[data-page="home"] .product-card .icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 15px;
+  margin-bottom: 18px;
+  box-shadow: none;
+  font-size: 1.35rem;
+}
+body.theme-gogo.page-body[data-page="home"] .product-arrow .icon { background: #e9efff; color: #3558b8; }
+body.theme-gogo.page-body[data-page="home"] .product-crystal .icon { background: #f0eaff; color: #7552c9; }
+body.theme-gogo.page-body[data-page="home"] .product-gta .icon { background: #e9f2ef; color: #26705e; }
+body.theme-gogo.page-body[data-page="home"] .product-sarkari .icon { background: #e6f3f8; color: #17688c; }
+body.theme-gogo.page-body[data-page="home"] .product-pika .icon { background: #fff2e3; color: #a65d16; }
+body.theme-gogo.page-body[data-page="home"] .product-card .card-actions { padding-top: 20px; }
+body.theme-gogo.page-body[data-page="home"] .product-card .btn {
+  min-height: 46px;
+  border-radius: 11px;
+  padding-inline: 18px;
+}
+body.theme-gogo.page-body[data-page="home"] .product-card .btn-primary { box-shadow: none; }
+body.theme-gogo.page-body[data-page="home"] .cta-band {
+  border-radius: 24px;
+  background: linear-gradient(118deg, #17294a, #334b91);
+  box-shadow: 0 18px 46px rgba(25,43,77,.14);
+}
+body.theme-gogo.page-body[data-page="home"] .cta-band .btn-inverse { background: var(--home-hero-accent); color: #102039; border-color: var(--home-hero-accent); }
+body.theme-gogo.page-body[data-page="home"] .cta-band .btn-inverse:hover { background: #b0f1eb; color: #102039; }
+body.theme-gogo.page-body[data-page="home"] .cta-band .btn-ghost { border-color: rgba(255,255,255,.58); }
+body.theme-gogo.page-body[data-page="home"] .site-footer { background: #e9edf5; }
+@media (max-width: 900px) {
+  body.theme-gogo.page-body[data-page="home"] .hero-layout { grid-template-columns: minmax(0,1fr); gap: 34px; }
+  body.theme-gogo.page-body[data-page="home"] .hero-copy { max-width: 760px; }
+  body.theme-gogo.page-body[data-page="home"] .hero h1 { max-width: 14ch; }
+  body.theme-gogo.page-body[data-page="home"] .hero-showcase { max-width: 720px; }
+}
+@media (max-width: 680px) {
+  body.theme-gogo.page-body[data-page="home"] .hero { padding: 48px 0 52px; }
+  body.theme-gogo.page-body[data-page="home"] .hero-layout { padding: 0 16px; gap: 28px; }
+  body.theme-gogo.page-body[data-page="home"] .hero h1 { font-size: clamp(2.55rem, 12vw, 4rem); }
+  body.theme-gogo.page-body[data-page="home"] .hero-actions { display: grid; grid-template-columns: minmax(0,1fr); }
+  body.theme-gogo.page-body[data-page="home"] .hero-actions .btn { width: 100%; }
+  body.theme-gogo.page-body[data-page="home"] .hero-showcase { padding: 17px; border-radius: 20px; }
+  body.theme-gogo.page-body[data-page="home"] .showcase-kind { font-size: .54rem; }
+  body.theme-gogo.page-body[data-page="home"] .product-grid { grid-template-columns: minmax(0,1fr); }
+  body.theme-gogo.page-body[data-page="home"] .product-grid .product-card,
+  body.theme-gogo.page-body[data-page="home"] .product-grid .product-card:nth-child(-n+2) { grid-column: 1; }
+  body.theme-gogo.page-body[data-page="home"] .product-grid .product-card { padding: 21px; }
+  body.theme-gogo.page-body[data-page="home"] .product-card .btn { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.theme-gogo.page-body[data-page="home"] .showcase-link { transition: none; }
+}
