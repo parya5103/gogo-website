@@ -7,6 +7,7 @@
 
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve, join } from 'node:path';
+import { runInNewContext } from 'node:vm';
 
 const root = process.cwd();
 let passed = 0;
@@ -206,6 +207,58 @@ check('robots.txt: nothing blocked, exactly three active sitemaps declared and r
     else if (path.endsWith('/')) path += 'sitemap.xml';
     assert(existsSync(resolve(root, path)), 'declared sitemap missing in repo: ' + path);
   }
+});
+
+// PikaNews public hub pages are indexable; individual syndicated story pages remain noindex.
+check('PikaNews hubs are indexable and included in their dedicated sitemap', () => {
+  const pages = [
+    'index.html', 'latest.html', 'trending.html', 'bollywood.html',
+    'hollywood.html', 'entertainment.html', 'technology.html',
+    'gaming.html', 'business.html', 'sports.html',
+  ];
+  const sm = read('pikanews/sitemap.xml');
+  for (const page of pages) {
+    const html = read('pikanews/' + page);
+    assert(!((robotsOf(html) || '').includes('noindex')), page + ' must be indexable');
+    assert(canonicalOf(html) === 'https://gogocompany.in/pikanews/' + (page === 'index.html' ? '' : page), page + ' canonical mismatch');
+    assert(sm.includes('https://gogocompany.in/pikanews/' + (page === 'index.html' ? '' : page)), page + ' missing from PikaNews sitemap');
+  }
+  const article = read('pikanews/news/cathie-wood-s-ark-invest-was-a-big-buyer-of-anthropic-during-b5e0cfa7/index.html');
+  assert((robotsOf(article) || '').includes('noindex'), 'syndicated excerpt pages should remain noindex');
+  assert(!sm.includes('/pikanews/news/'), 'thin syndicated story pages must not be added to the standard sitemap');
+});
+
+check('Sarkari Sarthi excludes stale or unreviewed jobs from active search', () => {
+  const source = read('sarkari-sarthi/script.js');
+  const match = source.match(/function isJobSearchEligible\(job, now\) \{[\s\S]*?^\}/m);
+  assert(match, 'missing pure job eligibility helper');
+  const eligible = runInNewContext('(' + match[0] + ')');
+  const now = new Date('2026-11-21T12:00:00Z');
+  assert.equal(eligible({ status: 'active', verification_status: 'official_verified', last_verified: '2026-11-20T12:00:00Z' }, now), true);
+  assert.equal(eligible({ status: 'active', verification_status: 'secondary_source_only', last_verified: '2026-11-20T12:00:00Z' }, now), true);
+  assert.equal(eligible({ status: 'active', verification_status: 'needs_review', last_verified: '2026-11-20T12:00:00Z' }, now), false);
+  assert.equal(eligible({ status: 'active', verification_status: 'official_verified', last_verified: '2026-11-01T12:00:00Z' }, now), false);
+  assert.equal(eligible({ status: 'expired', verification_status: 'official_verified', last_verified: '2026-11-20T12:00:00Z' }, now), false);
+  const manifest = JSON.parse(read('sarkari-sarthi/jobs/job_manifest.json'));
+  const visible = manifest.jobs.filter((job) => eligible(job, now));
+  assert(visible.length > 0, 'expected some fresh, reviewed jobs to remain searchable');
+  assert(visible.length < manifest.active_jobs, 'unreviewed or stale records are still counted as searchable');
+  assert(visible.every((job) => ['official_verified', 'secondary_source_only'].includes(job.verification_status)), 'unreviewed records leaked into search');
+});
+
+check('Arrow Out never grants a rewarded hint through a fake demo countdown', () => {
+  const html = read('arrowout/index.html');
+  const js = read('arrowout/js/main.js');
+  assert(!html.includes('Demo ad'), 'demo ad modal must be removed');
+  assert(/id="btn-adhint-watch"[^>]*disabled/.test(html), 'rewarded ad button must remain disabled until a real provider is connected');
+  assert(!js.includes('Demo ad'), 'fake demo reward countdown must be removed');
+  assert(js.includes("typeof Ads !== 'undefined'"), 'missing safe provider guard');
+});
+
+check('GTA 6 editorial disclosure is not duplicated', () => {
+  const html = read('gta6/index.html');
+  const marker = 'Corrections: <a href="mailto:officialgogocompany@gmail.com">';
+  assert(html.split(marker).length - 1 === 1, 'GTA 6 correction/disclosure block is duplicated');
 });
 
 // PikaNews sub-sitemaps (synced folder, verified on every test run)
