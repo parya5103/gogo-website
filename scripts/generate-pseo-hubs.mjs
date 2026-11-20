@@ -106,16 +106,11 @@ export async function generateHubs(root = ROOT) {
     await mkdir(dirname(path),{recursive:true});
     await writeFile(path,renderHub(hub,jobs));
     const loc = DOMAIN + "/" + hub.path.replace(/index\.html$/,"");
-    const jobs = hub.keywords ? allJobs.filter(job => hub.keywords.test([job.title,job.description,job.category,job.state,job.location].filter(Boolean).join(" "))) : [];
     const indexable = hub.kind === "games" || jobs.length >= 5;
-    const escapedLoc = loc.replace(/[.*+?^${}()|[\]\\]/g, "\\    const loc = DOMAIN + "/" + hub.path.replace(/index\.html$/,"");
-    const block = '<url><loc>' + loc + '</loc><lastmod>' + today + '</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>';
-    if (!sitemap.includes("<loc>"+loc+"</loc>")) sitemap = sitemap.replace("</urlset>", "  "+block+"\n</urlset>");");
-    const locPattern = new RegExp("<url>\\s*<loc>" + escapedLoc + "</loc>[\\s\\S]*?</url>\\s*", "g");
-    sitemap = sitemap.replace(locPattern, "");
+    sitemap = sitemap.replace(/<url>[\s\S]*?<\/url>/g, block => block.includes("<loc>" + loc + "</loc>") ? "" : block);
     if (indexable) {
       const block = '<url><loc>' + loc + '</loc><lastmod>' + today + '</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>';
-      if (!sitemap.includes("<loc>"+loc+"</loc>")) sitemap = sitemap.replace("</urlset>", "  "+block+"\\n</urlset>");
+      sitemap = sitemap.replace("</urlset>", "  " + block + "\n</urlset>");
     }
   }
   await writeFile(sitemapPath,sitemap.endsWith("\n")?sitemap:sitemap+"\n");
