@@ -33,13 +33,13 @@ function ProductCard({p}){
  );
 }
 function Hero(){
- return h("section",{className:"gh-hero","aria-labelledby":"gh-title"},
+ return h("section",{className:"gh-hero","aria-labelledby":"home-hero-title"},
   h("div",{className:"gh-hero-glow gh-glow-one","aria-hidden":"true"}),
   h("div",{className:"gh-hero-glow gh-glow-two","aria-hidden":"true"}),
   h("div",{className:"gh-shell gh-hero-grid"},
    h("div",{className:"gh-hero-copy"},
     h("p",{className:"gh-overline"},h("span",null), "INDEPENDENT DIGITAL STUDIO · INDIA"),
-    h("h1",{id:"gh-title"},"A little more ",h("em",null,"wonder."),h("br"),"A lot more ",h("strong",null,"possibility.")),
+    h("h1",{id:"home-hero-title"},"A little more ",h("em",null,"wonder."),h("br"),"A lot more ",h("strong",null,"possibility.")),
     h("p",{className:"gh-lead"},"Games to get lost in. Tools to move forward. Stories and guides to keep you curious. Discover the growing world of GoGo Company."),
     h("div",{className:"gh-hero-actions"},h("a",{className:"gh-button gh-button-primary",href:"#products"},"Explore our products",h("span",null,"↗")),h("a",{className:"gh-button gh-button-quiet",href:"./about.html"},"Meet GoGo",h("span",null,"→"))),
     h("div",{className:"gh-proofline"},h("span",null,"✳ Built for curious minds"),h("span",null,"·"),h("span",null,"Made for every screen"))
