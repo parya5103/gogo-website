@@ -14,10 +14,11 @@ const homepage = await read("index.html");
 const sharedJs = await read("assets/js/main.js");
 const css = await read("assets/css/style.css");
 const reactHomepage = await read("assets/js/gogo-home-react.js");
+const homeCss = await read("frontend/src/styles.css");
 const reactHomepageCss = await read("assets/css/gogo-home-react.css");
 const sitemap = await read("sitemap.xml");
 assert.match(homepage, /Play\. Prepare\./, "homepage must render its primary heading in initial HTML");
-assert.match(homepage, /verification labels|verify every notice/i, "Sarkari Sarthi source-verification guidance must be present");
+assert.match(homepage, /verification context|verify recruitment details/i, "Sarkari Sarthi source-verification guidance must be present");
 assert.match(homepage, /publisher-attributed|original publisher/i, "PikaNews attribution must be present");
 assert.doesNotMatch(homepage, /esm\.sh\/react|id=["']gogo-react-root["']/, "homepage must not depend on a CDN-only empty React shell");
 for (const productPath of ["arrowout", "crystalquest", "sarkari-sarthi", "pikanews"]) {
@@ -149,14 +150,15 @@ for (const [path, keyword] of keywordPages) {
 assert.ok(sharedJs.includes('href: "gta6/", label: "GTA 6 Guide"'), "GTA 6 must be reachable from the shared primary navigation");
 assert.doesNotMatch(sharedJs, /Admin Dashboard/, "public footer must not expose the admin dashboard link");
 assert.ok(sharedJs.includes("Browser games, career information and digital media"), "footer tagline must describe the current product mix");
-assert.doesNotMatch(homepage, /target=["']_blank["']/i, "same-site homepage navigation should not open unnecessary new tabs");
 
 
 assert.match(homepage, /<div id=["']root["']>/, "homepage must hydrate a server-rendered React root");
 assert.match(homepage, /assets\/gogo-home\//, "homepage must load local, bundled Vite assets");
 assert.match(homepage, /window\.__GOGO_FEEDS__=/, "feed snapshot must be serialized for hydration");
 assert.match(homepage, /ad-slot/, "ad reservation must be present in homepage markup");
-assert.match(homepage, /prefers-reduced-motion/, "homepage CSS must respect reduced-motion preferences");
+assert.match(homeCss, /prefers-reduced-motion:reduce/, "homepage CSS must respect reduced-motion preferences");
+assert.match(homeCss, /min-height:250px/, "ad slot must reserve a stable minimum height");
 assert.match(homepage, /<title>GoGo Company/);
+assert.match(homepage, /noopener noreferrer/, "external feed links must use safe opener isolation");
 
 console.log("SEO build validation passed: prerendered homepage, product hubs, schema, accessibility and sitemap.");
