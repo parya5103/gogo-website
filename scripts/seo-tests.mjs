@@ -239,11 +239,11 @@ check('Sarkari Sarthi excludes stale or unreviewed jobs from active search', () 
   assert(match, 'missing pure job eligibility helper');
   const eligible = runInNewContext('(' + match[0] + ')');
   const now = new Date('2026-11-21T12:00:00Z');
-  assert.equal(eligible({ status: 'active', verification_status: 'official_verified', last_verified: '2026-11-20T12:00:00Z' }, now), true);
-  assert.equal(eligible({ status: 'active', verification_status: 'secondary_source_only', last_verified: '2026-11-20T12:00:00Z' }, now), true);
-  assert.equal(eligible({ status: 'active', verification_status: 'needs_review', last_verified: '2026-11-20T12:00:00Z' }, now), false);
-  assert.equal(eligible({ status: 'active', verification_status: 'official_verified', last_verified: '2026-11-01T12:00:00Z' }, now), false);
-  assert.equal(eligible({ status: 'expired', verification_status: 'official_verified', last_verified: '2026-11-20T12:00:00Z' }, now), false);
+  assert(eligible({ status: 'active', verification_status: 'official_verified', last_verified: '2026-11-20T12:00:00Z' }, now), 'fresh official record should be eligible');
+  assert(eligible({ status: 'active', verification_status: 'secondary_source_only', last_verified: '2026-11-20T12:00:00Z' }, now), 'fresh secondary-source record should be eligible');
+  assert(!eligible({ status: 'active', verification_status: 'needs_review', last_verified: '2026-11-20T12:00:00Z' }, now), 'needs-review record must be withheld');
+  assert(!eligible({ status: 'active', verification_status: 'official_verified', last_verified: '2026-11-01T12:00:00Z' }, now), 'stale record must be withheld');
+  assert(!eligible({ status: 'expired', verification_status: 'official_verified', last_verified: '2026-11-20T12:00:00Z' }, now), 'expired record must be withheld');
   const manifest = JSON.parse(read('sarkari-sarthi/jobs/job_manifest.json'));
   const visible = manifest.jobs.filter((job) => eligible(job, now));
   assert(visible.length > 0, 'expected some fresh, reviewed jobs to remain searchable');
