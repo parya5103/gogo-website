@@ -50,8 +50,8 @@ try {
   const markup = renderToString(createElement(App, { initialFeeds: feeds }));
   const path = ROOT + '/.site-build/index.html';
   let html = await readFile(path, 'utf8');
-  if (!html.includes('<div id="root">')) throw new Error('Vite output is missing the #root mount point');
-  html = html.replace(/<div id="root">[\s\S]*?<\/div>/, '<div id="root">' + markup + '</div>');
+  if (!html.includes('<div id="root" data-prerender-placeholder></div>')) throw new Error('Vite output is missing the deterministic #root prerender placeholder');
+  html = html.replace('<div id="root" data-prerender-placeholder></div>', '<div id="root">' + markup + '</div>');
   const payload = JSON.stringify(feeds).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
   html = html.replace('</body>', '<script>window.__GOGO_FEEDS__=' + payload + ';</script>\n</body>');
   if (!html.includes('Play. Prepare.') || !(/Brand disambiguation/i.test(html)) || !html.includes('Frequently asked')) throw new Error('Prerendered HTML is missing required indexable content');
