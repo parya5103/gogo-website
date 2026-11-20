@@ -15,6 +15,10 @@ const sharedJs = await read("assets/js/main.js");
 const css = await read("assets/css/style.css");
 const sitemap = await read("sitemap.xml");
 assert.match(homepage, /GoGo Company builds mobile-friendly browser games and digital products/);
+assert.match(homepage, /verification labels[\s\S]*original recruiting authority notice/i, "Sarkari Sarthi homepage copy must explain verification and official-source checks");
+assert.match(homepage, /Publisher-attributed headlines[\s\S]*update timing varies by source/i, "PikaNews homepage copy must avoid unsupported fixed refresh promises");
+assert.doesNotMatch(homepage, /sourced from official websites, not rumour|automatically refreshed every 30 minutes/i, "homepage must not make unsupported source or refresh claims");
+
 for (const productPath of ["arrowout", "crystalquest", "sarkari-sarthi", "pikanews"]) {
   assert.ok(homepage.includes('href="./' + productPath + '/'), "homepage must link to " + productPath);
 }
@@ -112,6 +116,14 @@ assert.equal(crystalStrategy, crystalStrategySource, "published Crystal Quest st
 assert.match(crystalStrategy, /Crystal Resonance|Guardian shield colour/i);
 assert.match(crystalStrategy, /FAQPage/);
 assert.ok(sitemap.includes("<loc>https://gogocompany.in/crystalquest/strategy.html</loc>"), "Crystal Quest strategy guide must be included in sitemap");
+const arrowGame = await read("arrowout/index.html");
+for (const href of ["about.html", "strategy.html", "privacy.html", "../"]) {
+  assert.ok(arrowGame.includes('href="' + href + '"'), "Arrow Out game screen must expose help/site link " + href);
+}
+const crystalGame = await read("crystalquest/index.html");
+for (const href of ["guide.html", "strategy.html", "privacy.html", "terms.html", "../"]) {
+  assert.ok(crystalGame.includes('href="' + href + '"'), "Crystal Quest game screen must expose help/site link " + href);
+}
 const crystalGuide = await read("crystalquest/guide.html");
 assert.match(crystalGuide, /href="strategy\.html"/, "Crystal Quest base guide must link to the strategy guide after product sync");
 

@@ -480,5 +480,17 @@
       }
     } catch (e) { /* older browsers: game runs without offline support */ }
   </script>
+  <nav aria-label="Crystal Quest help and site links" class="game-help-links">
+    <a href="guide.html">How to play &amp; game guide</a>
+    <a href="strategy.html">Match-3 strategy tips</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+    <a href="../">GoGo Company</a>
+  </nav>
+  <style>
+    .game-help-links{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;padding:16px 12px 28px;font:500 13px/1.5 system-ui,sans-serif}
+    .game-help-links a{color:#9ff9ee;text-underline-offset:3px}
+    .game-help-links a:focus-visible{outline:2px solid #a5fff4;outline-offset:3px;border-radius:3px}
+  </style>
 </body>
 </html>
