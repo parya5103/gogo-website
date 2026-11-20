@@ -22,6 +22,19 @@ export function serializeJsonLd(value) {
   })[character]);
 }
 function safeUrl(value) { try { const url = new URL(value); return ["https:","http:"].includes(url.protocol) ? url.href : null; } catch { return null; } }
+export function isQualityJob(job) {
+  if (!job || String(job.status || "").toLowerCase() !== "active") return false;
+  if (String(job.verification_status || "").toLowerCase() !== "official_verified") return false;
+  if (String(job.description || "").trim().length < 180) return false;
+  const dates = job.important_dates || {};
+  const evidence = [
+    job.organization, job.vacancies, job.qualification || job.minimum_qualification,
+    job.age_limit, dates.last_date || job.last_date, job.official_notification_url,
+    job.official_application_url, job.salary || job.pay_scale, job.selection_process
+  ];
+  return evidence.filter(value => value != null && String(value).trim() !== "").length >= 4
+    && safeUrl(job.official_notification_url || job.official_application_url || job.url || job.original_source_url);
+}
 async function readJson(path, fallback) { try { return JSON.parse(await readFile(path,"utf8")); } catch { return fallback; } }
 function jobCard(job) {
   const url = safeUrl(job.url || job.original_source_url);
@@ -96,7 +109,7 @@ export function renderHub(hub, jobs = []) {
 }
 export async function generateHubs(root = ROOT) {
   const manifest = await readJson(root + "/sarkari-sarthi/jobs/job_manifest.json", {jobs:[]});
-  const allJobs = (Array.isArray(manifest.jobs)?manifest.jobs:[]).filter(job => job && String(job.status||"").toLowerCase()==="active" && safeUrl(job.url||job.original_source_url));
+  const allJobs = (Array.isArray(manifest.jobs)?manifest.jobs:[]).filter(isQualityJob);
   const sitemapPath = root + "/sitemap.xml";
   let sitemap = await readFile(sitemapPath,"utf8");
   const today = new Date().toISOString().slice(0,10);
