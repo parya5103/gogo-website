@@ -252,7 +252,7 @@
       document.body.insertAdjacentHTML("beforeend", buildFooter());
     }
     ensureAccountAssets();
-    initBackToTop();
+    if (!isReactHome) initBackToTop();
 
     var year = document.getElementById("footer-year");
     if (year) year.textContent = String(new Date().getFullYear());
