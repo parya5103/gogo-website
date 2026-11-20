@@ -55,7 +55,7 @@
   }
 
   function activateSlots() {
-    var slots = document.querySelectorAll(".ad-slot[hidden]");
+    var slots = document.querySelectorAll(".ad-slot[data-ad-slot]");
     for (var i = 0; i < slots.length; i++) {
       var box = slots[i];
       var slotId = CONFIG.slots[box.getAttribute("data-ad-slot")];
@@ -64,6 +64,8 @@
       ins.setAttribute("data-ad-client", CONFIG.publisherId);
       ins.setAttribute("data-ad-slot", slotId);
       box.removeAttribute("hidden");
+      var note = box.querySelector(".ad-placeholder-note");
+      if (note) note.hidden = true;
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     }
   }
