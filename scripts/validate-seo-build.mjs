@@ -15,8 +15,8 @@ const sharedJs = await read("assets/js/main.js");
 const css = await read("assets/css/style.css");
 const sitemap = await read("sitemap.xml");
 assert.match(homepage, /GoGo Company builds mobile-friendly browser games and digital products/);
-assert.match(homepage, /verification labels[\\s\\S]*original recruiting authority notice/i, "Sarkari Sarthi homepage copy must explain verification and official-source checks");
-assert.match(homepage, /Publisher-attributed headlines[\\s\\S]*update timing varies by source/i, "PikaNews homepage copy must avoid unsupported fixed refresh promises");
+assert.match(homepage, /verification labels[\s\S]*original recruiting authority notice/i, "Sarkari Sarthi homepage copy must explain verification and official-source checks");
+assert.match(homepage, /Publisher-attributed headlines[\s\S]*update timing varies by source/i, "PikaNews homepage copy must avoid unsupported fixed refresh promises");
 assert.doesNotMatch(homepage, /sourced from official websites, not rumour|automatically refreshed every 30 minutes/i, "homepage must not make unsupported source or refresh claims");
 
 for (const productPath of ["arrowout", "crystalquest", "sarkari-sarthi", "pikanews"]) {
