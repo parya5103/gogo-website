@@ -1,4 +1,7 @@
 package com.aaryapratik.arrowout.nativeapp.presentation
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.snap
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -24,8 +27,15 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Density
 import kotlinx.coroutines.delay
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -37,7 +47,7 @@ import com.aaryapratik.arrowout.nativeapp.presentation.theme.ArrowOutTheme
 import kotlin.math.floor
 import kotlin.math.min
 
-private val arrowColors=listOf(Color(0xFF48C6EF),Color(0xFFFFB454),Color(0xFF9D85FF),Color(0xFF4DD6A1),Color(0xFFFF718F),Color(0xFFFFD166),Color(0xFF80ED99),Color(0xFFFF8FAB))
+
 @Composable fun ArrowOutRoute(viewModel:ArrowOutViewModel=hiltViewModel(),privacyOptionsRequired:Boolean=false,onShowPrivacyOptions:()->Unit={}){
  val state by viewModel.uiState.collectAsStateWithLifecycle()
  val restoring by viewModel.isRestoring.collectAsStateWithLifecycle()
@@ -46,6 +56,8 @@ private val arrowColors=listOf(Color(0xFF48C6EF),Color(0xFFFFB454),Color(0xFF9D8
  var destination by rememberSaveable { mutableStateOf("home") }
  var selectedWorldId by rememberSaveable { mutableIntStateOf(1) }
  ArrowOutTheme(darkTheme=settings.darkTheme){
+  val density = LocalDensity.current
+  CompositionLocalProvider(LocalDensity provides Density(density.density, density.fontScale * if(settings.largeTextEnabled) 1.15f else 1f)) {
   when(destination){
    "home" -> ArrowOutHomeScreen(
     state=state,isRestoring=restoring,
@@ -71,9 +83,14 @@ private val arrowColors=listOf(Color(0xFF48C6EF),Color(0xFFFFB454),Color(0xFF9D8
     onImportSave=viewModel::importLegacy,importMessage=importMessage,
     settings=settings,onDarkThemeChange=viewModel::setDarkTheme,
     onHapticsChange=viewModel::setHapticsEnabled,
+    onSoundEffectsChange=viewModel::setSoundEffectsEnabled,
+    onColorblindPaletteChange=viewModel::setColorblindPaletteEnabled,
+    onLargeTextChange=viewModel::setLargeTextEnabled,
+    onReducedMotionChange=viewModel::setReducedMotionEnabled,
     onNavigateHome={destination="home"},
     onNavigateWorlds={destination=if(GameFeatureFlags.worldMap)"worlds" else "home"}
    )
+  }
   }
  }
 }
@@ -89,13 +106,34 @@ private val arrowColors=listOf(Color(0xFF48C6EF),Color(0xFFFFB454),Color(0xFF9D8
  settings:NativeSettings=NativeSettings(),
  onDarkThemeChange:(Boolean)->Unit={},
  onHapticsChange:(Boolean)->Unit={},
+ onSoundEffectsChange:(Boolean)->Unit={},
+ onColorblindPaletteChange:(Boolean)->Unit={},
+ onLargeTextChange:(Boolean)->Unit={},
+ onReducedMotionChange:(Boolean)->Unit={},
  onNavigateHome:()->Unit={},
  onNavigateWorlds:()->Unit={}
 ){
  val board=state.board
  val boardCellColor=MaterialTheme.colorScheme.surfaceVariant
  val boardGridColor=MaterialTheme.colorScheme.outlineVariant
+ val activeArrowColors=(if(settings.colorblindPaletteEnabled)ArrowColorPalette.colorblindArgb else ArrowSkinCatalog.byId(state.selectedArrowSkin).colors).map{Color(it)}
  val haptics=LocalHapticFeedback.current
+ val soundEffects=remember{NativeSoundEffects()}
+ DisposableEffect(soundEffects){onDispose{soundEffects.release()}}
+ var previousRemaining by remember(state.level){mutableIntStateOf(state.remaining)}
+ var previousHearts by remember(state.level){mutableIntStateOf(state.hearts)}
+ var previousHints by remember(state.level){mutableIntStateOf(state.hintsUsed)}
+ LaunchedEffect(state.remaining,state.hearts,state.hintsUsed,state.isSolved,settings.soundEffectsEnabled){
+  if(settings.soundEffectsEnabled){
+   when{
+    state.isSolved && previousRemaining>0->soundEffects.playWin()
+    state.hearts<previousHearts->soundEffects.playBlocked()
+    state.remaining<previousRemaining->soundEffects.playMove()
+    state.hintsUsed>previousHints->soundEffects.playHint()
+   }
+  }
+  previousRemaining=state.remaining;previousHearts=state.hearts;previousHints=state.hintsUsed
+ }
  var showImport by remember{mutableStateOf(false)}
  var showSettings by remember{mutableStateOf(false)}
  var showIdleSolution by remember(state.level){mutableStateOf(false)}
@@ -106,6 +144,7 @@ private val arrowColors=listOf(Color(0xFF48C6EF),Color(0xFFFFB454),Color(0xFF9D8
  var importText by remember{mutableStateOf("")}
  var zoom by remember(state.level,board.width,board.height){mutableFloatStateOf(1f)}
  var pan by remember(state.level,board.width,board.height){mutableStateOf(Offset.Zero)}
+ val pieceAlphas=board.pieces.mapIndexed{index,piece->animateFloatAsState(targetValue=if(piece.alive)1f else 0f,animationSpec=if(settings.reducedMotionEnabled)snap() else tween(durationMillis=220),label="arrow-exit-$index").value}
  val transformState=rememberTransformableState{zoomChange,panChange,_->
   val next=(zoom*zoomChange).coerceIn(1f,4f)
   pan=if(next==1f)Offset.Zero else pan+panChange
@@ -124,12 +163,22 @@ private val arrowColors=listOf(Color(0xFF48C6EF),Color(0xFFFFB454),Color(0xFF9D8
    if(showSettings){
     SettingsRow("Dark theme","Use the dark game palette",settings.darkTheme,onDarkThemeChange)
     SettingsRow("Haptic feedback","Vibrate on board taps",settings.hapticsEnabled,onHapticsChange)
+    SettingsRow("Sound effects","Play optional puzzle feedback tones",settings.soundEffectsEnabled,onSoundEffectsChange)
+    SettingsRow("Colorblind palette","Use a high-contrast, color-vision-friendly arrow palette",settings.colorblindPaletteEnabled,onColorblindPaletteChange)
+    SettingsRow("Larger text","Increase in-game text size",settings.largeTextEnabled,onLargeTextChange)
+    SettingsRow("Reduce motion","Use instant arrow exits instead of movement animations",settings.reducedMotionEnabled,onReducedMotionChange)
    }
    Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween){
     Text(if(state.isDaily)"DAILY CHALLENGE" else "LEVEL ${state.level.toString().padStart(3,'0')}",color=MaterialTheme.colorScheme.onBackground)
     Text("♥ ${state.hearts}    ARROWS LEFT  ${state.remaining}",color=MaterialTheme.colorScheme.onBackground)
    }
    Text("COINS ${state.coins}   ·   BEST ${if(state.isDaily)state.dailyStars else state.bestStars[state.level]?:0} ★   ·   ERASERS ${state.erasersRemaining}   ·   STREAK ${state.dailyStreak}",color=Color(0xFFFFD166),style=MaterialTheme.typography.labelMedium)
+   if(GameFeatureFlags.achievements || GameFeatureFlags.cosmetics) ArrowOutProgressionPanel(
+    state=state,
+    onPurchaseSkin={onEvent(ArrowUiEvent.PurchaseArrowSkin(it))},
+    onSelectSkin={onEvent(ArrowUiEvent.SelectArrowSkin(it))},
+    onClaimDailyReward={onEvent(ArrowUiEvent.ClaimDailyReward)}
+   )
    OutlinedButton(onClick={onEvent(ArrowUiEvent.DailyChallenge)},enabled=!isRestoring&&!state.isDaily,modifier=Modifier.fillMaxWidth()){Text("Daily Challenge · ${state.dailyStreak}-day streak")}
    Text("Unlocked campaign levels: ${state.unlockedLevel} / 1000",color=MaterialTheme.colorScheme.onSurfaceVariant,style=MaterialTheme.typography.labelSmall)
    if(state.isDaily)TextButton(onClick={onEvent(ArrowUiEvent.ExitDaily)},enabled=!isRestoring,modifier=Modifier.fillMaxWidth()){Text("Back to campaign")}
@@ -153,7 +202,13 @@ private val arrowColors=listOf(Color(0xFF48C6EF),Color(0xFFFFB454),Color(0xFF9D8
    }
    Canvas(
     Modifier.fillMaxWidth().aspectRatio(board.width.toFloat()/board.height.toFloat())
-     .clip(RoundedCornerShape(18.dp)).background(MaterialTheme.colorScheme.surface)
+      .clip(RoundedCornerShape(18.dp)).background(MaterialTheme.colorScheme.surface)
+     .semantics {
+      contentDescription = "Puzzle board. ${board.width} columns, ${board.height} rows, ${state.remaining} arrows remaining. Use custom actions to move individual arrows."
+      customActions = if(isRestoring || state.isSolved || state.isFailed) emptyList() else board.pieces.withIndex().filter { it.value.alive && it.value.cells.isNotEmpty() }.map { (index,piece) ->
+       CustomAccessibilityAction("Move arrow ${index + 1}") { onEvent(ArrowUiEvent.TapCell(piece.cells.last())); true }
+      }
+     }
      .graphicsLayer{scaleX=zoom;scaleY=zoom;translationX=pan.x;translationY=pan.y}
      .transformable(transformState)
      .pointerInput(board,zoom,pan,isRestoring,state.isSolved,state.isFailed){
@@ -170,17 +225,17 @@ private val arrowColors=listOf(Color(0xFF48C6EF),Color(0xFFFFB454),Color(0xFF9D8
     for(cell in board.activeCells){
      drawRect(boardCellColor,topLeft=Offset(cell.x*cw+1f,cell.y*ch+1f),size=androidx.compose.ui.geometry.Size(cw-2f,ch-2f))
     }
-    for((pieceIndex,piece) in board.pieces.withIndex().filter{it.value.alive}){
+    for((pieceIndex,piece) in board.pieces.withIndex().filter{it.value.alive||pieceAlphas[it.index]>0.01f}){
      if(piece.cells.isEmpty())continue
-     val color=if(pieceIndex==state.solutionOrder.firstOrNull()||pieceIndex==state.hintedPieceIndex)Color(0xFFFFD166)else arrowColors[piece.colorIndex%arrowColors.size]
+     val color=if(pieceIndex==state.solutionOrder.firstOrNull()||pieceIndex==state.hintedPieceIndex)Color(0xFFFFD166)else activeArrowColors[piece.colorIndex%activeArrowColors.size]
      val points=piece.cells.map{Offset((it.x+0.5f)*cw,(it.y+0.5f)*ch)}
      val path=Path().apply{moveTo(points.first().x,points.first().y);points.drop(1).forEach{lineTo(it.x,it.y)}}
-     drawPath(path,color,style=Stroke(width=unit*0.48f,cap=StrokeCap.Round,join=StrokeJoin.Round))
+     drawPath(path,color.copy(alpha=pieceAlphas[pieceIndex]),style=Stroke(width=unit*0.48f,cap=StrokeCap.Round,join=StrokeJoin.Round))
      val head=points.last();val dx=piece.direction.dx.toFloat();val dy=piece.direction.dy.toFloat();val px=-dy;val py=dx
      val tip=Offset(head.x+dx*unit*0.42f,head.y+dy*unit*0.42f)
      val base=Offset(head.x-dx*unit*0.26f,head.y-dy*unit*0.26f)
      val arrowHead=Path().apply{moveTo(tip.x,tip.y);lineTo(base.x+px*unit*0.31f,base.y+py*unit*0.31f);lineTo(base.x-px*unit*0.31f,base.y-py*unit*0.31f);close()}
-     drawPath(arrowHead,Color.White)
+     drawPath(arrowHead,Color.White.copy(alpha=pieceAlphas[pieceIndex]))
     }
     for(x in 0..board.width)drawLine(boardGridColor,Offset(x*cw,0f),Offset(x*cw,size.height),1f)
     for(y in 0..board.height)drawLine(boardGridColor.copy(alpha=0.35f),Offset(0f,y*ch),Offset(size.width,y*ch),1f)
