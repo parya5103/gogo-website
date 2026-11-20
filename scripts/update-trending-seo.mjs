@@ -75,6 +75,10 @@ export function renderTrendingSection() {
 export async function updateTrendingSeo(root = ROOT) {
   const section = renderTrendingSection();
   let html = await readFile(root + "/index.html", "utf8");
+  if (html.includes('name="gogo-home-architecture" content="react-ssg"')) {
+    console.log("React SSG homepage owns the product directory; no legacy section injection needed.");
+    return { products: 5, skipped: true };
+  }
   const markerPattern = /<!-- GOGO-TRENDING-START -->[\s\S]*?<!-- GOGO-TRENDING-END -->/;
   html = markerPattern.test(html) ? html.replace(markerPattern, section) : html.replace(/<\/main>/i, section + "\n</main>");
   await writeFile(root + "/index.html", html.endsWith("\n") ? html : html + "\n");
