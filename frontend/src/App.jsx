@@ -32,8 +32,9 @@ function useTheme() { return useContext(ThemeContext); }
 function Navbar() {
   const {theme,setTheme} = useTheme();
   const [open,setOpen] = useState(false);
+  const menuButtonRef = useRef(null);
   const close = () => setOpen(false);
-  useEffect(() => { if (!open) return; const onKey = event => { if (event.key === 'Escape') setOpen(false); }; document.addEventListener('keydown', onKey); return () => document.removeEventListener('keydown', onKey); }, [open]);
+  useEffect(() => { if (!open) return; const onKey = event => { if (event.key === 'Escape') { setOpen(false); menuButtonRef.current?.focus(); } }; document.addEventListener('keydown', onKey); return () => document.removeEventListener('keydown', onKey); }, [open]);
   return <header className="site-nav">
     <div className="nav-inner">
       <a className="brand" href="/" aria-label="GoGo Company home"><span className="brand-mark">G<span>.</span></span><span>GoGo <b>Company</b></span></a>
