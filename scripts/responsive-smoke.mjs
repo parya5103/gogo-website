@@ -123,7 +123,7 @@ try {
   // Exercise the three actual mobile navigation implementations without
   // submitting forms or changing application data.
   const menuCases = [
-    { route: "/", toggle: ".nav-toggle", menu: "#site-nav", open: ".open", label: "GoGo", requiresScrollLock: false },
+    { route: "/", toggle: ".mobile-menu", menu: "#primary-nav", open: ".is-open", label: "GoGo", requiresScrollLock: false },
     { route: "/sarkari-sarthi/", toggle: "#mobileMenuToggle", menu: "#navMenu", open: ".active", label: "Sarkari Sarthi", requiresScrollLock: true },
     { route: "/pikanews/", toggle: "#mobile-menu-toggle", menu: ".mobile-menu", open: ".open", label: "PikaNews", requiresScrollLock: true }
   ];
@@ -215,7 +215,7 @@ try {
   }
 
   for (const item of [
-    { name: "GoGo navigation keyboard + Escape + focus return", route: "/", toggle: ".nav-toggle", menu: "#site-nav", openClass: "open", lock: false },
+    { name: "GoGo navigation keyboard + Escape + focus return", route: "/", toggle: ".mobile-menu", menu: "#primary-nav", openClass: "is-open", lock: false },
     { name: "Sarkari Sarthi navigation keyboard + Escape + focus return", route: "/sarkari-sarthi/", toggle: "#mobileMenuToggle", menu: "#navMenu", openClass: "active", lock: true },
     { name: "PikaNews navigation keyboard + Escape + focus return", route: "/pikanews/", toggle: "#mobile-menu-toggle", menu: "#mobile-menu", openClass: "open", lock: true }
   ]) {

@@ -14,28 +14,26 @@ const homepage = await read("index.html");
 const sharedJs = await read("assets/js/main.js");
 const css = await read("assets/css/style.css");
 const reactHomepage = await read("assets/js/gogo-home-react.js");
+const homeCss = await read("frontend/src/styles.css");
 const reactHomepageCss = await read("assets/css/gogo-home-react.css");
 const sitemap = await read("sitemap.xml");
-assert.match(homepage, /Discover original browser games, practical career information and publisher-linked stories/, "homepage hero must accurately describe GoGo product categories");
-assert.match(homepage, /verification labels[\s\S]*original recruiting authority notice/i, "Sarkari Sarthi homepage copy must explain verification and official-source checks");
-assert.match(homepage, /Publisher-attributed headlines[\s\S]*update timing varies by source/i, "PikaNews homepage copy must avoid unsupported fixed refresh promises");
-assert.doesNotMatch(homepage, /sourced from official websites, not rumour|automatically refreshed every 30 minutes/i, "homepage must not make unsupported source or refresh claims");
-
+assert.match(homepage, /Play\. Prepare\./, "homepage must render its primary heading in initial HTML");
+assert.match(homepage, /verification context|verify recruitment details/i, "Sarkari Sarthi source-verification guidance must be present");
+assert.match(homepage, /publisher-attributed|original publisher/i, "PikaNews attribution must be present");
+assert.doesNotMatch(homepage, /esm\.sh\/react|id=["']gogo-react-root["']/, "homepage must not depend on a CDN-only empty React shell");
 for (const productPath of ["arrowout", "crystalquest", "sarkari-sarthi", "pikanews"]) {
-  assert.ok(homepage.includes('href="./' + productPath + '/'), "homepage must link to " + productPath);
+  assert.ok(homepage.includes('href="/' + productPath + '/'), "homepage must link to " + productPath);
 }
-assert.match(homepage, /id=["']critical-css["']/);
-assert.match(homepage, /rel=["']preload["'][^>]*assets\/css\/style\.css/);
 assert.match(homepage, /<main id=["']main["']>/);
-for (const policyPath of ["/about.html", "/contact/", "/privacy-policy/", "/terms-and-conditions/", "/disclaimer/"]) {
+assert.match(homepage, /application\/ld\+json/);
+assert.match(homepage, /FAQPage/);
+assert.match(homepage, /Brand disambiguation/i);
+assert.match(homepage, /data-gogo-react-home/);
+for (const policyPath of ["/about/", "/contact/", "/privacy-policy/", "/terms-and-conditions/", "/disclaimer/"]) {
   assert.ok(homepage.includes('href="' + policyPath + '"'), "homepage must expose trust/policy link " + policyPath);
 }
-assert.match(homepage, /GOGO-TRENDING-START[\s\S]*GOGO-TRENDING-END/);
-for (const guideUrl of ["/arrowout/strategy.html", "/crystalquest/strategy.html"]) {
-  assert.ok(homepage.includes('href="' + guideUrl + '"'), "homepage must link to original game strategy guide " + guideUrl);
-}
-assert.match(sharedJs, /nav \+=\s*['"]<li/);
-assert.match(sharedJs, /links \+=\s*['"]<li/);
+assert.match(sharedJs, /isReactHome/);
+assert.match(sharedJs, /ensureAccountAssets\(\)/);
 assert.match(css, /--accent:\s*#1e40af/i);
 assert.match(css, /site-header \.accent \{ color: #1e40af; \}/);
 assert.match(css, /site-footer \.accent \{ color: #1e40af; \}/);
@@ -152,19 +150,15 @@ for (const [path, keyword] of keywordPages) {
 assert.ok(sharedJs.includes('href: "gta6/", label: "GTA 6 Guide"'), "GTA 6 must be reachable from the shared primary navigation");
 assert.doesNotMatch(sharedJs, /Admin Dashboard/, "public footer must not expose the admin dashboard link");
 assert.ok(sharedJs.includes("Browser games, career information and digital media"), "footer tagline must describe the current product mix");
-assert.doesNotMatch(homepage, /target=["']_blank["']/i, "same-site homepage navigation should not open unnecessary new tabs");
 
 
-assert.match(homepage, /id=["']gogo-react-root["']/, "homepage must mount the React product experience");
-assert.match(homepage, /assets\/js\/gogo-home-react\.js/, "homepage must load the React entry module");
-assert.match(reactHomepage, /className:"gh-hero"[,\s\S]*"aria-labelledby":"home-hero-title"/, "React hero must expose an accessible heading relationship");
-assert.match(reactHomepage, /id:"home-hero-title"/, "React hero must provide its referenced heading id");
-assert.match(reactHomepage, /className:"gh-product-grid"/, "React homepage must expose the product launchpad grid");
-for (const productPath of ["arrowout", "crystalquest", "sarkari-sarthi", "pikanews", "gta6"]) {
-  assert.ok(reactHomepage.includes('href:"./' + productPath + '/'), "React launchpad must link to " + productPath);
-}
-assert.match(reactHomepageCss, /@media\(max-width:680px\)[\s\S]*gh-product-grid/, "React product cards must adapt to mobile screens");
-assert.match(reactHomepageCss, /@media\(prefers-reduced-motion:reduce\)[\s\S]*transition:none/, "React homepage must respect reduced-motion preferences");
+assert.match(homepage, /<div id=["']root["']>/, "homepage must hydrate a server-rendered React root");
+assert.match(homepage, /assets\/gogo-home\//, "homepage must load local, bundled Vite assets");
+assert.match(homepage, /window\.__GOGO_FEEDS__=/, "feed snapshot must be serialized for hydration");
+assert.match(homepage, /ad-slot/, "ad reservation must be present in homepage markup");
+assert.match(homeCss, /prefers-reduced-motion:reduce/, "homepage CSS must respect reduced-motion preferences");
+assert.match(homeCss, /min-height:250px/, "ad slot must reserve a stable minimum height");
 assert.match(homepage, /<title>GoGo Company/);
+assert.match(homepage, /noopener noreferrer/, "external feed links must use safe opener isolation");
 
-console.log("SEO build validation passed: homepage, list semantics, contrast tokens, 5 canonical hubs and sitemap.");
+console.log("SEO build validation passed: prerendered homepage, product hubs, schema, accessibility and sitemap.");

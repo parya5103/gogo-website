@@ -21,13 +21,11 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Install test dependencies (firebase + eslint + Firebase rules plugin)
-        run: |
-          mv package.json package.json.ci-backup
-          mv package-lock.json package-lock.json.ci-backup
-          npm install --no-save --no-package-lock --no-audit --no-fund firebase@11.10.0 eslint@9.39.5 @firebase/eslint-plugin-security-rules@0.0.2
-          mv package.json.ci-backup package.json
-          mv package-lock.json.ci-backup package-lock.json
+      - name: Install repository dependencies
+        run: npm install --no-save --no-package-lock --no-audit --no-fund
+
+      - name: Build the React homepage and verify protected paths
+        run: npm run build:site
 
       - name: Run all repository test suites
         run: |
