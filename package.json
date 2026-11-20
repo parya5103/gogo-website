@@ -8,7 +8,7 @@
     "start": "node server.js",
     "build": "node scripts/build-account-bundle.mjs",
     "lint:rules": "eslint firestore.rules",
-    "test": "node --experimental-transform-types scripts/run-all-tests.mjs && node scripts/apply-seo-enhancements.mjs && node scripts/test-seo-head-tags.mjs && node scripts/test-jobposting-schema.mjs && node scripts/test-seo-generators.mjs && node scripts/generate-pikanews-news-sitemap.mjs && node scripts/validate-pikanews-news-seo.mjs && node scripts/validate-structured-data.mjs && node scripts/validate-seo-build.mjs && node scripts/test-site-build.mjs",
+    "test": "node --experimental-transform-types scripts/run-all-tests.mjs && node scripts/apply-seo-enhancements.mjs && node scripts/test-seo-head-tags.mjs && node scripts/test-seo-head-tags.mjs && node scripts/test-jobposting-schema.mjs && node scripts/test-seo-generators.mjs && node scripts/generate-pikanews-news-sitemap.mjs && node scripts/validate-pikanews-news-seo.mjs && node scripts/validate-structured-data.mjs && node scripts/validate-seo-build.mjs && node scripts/test-site-build.mjs",
     "build:site": "vite build && node scripts/prerender-home.mjs && node scripts/publish-site-build.mjs"
   },
   "dependencies": {
