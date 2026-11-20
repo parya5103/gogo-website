@@ -217,6 +217,11 @@ check('PikaNews hubs are indexable and included in their dedicated sitemap', () 
     'gaming.html', 'business.html', 'sports.html',
   ];
   const sm = read('pikanews/sitemap.xml');
+  const pikaHome = read('pikanews/index.html');
+  assert((pikaHome.match(/name="description"/g) || []).length === 1, 'PikaNews homepage must have exactly one meta description');
+  assert((pikaHome.match(/rel="canonical"/g) || []).length === 1, 'PikaNews homepage must have exactly one canonical');
+  assert((pikaHome.match(/property="og:title"/g) || []).length === 1, 'PikaNews homepage must have exactly one Open Graph title');
+  assert((pikaHome.match(/property="og:description"/g) || []).length === 1, 'PikaNews homepage must have exactly one Open Graph description');
   for (const page of pages) {
     const html = read('pikanews/' + page);
     assert(!((robotsOf(html) || '').includes('noindex')), page + ' must be indexable');
@@ -249,9 +254,11 @@ check('Sarkari Sarthi excludes stale or unreviewed jobs from active search', () 
 check('Arrow Out never grants a rewarded hint through a fake demo countdown', () => {
   const html = read('arrowout/index.html');
   const js = read('arrowout/js/main.js');
+  const ui = read('arrowout/js/ui.js');
   assert(!html.includes('Demo ad'), 'demo ad modal must be removed');
   assert(/id="btn-adhint-watch"[^>]*disabled/.test(html), 'rewarded ad button must remain disabled until a real provider is connected');
   assert(!js.includes('Demo ad'), 'fake demo reward countdown must be removed');
+  assert(!ui.includes('watch a short ad'), 'Arrow Out must not promise an unavailable rewarded ad');
   assert(js.includes("typeof Ads !== 'undefined'"), 'missing safe provider guard');
 });
 
