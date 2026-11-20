@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
+import OpenUIProductGrid from './components/OpenUIProductGrid.jsx';
 
 const products = [
   { id:'arrow', name:'Arrow Out!', eyebrow:'LOGIC PUZZLE · BROWSER GAME', desc:'Read the paths, plan each move and clear the board. A minimalist puzzle built for satisfying, focused play.', href:'/arrowout/', tags:['1,000 levels','Offline PWA'], featured:true, tone:'violet', art:'arrows' },
@@ -61,10 +62,7 @@ function ProductTile({item}) {
  </article>;
 }
 function BentoProductGrid() {
- return <section className="section-shell products-section" id="products" aria-labelledby="products-title">
-  <div className="section-heading"><div><span className="eyebrow">THE GoGo ECOSYSTEM</span><h2 id="products-title">Four ways to <em>move forward.</em></h2></div><p>Pick a destination. Each product has its own purpose, experience and support.</p></div>
-  <div className="bento-grid">{products.map(item=><ProductTile key={item.id} item={item}/>)}<article className="account-tile"><span className="account-icon"><Icon name="user" size={24}/></span><div><span className="eyebrow">ONE ACCOUNT · YOUR CHOICE</span><h3>GoGo Account &amp; Cloud Save</h3><p>Optional sign-in to sync supported game progress across your devices. Guest play remains available.</p><button type="button" data-gogo-open-account="true" className="text-link">Explore account <Icon name="arrow" size={16}/></button></div></article></div>
- </section>;
+ return <OpenUIProductGrid/>;
 }
 function HeroSection() {
  return <section className="hero-section"><div className="hero-grid-bg"/><div className="hero-inner section-shell"><div className="hero-copy"><span className="hero-kicker"><i/> INDEPENDENT DIGITAL STUDIO · INDIA</span><h1>Play. Prepare.<br/><em>Grow with GoGo.</em></h1><p>Original games, practical career information and publisher-attributed stories — thoughtfully brought together in one place.</p><div className="hero-ctas"><a className="button button-primary" href="#products">Explore products <Icon name="arrow"/></a><a className="button button-secondary" href="/about/">Meet GoGo Company</a></div><div className="hero-points"><span><Icon name="check" size={16}/> Made for real screens</span><span><Icon name="check" size={16}/> Clear source attribution</span></div><nav className="hero-product-pills" aria-label="Quick product links"><a href="/arrowout/">Arrow Out!</a><a href="/crystalquest/">Crystal Quest</a><a href="/sarkari-sarthi/">Sarkari Sarthi</a><a href="/pikanews/">PikaNews</a></nav></div><div className="hero-visual" aria-hidden="true"><div className="visual-orbit orbit-one"/><div className="visual-orbit orbit-two"/><div className="visual-core"><span className="brand-mark">G<span>.</span></span><b>ONE HOME</b><small>FOUR EXPERIENCES</small></div><span className="orbit-chip chip-a">01 · PLAY</span><span className="orbit-chip chip-b">02 · PREPARE</span><span className="orbit-chip chip-c">03 · DISCOVER</span><span className="orbit-chip chip-d">04 · EXPLORE</span></div></div></section>;
