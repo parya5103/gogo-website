@@ -2,7 +2,7 @@
 
 Consolidated operational knowledge for gogo-website (gogocompany.in),
 kept in-repo so context survives across sessions and machines. No
-secrets here by design. Last updated: 2026-11-06.
+secrets here by design. Last updated: 2026-11-21.
 
 ## What this repo is
 
@@ -69,3 +69,16 @@ secrets here by design. Last updated: 2026-11-06.
   actions, rollback.
 - SECURITY_TEST_RESULTS.md: what was actually tested and what was
   not.
+
+
+## Verified state and guardrails (2026-11-21)
+
+- Root homepage remains React + Vite + SSG (frontend source, generated static output). PR #108 fixed frontend CI path filters. The live homepage was inspected with TinyFish: server-rendered content, canonical/indexable metadata, product navigation and FAQ interactions were present. Do not rebuild the architecture solely for visual polish; preserve product routes and account flow.
+- PR #110 improved the synced portfolio copies: public Sarkari counts distinguish current listings from withheld review records, stale/unverified records are not treated as verified vacancies, the Arrow Out fake rewarded-hint timer was removed from the synced copy, and duplicate GTA 6 FAQ/disclaimer text was cleaned up. Main CI, responsive, build, Lighthouse, SEO and security checks passed.
+- PikaNews aggregated homepage intentionally stays noindex,follow and outside the root sitemap until its editorial policy is met: four reviewed original stories overall, three for a category. PR #112 restored this guardrail after PR #111 temporarily changed the directive; PR #113 was closed without merge. Do not index an aggregator page by overriding the editorial policy.
+- Arrow Out source of truth is parya5103/Fletch_Game. PR #61 removed the fake five-second rewarded-ad timer from the upstream game, disabled the unavailable rewarded-hint button, and updated public About/Privacy/README/AdMob copy. Three free hints remain. No real rewarded provider or advertising SDK is enabled; do not simulate an ad reward.
+- Sarkari Sarthi uses India-local dates for application deadlines. PR #13 changed deadline calculations to Asia/Kolkata; UTC evening runs must not keep already-expired Indian deadlines active. Latest manifest snapshot: 176 records, 155 status-active, 21 expired, 114 Needs Review. The public search applies stricter verification/freshness eligibility; manifest active counts are not the same as publicly searchable current listings. Missing dates must not be guessed.
+- PikaNews, Arrow Out, Crystal Quest and Sarkari Sarthi folders are synced copies. Make fixes in their upstream repositories first; use the product-sync workflow to propagate them. The current Arrow Out synced copy already contains the fake-demo removal from PR #110, and upstream PR #61 is now merged.
+- AdSense/AdMob remain disabled until required consent and provider integrations are actually configured and verified. The shared AdSense loader uses a fail-closed CMP gate (cmpReady=false). Never claim revenue or real ad serving based on a placeholder, connected-provider label, ads.txt authorization or account status alone.
+- Public pages must not expose GitHub repository links/buttons. The master test suite includes visitor-facing GitHub-link absence checks.
+- OpenUI reference skill lives at .agents/skills/openui/SKILL.md. No OpenUI agent/app or local inference endpoint is currently configured. OpenUI rendering still requires model inference; Gateway requires a server-side THESYS_API_KEY. Do not add fake model responses or place secrets in client code. A keyless alternative requires a separately hosted local model endpoint (for example Ollama/llama.cpp) and an authorized connection to that host.
