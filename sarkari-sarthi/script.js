@@ -164,6 +164,7 @@ const footerTelegramBtn = document.getElementById('footerTelegramBtn');
 const whatsappBtn = document.getElementById('whatsappBtn');
 const footerWhatsappBtn = document.getElementById('footerWhatsappBtn');
 const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+const menuBackdrop = document.getElementById('menuBackdrop');
 const jobModal = document.getElementById('jobModal');
 const modalClose = document.getElementById('modalClose');
 const modalClose2 = document.getElementById('modalClose2');
@@ -248,15 +249,17 @@ function setupEventListeners() {
         });
     }
 
-    // Close mobile menu when a navigation link is clicked
+    // Close the mobile drawer after navigation or an outside tap.
     document.querySelectorAll('.nav-menu .nav-link').forEach(link => {
         link.addEventListener('click', function() {
-            const navMenu = document.querySelector('.nav-menu');
-            if (navMenu && navMenu.classList.contains('active')) {
-                toggleMobileMenu();
-            }
+            closeMobileMenu();
         });
     });
+    if (menuBackdrop) {
+        menuBackdrop.addEventListener('click', function() {
+            closeMobileMenu(true);
+        });
+    }
 
     // Reset filters button in search bar
     const resetFiltersBtn = document.getElementById('resetFiltersBtn');
@@ -1188,15 +1191,42 @@ function openWhatsappChannel() {
 /**
  * Toggle mobile menu
  */
+function openMobileMenu() {
+    const navMenu = document.querySelector('.nav-menu');
+    if (!navMenu || navMenu.classList.contains('active')) return;
+    navMenu.classList.add('active');
+    if (mobileMenuToggle) {
+        mobileMenuToggle.classList.add('active');
+        mobileMenuToggle.setAttribute('aria-expanded', 'true');
+    }
+    if (menuBackdrop) {
+        menuBackdrop.hidden = false;
+        menuBackdrop.setAttribute('aria-hidden', 'false');
+    }
+    document.body.classList.add('menu-open');
+}
+
+function closeMobileMenu(returnFocus = false) {
+    const navMenu = document.querySelector('.nav-menu');
+    if (!navMenu || !navMenu.classList.contains('active')) return;
+    navMenu.classList.remove('active');
+    if (mobileMenuToggle) {
+        mobileMenuToggle.classList.remove('active');
+        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+    }
+    if (menuBackdrop) {
+        menuBackdrop.hidden = true;
+        menuBackdrop.setAttribute('aria-hidden', 'true');
+    }
+    document.body.classList.remove('menu-open');
+    if (returnFocus && mobileMenuToggle) mobileMenuToggle.focus();
+}
+
 function toggleMobileMenu() {
     const navMenu = document.querySelector('.nav-menu');
-    if (navMenu) {
-        const isOpen = navMenu.classList.toggle('active');
-        if (mobileMenuToggle) {
-            mobileMenuToggle.classList.toggle('active', isOpen);
-            mobileMenuToggle.setAttribute('aria-expanded', String(isOpen));
-        }
-    }
+    if (!navMenu) return;
+    if (navMenu.classList.contains('active')) closeMobileMenu();
+    else openMobileMenu();
 }
 
 /**
@@ -1211,7 +1241,7 @@ function handleKeyboardNavigation(e) {
     // Close mobile menu with Escape key
     const navMenu = document.querySelector('.nav-menu');
     if (e.key === 'Escape' && navMenu && navMenu.classList.contains('active')) {
-        toggleMobileMenu();
+        closeMobileMenu(true);
     }
 
     // Search with Ctrl+K or Cmd+K
