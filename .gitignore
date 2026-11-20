@@ -1,3 +1,4 @@
 node_modules/
 .DS_Store
 *.log
+\n.site-build/\nfrontend/node_modules/\n
