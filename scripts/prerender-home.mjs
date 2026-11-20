@@ -54,7 +54,7 @@ try {
   html = html.replace(/<div id="root">[\s\S]*?<\/div>/, '<div id="root">' + markup + '</div>');
   const payload = JSON.stringify(feeds).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
   html = html.replace('</body>', '<script>window.__GOGO_FEEDS__=' + payload + ';</script>\n</body>');
-  if (!html.includes('Play. Prepare.') || !html.includes('Brand disambiguation') || !html.includes('Frequently asked')) throw new Error('Prerendered HTML is missing required indexable content');
+  if (!html.includes('Play. Prepare.') || !(/Brand disambiguation/i.test(html)) || !html.includes('Frequently asked')) throw new Error('Prerendered HTML is missing required indexable content');
   await writeFile(path, html);
   console.log('[prerender] Built full homepage HTML with ' + jobsCount(feeds) + ' jobs, ' + feeds.news.length + ' news stories and ' + feeds.trends.length + ' search trends.');
 } finally { await server.close(); }
