@@ -23,6 +23,11 @@ await game("arrowout/index.html",{name:"Arrow Out!",title:"Arrow Out! — Free 1
 const arrowStrategySource=await read("scripts/content/arrowout-strategy.html");
 if(!arrowStrategySource)throw new Error("Missing central Arrow Out strategy guide source.");
 await write("arrowout/strategy.html",arrowStrategySource);
+// The Crystal Quest product directory is also replaced with rsync --delete.
+// Restore the centrally maintained strategy article after each product sync.
+const crystalStrategySource=await read("scripts/content/crystalquest-strategy.html");
+if(!crystalStrategySource)throw new Error("Missing central Crystal Quest strategy guide source.");
+await write("crystalquest/strategy.html",crystalStrategySource);
 let arrowGuide=await read("arrowout/about.html");
 if(arrowGuide){arrowGuide=addKeywordSection(arrowGuide,{heading:"Play a Free Arrow Puzzle Game Online",intro:"Arrow Out! is a free online arrow puzzle game built around path planning and logic. Tap arrows in the right order, clear the board and progress through 1,000 levels. If you are searching for an arrow puzzle game online, a free arrow puzzle game or an arrow wala puzzle game, you can play directly in your browser without a download.",faqs:[["Is Arrow Out a free arrow puzzle game online?","Yes. The browser game can be played for free on supported mobile and desktop browsers."],["How do I solve an arrow wala puzzle game?","Study the direction and path of each arrow, then tap only when its route is clear. Plan the order carefully to avoid blocking other arrows."],["Do I need to install an app?","No download is required to start playing in a supported web browser."]]});await write("arrowout/about.html",arrowGuide)}
 await game("crystalquest/index.html",{name:"Crystal Quest",title:"Crystal Quest — Free 27-Level Match-3 Fantasy Puzzle | GoGo",description:"Free online Match-3 puzzle game with 27 fantasy levels, magical gems, Guardian battles and offline PWA support. Try this candy-crush-style gem adventure.",url:DOMAIN+"/crystalquest/",genre:["Match-3","Puzzle","Adventure"],levels:27,features:["27 story-driven puzzle levels","Match-3 magical gem gameplay","Guardian encounters","Relic collection system","Progressive Web App installation support","Offline gameplay through service-worker caching"]});
