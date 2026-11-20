@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { upsertMeta, upsertLink } from "./seo-head-tags.mjs";
 import {readFile,writeFile,readdir,mkdir} from "node:fs/promises";
 import {resolve} from "node:path";
 import {addKeywordSection} from "./seo-keyword-content.mjs";
@@ -6,8 +7,8 @@ const ROOT=process.cwd(), DOMAIN="https://gogocompany.in", SOCIAL=DOMAIN+"/asset
 const rx=s=>s, esc=s=>String(s).replaceAll("&","&amp;").replaceAll('"',"&quot;");
 async function read(p){try{return await readFile(resolve(ROOT,p),"utf8")}catch{return null}}
 async function write(p,s){const f=resolve(ROOT,p);await mkdir(f.slice(0,f.lastIndexOf("/")),{recursive:true});await writeFile(f,s.endsWith("\n")?s:s+"\n","utf8")}
-function meta(h,attr,key,val){const r=new RegExp("<meta\b(?=[^>]*\b"+attr+"=[\"']"+rx(key)+"[\"'])[^>]*>","i"),t='<meta '+attr+'="'+esc(key)+'" content="'+esc(val)+'">';return r.test(h)?h.replace(r,t):h.replace(/<\/head>/i,"  "+t+"\n</head>")}
-function link(h,rel,href,extra=""){const r=new RegExp("<link\b(?=[^>]*\brel=[\"']"+rx(rel)+"[\"'])[^>]*>","i"),t='<link rel="'+rel+'" href="'+esc(href)+'"'+(extra?" "+extra:"")+">";return r.test(h)?h.replace(r,t):h.replace(/<\/head>/i,"  "+t+"\n</head>")}
+const meta = upsertMeta;
+const link = upsertLink;
 function title(h,v){const t="<title>"+v+"</title>";return /<title\b[^>]*>[\s\S]*?<\/title>/i.test(h)?h.replace(/<title\b[^>]*>[\s\S]*?<\/title>/i,t):h.replace(/<\/head>/i,"  "+t+"\n</head>")}
 function serializeJsonLd(obj,space=0) {
   return JSON.stringify(obj,null,space).replace(/[<>&]/g,ch=>({"<":"\\u003c",">":"\\u003e","&":"\\u0026"})[ch]);
