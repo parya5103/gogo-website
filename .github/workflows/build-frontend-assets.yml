@@ -13,6 +13,14 @@ on:
       - 'assets/js/gogo-notifications.min.js'
       - 'package.json'
       - 'package-lock.json'
+      - 'frontend/**'
+      - 'vite.config.js'
+      - 'scripts/prerender-home.mjs'
+      - 'scripts/publish-site-build.mjs'
+      - 'scripts/test-site-build.mjs'
+      - 'scripts/update-trending-seo.mjs'
+      - 'scripts/validate-seo-build.mjs'
+      - 'assets/js/main.js'
       - '.github/workflows/build-frontend-assets.yml'
   pull_request:
     branches: [main]
@@ -31,7 +39,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: frontend-assets-${{ github.ref }}
+  group: sync-products
   cancel-in-progress: false
 
 jobs:
@@ -50,10 +58,13 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm install --no-save --legacy-peer-deps --no-audit --no-fund
+        run: npm install --no-audit --no-fund
 
       - name: Build optimized browser bundles
         run: npm run build
+
+      - name: Build and safely publish the prerendered React homepage
+        run: npm run build:site
 
       - name: Run regression suite
         run: npm test
@@ -62,10 +73,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/js/gogo-account.js assets/js/gogo-notifications.min.js
+          git add package-lock.json assets/js/gogo-account.js assets/js/gogo-notifications.min.js index.html assets/gogo-home
           if git diff --cached --quiet; then
             echo "Generated browser bundles are already up to date."
           else
-            git commit -m "build: regenerate optimized browser bundles"
+            git commit -m "build: publish optimized account assets and prerendered homepage"
             git push origin HEAD:${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}
           fi
