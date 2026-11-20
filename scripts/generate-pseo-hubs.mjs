@@ -117,7 +117,7 @@ export async function generateHubs(root = ROOT) {
   }
   let pikanewsHtml = "";
   try { pikanewsHtml = await readFile(root + "/pikanews/index.html", "utf8"); } catch {}
-  const pikanewsNoindex = /<meta\\s+name=["']robots["']\\s+content=["'][^"']*\\bnoindex\\b/i.test(pikanewsHtml);
+  const pikanewsNoindex = /<meta\s+name=["']robots["']\s+content=["'][^"']*\bnoindex\b/i.test(pikanewsHtml);
   if (pikanewsNoindex) {
     const pikanewsLoc = DOMAIN + "/pikanews/";
     const sitemapParts = sitemap.split("<url>");
@@ -125,7 +125,7 @@ export async function generateHubs(root = ROOT) {
       .filter(block => !block.includes("<loc>" + pikanewsLoc + "</loc>"))
       .join("<url>");
   }
-  await writeFile(sitemapPath,sitemap.endsWith("\\n")?sitemap:sitemap+"\\n");
+  await writeFile(sitemapPath,sitemap.endsWith("\n")?sitemap:sitemap+"\n");
   console.log("Generated",HUBS.length,"programmatic SEO hubs.");
   return HUBS.map(hub=>hub.path);
 }
