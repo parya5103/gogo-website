@@ -48,11 +48,12 @@
     .brand .logo{flex:0 0 auto}.nav-toggle{display:none}.hero{padding:clamp(38px,8vw,88px) 0}.hero-inner{max-width:820px}.hero h1{font-size:clamp(2.25rem,6vw,4.25rem);letter-spacing:-.045em;line-height:1.06;margin:.3em 0}
     .hero p.lead{font-size:clamp(1rem,2vw,1.2rem);line-height:1.75}.accent{color:var(--accent)}.skip-link{position:absolute;top:-40px;left:0;background:var(--primary);color:#fff;padding:8px 16px;z-index:10000;text-decoration:none}
     .skip-link:focus{top:0}.hero-actions{display:flex;flex-wrap:wrap;gap:12px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 22px;border-radius:12px;font-weight:700;text-decoration:none}
-
-    .hero-layout{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(300px,.92fr);gap:clamp(28px,5vw,68px);align-items:center;max-width:1120px;margin:0 auto;padding:0 20px}.hero-copy{min-width:0}.hero-showcase{min-height:420px}
-    @media(max-width:760px){.hero-layout{grid-template-columns:minmax(0,1fr);padding:0 14px}.hero-showcase{min-height:0}}
     @media(max-width:760px){.header-inner{flex-wrap:wrap}.nav-toggle{display:inline-flex}.hero{padding:38px 0 44px}.hero-actions{display:grid;grid-template-columns:1fr}.hero-actions .btn{width:100%}}
   </style>
+  <script type="importmap">
+    {"imports":{"react":"https://esm.sh/react@19.1.0"}}
+  </script>
+  <link rel="stylesheet" href="./assets/css/gogo-home-react.css">
   <link rel="preload" href="./assets/css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="./assets/css/style.css"></noscript>
   <link rel="preload" href="./assets/css/gogo-account.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -373,144 +374,8 @@
 </head>
 <body class="theme-gogo page-body" data-page="home">
   <main id="main">
-    <section class="hero" aria-labelledby="home-hero-title">
-      <div class="hero-layout">
-        <div class="hero-copy">
-          <p class="kicker"><span class="kicker-mark" aria-hidden="true"></span> Independent digital studio · India</p>
-          <h1 id="home-hero-title">Digital play.<br>Useful progress.<br><span class="accent">One GoGo world.</span></h1>
-          <p class="lead">Discover original browser games, practical career information and publisher-linked stories. Built to work beautifully on the phone in your hand and the screen in front of you.</p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="./arrowout/">Play Arrow Out!</a>
-            <a class="btn btn-ghost" href="#products">Explore all products</a>
-          </div>
-          <p class="hero-footnote">No app-store detour. Open a product and get started.</p>
-        </div>
-        <aside class="hero-showcase" aria-label="Explore the GoGo product collection">
-          <div class="showcase-topline"><span><span class="showcase-pulse" aria-hidden="true"></span> THE GOGO COLLECTION</span><span class="showcase-edition">WEB · INDIA</span></div>
-          <p class="showcase-heading">Choose your next move.</p>
-          <nav class="showcase-links" aria-label="Featured products">
-            <a href="./arrowout/" class="showcase-link"><span class="showcase-symbol" aria-hidden="true">↗</span><span class="showcase-copy"><strong>Arrow Out!</strong><small>Untangle the arrow puzzle</small></span><span class="showcase-kind">PUZZLE</span></a>
-            <a href="./crystalquest/" class="showcase-link"><span class="showcase-symbol" aria-hidden="true">✧</span><span class="showcase-copy"><strong>Crystal Quest</strong><small>Match gems. Find your path.</small></span><span class="showcase-kind">MATCH-3</span></a>
-            <a href="./sarkari-sarthi/" class="showcase-link"><span class="showcase-symbol" aria-hidden="true">⌁</span><span class="showcase-copy"><strong>Sarkari Sarthi</strong><small>Recruitment and exam updates</small></span><span class="showcase-kind">CAREER</span></a>
-            <a href="./pikanews/" class="showcase-link"><span class="showcase-symbol" aria-hidden="true">▤</span><span class="showcase-copy"><strong>PikaNews</strong><small>Headlines with publisher links</small></span><span class="showcase-kind">NEWS</span></a>
-            <a href="./gta6/" class="showcase-link"><span class="showcase-symbol" aria-hidden="true">⌖</span><span class="showcase-copy"><strong>GTA 6 Guide</strong><small>Independent game reference</small></span><span class="showcase-kind">GUIDE</span></a>
-          </nav>
-          <div class="showcase-bottom"><span>ONE DOMAIN</span><span>FIVE WAYS TO EXPLORE ↗</span></div>
-        </aside>
-      </div>
-    </section>
-
-    <section class="section product-section" id="products" aria-labelledby="products-title">
-      <div class="container">
-        <div class="section-head">
-          <p class="section-eyebrow">THE PRODUCT SHELF</p>
-          <h2 id="products-title">Made for different kinds of curiosity.</h2>
-          <p>Explore a collection of browser games, career information and publisher-linked coverage. Each product has its own dedicated space, guidance and support information.</p>
-        </div>
-        <div class="card-grid product-grid">
-          <article class="card product-card product-arrow">
-            <p class="product-eyebrow">LOGIC PUZZLE · BROWSER GAME</p>
-            <div class="icon" aria-hidden="true">&#8592;</div>
-            <h3>Arrow Out! - Puzzle Game</h3>
-            <p>A minimalist arrow-path puzzle game. Tap pieces to launch them out of a crowded board - 1000 levels, hints and daily challenges.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="./arrowout/">Play now &#8599;</a>
-            </div>
-          </article>
-          <article class="card product-card product-crystal">
-            <p class="product-eyebrow">MATCH-3 · FANTASY ADVENTURE</p>
-            <div class="icon" aria-hidden="true">&#9825;</div>
-            <h3>Crystal Quest - Match-3 Game</h3>
-            <p>Match gems through 27 handcrafted levels across 3 regions, with a story mode, daily challenge and offline PWA support.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="./crystalquest/">Play now &#8599;</a>
-            </div>
-          </article>
-          <article class="card product-card product-gta">
-            <p class="product-eyebrow">INDEPENDENT REFERENCE GUIDE</p>
-            <div class="icon" aria-hidden="true">&#127918;</div>
-            <h3>GTA 6 - Complete Game Guide</h3>
-            <p>Explore the GTA 6 guide with current release information, official Rockstar links, map and launch-gallery resources, plus clearly attributed community cheat references.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="./gta6/">Explore GTA 6 Guide &#8599;</a>
-            </div>
-          </article>
-          <article class="card product-card product-sarkari">
-            <p class="product-eyebrow">CAREER &amp; RECRUITMENT INFORMATION</p>
-            <div class="icon" aria-hidden="true">&#9737;</div>
-            <h3>Sarkari Sarthi - Job Tracker</h3>
-            <p>Recruitment notices, admit cards and result updates with source links and verification labels. Check the original recruiting authority notice before applying.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="./sarkari-sarthi/">Open portal &#8599;</a>
-            </div>
-          </article>
-          <article class="card product-card product-pika">
-            <p class="product-eyebrow">PUBLISHER-LINKED HEADLINES</p>
-            <div class="icon" aria-hidden="true">&#128240;</div>
-            <h3>PikaNews - News Aggregator</h3>
-            <p>Publisher-attributed headlines and brief summaries across entertainment, technology, gaming, business and sports. Follow the source link for the publisher’s full report; update timing varies by source.</p>
-            <div class="card-actions">
-              <a class="btn btn-primary" href="./pikanews/">Read news &#8599;</a>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="section-head">
-          <h2>Why GoGo Company</h2>
-        </div>
-        <div class="card-grid">
-          <article class="card">
-            <h3>Free to use</h3>
-            <ul class="feature-list">
-              <li>No downloads or installs required</li>
-              <li>No paywalls in any game</li>
-              <li>Works on phones and desktops</li>
-            </ul>
-          </article>
-          <article class="card">
-            <h3>Made for mobile</h3>
-            <ul class="feature-list">
-              <li>Touch-first controls</li>
-              <li>Fast loading, light pages</li>
-              <li>Offline support in games where possible</li>
-            </ul>
-          </article>
-          <article class="card">
-            <h3>Honest information</h3>
-            <ul class="feature-list">
-              <li>Sarkari listings link official government sites</li>
-              <li>No invented vacancies or dates</li>
-              <li>Clear disclaimers everywhere</li>
-            </ul>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <div class="container ad-slot-reservation">
-      <aside class="ad-slot" hidden data-ad-slot="home-mid" aria-label="Advertisement">
-        <p class="ad-label">Advertisement</p>
-        <ins class="adsbygoogle" style="display:block" data-ad-format="auto" data-full-width-responsive="true"></ins>
-      </aside>
-    </div>
-
-    <section class="section">
-      <div class="container">
-        <div class="cta-band">
-          <h2>Ready when you are</h2>
-          <p>Start with a game, explore a guide or find the information you need.</p>
-          <div class="hero-actions cta-actions">
-            <a class="btn btn-primary btn-inverse" href="./crystalquest/">Play Crystal Quest &#8599;</a>
-            <a class="btn btn-ghost" href="./gta6/">Explore GTA 6 Guide</a>
-            <a class="btn btn-ghost" href="./about.html">About the company</a>
-          </div>
-        </div>
-      </div>
-    </section>
+    <div id="gogo-react-root" aria-live="off"></div>
+    <noscript><section class="container prose"><h1>GoGo Company — Games, Tools and Guides</h1><p>Explore five independent digital experiences from GoGo Company.</p><ul><li><a href="./arrowout/">Arrow Out! puzzle game</a></li><li><a href="./crystalquest/">Crystal Quest match-3 adventure</a></li><li><a href="./sarkari-sarthi/">Sarkari Sarthi recruitment information</a></li><li><a href="./pikanews/">PikaNews publisher-linked headlines</a></li><li><a href="./gta6/">GTA 6 independent guide</a></li></ul></section></noscript>
     <section class="section" id="about-gogo-company" itemscope itemtype="https://schema.org/Organization" aria-labelledby="about-gogo-title">
       <div class="container prose">
         <h2 id="about-gogo-title">About Gogo Company</h2>
@@ -557,6 +422,7 @@
       </div>
     </section>
 </main>
+  <script type="module" src="./assets/js/gogo-home-react.js"></script>
   <script src="./assets/js/main.js" defer></script>
   <script src="./assets/js/ads.js" defer></script>
   <script src="./assets/js/gogo-notifications.min.js" defer></script>
