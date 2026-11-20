@@ -19,6 +19,8 @@ assert.equal(escapeHtml('<script>'),"&lt;script&gt;");
 const section = renderTrendingSection({jobs:[{title:"A & B Job",url:"https://example.gov.in/job"}],news:[{title:"News <one>",url:"https://publisher.example/story",source:"Publisher"}],trends});
 assert.match(section,/GOGO-TRENDING-START/);
 assert.match(section,/Explore GoGo Company products/);
+assert.match(section,/href="\/arrowout\/strategy\.html"/,"Homepage generator must retain the Arrow Out strategy link");
+assert.match(section,/href="\/crystalquest\/strategy\.html"/,"Homepage generator must retain the Crystal Quest strategy link");
 for (const product of ["Arrow Out!","Crystal Quest","Sarkari Sarthi","PikaNews","GTA 6"]) assert.ok(section.includes(product),"Homepage product directory is missing: "+product);
 assert.doesNotMatch(section,/A &amp; B Job|News &lt;one&gt;|Trending searches in India/,"external feeds must not be republished as homepage content");
 const hub = {path:"sarkari-sarthi/latest-govt-jobs/index.html",slug:"latest-govt-jobs",title:"Latest Govt Jobs 2026 | Sarkari Naukri Updates",description:"Find current government job notifications and verify every vacancy with the original recruiting authority.",h1:"Latest Government Jobs in India",kind:"jobs",faq:[["How verify?","Check the official notice."]]};
