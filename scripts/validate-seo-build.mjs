@@ -152,4 +152,18 @@ assert.doesNotMatch(sharedJs, /Admin Dashboard/, "public footer must not expose 
 assert.ok(sharedJs.includes("Browser games, career information and digital media"), "footer tagline must describe the current product mix");
 assert.doesNotMatch(homepage, /target=["']_blank["']/i, "same-site homepage navigation should not open unnecessary new tabs");
 
+
+const homeHero = homepage.slice(homepage.indexOf('<section class="hero"'), homepage.indexOf('<section class="section product-section"'));
+assert.match(homeHero, /aria-labelledby="home-hero-title"/, "homepage hero must have a programmatic heading");
+assert.match(homeHero, /class="hero-showcase"/, "homepage must expose the product launchpad");
+for (const productPath of ["arrowout", "crystalquest", "sarkari-sarthi", "pikanews", "gta6"]) {
+  assert.ok(homeHero.includes('href="./' + productPath + '/'), "homepage launchpad must link to " + productPath);
+}
+assert.match(homepage, /class="card-grid product-grid"/, "homepage product shelf must use the dedicated responsive product grid");
+assert.doesNotMatch(homepage, /target=["']_blank["']/i, "same-site homepage links must not open unnecessary new tabs");
+assert.match(css, /GoGo homepage: Digital Launchpad art direction/);
+assert.match(css, /@media \(max-width: 680px\)[\s\S]*product-grid/);
+assert.match(css, /@media \(prefers-reduced-motion: reduce\)[\s\S]*showcase-link/);
+assert.match(homepage, /<title>GoGo Company/);
+
 console.log("SEO build validation passed: homepage, list semantics, contrast tokens, 5 canonical hubs and sitemap.");
