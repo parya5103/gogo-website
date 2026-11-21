@@ -73,7 +73,7 @@ const completeIndexableJob = {
   official_notification_url: "https://recruit.example/notification.pdf",
   official_application_url: "https://recruit.example/apply",
   description_complete: true,
-  description: "Complete verified details for the recruitment, eligibility, selection and application."
+  description: "Complete verified details for the recruitment, eligibility, selection and application. ".repeat(5)
 };
 assert.equal(isIndexableJob(completeIndexableJob), true, "complete active official jobs may be indexed");
 assert.equal(isIndexableJob({ ...completeIndexableJob, verification_status: "needs_review" }), false);
