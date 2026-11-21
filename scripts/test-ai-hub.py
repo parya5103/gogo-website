@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from pathlib import Path
-import json,re,xml.etree.ElementTree as ET
+import json,re,math,xml.etree.ElementTree as ET
 root=Path(__file__).resolve().parents[1]
 page=(root/"ai/index.html").read_text(encoding="utf-8")
 assert '<title>AI News Today, Latest AI Models &amp; Comparisons | GoGo AI Intelligence</title>' in page
@@ -22,6 +22,9 @@ assert 'fair_articles(news.get("articles",[]),50,7)' in generator
 models=json.loads((root/"ai/data/model-catalogue.json").read_text(encoding="utf-8"))
 for item in models.get("models",[]):
  assert item.get("id") and item.get("name")
+ for key in ("input","output"):
+  value=item.get(key)
+  assert value is None or (isinstance(value,(int,float)) and math.isfinite(value) and value>=0), f"invalid {key} price for {item.get('id')}: {value}"
 ET.parse(root/"ai/feed.xml")
 sitemap=(root/"sitemap.xml").read_text(encoding="utf-8")
 assert "https://gogocompany.in/ai/" in sitemap
