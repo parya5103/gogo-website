@@ -81,8 +81,13 @@ try:
  for m in raw.get("data",[]):
   p=m.get("pricing") or {}
   def price(v):
-   try:return round(float(v)*1000000,5)
-   except:return None
+   try:
+    amount=float(v)
+    # OpenRouter uses negative sentinel values for unavailable/automatic pricing.
+    # Never publish those as real USD rates.
+    if not math.isfinite(amount) or amount<0:return None
+    return round(amount*1000000,5)
+   except (TypeError,ValueError,OverflowError):return None
   models.append({"id":m.get("id"),"name":m.get("name") or m.get("id"),"context":m.get("context_length"),"input":price(p.get("prompt")),"output":price(p.get("completion"))})
  models=[m for m in models if m["id"]]
  models.sort(key=lambda m:m.get("context") or 0,reverse=True)
