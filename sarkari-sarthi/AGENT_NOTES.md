@@ -74,6 +74,21 @@ honest product User-Agent, no CAPTCHA/login/anti-bot bypass.
 - PENDING robots verification (fetch tooling unreachable, do NOT
   automate until verified): ncs.gov.in, upsc.gov.in, mprojgar.gov.in.
 
+## Secondary source review (2026-11-21)
+
+- Secondary-source-only records are discovery leads, not public vacancies. They remain in the manifest/admin review pool and must not enter public search, category counts, or indexable job pages until a valid official employer notification/application URL is captured and verified.
+- `official_link_pending` is allowed in search only when an official government-domain reference has been found; `secondary_source_only` is not.
+
+- SahiSarkariJobs public job pages: robots.txt allows general crawling;
+  live listing page inspected and includes dated notices with links to
+  employer notifications. Scheduled as discovery-only; official employer
+  evidence remains mandatory before public-search eligibility.
+- SarkariNaukriDaily: robots.txt did not block, but live page fetch failed
+  TLS certificate validation; excluded from automated fetching until fixed.
+- SarkariPrep and LinkingSky remain in the discovery set. Their records
+  are still secondary-only until independently checked against official
+  notices.
+
 ## Upgrade phases
 
 - Phase 0 audit + Phase 1 core data quality: DONE (PR #194 merged).
@@ -109,3 +124,12 @@ honest product User-Agent, no CAPTCHA/login/anti-bot bypass.
 - Monitor logs/source_report.md after nightly runs for zero-job or
   blocked sources.
 - Keep this file updated with every phase.
+
+
+## Social notifications (2026-11-21)
+
+- Public Telegram chat is for content alerts only: job notifications are limited to active `official_verified` records; secondary-only and needs-review jobs are not broadcast as verified vacancies.
+- PikaNews Telegram headlines are polled every 30 minutes by `.github/workflows/pikanews-telegram-alerts.yml`. Only fresh articles with a verified publication timestamp and HTTPS source URL are sent. The first run seeds a cache baseline without blasting old stories; cache state deduplicates subsequent runs.
+- GitHub deployment, failure and health-check diagnostics are kept in Actions logs and are not sent to the public Telegram subscriber chat.
+- The supplied WhatsApp Channel links are displayed on the portal. Optional Meta Cloud API messages remain direct-to-recipient only and are not WhatsApp Channel posts.
+- WhatsApp Channel publishing is not supported by the official WhatsApp Cloud API; do not use unofficial WhatsApp Web automation or claim that automatic Channel posting is enabled.

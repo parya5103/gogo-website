@@ -105,8 +105,7 @@ function getVerificationInfo(status) {
 // workflow, but are not presented as open vacancies to visitors.
 const SEARCH_ELIGIBLE_VERIFICATION_STATUSES = new Set([
     'official_verified',
-    'official_link_pending',
-    'secondary_source_only'
+    'official_link_pending'
 ]);
 
 function isSearchEligibleJob(job) {
@@ -245,13 +244,7 @@ function setupEventListeners() {
         footerTelegramBtn.addEventListener('click', openTelegramChannel);
     }
 
-    // WhatsApp buttons
-    if (whatsappBtn) {
-        whatsappBtn.addEventListener('click', openWhatsappChannel);
-    }
-    if (footerWhatsappBtn) {
-        footerWhatsappBtn.addEventListener('click', openWhatsappChannel);
-    }
+    // WhatsApp channel controls are ordinary safe anchor links in the HTML.
 
     // Mobile menu toggle
     if (mobileMenuToggle) {
@@ -1202,8 +1195,11 @@ function openTelegramChannel() {
  * Open WhatsApp channel
  */
 function openWhatsappChannel() {
-    // Replace with actual WhatsApp invite link
-    window.open('https://chat.whatsapp.com/your-invite-link', '_blank', 'noopener,noreferrer');
+    window.open(
+        'https://whatsapp.com/channel/0029VbE1ulAAjPXQZiUbbu1Z',
+        '_blank',
+        'noopener,noreferrer'
+    );
 }
 
 /**
