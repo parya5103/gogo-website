@@ -19,6 +19,8 @@ assert 'data-category=' in generator and 'prefers-reduced-motion' in generator
 assert 'id="modelRows"' in generator and 'modelInput' in generator
 assert 'fair_articles(news.get("articles",[]),36,4)' in generator
 assert 'fair_articles(news.get("articles",[]),50,7)' in generator
+assert "amount<0" in generator.replace(" ","") or "amount < 0" in generator
+assert not re.search(r">\s*-\$[0-9]", page), "AI model table must not publish negative sentinel prices"
 models=json.loads((root/"ai/data/model-catalogue.json").read_text(encoding="utf-8"))
 for item in models.get("models",[]):
  assert item.get("id") and item.get("name")
