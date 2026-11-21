@@ -169,12 +169,14 @@ jobs:
           node - <<'NODE'
           const fs = require('fs');
           const source = fs.readFileSync('sarkari-sarthi/script.js', 'utf8');
-          const match = source.match(/const SEARCH_ELIGIBLE_VERIFICATION_STATUSES = new Set\\(\\[([\\s\\S]*?)\\]\\);/);
-          if (!match) throw new Error('Sarkari search verification allowlist is missing');
-          if (match[1].includes('secondary_source_only')) {
+          const start = source.indexOf('const SEARCH_ELIGIBLE_VERIFICATION_STATUSES = new Set([');
+          const end = source.indexOf(']);', start);
+          if (start < 0 || end < 0) throw new Error('Sarkari search verification allowlist is missing');
+          const allowlist = source.slice(start, end);
+          if (allowlist.includes('secondary_source_only')) {
             throw new Error('Secondary-only job leads must not be searchable');
           }
-          if (!match[1].includes('official_verified')) {
+          if (!allowlist.includes('official_verified')) {
             throw new Error('Official verified jobs must remain searchable');
           }
           NODE
