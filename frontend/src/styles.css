@@ -29,3 +29,6 @@
 
 
 @media(max-width:680px){.product-tile.tone-gta:not(.featured) .tile-copy{max-width:100%;width:100%}}
+
+/* Product-specific social follow links on the GoGo homepage. */
+.tile-social-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;position:relative;z-index:3}.tile-social-links a{display:inline-flex;align-items:center;gap:5px;padding:7px 10px;border:1px solid var(--gogo-line);border-radius:999px;background:var(--gogo-surface);color:var(--gogo-muted);font-size:10px;font-weight:800;text-decoration:none;transition:color .18s,border-color .18s,transform .18s}.tile-social-links a:hover{color:var(--gogo-brand);border-color:var(--gogo-brand);transform:translateY(-1px)}.tile-social-links a:focus-visible{outline:3px solid var(--gogo-brand);outline-offset:3px}
