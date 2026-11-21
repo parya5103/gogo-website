@@ -9,6 +9,7 @@ assert.match(html, /href="\/crystalquest\//, 'Crystal Quest link is crawlable');
 assert.match(html, /href="\/sarkari-sarthi\//, 'Sarkari Sarthi link is crawlable');
 assert.match(html, /href="\/pikanews\//, 'PikaNews link is crawlable');
 assert.match(html, /href="\/gta6\//, 'GTA 6 guide link is crawlable from the prerendered homepage');
+assert.match(html, /href="\/ai\//, 'GoGo AI Intelligence is crawlable from the prerendered homepage');
 assert.ok(html.includes('https://whatsapp.com/channel/0029VbE1ulAAjPXQZiUbbu1Z'), 'Sarkari Sarthi WhatsApp channel is shown on its product card');
 assert.ok(html.includes('https://t.me/SarkariSarthi'), 'Sarkari Sarthi Telegram join link is shown on its product card');
 assert.ok(html.includes('https://whatsapp.com/channel/0029Vb5zVwjICVfnQ95zT10F'), 'PikaNews WhatsApp channel is shown on its product card');
