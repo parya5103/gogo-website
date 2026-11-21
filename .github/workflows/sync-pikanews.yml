@@ -10,6 +10,12 @@ on:
     # Science and guest-preference files; the schedule remains the fallback.
     - cron: '10,40 * * * *'
   workflow_dispatch:
+  # Allow an intentional workflow-file update to publish the latest upstream
+  # PikaNews source immediately instead of waiting for the next 30-minute cron.
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sync-pikanews.yml'
   # Run only after the central product copy succeeds; the shared concurrency lock
   # then serializes the two publishers without cancelling either one.
   workflow_run:
