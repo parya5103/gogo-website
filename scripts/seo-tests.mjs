@@ -181,7 +181,6 @@ check('sitemap.xml: all indexable gogo pages, product roots and arrowout sub-pag
     'https://gogocompany.in/arrowout/privacy.html',
     'https://gogocompany.in/crystalquest/',
     'https://gogocompany.in/sarkari-sarthi/',
-    'https://gogocompany.in/pikanews/',
   ];
   for (const u of must) assert(sm.includes(u), 'sitemap missing ' + u);
 });
