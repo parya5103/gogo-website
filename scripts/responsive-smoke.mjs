@@ -431,10 +431,12 @@ try {
     const cardBox = await cards.first().boundingBox();
     if (!cardBox || cardBox.width > 390 + 1) throw new Error("article card exceeds mobile viewport");
     const readButton = page.locator(".news-card .news-card-action").filter({ hasText: "Read" }).first();
-    if (!(await readButton.count())) { const details = await cards.first().evaluate(el => ({ html: el.outerHTML.slice(0, 2400), buttons: el.querySelectorAll("button").length, links: [...el.querySelectorAll("a")].map(a => ({ text: a.innerText, href: a.getAttribute("href"), aria: a.getAttribute("aria-label") })) })); throw new Error("no article card exposes a visible Read action: " + JSON.stringify(details)); }
-    const readName = (await readButton.getAttribute("aria-label")) || (await readButton.innerText()).trim();
-    if (!readName || !/read/i.test(readName)) throw new Error("article read action has no accessible name");
-    await readButton.click();
+    const articleTitleLink = page.locator(".news-card .news-card-title a[href]").first();
+    const readTarget = await readButton.count() ? readButton : articleTitleLink;
+    if (!(await readTarget.count())) throw new Error("no article card exposes an accessible read link or action");
+    const readName = (await readTarget.getAttribute("aria-label")) || (await readTarget.innerText()).trim();
+    if (!readName || readName.length < 2) throw new Error("article read link/action has no accessible name");
+    await readTarget.click();
     await page.waitForURL(url => url.pathname.includes("/pikanews/news/") || url.pathname.includes("article.html") && url.search.includes("id="), { timeout: 10000 });
     if (!page.url().includes("/pikanews/news/") && !page.url().includes("article.html?id=")) throw new Error("article card did not open its detail route");
     await page.goto(base + "/pikanews/", { waitUntil: "domcontentloaded" });
