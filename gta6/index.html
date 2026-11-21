@@ -151,9 +151,36 @@ body{background:
   .gta-button,.gta-card,.gta-gallery img{transition:none}
   .gta-button:hover,.gta-card:hover{transform:none}
 }
+/* Shared GoGo navigation for the standalone GTA guide */
+.gta-sitebar{position:sticky;top:0;z-index:100;background:rgba(8,23,34,.94);border-bottom:1px solid var(--gta-line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.gta-sitebar-inner{max-width:1160px;min-height:64px;margin:auto;padding:10px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.gta-site-brand{display:inline-flex;align-items:center;gap:10px;color:var(--gta-text);font-weight:850;text-decoration:none;white-space:nowrap}
+.gta-site-mark{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--gta-green);color:#10251d;font-weight:950}
+.gta-site-links{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:7px}
+.gta-site-links a{display:inline-flex;align-items:center;min-height:38px;padding:7px 10px;border:1px solid transparent;border-radius:8px;color:var(--gta-muted);font-size:.83rem;font-weight:700;text-decoration:none}
+.gta-site-links a:hover,.gta-site-links a[aria-current="page"]{border-color:var(--gta-line);background:rgba(200,237,114,.08);color:var(--gta-green)}
+.gta-skip{position:absolute;left:12px;top:-60px;z-index:150;padding:10px 14px;border-radius:8px;background:var(--gta-green);color:#10251d;font-weight:800}
+.gta-skip:focus{top:8px}
+.gta-sitebar a:focus-visible{outline:3px solid var(--gta-pink);outline-offset:3px}
+@media(max-width:680px){.gta-sitebar-inner{align-items:flex-start;flex-direction:column;gap:8px;padding:10px 14px}.gta-site-links{justify-content:flex-start;width:100%;gap:4px}.gta-site-links a{min-height:36px;padding:6px 8px;font-size:.78rem}}
 </style>
 </head>
 <body class="theme-gogo page-body" data-page="gta6" data-gogo-premium="gta">
+<a class="gta-skip" href="#main">Skip to main content</a>
+<header class="gta-sitebar" aria-label="GoGo Company navigation">
+  <div class="gta-sitebar-inner">
+    <a class="gta-site-brand" href="/" aria-label="GoGo Company home"><span class="gta-site-mark" aria-hidden="true">G.</span><span>GoGo Company</span></a>
+    <nav class="gta-site-links" aria-label="Primary navigation">
+      <a href="/">Home</a>
+      <a href="/arrowout/">Arrow Out!</a>
+      <a href="/crystalquest/">Crystal Quest</a>
+      <a href="/sarkari-sarthi/">Sarkari Sarthi</a>
+      <a href="/pikanews/">PikaNews</a>
+      <a href="/gta6/" aria-current="page">GTA 6 Guide</a>
+    </nav>
+  </div>
+</header>
+
 <main id="main" class="gta-wrap">
 <header class="gta-hero">
 <p class="gta-kicker">GoGo Gaming Guide · Launch-day update · 19 November 2026</p>
