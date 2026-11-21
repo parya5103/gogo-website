@@ -2,9 +2,9 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 
 const products = [
   { id:'arrow', name:'Arrow Out!', eyebrow:'LOGIC PUZZLE · BROWSER GAME', desc:'Read the paths, plan each move and clear the board. A minimalist puzzle built for satisfying, focused play.', href:'/arrowout/', tags:['1,000 levels','Offline PWA'], featured:true, tone:'violet', art:'arrows' },
-  { id:'sarkari', name:'Sarkari Sarthi', eyebrow:'CAREER INFORMATION · INDIA', desc:'Explore recruitment notices, admit cards and results with source references and verification context.', href:'/sarkari-sarthi/', tags:['Source-linked','India focused'], featured:true, tone:'blue', art:'career' },
+  { id:'sarkari', name:'Sarkari Sarthi', eyebrow:'CAREER INFORMATION · INDIA', desc:'Explore recruitment notices, admit cards and results with source references and verification context.', href:'/sarkari-sarthi/', tags:['Source-linked','India focused'], socialLinks:[{label:'WhatsApp Channel',href:'https://whatsapp.com/channel/0029VbE1ulAAjPXQZiUbbu1Z'},{label:'Telegram',href:'https://t.me/SarkariSarthi'}], featured:true, tone:'blue', art:'career' },
   { id:'crystal', name:'Crystal Quest', eyebrow:'FANTASY MATCH-3 ADVENTURE', desc:'Match glowing gems, discover combinations and travel through a handcrafted fantasy campaign.', href:'/crystalquest/', tags:['27 story levels','3 regions'], tone:'purple', art:'gems' },
-  { id:'pika', name:'PikaNews', eyebrow:'PUBLISHER-ATTRIBUTED NEWS', desc:'Discover stories across technology, gaming, business, sports and entertainment, then visit the original publisher.', href:'/pikanews/', tags:['Topic discovery','Publisher links'], tone:'orange', art:'news' },
+  { id:'pika', name:'PikaNews', eyebrow:'PUBLISHER-ATTRIBUTED NEWS', desc:'Discover stories across technology, gaming, business, sports and entertainment, then visit the original publisher.', href:'/pikanews/', tags:['Topic discovery','Publisher links'], socialLinks:[{label:'WhatsApp Channel',href:'https://whatsapp.com/channel/0029Vb5zVwjICVfnQ95zT10F'}], tone:'orange', art:'news' },
   { id:'gta6', name:'GTA 6 Guide', eyebrow:'OPEN-WORLD ACTION · GAME GUIDE', desc:'Explore Vice City and Leonida with an independent guide to launch details, map resources and gameplay updates.', href:'/gta6/', tags:['PS5 & Xbox Series X|S','Guide & updates'], tone:'gta', art:'none' }
 ];
 
@@ -57,7 +57,7 @@ function NewsArt(){return <div className="art-board news-art" aria-hidden="true"
 function ProductTile({item}) {
  const Art = item.art==='arrows'?ArrowArt:item.art==='career'?CareerArt:item.art==='gems'?GemArt:item.art==='none'?null:NewsArt;
  return <article className={'product-tile '+(item.featured?'featured ':'')+'tone-'+item.tone}>
-  <div className="tile-copy"><span className="eyebrow">{item.eyebrow}</span><h3>{item.name}</h3><p>{item.desc}</p><div className="tag-row">{item.tags.map(tag=><span key={tag}>{tag}</span>)}</div><a className="text-link" href={item.href}>{item.featured?'Explore':'Discover'} {item.name}<Icon name="arrow" size={16}/></a></div>
+  <div className="tile-copy"><span className="eyebrow">{item.eyebrow}</span><h3>{item.name}</h3><p>{item.desc}</p><div className="tag-row">{item.tags.map(tag=><span key={tag}>{tag}</span>)}</div><a className="text-link" href={item.href}>{item.featured?'Explore':'Discover'} {item.name}<Icon name="arrow" size={16}/></a>{item.socialLinks?.length ? <nav className="tile-social-links" aria-label={item.name+' social channels'}>{item.socialLinks.map(link=><a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer">{link.label}<Icon name="arrow" size={12}/></a>)}</nav> : null}</div>
   {Art ? <Art/> : null}
  </article>;
 }

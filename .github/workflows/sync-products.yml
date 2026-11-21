@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/sync-products.yml'
+      - 'frontend/src/App.jsx'  # refresh product copies when homepage product links change
 
 permissions:
   contents: write
