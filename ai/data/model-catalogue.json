@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-21T13:02:18.633106+00:00",
+  "generatedAt": "2026-11-21T19:13:39.852126+00:00",
   "note": "Provider-declared catalogue metadata, not quality benchmarks. Verify current rates with providers.",
   "models": [
     {
@@ -20,29 +20,29 @@
       "id": "openrouter/auto",
       "name": "Auto Router",
       "context": 2000000,
-      "input": -1000000.0,
-      "output": -1000000.0
+      "input": null,
+      "output": null
     },
     {
       "id": "openrouter/auto-code",
       "name": "Auto Code",
       "context": 2000000,
-      "input": -1000000.0,
-      "output": -1000000.0
+      "input": null,
+      "output": null
     },
     {
       "id": "openrouter/auto-beta",
       "name": "Auto Router (Beta)",
       "context": 2000000,
-      "input": -1000000.0,
-      "output": -1000000.0
+      "input": null,
+      "output": null
     },
     {
       "id": "openrouter/pareto-code",
       "name": "Pareto Code Router",
       "context": 2000000,
-      "input": -1000000.0,
-      "output": -1000000.0
+      "input": null,
+      "output": null
     },
     {
       "id": "meta-llama/llama-4-scout",
@@ -419,8 +419,8 @@
       "id": "thinkingmachines/inkling-2-mini",
       "name": "Thinking Machines: Inkling 2 Mini",
       "context": 1048576,
-      "input": 0.1,
-      "output": 0.4
+      "input": 0.075,
+      "output": 0.3
     },
     {
       "id": "google/gemini-4-neon",
@@ -545,8 +545,8 @@
       "id": "minimax/minimax-m3.1-flash",
       "name": "MiniMax: MiniMax M3.1 Flash",
       "context": 1048576,
-      "input": 0.15,
-      "output": 0.6
+      "input": 0.075,
+      "output": 0.3
     },
     {
       "id": "deepseek/deepseek-v4.1-flash-1017",
