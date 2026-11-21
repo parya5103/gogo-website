@@ -158,6 +158,9 @@ check('sitemap.xml: locs absolute, unique, targets exist, no noindex URLs', () =
     if (path === '') path = 'index.html';
     else if (path.endsWith('/')) path += 'index.html';
     assert(existsSync(resolve(root, path)), 'sitemap target missing in repo: ' + path);
+    const page = read(path);
+    assert(canonicalOf(page) === loc, 'sitemap URL must match the page canonical: ' + loc);
+    assert(!/\\bnoindex\\b/i.test(robotsOf(page) || ''), 'noindex URL must not be in root sitemap: ' + loc);
   }
   const forbidden = ['/account/', '/admin/', '/unsubscribe/', '/404.html', '/arrow-out/', '/crystal-quest/', '/sarkari/'];
   for (const f of forbidden) {
