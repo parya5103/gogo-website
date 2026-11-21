@@ -431,7 +431,7 @@ try {
     const cardBox = await cards.first().boundingBox();
     if (!cardBox || cardBox.width > 390 + 1) throw new Error("article card exceeds mobile viewport");
     const readButton = page.locator(".news-card .news-card-action").filter({ hasText: "Read" }).first();
-    if (!(await readButton.count())) throw new Error("no article card exposes a visible Read action");
+    if (!(await readButton.count())) { const details = await cards.first().evaluate(el => ({ html: el.outerHTML.slice(0, 2400), buttons: el.querySelectorAll("button").length, links: [...el.querySelectorAll("a")].map(a => ({ text: a.innerText, href: a.getAttribute("href"), aria: a.getAttribute("aria-label") })) })); throw new Error("no article card exposes a visible Read action: " + JSON.stringify(details)); }
     const readName = (await readButton.getAttribute("aria-label")) || (await readButton.innerText()).trim();
     if (!readName || !/read/i.test(readName)) throw new Error("article read action has no accessible name");
     await readButton.click();
