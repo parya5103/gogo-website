@@ -155,7 +155,7 @@ assert.ok(sharedJs.includes("Browser games, career information and digital media
 
 assert.match(homepage, /<div id=["']root["']>/, "homepage must hydrate a server-rendered React root");
 assert.match(homepage, /assets\/gogo-home\//, "homepage must load local, bundled Vite assets");
-assert.match(homepage, /window\.__GOGO_FEEDS__=/, "feed snapshot must be serialized for hydration");
+assert.doesNotMatch(homepage, /window\.__GOGO_FEEDS__=|Today on GoGo Company|TRENDING SEARCHES IN INDIA|trends-strip|gogo-trending/i, "homepage must not embed external feeds or search-trend snippets");
 assert.match(homepage, /ad-slot/, "ad reservation must be present in homepage markup");
 assert.match(homeCss, /prefers-reduced-motion:reduce/, "homepage CSS must respect reduced-motion preferences");
 assert.match(homeCss, /min-height:250px/, "ad slot must reserve a stable minimum height");
