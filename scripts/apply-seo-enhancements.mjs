@@ -30,7 +30,6 @@ for (const entry of jobPages.filter(item => item.isDirectory())) {
   page = meta(page, "name", "robots", indexable ? "index,follow,max-image-preview:large" : "noindex,follow");
   await write(pagePath, page);
 }
-const jobSitemapPath = resolve(ROOT, "sarkari-sarthi/sitemap.xml");
 let jobSitemap = await read("sarkari-sarthi/sitemap.xml");
 if (jobSitemap) {
   const blocks = jobSitemap.split(/(?=<url>)/);
