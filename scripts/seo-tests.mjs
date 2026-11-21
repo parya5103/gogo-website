@@ -158,6 +158,9 @@ check('sitemap.xml: locs absolute, unique, targets exist, no noindex URLs', () =
     if (path === '') path = 'index.html';
     else if (path.endsWith('/')) path += 'index.html';
     assert(existsSync(resolve(root, path)), 'sitemap target missing in repo: ' + path);
+    const page = read(path);
+    assert(canonicalOf(page) === loc, 'sitemap URL must match the page canonical: ' + loc);
+    assert(!/\\bnoindex\\b/i.test(robotsOf(page) || ''), 'noindex URL must not be in root sitemap: ' + loc);
   }
   const forbidden = ['/account/', '/admin/', '/unsubscribe/', '/404.html', '/arrow-out/', '/crystal-quest/', '/sarkari/'];
   for (const f of forbidden) {
@@ -227,6 +230,7 @@ check('PikaNews homepage is indexable and listed; syndicated listings and story 
   for (const page of pages) {
     const html = read('pikanews/' + page);
     assert((robotsOf(html) || '').includes('noindex'), page + ' must remain noindex until editorial value is added');
+    assert((html.match(/name=[\"']robots[\"']/gi) || []).length === 1, page + ' must have exactly one robots directive');
     assert(canonicalOf(html) === 'https://gogocompany.in/pikanews/' + page, page + ' canonical mismatch');
     assert(!sm.includes('<loc>https://gogocompany.in/pikanews/' + page + '</loc>'), page + ' must not be included in the PikaNews sitemap while noindex');
   }
@@ -237,6 +241,7 @@ check('PikaNews homepage is indexable and listed; syndicated listings and story 
   assert(articleDir, 'at least one generated PikaNews story page should exist');
   const article = read('pikanews/news/' + articleDir.name + '/index.html');
   assert((robotsOf(article) || '').includes('noindex'), 'syndicated excerpt pages should remain noindex');
+  assert((article.match(/name=[\"']robots[\"']/gi) || []).length === 1, 'syndicated article must have exactly one robots directive');
   assert(!sm.includes('/pikanews/news/'), 'thin syndicated story pages must not be added to the standard sitemap');
 });
 
@@ -311,6 +316,38 @@ check('owned pages and main.js: every <img> has alt text', () => {
   const jsImgs = read('assets/js/main.js').match(/<img\b[^>]*>/g) || [];
   for (const img of jsImgs) assert(/\balt=/.test(img), 'img without alt in main.js: ' + img.slice(0, 80));
 });
+
+
+
+// Phase 1: prevent the old mixed-language Google Trends keyword dump from
+// returning through either the React source or the scheduled static prerender.
+check('homepage: no mixed-language search-trend dump in source or prerender output', () => {
+  const homepage = getHtml('index.html');
+  const app = read('frontend/src/App.jsx');
+  const prerender = read('scripts/prerender-home.mjs');
+  assert(!/TRENDING SEARCHES IN INDIA|trends-strip|gogo-trending|Today on GoGo Company/i.test(homepage), 'rendered homepage still contains feed or search-trend content');
+  assert(!/TodayOnGoGo|id=[\"']today[\"']/.test(app), 'React homepage still renders the mixed feed section');
+  assert(!/TRENDING SEARCHES IN INDIA|trends-strip|trends\.length/i.test(app), 'React homepage still renders the search-trend component');
+  assert(!/trends\.google\.com\/trending\/rss|fetchTrends|trends:\s*\[\]/i.test(prerender), 'scheduled prerender still fetches or serializes Google Trends');
+});
+
+check('canonical routes: legacy about URL is noindex and excluded; folder URLs are unique', () => {
+  const sitemap = read('sitemap.xml');
+  const about = read('about.html');
+  const aboutCanonical = canonicalOf(getHtml('about/index.html'));
+  const contactCanonical = canonicalOf(getHtml('contact/index.html'));
+  assert((robotsOf(about) || '').includes('noindex'), 'legacy /about.html must remain noindex');
+  assert(canonicalOf(about) === 'https://gogocompany.in/about/', 'legacy /about.html must canonicalize to /about/');
+  assert(!sitemap.includes('<loc>https://gogocompany.in/about.html</loc>'), 'legacy /about.html must not appear in sitemap');
+  assert(aboutCanonical === 'https://gogocompany.in/about/', 'folder About canonical mismatch');
+  assert(contactCanonical === 'https://gogocompany.in/contact/', 'folder Contact canonical mismatch');
+  const locs = [...sitemap.matchAll(/<loc>\s*([^<]+)\s*<\/loc>/gi)].map(match => match[1].trim());
+  assert(new Set(locs).size === locs.length, 'root sitemap contains duplicate URL entries');
+  assert(locs.filter(url => url === 'https://gogocompany.in/about/').length === 1, 'About canonical must appear exactly once');
+  assert(locs.filter(url => url === 'https://gogocompany.in/contact/').length === 1, 'Contact canonical must appear exactly once');
+  assert(!locs.some(url => /\/index\.html(?:$|[?#])/i.test(url)), 'root sitemap must use folder URLs instead of index.html aliases');
+});
+
 
 console.log('SEO regression suite: ' + passed + ' checks passed, ' + failures.length + ' failed.');
 if (failures.length > 0) {

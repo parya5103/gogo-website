@@ -14,10 +14,10 @@ The central homepage is built with React 19, Vite and Tailwind CSS v4. The homep
 ## Source layout
 
 - `frontend/index.html`: homepage document shell, theme bootstrap, metadata and organization/FAQ JSON-LD.
-- `frontend/src/App.jsx`: ThemeProvider, navigation, hero, bento product tiles, live feeds, trust sections, FAQ and footer.
+- `frontend/src/App.jsx`: ThemeProvider, navigation, hero, bento product tiles, trust sections, FAQ and footer.
 - `frontend/src/styles.css`: Tailwind v4 entry, semantic light/dark tokens, responsive and reduced-motion styles.
 - `vite.config.js`: Vite root and local asset output configuration.
-- `scripts/prerender-home.mjs`: reads the current Sarkari Sarthi job manifest, PikaNews latest feed and India Trends RSS when available, then renders the homepage into the build HTML.
+- `scripts/prerender-home.mjs`: renders the product-first homepage without importing third-party job/news excerpts or volatile Google Trends RSS into the company homepage.
 - `scripts/publish-site-build.mjs`: publishes only root `index.html` and `assets/gogo-home/`.
 
 ## Safe publishing boundary
@@ -33,7 +33,7 @@ The product sync workflows remain the source of truth for the product directorie
 
 ## Live feed behavior
 
-The production build snapshots only current active Sarkari Sarthi records with valid HTTPS source links and PikaNews stories with HTTPS publisher links. Google Trends RSS is optional; if unavailable, the homepage renders an honest unavailable state instead of fabricated trends. The feed snapshot is embedded in the initial HTML and reused for client hydration. The homepage links readers to the source portals and original publishers.
+The company homepage deliberately does not reproduce job listings, news excerpts or volatile search-trend keyword lists. It links visitors to each dedicated product portal, where the source-specific information and editorial context belong. This keeps the homepage focused on the GoGo Company entity and its product hierarchy.
 
 ## Theme and account integration
 
