@@ -104,8 +104,9 @@ jobs:
           test -f pikanews/data/gaming.json
           test -f pikanews/data/business.json
           test -f pikanews/data/sports.json
-          # Global coverage and guest-first personalization are part of the
-          # published contract; fail the sync if any required file is absent.
+          # Global coverage, guest-first personalization and pre-rendered category
+          # stories are part of the published contract. This workflow also
+          # refreshes the live /pikanews/ copy after upstream source changes.
           test -f pikanews/world.html
           test -f pikanews/science.html
           test -f pikanews/js/preferences.js
