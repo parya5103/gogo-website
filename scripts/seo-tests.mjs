@@ -339,12 +339,12 @@ check('canonical routes: legacy about URL is noindex and excluded; folder URLs a
   assert((robotsOf(about) || '').includes('noindex'), 'legacy /about.html must remain noindex');
   assert(canonicalOf(about) === 'https://gogocompany.in/about/', 'legacy /about.html must canonicalize to /about/');
   assert(!sitemap.includes('<loc>https://gogocompany.in/about.html</loc>'), 'legacy /about.html must not appear in sitemap');
-  assert.equal(aboutCanonical, 'https://gogocompany.in/about/', 'folder About canonical mismatch');
-  assert.equal(contactCanonical, 'https://gogocompany.in/contact/', 'folder Contact canonical mismatch');
+  assert(aboutCanonical === 'https://gogocompany.in/about/', 'folder About canonical mismatch');
+  assert(contactCanonical === 'https://gogocompany.in/contact/', 'folder Contact canonical mismatch');
   const locs = [...sitemap.matchAll(/<loc>\s*([^<]+)\s*<\/loc>/gi)].map(match => match[1].trim());
-  assert.equal(new Set(locs).size, locs.length, 'root sitemap contains duplicate URL entries');
-  assert.equal(locs.filter(url => url === 'https://gogocompany.in/about/').length, 1, 'About canonical must appear exactly once');
-  assert.equal(locs.filter(url => url === 'https://gogocompany.in/contact/').length, 1, 'Contact canonical must appear exactly once');
+  assert(new Set(locs).size === locs.length, 'root sitemap contains duplicate URL entries');
+  assert(locs.filter(url => url === 'https://gogocompany.in/about/').length === 1, 'About canonical must appear exactly once');
+  assert(locs.filter(url => url === 'https://gogocompany.in/contact/').length === 1, 'Contact canonical must appear exactly once');
   assert(!locs.some(url => /\/index\.html(?:$|[?#])/i.test(url)), 'root sitemap must use folder URLs instead of index.html aliases');
 });
 
