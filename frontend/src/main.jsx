@@ -4,4 +4,4 @@ import App from './App.jsx';
 import './styles.css';
 
 const root = document.getElementById('root');
-if (root) hydrateRoot(root, <App initialFeeds={window.__GOGO_FEEDS__ || null} />);
+if (root) hydrateRoot(root, <App />);
