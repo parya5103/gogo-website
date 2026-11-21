@@ -13,6 +13,9 @@ assert 'Original coverage' in page or 'Daily collection is starting' in page
 news=json.loads((root/"ai/data/ai-news.json").read_text(encoding="utf-8"))
 for item in news.get("articles",[]):
  assert item.get("title") and item.get("source") and item.get("url","").startswith("https://")
+visible_sources=re.findall(r"<small>Source: ([^<]+)",page)
+from collections import Counter
+assert all(count<=4 for count in Counter(visible_sources).values()), "Homepage feed is overly dominated by one publisher"
 models=json.loads((root/"ai/data/model-catalogue.json").read_text(encoding="utf-8"))
 for item in models.get("models",[]):
  assert item.get("id") and item.get("name")
