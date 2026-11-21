@@ -608,6 +608,9 @@ console.log('7. SEO Regression Suite');
 console.log('==========================================================');
 
 runStep('SEO regression suite passes (titles, descriptions, canonicals, robots, sitemap, JSON-LD, links, redirects, alt text)', () => {
+  // Apply the same deterministic post-sync SEO transforms before asserting
+  // published metadata. This keeps tests aligned with the actual deploy output.
+  execSync('node scripts/apply-seo-enhancements.mjs', { cwd: root, stdio: 'pipe' });
   execSync('node scripts/seo-tests.mjs', { cwd: root, stdio: 'pipe' });
 });
 console.log('');
