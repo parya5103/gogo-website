@@ -3,6 +3,11 @@ name: Refresh GoGo AI Intelligence Hub
 on:
   schedule:
     - cron: '20 3 * * *' # Daily at 08:50 IST
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/refresh-ai-hub.yml'
+      - 'scripts/update-ai-hub.py'
   workflow_dispatch:
 
 permissions:
