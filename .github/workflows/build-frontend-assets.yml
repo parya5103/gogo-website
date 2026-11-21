@@ -95,5 +95,22 @@ jobs:
             echo "Generated browser bundles are already up to date."
           else
             git commit -m "build: publish optimized account assets and prerendered homepage"
-            git push origin HEAD:${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}
+            target_ref="${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
+            # Other publishers can update main while Vite is building. Rebase
+            # our generated-only commit onto the latest target before pushing.
+            for attempt in 1 2 3; do
+              git fetch origin "$target_ref"
+              if ! git rebase FETCH_HEAD; then
+                git rebase --abort || true
+                echo "::error::Generated assets could not rebase cleanly onto $target_ref."
+                exit 1
+              fi
+              if git push origin "HEAD:$target_ref"; then
+                exit 0
+              fi
+              echo "Generated asset push attempt $attempt failed; retrying."
+              sleep $((attempt * 5))
+            done
+            echo "::error::Could not publish generated assets after 3 safe push attempts."
+            exit 1
           fi
