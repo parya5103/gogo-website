@@ -146,5 +146,5 @@ No Hindi-language site, translations, hreflang, new URL structure, keyword stuff
 - Crystal Quest: no on-page issues; 454 words, self-canonical.
 - PikaNews homepage: 541 words and self-canonical; the prior title was 67 characters and was shortened in this branch to reduce SERP truncation. Bollywood category page had no on-page issues and 539 words.
 - Sarkari Sarthi homepage baseline: title 75 characters, meta description 190 characters, and 293 words. The existing PR keyword enhancement replaces this with a concise title/description and adds visible explanatory content.
-- `/about/` is a legacy duplicate canonicalised to `/about.html`; the homepage already links to the canonical `/about.html` company profile. Do not treat the legacy alias as a separate indexable company page.
+- `/about/` is the canonical company profile linked from the homepage. The former `/about.html` URL now redirects to `/about/` and is excluded from the sitemap.
 - Live HTML response times in this crawl ranged from 143–230 ms, but this is fetch latency only, not a Core Web Vitals or real-device performance result.
