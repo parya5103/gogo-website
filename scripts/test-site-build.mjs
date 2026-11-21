@@ -8,6 +8,8 @@ assert.match(html, /href="\/arrowout\//, 'Arrow Out link is crawlable');
 assert.match(html, /href="\/crystalquest\//, 'Crystal Quest link is crawlable');
 assert.match(html, /href="\/sarkari-sarthi\//, 'Sarkari Sarthi link is crawlable');
 assert.match(html, /href="\/pikanews\//, 'PikaNews link is crawlable');
+assert.match(html, /href="\/gta6\//, 'GTA 6 guide link is crawlable from the prerendered homepage');
+assert.match(html, /GTA 6 Guide/, 'GTA 6 has a visible homepage product card');
 assert.match(html, /application\/ld\+json/, 'JSON-LD is in initial HTML');
 assert.match(html, /Brand disambiguation/i, 'brand disambiguation is in initial HTML');
 assert.match(html, /Frequently asked[\s\S]*?questions/i, 'FAQ is in initial HTML');
