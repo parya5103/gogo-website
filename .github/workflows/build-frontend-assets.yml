@@ -77,6 +77,9 @@ jobs:
       - name: Run regression suite
         run: npm test
 
+      - name: Validate GoGo AI Intelligence page and feeds
+        run: python3 scripts/test-ai-hub.py
+
       - name: Commit generated browser bundles
         run: |
           git config user.name "github-actions[bot]"
