@@ -1,7 +1,343 @@
 {
-  "generatedAt": "2026-11-21T12:30:50.310782+00:00",
-  "successfulFeeds": 7,
+  "generatedAt": "2026-11-21T12:42:24.558205+00:00",
+  "successfulFeeds": 15,
   "articles": [
+    {
+      "title": "Meet Thinking Machines Inkling 2 Mini: 26B Looped MoE Runs on a 32GB Mac",
+      "url": "https://www.marktechpost.com/2026/11/21/thinking-machines-inkling-2-mini-looped-transformer/",
+      "source": "MarkTechPost",
+      "category": "AI industry reporting",
+      "publishedAt": "2026-11-21T12:13:50+00:00",
+      "description": "Thinking Machines released Inkling 2 Mini, a 26.4B-parameter looped MoE transformer with 3.4B active parameters. It runs on a 32GB Mac or one DGX Spark and scores 79.2% on SWE-bench Verified. The post Meet Thinking Machines Inkling 2 Mini: 26B Looped MoE Runs on a 32GB Mac appeared first on MarkTechPost ."
+    },
+    {
+      "title": "Last Week in AI #348 - IPO->Correction, new GPTs and Geminis, Nvidia’s Fate",
+      "url": "https://lastweekin.ai/p/last-week-in-ai-348-ipo-correction",
+      "source": "Last Week in AI",
+      "category": "Industry analysis",
+      "publishedAt": "2026-11-21T08:41:43+00:00",
+      "description": "Anthropic's $81B IPO, AI stocks enter a correction, Huang resigns from Nvidia, Trump and Xi agree on military AI"
+    },
+    {
+      "title": "Density Feedback Control for Transferability of Generative Sparse Adversarial Attacks",
+      "url": "https://arxiv.org/abs/2611.25001",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25001v1 Announce Type: new Abstract: Generator-based sparse adversarial attacks train encoder--decoder networks to produce transferable sparse perturbations for black-box robustness evaluation. Their perturbation density, however, is set only indirectly by a fixed sparsity coefficient whose mapping to density is unknown and shifts during training, so reaching a target density requires re-tuning; this fixed"
+    },
+    {
+      "title": "On the Impact of Feature Reduction Techniques on Adversarial Attacks",
+      "url": "https://arxiv.org/abs/2611.25004",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25004v1 Announce Type: new Abstract: Adversarial attacks have posed significant threats to machine learning models by exploiting their inherent vulnerabilities. Researchers have established an interdisciplinary field called adversarial machine learning to explore these vulnerabilities and develop corresponding defense strategies. Feature reduction strategies are used to decrease the dimensionality of the d"
+    },
+    {
+      "title": "Auditing Learned Dynamics in Weather Models",
+      "url": "https://arxiv.org/abs/2611.25119",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25119v1 Announce Type: new Abstract: Learned weather models are experimentally accessible computational systems whose internal representations can be inspected and manipulated. Using sparse autoencoder features from GraphCast, DeepMind's autoregressive weather forecasting model, we test whether causal relevance requires physical semantics, a question that matters for auditing whether AI forecasters used in"
+    },
+    {
+      "title": "Temporal Extrapolation of Elastic Seismic Wave Propagation in Layered Media Using Neural Operators",
+      "url": "https://arxiv.org/abs/2611.25130",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25130v1 Announce Type: new Abstract: Temporal prediction of seismic velocity fields beyond the time interval represented in training remains challenging for neural operator models. This study develops a coupled neural operator framework for stress-conditioned temporal prediction in layered elastic media. A time-integrator-embedded Deep Operator Network (TI-DeepONet) advances the velocity field through an e"
+    },
+    {
+      "title": "Rate-distortion Assessment for Hierarchical Content Summarization",
+      "url": "https://arxiv.org/abs/2611.25151",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25151v1 Announce Type: new Abstract: Powerful generative models including large language and vision models have demonstrated success across a wide range of content generation, editing and manipulation tasks via end-to-end prompt-based generation. However, current assessment of the quality of generative content manipulation remains subjective, limiting scientific understanding of model capabilities. Inspire"
+    },
+    {
+      "title": "Separating Interpretability and Reconstruction in Sparse Autoencoders",
+      "url": "https://arxiv.org/abs/2611.25165",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25165v1 Announce Type: new Abstract: Sparse Autoencoders (SAEs) are effective tools for mechanistic interpretability by decomposing neural representations into sparse and interpretable features. However, a single sparse representation in traditional SAEs is responsible for both reconstruction fidelity and interpretability, which are not guaranteed to align. To separate these objectives, we propose DualSAE,"
+    },
+    {
+      "title": "Game-Theoretic Data Allocation for Expert Specialization and Routing",
+      "url": "https://arxiv.org/abs/2611.25167",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25167v1 Announce Type: new Abstract: Can the allocation used to train experts also predict which expert will perform best on a prompt? Such a connection would make the intended division of labor inspectable before training and allow the allocation itself to guide inference. We introduce InflEns, a mixture of LoRA experts whose training weights and inference routes come from the same location game in a fixe"
+    },
+    {
+      "title": "PDE-State Conditioning for Learned Optimization Using Physics-Informed Neural Networks",
+      "url": "https://arxiv.org/abs/2611.25185",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25185v1 Announce Type: new Abstract: Physics-informed neural network (PINN) optimization depends on global properties of the underlying PDE and how the physics residual evolves across the domain. Standard optimizers such as Adam use fixed gradient-based statistics, while learned PINN optimizers replace the fixed rule with a learned update built from local parameters and optimization-history features. Howev"
+    },
+    {
+      "title": "Learning to Read Events for Exact State Tracking with Frozen Language Models",
+      "url": "https://arxiv.org/abs/2611.25211",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25211v1 Announce Type: new Abstract: Long event streams require identifying each change and applying the changes in order. We train a selector on a frozen language model to read each transition. With API-only access, we ask the model to list the transitions. An external integer register composes them in order. A confidence rule can flag uncertain updates or retain several candidates. We study products of p"
+    },
+    {
+      "title": "Moving Generality from Model to Modeler: LLM Agents for PHM on a Deployment-Style Benchmark",
+      "url": "https://arxiv.org/abs/2611.25252",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25252v1 Announce Type: new Abstract: Coding agents built on large language models (LLMs) now help develop many models published as general solutions. Should generality instead reside in the agent that builds a model for each new task? We examine this question in prognostics and health management (PHM), where every model must work on unseen equipment. Our deployment-style benchmark, NextUnit-Bench, covers 2"
+    },
+    {
+      "title": "Process-Knowledge-Guided Latent Diffusion for Generative Design of Porous Architectures: A Case Study in Aerosol Jet Printing",
+      "url": "https://arxiv.org/abs/2611.25264",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25264v1 Announce Type: new Abstract: Printed porous layouts interleave functional material with open channels, and the layout that uses the material best depends on how the process settings shape the deposit. Generative models propose layouts quickly, but a generator that does not receive the process setting samples from the same distribution at every setting, even when the process-dependent score ranks ca"
+    },
+    {
+      "title": "Learning to Verify: Signature-Guided Training for Adaptive Adversarial Detection",
+      "url": "https://arxiv.org/abs/2611.25271",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25271v1 Announce Type: new Abstract: Adversarial example detectors often fail when attackers explicitly attempt to bypass them. We propose a dual-model approach that keeps the original classifier fixed and trains a separate verifier to assess its predictions. During training, we identify patterns of internal neural network activations that distinguish genuine examples of each class from adversarial example"
+    },
+    {
+      "title": "Scone: Symmetry-aware Neural Combinatorial Optimization for Graph Coloring",
+      "url": "https://arxiv.org/abs/2611.25273",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25273v1 Announce Type: new Abstract: Graph coloring, which entails assigning colors to nodes such that no adjacent nodes have the same color, is a fundamental combinatorial optimization problem. In general, however, finding a node coloring with no monochromatic edges given a fixed palette is NP-hard. This motivates learning-based methods that can learn to exploit recurring structure across instances to eff"
+    },
+    {
+      "title": "DS3M: Deep structured state space models for nonlinear system identification on modern hardware",
+      "url": "https://arxiv.org/abs/2611.25274",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25274v1 Announce Type: new Abstract: Neural state-space identification learns dynamical models from measured inputs and outputs. SUBNET combines this task with an encoder that estimates initial states from short measurement histories. Its continuous-time version requires many successive neural-network evaluations during numerical integration, resulting in slow training speed which is a major limitation for"
+    },
+    {
+      "title": "Cross-Question Reliable Reinforcement Learning",
+      "url": "https://arxiv.org/abs/2611.25292",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25292v1 Announce Type: new Abstract: AI systems operating near the limits of their capabilities can maximize utility while minimizing the risk of error by abstaining or deferring questions they are not confident about to a human or a stronger model. Recently, large language models (LLMs) have been post-trained to estimate confidence in their own answers. To achieve this, methods reinforce confidence scores"
+    },
+    {
+      "title": "Federated Learning of Car Aerodynamics Surrogates with Spectral Optimizers",
+      "url": "https://arxiv.org/abs/2611.25300",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25300v1 Announce Type: new Abstract: Neural surrogates predict the aerodynamic forces on a car in seconds, compared with hours for a CFD simulation, but training them requires thousands of CFD simulations of different car designs, which car manufacturers keep proprietary. Federated learning allows several manufacturers to train a shared surrogate without exchanging data. We study which federated optimizer "
+    },
+    {
+      "title": "SplitReAlign: Partition-Aware Representation Realignment for Split Federated Unlearning",
+      "url": "https://arxiv.org/abs/2611.25301",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25301v1 Announce Type: new Abstract: Split federated learning (SFL) distributes neural networks across clients and a server, coupling class-specific knowledge across their representations. This coupling complicates split federated unlearning (SFU), where class-wise forgetting must remove target knowledge while preserving retained utility under heterogeneous representation spaces and asymmetric update const"
+    },
+    {
+      "title": "Antom 3-in-1 Transformer: A Payment Foundation Model",
+      "url": "https://arxiv.org/abs/2611.25403",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25403v1 Announce Type: new Abstract: We report the development of Antom 3-in-1 Transformer, a payment foundation model that integrates sequence, tabular, and graph representations for payment risk detection. The model contains approximately 7B parameters, with approximately 1.7B activated per task route. Antom 3-in-1 Transformer is pretrained to learn reusable behavioral and relational representations, pri"
+    },
+    {
+      "title": "From Sequence Uncertainty to Phenotype Hypotheses: Uncertainty-Conditioned Inference over Biomedical Knowledge Graphs",
+      "url": "https://arxiv.org/abs/2611.25422",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25422v1 Announce Type: new Abstract: Genomic foundation models provide variant-level evidence, but connecting that evidence to phenotype hypotheses requires accounting for uncertainty throughout structured reasoning. We introduce an uncertainty-conditioned path-energy framework that converts sequence predictions and calibrated predictive uncertainty into explicit distributions over graph-supported phenotyp"
+    },
+    {
+      "title": "FamilySpace: From Emergent Chemical Semantics to Controllable Crystal Generation",
+      "url": "https://arxiv.org/abs/2611.25452",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25452v1 Announce Type: new Abstract: Latent crystal generative models typically combine a variational autoencoder (VAE) for learning atom-wise representations with a flow model that transports a simple source distribution to the learned latent distribution. However, previous studies have mainly focused on the quality of generated crystals, leaving the structure and generative utility of the atom-wise laten"
+    },
+    {
+      "title": "WeightCode: Installing New Capabilities into Neural Networks via Weight-Space Programming",
+      "url": "https://arxiv.org/abs/2611.25476",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25476v1 Announce Type: new Abstract: Neural networks encode learned capabilities in their weights, yet extending those capabilities with explicit task knowledge remains a fundamental challenge. Here we show that Weight-Space Programming (WSP), in which executable programs read, construct or modify a network's weights directly, can install new capabilities within trained neural networks. WeightCode, a WSP f"
+    },
+    {
+      "title": "Towards Autoregressive Neural Network Parameter Generation",
+      "url": "https://arxiv.org/abs/2611.25538",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25538v1 Announce Type: new Abstract: Large Language Models (LLMs) have recently established a new paradigm in machine learning, demonstrating exceptional zero-shot generalization and complex reasoning capabilities. Concurrently, neural network parameter generation has emerged as a promising avenue for rapid task adaptation and model synthesis. Existing weight generation techniques, however, struggle to joi"
+    },
+    {
+      "title": "Design and Evaluation of Epira: An Automated Interview System for Case Investigation and Contact Tracing",
+      "url": "https://arxiv.org/abs/2611.25577",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25577v1 Announce Type: new Abstract: Objective: Case investigation and contact tracing are labor-intensive. Web forms struggle when respondents need clarification before disclosing contacts, and open-ended chatbots may deviate from protocols. We developed and evaluated Epira, a protocol-controlled large language model (LLM) interviewer for multi-disease case investigation and contact tracing. Materials and"
+    },
+    {
+      "title": "From Data Alignment to Parameter Generation: Few-Shot Cross-City Traffic Prediction with Conditional Diffusion",
+      "url": "https://arxiv.org/abs/2611.25592",
+      "source": "arXiv ML",
+      "category": "Research papers",
+      "publishedAt": "2026-11-21T05:00:00+00:00",
+      "description": "arXiv:2611.25592v1 Announce Type: new Abstract: Accurate mobile traffic forecasting is crucial for network service management, supporting proactive capacity provisioning, congestion mitigation, and energy-efficient operation. However, many cities and regions are data-scarce (e.g., newly deployed or poorly instrumented areas), thus making traffic prediction a few-shot learning problem and limiting the practicality of "
+    },
+    {
+      "title": "New in AWS Quick: More capable flows, an updated web experience, and agents that work together",
+      "url": "https://aws.amazon.com/blogs/machine-learning/new-in-aws-quick-more-capable-flows-an-updated-web-experience-and-agents-that-work-together/",
+      "source": "AWS Machine Learning",
+      "category": "Industry and engineering",
+      "publishedAt": "2026-11-21T01:06:42+00:00",
+      "description": "AWS Quick is the AI workspace built only for work. Today we're releasing updates that help your team get more done: build and run business-process flows in chat, triage your day in the updated web app, get more complete answers from multiple agents at once, and connect new data sources like Meta ads and Amplitude."
+    },
+    {
+      "title": "Cut self-hosted LLM cost and latency with the distributed KV caching agent skill",
+      "url": "https://aws.amazon.com/blogs/machine-learning/cut-self-hosted-llm-cost-and-latency-with-the-distributed-kv-caching-agent-skill/",
+      "source": "AWS Machine Learning",
+      "category": "Industry and engineering",
+      "publishedAt": "2026-11-21T00:14:26+00:00",
+      "description": "Self-hosting LLMs on GPUs means paying to recompute the same context on every turn. Distributed KV caching with Amazon ElastiCache can cut inference cost by up to 40% and time to first token by up to 80%. This post walks through the distributed KV caching skill in the Agent Toolkit for AWS, which evaluates and sets up the cache from your coding agent."
+    },
+    {
+      "title": "Introducing Amazon SageMaker HyperPod Global Inference Gateway: One endpoint across Regions and clusters",
+      "url": "https://aws.amazon.com/blogs/machine-learning/introducing-amazon-sagemaker-hyperpod-global-inference-gateway-one-endpoint-across-regions-and-clusters/",
+      "source": "AWS Machine Learning",
+      "category": "Industry and engineering",
+      "publishedAt": "2026-11-20T22:35:24+00:00",
+      "description": "Amazon SageMaker HyperPod introduces the Global Inference Gateway, one managed endpoint that routes inference requests across your HyperPod clusters in one Region or across Regions. It picks the best cluster, fails over automatically, and authenticates every request with SigV4 and IAM over AWS PrivateLink."
+    },
+    {
+      "title": "How Standard Bank Group automates AI risk assessment for generative AI",
+      "url": "https://aws.amazon.com/blogs/machine-learning/how-standard-bank-group-automates-ai-risk-assessment-for-generative-ai/",
+      "source": "AWS Machine Learning",
+      "category": "Industry and engineering",
+      "publishedAt": "2026-11-20T20:37:31+00:00",
+      "description": "Standard Bank Group automated the evidence behind its generative AI approval gates. Working with AWS Professional Services, the bank built an assessment in its own AWS account that scores each use case against international AI standards and its own policies using LLM-as-a-judge on Amazon Bedrock, giving risk committees consistent, traceable evidence."
+    },
+    {
+      "title": "Announcing Amazon Textract Insights: Verifiable generative AI for documents",
+      "url": "https://aws.amazon.com/blogs/machine-learning/announcing-amazon-textract-insights-verifiable-generative-ai-for-documents/",
+      "source": "AWS Machine Learning",
+      "category": "Industry and engineering",
+      "publishedAt": "2026-11-20T20:22:00+00:00",
+      "description": "Announcing the general availability of Amazon Textract Insights, a new generative AI feature of Amazon Textract. Describe the fields you need in natural language, submit a document or a mixed packet, and receive structured results with a confidence score and page-level grounding for each value, with no model training required."
+    },
+    {
+      "title": "New approach enables physically consistent AI models of chaotic systems",
+      "url": "https://news.mit.edu/new-approach-enables-physically-consistent-ai-models-chaotic-systems-1120",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-11-20T20:00:00+00:00",
+      "description": "Enforcing physics-based constraints prevents AI models from generating unreliable predictions for complex nonlinear systems in weather, climate, and turbulent flows."
+    },
+    {
+      "title": "Introducing enhanced infrastructure observability in Amazon SageMaker HyperPod",
+      "url": "https://aws.amazon.com/blogs/machine-learning/introducing-enhanced-observability-in-amazon-sagemaker-hyperpod-to-diagnose-gpu-training-issues/",
+      "source": "AWS Machine Learning",
+      "category": "Industry and engineering",
+      "publishedAt": "2026-11-20T18:24:06+00:00",
+      "description": "Amazon SageMaker HyperPod now offers enhanced observability to help you diagnose GPU training issues faster. It brings together diagnostic and profiling capabilities for training workloads on both Amazon EKS and Slurm orchestrators, pinpointing issues across GPU, network, and host layers."
+    },
+    {
+      "title": "The most misunderstood graph in AI just got a major update",
+      "url": "https://www.technologyreview.com/2026/11/20/1149399/the-most-misunderstood-graph-in-ai-just-got-a-major-update/",
+      "source": "MIT Technology Review",
+      "category": "Independent reporting",
+      "publishedAt": "2026-11-20T18:15:15+00:00",
+      "description": "A new report from the AI evaluation nonprofit METR finds that some AI capabilities are continuing to improve along an exponential trajectory—but it also indicates that models aren’t quite as good at tasks that require judgment as they are at coding. The report is an update to the organization’s time horizon plot, which was widely…"
+    },
+    {
+      "title": "RadixArk Ships DaisyRose-27B, a 27B Agentic Coding Model Trained With Reinforcement Learning Only",
+      "url": "https://www.marktechpost.com/2026/11/20/radixark-daisyrose-27b-agentic-model/",
+      "source": "MarkTechPost",
+      "category": "AI industry reporting",
+      "publishedAt": "2026-11-20T17:42:29+00:00",
+      "description": "RadixArk released DaisyRose-27B, an Apache 2.0 agentic coding model post-trained from Qwen3.8-27B with reinforcement learning only. It more than doubles Terminal Bench 4.1 pass@1 to 12.0 and runs on a single GPU. The post RadixArk Ships DaisyRose-27B, a 27B Agentic Coding Model Trained With Reinforcement Learning Only appeared first on MarkTechPost ."
+    },
+    {
+      "title": "Following the “mathocalypse,” mathematicians consider the future",
+      "url": "https://news.mit.edu/2026/following-mathocalypse-mathematicians-consider-future-1120",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-11-20T15:20:00+00:00",
+      "description": "A panel discussion at MIT explored AI’s implications for mathematical discovery and the people who make it their profession."
+    },
+    {
+      "title": "NVIDIA AI Releases Nemotron-Labs-Sigma, a Continuous Diffusion Language Model with 14 checkpoints at 3B/8B",
+      "url": "https://www.marktechpost.com/2026/11/20/nvidia-nemotron-labs-sigma-continuous-diffusion-language-model/",
+      "source": "MarkTechPost",
+      "category": "AI industry reporting",
+      "publishedAt": "2026-11-20T14:44:52+00:00",
+      "description": "NVIDIA released Nemotron-Labs-Sigma, 14 open 3B and 8B continuous diffusion language model checkpoints. Sigma denoises text in a learned 16-D embedding space, distills to few-step samplers, and decodes up to 4.20x faster than autoregressive decoding. The post NVIDIA AI Releases Nemotron-Labs-Sigma, a Continuous Diffusion Language Model with 14 checkpoints at 3B/8B appeared first on MarkTechPost ."
+    },
+    {
+      "title": "Trump threatens ‘tremendous tax’ for moving AI data centers outside the US",
+      "url": "https://www.theverge.com/policy/1038892/trump-foreign-data-centers-tax",
+      "source": "The Verge AI",
+      "category": "Technology reporting",
+      "publishedAt": "2026-11-20T13:50:19-05:00",
+      "description": "President Donald Trump promised to put a \"tremendous tax\" on companies that build data centers outside of the US, even as states and cities around the country are placing restrictions on new applications to build them. \"We're not going to allow our companies to build data centers outside of our country,\" Trump said at a […]"
+    },
+    {
+      "title": "Anthropic mathematician claims to have solved prestigious Millennium Prize problem with Claude",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1010051/anthropic-riemann-hypothesis-millennium-prize-problem",
+      "source": "The Verge AI",
+      "category": "Technology reporting",
+      "publishedAt": "2026-11-20T11:57:47-05:00",
+      "description": "Anthropic mathematician Levent Alpöge claims he has proved the Riemann hypothesis, one of mathematics's most notoriously difficult problems, with the help of Claude, cracking a puzzle that has eluded some of the world's best mathematicians for decades. If verified, it would mark yet another seismic achievement for AI in mathematics and add to the upheaval […]"
+    },
+    {
+      "title": "Apple is hiring engineers to build its own AI agent",
+      "url": "https://www.theverge.com/tech/1038227/apple-ai-agent-engineer-job-listing",
+      "source": "The Verge AI",
+      "category": "Technology reporting",
+      "publishedAt": "2026-11-20T10:13:37-05:00",
+      "description": "Apple is working on its own AI agent that can perform a range of tasks for you, including browsing the web, working across apps, writing code, and calling services. That's according to a now-removed job listing spotted by Bloomberg, which said Apple is looking for an engineer to lead the creation of an agentic AI […]"
+    },
+    {
+      "title": "Signal is blocking Gemini and Siri AI from reading your screen",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1038390/signal-blocking-ai-agent-screenshots-mobile-app",
+      "source": "The Verge AI",
+      "category": "Technology reporting",
+      "publishedAt": "2026-11-20T09:36:42-05:00",
+      "description": "Signal is restricting the ability to take screenshots on Android and iOS devices in an effort to prevent AI agents from reading users' messages and other data. The agentic AI capabilities built into operating systems that analyze on-screen information to learn more about the user are \"undermining Signal's ability to independently guarantee privacy,\" Signal president […]"
+    },
+    {
+      "title": "Amazon SageMaker Inference: 2026 launches in review, part 2",
+      "url": "https://aws.amazon.com/blogs/machine-learning/amazon-sagemaker-inference-2026-launches-in-review-part-2/",
+      "source": "AWS Machine Learning",
+      "category": "Industry and engineering",
+      "publishedAt": "2026-11-20T00:34:07+00:00",
+      "description": "This second installment reviews 13 more Amazon SageMaker AI inference launches from 2026, spanning configuration recommendations, fitting more models onto each GPU, serving models too large for one instance, cross-Region routing, and post-launch tuning, bringing the year's total to 26."
+    },
     {
       "title": "Can AI help scientists identify promising drug candidates?",
       "url": "https://openai.com/index/introducing-medchembench",
@@ -11,12 +347,148 @@
       "description": "MedChemBench evaluates how well AI models interpret molecular structures, reason from experimental evidence, and select compounds in early drug discovery."
     },
     {
+      "title": "Enable AI agents to pay for AWS Marketplace x402 products with Amazon Bedrock AgentCore payments",
+      "url": "https://aws.amazon.com/blogs/machine-learning/enable-ai-agents-to-pay-for-aws-marketplace-x402-products-with-amazon-bedrock-agentcore-payments/",
+      "source": "AWS Machine Learning",
+      "category": "Industry and engineering",
+      "publishedAt": "2026-11-19T23:02:16+00:00",
+      "description": "Amazon Bedrock AgentCore payments now supports AWS Marketplace, so agents can discover and buy x402-enabled products, APIs, data, and content and pay in USD on the developer's AWS bill, with no stablecoin wallets or API keys. This post walks through a research agent that finds a tool, pays per request through AWS Billing, and answers with sources."
+    },
+    {
+      "title": "How the BMW Group governs hundreds of agents across thousands of developers",
+      "url": "https://aws.amazon.com/blogs/machine-learning/how-the-bmw-group-governs-hundreds-of-agents-across-thousands-of-developers/",
+      "source": "AWS Machine Learning",
+      "category": "Industry and engineering",
+      "publishedAt": "2026-11-19T22:20:23+00:00",
+      "description": "When hundreds of agents serve thousands of developers, governance cannot be an afterthought. The BMW Group shares the practices and patterns its R&D teams use to build, govern, and operate AI agents at enterprise scale without sacrificing speed, quality, or compliance."
+    },
+    {
+      "title": "Run your whole selling business in AWS Quick",
+      "url": "https://aws.amazon.com/blogs/machine-learning/run-your-whole-selling-business-in-aws-quick/",
+      "source": "AWS Machine Learning",
+      "category": "Industry and engineering",
+      "publishedAt": "2026-11-19T22:16:22+00:00",
+      "description": "Most sellers do not need another AI product to learn. They need the tools and information they already use brought together, so they can see what is happening in their business and act on it."
+    },
+    {
+      "title": "AI helps researchers investigate how thousands of medical studies share code",
+      "url": "https://news.mit.edu/2026/ai-helps-researchers-investigate-how-medical-studies-share-code-1119",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-11-19T22:15:00+00:00",
+      "description": "An MIT and Dana-Farber Institute-led team used large language models to examine nearly 4,000 studies and hundreds of code repositories, revealing gaps in the information needed to scrutinize and reuse published research."
+    },
+    {
+      "title": "Amazon SageMaker AI now detects latency drift, idle GPUs, and missed optimizations on your inference endpoints",
+      "url": "https://aws.amazon.com/blogs/machine-learning/amazon-sagemaker-ai-now-detects-latency-drift-idle-gpus-and-missed-optimizations-on-your-inference-endpoints/",
+      "source": "AWS Machine Learning",
+      "category": "Industry and engineering",
+      "publishedAt": "2026-11-19T21:28:18+00:00",
+      "description": "Amazon SageMaker AI now monitors your generative AI inference endpoints by default and tells you when a change could improve performance or lower cost. It tracks latency, GPU utilization, and serving configuration, then sends a finding through AWS Health with a one-click path to benchmark alternatives in SageMaker Studio before you apply any change."
+    },
+    {
+      "title": "Inside Amazon Connect Talent: The science of structured AI interviews",
+      "url": "https://aws.amazon.com/blogs/machine-learning/inside-amazon-connect-talent-the-science-of-structured-ai-interviews/",
+      "source": "AWS Machine Learning",
+      "category": "Industry and engineering",
+      "publishedAt": "2026-11-19T21:23:20+00:00",
+      "description": "For organizations hiring hundreds or thousands of people, every interview presents the same challenge: How do you give candidates a consistent opportunity to demonstrate their skills while gathering the evidence needed to make informed hiring decisions?  Structured behavioral interviews offer a research-backed approach to this challenge. They use consistent, job-related questions and clear scoring criteria […]"
+    },
+    {
+      "title": "Amazon Polly launches voice cloning: A unique voice for your brand",
+      "url": "https://aws.amazon.com/blogs/machine-learning/amazon-polly-launches-voice-cloning-a-unique-voice-for-your-brand/",
+      "source": "AWS Machine Learning",
+      "category": "Industry and engineering",
+      "publishedAt": "2026-11-19T19:53:32+00:00",
+      "description": "Voice cloning in Amazon Polly is now generally available. Give Amazon Polly a few minutes of recordings from a consenting speaker, and it builds a custom voice that reads new text in that speaker's voice. Cloned voices run on the Amazon Polly generative engine and support seven languages."
+    },
+    {
+      "title": "Optimize AI economics on Amazon Bedrock with Accenture’s sequenced approach",
+      "url": "https://aws.amazon.com/blogs/machine-learning/optimize-ai-economics-on-amazon-bedrock-with-accentures-sequenced-approach/",
+      "source": "AWS Machine Learning",
+      "category": "Industry and engineering",
+      "publishedAt": "2026-11-19T18:48:55+00:00",
+      "description": "As enterprises scale AI on Amazon Bedrock, token spend can grow even as per-token prices fall. This post walks through six composable optimization levers, shows how Accenture applied them across four client engagements, and recommends a sequence for cutting AI token spend on your own workloads."
+    },
+    {
+      "title": "From learning to leaderboard: How Cisco upskilled 1,200 engineers in agentic AI with AWS AI League",
+      "url": "https://aws.amazon.com/blogs/machine-learning/from-learning-to-leaderboard-how-cisco-upskilled-1200-engineers-in-agentic-ai-with-aws-ai-league/",
+      "source": "AWS Machine Learning",
+      "category": "Industry and engineering",
+      "publishedAt": "2026-11-19T18:26:22+00:00",
+      "description": "Cisco and AWS used Cisco Transformation Fest and AWS AI League to turn hands-on AI learning into a culture of building. A Cisco engineer won the 2025 AWS AI League global title and 1,200 engineers competed in 2026. This post shares Cisco's journey, lessons from the 2026 winning agent built on Amazon Bedrock AgentCore, and how to host your own league."
+    },
+    {
+      "title": "Keep inference running through regional capacity shortfalls with cross-Region inference routing in Amazon SageMaker AI",
+      "url": "https://aws.amazon.com/blogs/machine-learning/keep-inference-running-through-regional-capacity-shortfalls-with-cross-region-inference-routing-in-amazon-sagemaker-ai/",
+      "source": "AWS Machine Learning",
+      "category": "Industry and engineering",
+      "publishedAt": "2026-11-19T18:20:54+00:00",
+      "description": "Cross-Region inference routing in Amazon SageMaker AI gives your application one invocation path across the endpoints and inference components you already run, in one or more AWS Regions and AWS accounts. The router prefers its own Region and shifts new requests to another destination only when the local one can't serve reliably."
+    },
+    {
+      "title": "Protect agent tool calls with Skyflow and Amazon Bedrock AgentCore Gateway",
+      "url": "https://aws.amazon.com/blogs/machine-learning/protect-agent-tool-calls-with-skyflow-and-amazon-bedrock-agentcore-gateway/",
+      "source": "AWS Machine Learning",
+      "category": "Industry and engineering",
+      "publishedAt": "2026-11-19T18:14:36+00:00",
+      "description": "Learn how Skyflow and Amazon Bedrock AgentCore Gateway keep sensitive data out of the tools your AI agents call. Added as a gateway interceptor, Skyflow de-identifies data before any tool, model, or log sees it, and restores it for authorized callers, with no change to your agent code."
+    },
+    {
+      "title": "13 Best Agent Gateways in 2026 for MCP, A2A and LLM Traffic: Kong, Bifrost, AgentCore, Arcade",
+      "url": "https://www.marktechpost.com/2026/11/19/best-agent-gateways-2026/",
+      "source": "MarkTechPost",
+      "category": "AI industry reporting",
+      "publishedAt": "2026-11-19T18:13:21+00:00",
+      "description": "We ranked the 13 best agent gateways of 2026 by how they govern model, MCP tool and agent-to-agent traffic, with verified pricing, deployment options and the trade-offs each vendor's marketing leaves out. The post 13 Best Agent Gateways in 2026 for MCP, A2A and LLM Traffic: Kong, Bifrost, AgentCore, Arcade appeared first on MarkTechPost ."
+    },
+    {
       "title": "Walter Isaacson on curiosity and creativity in the AI age.",
       "url": "https://blog.google/innovation-and-ai/technology/ai/dialogues-walter-isaacson/",
       "source": "Google AI",
       "category": "Company releases",
       "publishedAt": "2026-11-19T17:00:00+00:00",
       "description": "Walter Isaacson joins Google to discuss how history’s greatest innovators inspire creativity and human judgment in the AI age. Watch the episode."
+    },
+    {
+      "title": "Meta’s Muse Charm might cost $300",
+      "url": "https://www.theverge.com/tech/1038087/meta-muse-charm-ai-price",
+      "source": "The Verge AI",
+      "category": "Technology reporting",
+      "publishedAt": "2026-11-19T15:29:21-05:00",
+      "description": "Meta is planning to price the Muse Charm, a little gadget with a screen that lets you chat with your Muse AI agent, at $300, according to The Information. CEO Mark Zuckerberg revealed the gadget earlier this year and said the company expected to ship the Charm \"in time for the holidays in December,\" but […]"
+    },
+    {
+      "title": "Google is putting AI chats right on the homepage",
+      "url": "https://www.theverge.com/tech/1038059/google-search-homepage-ai-chats",
+      "source": "The Verge AI",
+      "category": "Technology reporting",
+      "publishedAt": "2026-11-19T15:14:34-05:00",
+      "description": "Google is updating its homepage to include AI searches. In a post on X, Google's vice president of product, Robby Stein, shows how you can now open a collapsible sidebar to view and continue your AI chats. Based on the GIF shared by Stein, it looks like you can open the sidebar by clicking the […]"
+    },
+    {
+      "title": "Not If, But How: Responding to Security Incidents in the Age of AI Attackers",
+      "url": "https://www.marktechpost.com/2026/11/19/ai-security-incident-response-playbook-2026/",
+      "source": "MarkTechPost",
+      "category": "AI industry reporting",
+      "publishedAt": "2026-11-19T10:45:57+00:00",
+      "description": "AI-powered attackers are driving more frequent attacks on AI infrastructure. This guide reviews 6 months of incidents, sets out a 4-pillar incident response playbook, and shows it in practice through Fireworks AI and Klue. The post Not If, But How: Responding to Security Incidents in the Age of AI Attackers appeared first on MarkTechPost ."
+    },
+    {
+      "title": "The AI Hype Index: AI is everywhere",
+      "url": "https://www.technologyreview.com/2026/11/18/1148650/ai-hype-index-ai-is-everywhere/",
+      "source": "MIT Technology Review",
+      "category": "Independent reporting",
+      "publishedAt": "2026-11-18T14:42:44+00:00",
+      "description": "Like a nasty rash, AI seems to spread everywhere. Google crams AI Overviews down your throat even though it costs the company billions of dollars in lost ad revenue. Leave your apartment, and you might pass two people heaving an AI-powered humanoid robot up the stairs to clean someone’s rooms. Go to the supermarket, and…"
+    },
+    {
+      "title": "This smell startup says its AI nose is as good as a human’s",
+      "url": "https://www.technologyreview.com/2026/11/18/1148816/smell-startup-osmo-ai-nose-good-as-humans/",
+      "source": "MIT Technology Review",
+      "category": "Independent reporting",
+      "publishedAt": "2026-11-18T10:20:30+00:00",
+      "description": "In a lab near Newark Airport in New Jersey, a team of around 30 experienced human sniffers are slowly working their way through every odor on Earth. Their careful notes—“nutty,” “peachy,” “marine”—are cross-referenced with a chemical analysis to create a rich set of training data for what AI startup Osmo calls the world’s first foundation…"
     },
     {
       "title": "The Silent Consensus",
@@ -43,6 +515,14 @@
       "description": "OpenAI explains how it manages frontier AI risk from training through deployment with model alignment, sandboxing, blocking safeguards, and monitoring."
     },
     {
+      "title": "Helping AI text detectors keep up with changing conditions",
+      "url": "https://news.mit.edu/2026/helping-ai-text-detectors-keep-up-with-changing-conditions-1118",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-11-18T05:00:00+00:00",
+      "description": "A more flexible training method can make AI text detectors more robust when new models emerge or AI-generated text is disguised to appear human."
+    },
+    {
       "title": "Advancing chip design with OpenAI models",
       "url": "https://openai.com/index/advancing-chip-design-with-our-models",
       "source": "OpenAI",
@@ -57,6 +537,38 @@
       "category": "Open source",
       "publishedAt": "2026-11-18T00:00:00+00:00",
       "description": ""
+    },
+    {
+      "title": "Putting a spotlight on AI, society, and humanity",
+      "url": "https://news.mit.edu/2026/putting-spotlight-ai-society-humanity-1117",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-11-17T20:40:00+00:00",
+      "description": "Supported by the MIT Human Insight Collaborative, scholars are exploring how AI is impacting the human experience and reshaping higher education."
+    },
+    {
+      "title": "Can AI help build a healthier future?",
+      "url": "https://www.microsoft.com/en-us/research/podcast/can-ai-help-build-a-healthier-future/",
+      "source": "Microsoft Research",
+      "category": "Research",
+      "publishedAt": "2026-11-17T16:52:17+00:00",
+      "description": "What can AI enable in medicine, and how do we get there? Microsoft Research lead Doug Burger, Microsoft Principal Research Manager Ava Amini, Microsoft Chief Scientific Officer Eric Horvitz, and physician-scientist Eric Topol of Scripps Research explore these questions and more. The post Can AI help build a healthier future? appeared first on Microsoft Research ."
+    },
+    {
+      "title": "Q&A: Why building math muscles remains important in the AI era",
+      "url": "https://news.mit.edu/2026/qa-why-building-math-muscles-remains-important-ai-era-1117",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-11-17T05:00:00+00:00",
+      "description": "Assistant Professor John Urschel explains why learning the fundamental skills of mathematics is still essential despite the evolution of AI tools."
+    },
+    {
+      "title": "Learning the language of machine learning",
+      "url": "https://news.mit.edu/2026/learning-language-of-machine-learning-jacob-andreas-1117",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-11-17T05:00:00+00:00",
+      "description": "By studying the computational foundations of language learning, Associate Professor Jacob Andreas builds intelligent systems that can communicate effectively with humans."
     },
     {
       "title": "Strengthening NATO and allied cyber defenses with AI",
@@ -75,12 +587,44 @@
       "description": "OpenAI and the Government of Chile are partnering to support responsible AI adoption, build public-sector skills and help local startups develop AI applications."
     },
     {
+      "title": "The open-source movement wants Jensen Huang back",
+      "url": "https://www.technologyreview.com/2026/11/16/1148624/the-open-source-movement-wants-jensen-huang-back/",
+      "source": "MIT Technology Review",
+      "category": "Independent reporting",
+      "publishedAt": "2026-11-16T18:38:47+00:00",
+      "description": "This story originally appeared in The Algorithm, our weekly newsletter on AI. To get stories like this in your inbox first, sign up here. On Friday, a petition to reinstate Jensen Huang as CEO of Nvidia began circulating on social media, and by Monday it listed some notable signatories, including Elon Musk and several influential Nvidia…"
+    },
+    {
+      "title": "TokenEconomizer: Learning from Experience to Make AI Coding Agents More Efficient",
+      "url": "https://www.microsoft.com/en-us/research/blog/tokeneconomizer-learning-from-experience-to-make-ai-coding-agents-more-efficient/",
+      "source": "Microsoft Research",
+      "category": "Research",
+      "publishedAt": "2026-11-16T17:01:35+00:00",
+      "description": "AI coding agents can waste time and tokens relearning the same lessons. TokenEconomizer is an open-source plugin that builds on past sessions to cut costs while maintaining task success. It’s a path toward coding agents that learn not only how to solve tasks, but also how to spend computation more effectively. The post TokenEconomizer: Learning from Experience to Make AI Coding Agents More Efficient appeared first on"
+    },
+    {
       "title": "Broadening access to AI for scientists",
       "url": "https://openai.com/index/expanding-chatgpt-for-academic-researchers",
       "source": "OpenAI",
       "category": "Company releases",
       "publishedAt": "2026-11-16T17:00:00+00:00",
       "description": "We’re expanding our ChatGPT for Academic Researchers program to offer 200,000 researchers worldwide free access to our frontier models."
+    },
+    {
+      "title": "Building trustworthy AI by fencing it in, not predicting it",
+      "url": "https://www.technologyreview.com/2026/11/16/1148565/building-trustworthy-ai-by-fencing-it-in-not-predicting-it/",
+      "source": "MIT Technology Review",
+      "category": "Independent reporting",
+      "publishedAt": "2026-11-16T16:04:28+00:00",
+      "description": "In October this year, OpenAI disclosed that two of its AI agents had switched off the systems built to monitor them. One muted its own safety alerts after misreading an instruction not to send messages; the other removed its monitoring integration during migration, then said it hadn’t. No rule had told the agents to do…"
+    },
+    {
+      "title": "Building AI that can work across the enterprise",
+      "url": "https://www.technologyreview.com/2026/11/16/1146070/building-ai-that-can-work-across-the-enterprise/",
+      "source": "MIT Technology Review",
+      "category": "Independent reporting",
+      "publishedAt": "2026-11-16T13:00:00+00:00",
+      "description": "For years, enterprises have approached AI as a series of discrete experiments. Now, as AI agents begin to move into the workflows that run the business, that model is starting to look inadequate. Organizations moving from isolated pilots toward AI agents and autonomous workflows are confronting a deeper challenge: rethinking how data, business processes, governance,…"
     },
     {
       "title": "LVMH’s Media Division announces strategic partnership with OpenAI",
@@ -115,12 +659,44 @@
       "description": ""
     },
     {
+      "title": "New AI “copilot” helps engineers design better structures",
+      "url": "https://news.mit.edu/2026/new-ai-copilot-helps-engineers-design-better-structures-1113",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-11-13T05:00:00+00:00",
+      "description": "The system asks humans for feedback to increase trust in machine-generated designs for buildings and bridges."
+    },
+    {
+      "title": "Helping robots fit into the human workplace",
+      "url": "https://news.mit.edu/2026/helping-robots-fit-into-human-workplace-1113",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-11-13T05:00:00+00:00",
+      "description": "Founded by Anthony Jules ’92, SM ’92 and Professor Emeritus Rodney Brooks, Robust AI’s robots are designed to collaborate with humans in factories and warehouses."
+    },
+    {
+      "title": "Microsoft Research Focus – Edition #98",
+      "url": "https://www.microsoft.com/en-us/research/podcast/microsoft-research-focus-edition-98/",
+      "source": "Microsoft Research",
+      "category": "Research",
+      "publishedAt": "2026-11-12T21:31:57+00:00",
+      "description": "What's new in research at Microsoft? Host Anson Ho explores the latest, including AI-powered universal translation, a breakthrough in a 31-year-old mathematics challenge, and advances making AI coding agents faster and more efficient. The post Microsoft Research Focus – Edition #98 appeared first on Microsoft Research ."
+    },
+    {
       "title": "LLMON: An LLM-Native Markup Language, now in Granite 4.1 3B and 8B",
       "url": "https://huggingface.co/blog/ibm-granite/llmon-an-llm-native-markup-language-now-in-granite",
       "source": "Hugging Face",
       "category": "Open source",
       "publishedAt": "2026-11-12T19:07:35+00:00",
       "description": ""
+    },
+    {
+      "title": "New research could lead to faster, trustworthy AI models for climate prediction",
+      "url": "https://news.mit.edu/2026/new-research-could-lead-faster-trustworthy-ai-models-climate-prediction-1112",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-11-12T05:00:00+00:00",
+      "description": "MIT scientists developed a training method to generate models that simulate the effects of human activities on climate much more quickly than other approaches."
     },
     {
       "title": "Supporting research on AI and children’s safety",
@@ -139,6 +715,14 @@
       "description": "A conversation with Sam Nickless, Partner and Chief Executive Officer at Gilbert + Tobin."
     },
     {
+      "title": "Last Week (Month) in AI #347 - Nvidia's spy, Anthropic's $1.4T IPO, AI's blue wave",
+      "url": "https://lastweekin.ai/p/last-week-month-in-ai-347-nvidias",
+      "source": "Last Week in AI",
+      "category": "Industry analysis",
+      "publishedAt": "2026-11-11T14:21:42+00:00",
+      "description": "Catching up on five weeks: Huang under investigation, Anthropic and OpenAI priced at $1.4T and $1.25T as spending stalls, Anthropic warns it may be nearing recursive self-improvement, Gemini 4 Carbon"
+    },
+    {
       "title": "BotPsy: On-Device Personal Assistant with a Sub-Billion-Parameter Agentic Language Model",
       "url": "https://huggingface.co/blog/qvac/botpsy",
       "source": "Hugging Face",
@@ -153,6 +737,14 @@
       "category": "Company releases",
       "publishedAt": "2026-11-11T00:00:00+00:00",
       "description": "JioStar’s Vijay Seshadri explains AI discovery at 500M-user scale. Read his lessons on evals, guardrails, and taking AI into production."
+    },
+    {
+      "title": "Lazare, veni foras: Reprogramming Dormant Neurons to Backdoor AI Agents",
+      "url": "https://www.microsoft.com/en-us/research/blog/lazare-veni-foras-reprogramming-dormant-neurons-to-backdoor-ai-agents/",
+      "source": "Microsoft Research",
+      "category": "Research",
+      "publishedAt": "2026-11-10T20:52:56+00:00",
+      "description": "Microsoft researchers have discovered “Lazarus,” a backdoor technique that can reprogram dormant neurons in an AI model, causing an otherwise normal AI agent to execute malicious commands when a hidden trigger appears. The threat is especially serious for AI agents with tool or terminal access. A triggered model could quietly download and run attacker code, […] The post Lazare, veni foras: Reprogramming Dormant Neuro"
     },
     {
       "title": "We’re bringing Adobe’s creative and productivity tools closer to your everyday Google apps.",
@@ -187,12 +779,52 @@
       "description": "New research from OpenAI and Upwork finds shifting demand for freelance work, new skill combinations, and larger budgets and more hours for AI-related projects."
     },
     {
+      "title": "MIT-led team receives funding to develop next-generation alternatives to modern weed killers",
+      "url": "https://news.mit.edu/2026/mit-led-team-receives-funding-next-generation-alternatives-modern-weed-killers-1110",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-11-10T05:00:00+00:00",
+      "description": "With up to $53 million from ARPA-H, the researchers will use AI to generate safer herbicides that reduce dependence on imports and improve the security of the U.S. food supply."
+    },
+    {
+      "title": "The backlash about data centers might really just be about electricity",
+      "url": "https://www.technologyreview.com/2026/11/09/1148194/the-backlash-about-data-centers-might-really-just-be-about-electricity/",
+      "source": "MIT Technology Review",
+      "category": "Independent reporting",
+      "publishedAt": "2026-11-09T19:35:33+00:00",
+      "description": "This story originally appeared in The Algorithm, our weekly newsletter on AI. To get stories like this in your inbox first, sign up here. As voters went to the polls across the US last week, I was in Ashburn, Virginia, part of what’s known as Data Center Alley—the world’s largest data center hub. It’s also where…"
+    },
+    {
+      "title": "Nancy Pelosi’s replacement is ready to regulate AI",
+      "url": "https://www.technologyreview.com/2026/11/09/1148182/nancy-pelosis-replacement-is-ready-to-regulate-ai/",
+      "source": "MIT Technology Review",
+      "category": "Independent reporting",
+      "publishedAt": "2026-11-09T17:05:43+00:00",
+      "description": "As a California state senator, Scott Wiener authored legislation aimed at curbing the risks of advanced AI. Now, after winning a tight congressional race for former Speaker of the House Nancy Pelosi’s open San Francisco seat, he could play a key role in setting federal AI policy.  I spoke with Wiener on Friday, only a…"
+    },
+    {
       "title": "CodeRabbit scales agentic software development and ships 20x more",
       "url": "https://openai.com/index/coderabbit-codex-daybreak",
       "source": "OpenAI",
       "category": "Company releases",
       "publishedAt": "2026-11-09T08:00:00+00:00",
       "description": "CodeRabbit uses OpenAI models to govern and trust AI-generated code and Codex to ship 20 times more software with the same engineering team."
+    },
+    {
+      "title": "A single AI model simulates the behavior of many substances, from sliding sand to folding proteins",
+      "url": "https://news.mit.edu/2026/single-ai-model-simulates-many-substances-behavior-1109",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-11-09T05:00:00+00:00",
+      "description": "By learning how matter moves, the WorldParticle system could assist with developing soft robots, medicines, and more."
+    },
+    {
+      "title": "AI-assisted learning platform helps robots reason beyond literal commands",
+      "url": "https://news.mit.edu/2026/ai-assisted-learning-platform-helps-robots-reason-beyond-literal-commands-1109",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-11-09T05:00:00+00:00",
+      "description": "The new approach, known as FLEX, could lead to more intuitive, interactive household and assistive robots."
     },
     {
       "title": "Partnering with Hacktron to find vulnerabilities in OpenAI’s systems",
@@ -219,6 +851,14 @@
       "description": "Australian universities are expanding access to ChatGPT and bringing AI into teaching and learning to prepare students for an AI-enabled workforce."
     },
     {
+      "title": "Formally verifying agent-written full-stack web apps with PDD Kit",
+      "url": "https://www.microsoft.com/en-us/research/blog/formally-verifying-agent-written-full-stack-web-apps-with-pdd-kit/",
+      "source": "Microsoft Research",
+      "category": "Research",
+      "publishedAt": "2026-11-05T16:00:00+00:00",
+      "description": "AI agents can generate code at a scale that’s hard for humans to review line-by-line. PDD Kit helps ensure the code is doing what the developer intended by creating formal specifications and testing against them. It converts developer intent into a Verus specification, proves AI-generated code meets it for every input, and uses tests where proofs aren't practical. Developers review intent, not every line. The post Fo"
+    },
+    {
       "title": "Merge builds product and business tools with OpenAI technology",
       "url": "https://openai.com/index/merge-builds-with-openai",
       "source": "OpenAI",
@@ -243,20 +883,12 @@
       "description": "Starting with equity research, Franklin Templeton is developing AI workflows to help portfolio managers compare research views and examine investment risks."
     },
     {
-      "title": "Heimstaden is changing residential real estate management with AI",
-      "url": "https://openai.com/index/heimstaden",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-11-03T08:00:00+00:00",
-      "description": "Discover how Heimstaden uses OpenAI’s ChatGPT Enterprise and Codex to transform property management, cut costs, and empower employees across Europe."
-    },
-    {
-      "title": "Preparing our next security sprint to harden OpenAI",
-      "url": "https://openai.com/index/preparing-our-next-security-sprint-to-harden-openai",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-11-02T18:00:00+00:00",
-      "description": "OpenAI is preparing its next internal security sprint with Cathedral Systems to test and strengthen its defenses using AI."
+      "title": "Learn the rules: The hacker mindset",
+      "url": "https://www.microsoft.com/en-us/research/podcast/learn-the-rules-the-hacker-mindset/",
+      "source": "Microsoft Research",
+      "category": "Research",
+      "publishedAt": "2026-11-03T17:14:38+00:00",
+      "description": "Research Manager Mike Walker reflects on a career spanning hacker culture, cybersecurity, and AI, sharing lessons about trust, teamwork, leadership, and why solving difficult problems requires curiosity, judgment, agility—and an understanding of the rules. The post Learn the rules: The hacker mindset appeared first on Microsoft Research ."
     },
     {
       "title": "The latest AI news we announced in October 2026",
@@ -267,60 +899,44 @@
       "description": "Animated carousel of images from AI posts in October"
     },
     {
-      "title": "LifeVal",
-      "url": "https://openai.com/index/lifeval",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-11-02T09:00:00+00:00",
-      "description": "Introducing LifeVal, a benchmark measuring how well AI helps people complete everyday tasks, from finding childcare to managing finances and government paperwork."
+      "title": "Regina Barzilay and Jim Collins win Pritzker Prize for AI and Science Research Excellence for work in AI-enabled antibiotic discovery",
+      "url": "https://news.mit.edu/2026/regina-barzilay-jim-collins-win-pritzker-prize-ai-and-science-research-excellence-1102",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-11-02T05:35:00+00:00",
+      "description": "The MIT professors collaborated to identify the first AI-discovered antibiotic, a scientific breakthrough that is widely recognized as a milestone in AI-driven drug discovery."
     },
     {
-      "title": "Qodo builds context into AI code review with Codex",
-      "url": "https://openai.com/index/qodo-codex-plugin",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-11-02T00:00:00+00:00",
-      "description": "Qodo brings company knowledge and coding standards into Codex, helping developers catch P0 issues across repositories before opening a pull request."
+      "title": "MIT affiliates named 2026 Schmidt Sciences AI2050 Fellows",
+      "url": "https://news.mit.edu/2026/mit-affiliates-named-schmidt-sciences-ai2050-fellows-1030",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-10-30T20:15:00+00:00",
+      "description": "Five MIT faculty members and two additional alumni are honored with fellowships to advance research on beneficial AI."
     },
     {
-      "title": "OpenAI appoints Dan Driscoll as Senior Counselor for National Security Modernization",
-      "url": "https://openai.com/index/dan-driscoll-joins-openai",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-11-02T00:00:00+00:00",
-      "description": "OpenAI appoints Dan Driscoll to advise on responsible AI for national security modernization, cyber resilience, and collaboration with U.S. allies."
+      "title": "Q&A: Hey AI, who should I vote for this year?",
+      "url": "https://news.mit.edu/2026/qa-hey-ai-who-should-i-vote-for-this-year-1030",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-10-30T19:00:00+00:00",
+      "description": "MIT professors Adam Berinsky and Chara Podimata discuss a new project to track how AI chatbots are responding to questions about the 2026 U.S. midterm elections."
     },
     {
-      "title": "Making it easier for websites to express AI training preferences",
-      "url": "https://openai.com/index/helping-websites-express-ai-training-preferences",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-30T09:30:00+00:00",
-      "description": "OpenAI will honor a shared robots.txt signal to help website operators communicate their AI training preferences to participating providers."
+      "title": "From synthetic enterprise data evaluations to real Microsoft Copilot AI confidence",
+      "url": "https://www.microsoft.com/en-us/research/blog/from-synthetic-enterprise-data-evaluations-to-real-microsoft-copilot-ai-confidence/",
+      "source": "Microsoft Research",
+      "category": "Research",
+      "publishedAt": "2026-10-30T13:05:28+00:00",
+      "description": "Evaluating Microsoft Copilot at enterprise scale requires test data that captures the full complexity of real organizations, yet real enterprise data contains sensitive information that cannot be used for evaluation under any circumstances. The post From synthetic enterprise data evaluations to real Microsoft Copilot AI confidence appeared first on Microsoft Research ."
     },
     {
-      "title": "Fair use benefits everyone",
-      "url": "https://openai.com/index/fair-use-benefits-everyone",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-30T00:00:00+00:00",
-      "description": "OpenAI shares excerpts from court briefs by creators, academics, accessibility advocates, and legal experts, among others, on how fair use supports AI training and innovation."
-    },
-    {
-      "title": "An updated Model Spec for more capable and beneficial AI",
-      "url": "https://openai.com/index/updated-model-spec",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-29T17:00:00+00:00",
-      "description": "OpenAI’s updated Model Spec outlines five core values to guide more capable AI toward sound judgment, human agency, and faithfulness to human intent."
-    },
-    {
-      "title": "How Ropes & Gray is developing AI for transactional diligence",
-      "url": "https://openai.com/index/ropes-gray-ai-diligence",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-29T07:00:00+00:00",
-      "description": "Ropes & Gray is developing AI for transactional diligence with OpenAI. Lawyers review grouped documents, summaries, and reports before advising clients."
+      "title": "Microsoft Research Focus – Edition #97",
+      "url": "https://www.microsoft.com/en-us/research/podcast/microsoft-research-focus-edition-97/",
+      "source": "Microsoft Research",
+      "category": "Research",
+      "publishedAt": "2026-10-29T19:19:16+00:00",
+      "description": "Host Sowbhagya Suresh shares some of the latest news and cutting-edge research from across Microsoft—from understanding the challenges facing coding agents to uncovering how people use AI at work and improving extended-range weather forecasting. The post Microsoft Research Focus – Edition #97 appeared first on Microsoft Research ."
     },
     {
       "title": "Announcing Project ProtoStar: Making Publicly Funded Science AI-Ready",
@@ -331,36 +947,20 @@
       "description": ""
     },
     {
-      "title": "Evernote turns AI-driven discovery into paid subscriptions",
-      "url": "https://openai.com/ads/customers/evernote",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-28T19:40:49+00:00",
-      "description": "Evernote used ChatGPT Ads to introduce its note-taking app to people working with AI. The team tracked how often free trials led to paid subscriptions."
+      "title": "3 Questions: Why infrastructure is entering a defining era",
+      "url": "https://news.mit.edu/2026/3-questions-why-infrastructure-is-entering-defining-era-1028",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-10-28T16:00:00+00:00",
+      "description": "Professor Ali Jadbabaie describes how AI, digital transformation, climate change, and complex geopolitics are forcing engineers and policymakers to rethink how infrastructure is designed, built, and managed."
     },
     {
-      "title": "The future of the firm",
-      "url": "https://openai.com/index/the-future-of-the-firm",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-28T10:00:00+00:00",
-      "description": "How AI might enter the org chart—beneath, beside, and between us."
-    },
-    {
-      "title": "Legora is building the agentic operating system for legal work",
-      "url": "https://openai.com/index/legora",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-28T09:30:00+00:00",
-      "description": "See how Legora uses OpenAI models, ChatGPT, and Codex to accelerate legal workflows, expand contract analysis, and free lawyers to focus on higher-value work."
-    },
-    {
-      "title": "OpenAI expands partnership with Oracle to bring its apps to ChatGPT",
-      "url": "https://openai.com/index/oracle-apps-in-chatgpt",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-27T07:00:00+00:00",
-      "description": "OpenAI and Oracle are expanding their partnership to bring business applications and AI agents into ChatGPT and power new Oracle offerings."
+      "title": "Learner collaborates with MIT peers to develop book of AI insights",
+      "url": "https://news.mit.edu/2026/learner-prabha-jha-collaborates-with-mit-peers-to-develop-book-of-ai-insights-1027",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-10-27T20:55:00+00:00",
+      "description": "Prabha Jha used her experience with MIT Open Learning’s program for senior executives to develop AI solutions for her employer, Verizon, and to write a book."
     },
     {
       "title": "Our newest AI Quest: Mapping the human brain",
@@ -371,12 +971,36 @@
       "description": "An illustration of a planet rotating to show various cartoon figures waving. At the top is the text \"AI Quests\""
     },
     {
-      "title": "OpenAI and Poland’s NASK partner to advance AI safety and security",
-      "url": "https://openai.com/index/openai-nask-ai-safety-security-partnership",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-23T00:00:00+00:00",
-      "description": "OpenAI and Poland’s NASK are partnering on AI safety, security, and technical research to strengthen safeguards and support a more resilient digital ecosystem."
+      "title": "Building Reasoning Models from the Ground Up: A Full Video Course",
+      "url": "https://magazine.sebastianraschka.com/p/building-reasoning-models",
+      "source": "Ahead of AI",
+      "category": "Technical analysis",
+      "publishedAt": "2026-10-24T11:14:32+00:00",
+      "description": "Over 11 hours of coding videos on evaluation, inference-time scaling, reinforcement learning, and distillation, with Python and PyTorch."
+    },
+    {
+      "title": "At MIT, Martha Minow speaks on sustaining democracy, both by using and overcoming AI",
+      "url": "https://news.mit.edu/2026/martha-minow-speaks-on-sustaining-democracy-using-overcoming-ai-1023",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-10-23T21:00:00+00:00",
+      "description": "In Compton Lecture, the distinguished legal scholar warns of potential “loss of the Enlightenment” while suggesting ways innovations can meet our civic and cultural needs."
+    },
+    {
+      "title": "Q&A: How AI came to model the “messy” human mind",
+      "url": "https://news.mit.edu/2026/qa-how-ai-came-to-model-messy-human-mind-1023",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-10-23T04:00:00+00:00",
+      "description": "Assistant Professor Benjamin Lindquist studies how engineers deliberately injected randomness into early AI, giving rise to deep-learning models that sometimes hallucinate."
+    },
+    {
+      "title": "Flint-interactive: A language for creating interactive data visualizations",
+      "url": "https://www.microsoft.com/en-us/research/blog/flint-interactive-a-language-for-creating-interactive-data-visualizations/",
+      "source": "Microsoft Research",
+      "category": "Research",
+      "publishedAt": "2026-10-22T16:00:00+00:00",
+      "description": "Flint-interactive gives AI agents a language for creating interactive visualizations. Click a chart, filter data, highlight related content, and explore beyond the view the author originally chose. The post Flint-interactive: A language for creating interactive data visualizations appeared first on Microsoft Research ."
     },
     {
       "title": "How Specializing the Vocabulary of SLMs Can Cut Inference Cost by 77% in Real Applications",
@@ -387,60 +1011,20 @@
       "description": ""
     },
     {
-      "title": "How we built ChatGPT’s novel ad stack for user trust and relevance",
-      "url": "https://openai.com/index/building-chatgpt-ad-stack",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-21T07:00:00+00:00",
-      "description": "Learn how OpenAI built ChatGPT’s LLM-powered ad stack to understand conversational intent, keep ads separate from answers, and deliver relevant ads at scale."
+      "title": "Giving AI a “crystal clear” view of the materials world",
+      "url": "https://news.mit.edu/2026/giving-ai-crystal-clear-view-of-materials-world-1018",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-10-18T04:00:00+00:00",
+      "description": "New research can help AI models understand crystalline materials in 3D and reason about their properties."
     },
     {
-      "title": "Using thousands of AI agents to uncover new leads in biological data",
-      "url": "https://openai.com/index/scaling-ai-research-for-complex-biological-data",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-21T04:50:00+00:00",
-      "description": "See how OpenAI, PerturbAI, and Scripps Research used distributed AI agents to uncover promising research leads in data from millions of brain cells."
-    },
-    {
-      "title": "Democratic governance of frontier AI, part II: Empowering cyber defenders",
-      "url": "https://openai.com/index/empowering-cyber-defenders",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-21T00:00:00+00:00",
-      "description": "OpenAI outlines a blueprint for empowering cyber defenders with frontier AI, stronger safeguards, modernized cybersecurity, and more resilient public institutions."
-    },
-    {
-      "title": "OpenAI acquires Orchestra Bio",
-      "url": "https://openai.com/index/openai-to-acquire-orchestra-bio",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-20T00:00:00+00:00",
-      "description": "OpenAI is acquiring Orchestra Bio to bring AI-powered operations to life sciences R&D, helping biopharma teams accelerate drug development and advance new treatments."
-    },
-    {
-      "title": "How Itaú is building generative AI for its entire customer base",
-      "url": "https://openai.com/index/itau-generative-ai",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-16T19:00:00+00:00",
-      "description": "With ia.i, a conversational interface, and the IARA governance platform, Itaú is applying its AI First strategy to customers and employees—in one of Brazil’s most regulated sectors."
-    },
-    {
-      "title": "How Localiza reorganized work around generative AI",
-      "url": "https://openai.com/index/localiza-generative-ai",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-16T00:00:00+00:00",
-      "description": "See how Localiza uses ChatGPT Enterprise, the OpenAI API, Codex, and 60+ specialized agents to reorganize work and build AI-native mobility experiences."
-    },
-    {
-      "title": "How Grupo Boticário uses AI to strengthen human connections",
-      "url": "https://openai.com/index/grupo-boticario",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-16T00:00:00+00:00",
-      "description": "Almost 50 years after starting in a compounding pharmacy in Paraná, the group operates a proprietary agent platform that autonomously resolves up to 80% of resellers’ operational requests—enabling the sales force to take on an advisory role."
+      "title": "AI model decodes the language cells use to communicate",
+      "url": "https://news.mit.edu/2026/ai-model-decodes-language-cells-use-communicate-1015",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-10-15T20:50:00+00:00",
+      "description": "A new computational approach reveals how cells communicate to assemble into tissues. This could accelerate stem cell engineering, improve disease models, and inform therapies."
     },
     {
       "title": "Open From Data Center to Desktop: NVIDIA Expands Nemotron Family With Highest Efficiency Super VL and Bolt Models",
@@ -451,116 +1035,28 @@
       "description": "NVIDIA today released Nemotron 3.5 Super VL, an open 120-billion-parameter model that delivers the fastest task completion and highest accuracy for specialized always-on agents. Joining it are two new edge models: Nemotron 3.5 Bolt 74B-A9B 24GB, optimized to balance intelligence and speed per GB for local agentic workloads, and Nemotron 3.5 Bolt E4B 4GB, optimized […]"
     },
     {
-      "title": "Teaching students to think and learn through questions",
-      "url": "https://openai.com/index/teaching-students-to-think-and-learn-through-questions",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-15T13:00:00+00:00",
-      "description": "Celebrate Teachers’ Day with AI for Educators in Brazilian Portuguese and see how Study Mode can help teachers support active, step-by-step learning."
+      "title": "Q&A: The “collision” between AI, your brain, and society",
+      "url": "https://news.mit.edu/2026/collision-between-ai-your-brain-and-society-eric-so-book-1015",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-10-15T04:00:00+00:00",
+      "description": "In a new book, Professor Eric So explores how the technology affects our thinking skills."
     },
     {
-      "title": "Sullivan & Cromwell brings legal expertise into agreement review",
-      "url": "https://openai.com/index/sullivan-cromwell",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-15T00:00:00+00:00",
-      "description": "In collaboration with OpenAI, Sullivan & Cromwell developed Agreement Analyzer, an AI tool for identifying issues in a draft agreement."
+      "title": "How artificial neural networks build their own learning machinery",
+      "url": "https://news.mit.edu/2026/how-artificial-neural-networks-build-their-own-learning-machinery-1013",
+      "source": "MIT News AI",
+      "category": "Research and academia",
+      "publishedAt": "2026-10-13T21:00:00+00:00",
+      "description": "Machine-learning networks can learn without detailed instructions from a designer. Those that do may offer insight into how the brain reorganizes itself during learning."
     },
     {
-      "title": "Amp puts AI agents to work beyond code with OpenAI models",
-      "url": "https://openai.com/index/amp-beyond-coding",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-14T12:00:00+00:00",
-      "description": "See how Amp pushes the frontier of what agents can do with GPT-6 Astra, Ultrafast, GPT-Live-1, and Sign in with ChatGPT."
-    },
-    {
-      "title": "How Third Moment Research runs 10,000 agents for 36+ hours",
-      "url": "https://openai.com/index/third-moment-research",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-14T07:00:00+00:00",
-      "description": "With GPT-6 Astra and GPT-6.1 Sol, Codex, and Daybreak for cybersecurity, this AI lab builds agents that focus for days and improve with use."
-    },
-    {
-      "title": "How Block is building AI-powered security with OpenAI technology",
-      "url": "https://openai.com/index/block-ai-powered-security",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-14T07:00:00+00:00",
-      "description": "Block is building AI-powered security with OpenAI. Its security team investigates threats faster and proposes patches in minutes."
-    },
-    {
-      "title": "The EU’s next chapter in AI is agentic",
-      "url": "https://openai.com/index/the-eus-next-chapter-in-ai-is-agentic",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-14T00:00:00+00:00",
-      "description": "New analysis shows how agentic AI adoption is growing across EU enterprises and small businesses—and where deeper use could unlock more value."
-    },
-    {
-      "title": "Higgsfield takes AI video from 1 minute to over 10",
-      "url": "https://openai.com/index/higgsfield-longer-videos-voice",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-13T12:00:00+00:00",
-      "description": "Higgsfield brings creators longer videos with GPT-6 Astra, precise visuals with GPT-Image-2.5, and a path to voice filmmaking with GPT-Live."
-    },
-    {
-      "title": "Pollo AI turns creative ideas into campaigns with OpenAI",
-      "url": "https://openai.com/index/pollo-ai",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-08T12:00:00+00:00",
-      "description": "With GPT-5.6, GPT-6 Astra, and GPT‑Image‑2.5, Pollo AI helps creators turn bold ideas into detailed images and cinematic video ads."
-    },
-    {
-      "title": "Disrupting AI-enabled “false front” operations",
-      "url": "https://openai.com/index/disrupting-ai-enabled-false-front-operations",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-08T00:00:00+00:00",
-      "description": "OpenAI disrupted two AI-enabled influence operations that used false-front journalists and a think tank to spread geopolitical messaging."
-    },
-    {
-      "title": "Helping teens learn, plan, and shape the future of AI",
-      "url": "https://openai.com/index/teens-learn-and-plan",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-07T12:00:00+00:00",
-      "description": "College Planner is coming to ChatGPT for Teens to help students manage college applications, alongside new flashcards, quizzes, and a teen AI council."
-    },
-    {
-      "title": "How Jump Trading is scaling quant research with ChatGPT",
-      "url": "https://openai.com/index/jump-trading",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-06T12:00:00+00:00",
-      "description": "Jump Trading uses OpenAI to expand quantitative research. See how longer-running AI workflows combine multiple data sources with human review."
-    },
-    {
-      "title": "Sharing AI progress in mathematics",
-      "url": "https://openai.com/index/sharing-ai-progress-in-mathematics",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-06T12:00:00+00:00",
-      "description": "OpenAI publishes new results on open problems in mathematics from an internal frontier model and shares Lean proof formalizations and research details on GitHub."
-    },
-    {
-      "title": "Advancing computer use with Ironclad",
-      "url": "https://openai.com/index/advancing-computer-use-with-ironclad",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-06T10:00:00+00:00",
-      "description": "Learn how OpenAI and Ironclad are training and evaluating AI agents on complex contracting workflows to advance computer use for professional work."
-    },
-    {
-      "title": "Building advertising for the way people use AI",
-      "url": "https://openai.com/index/new-chatgpt-ads-format-and-measurement",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-05T10:00:00+00:00",
-      "description": "OpenAI introduces a new visual ad format in ChatGPT and expands measurement tools, attribution partnerships, and brand suitability for advertisers."
+      "title": "Last Week in AI #346 - 719 math manuscripts, 2 Western open models, 1 more safety resignation",
+      "url": "https://lastweekin.ai/p/last-week-in-ai-346-719-math-manuscripts",
+      "source": "Last Week in AI",
+      "category": "Industry analysis",
+      "publishedAt": "2026-10-09T05:06:58+00:00",
+      "description": "OpenAI publishes hundreds of math proofs from unreleased frontier model, Mistral and Reflection AI launch open-weight models to rival China, and more!"
     },
     {
       "title": "The latest AI news we announced in September 2026",
@@ -571,252 +1067,52 @@
       "description": "A video showing the September AI updates"
     },
     {
-      "title": "The eternal complement",
-      "url": "https://openai.com/index/the-eternal-complement",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-10-01T17:00:00+00:00",
-      "description": "Advanced AI may matter most for the routine work behind breakthrough ideas. Explore why execution could shape the next economy and the pace of progress."
+      "title": "Last Week in AI #345 - 5 new models, 9 misalignment incidents, some Dots",
+      "url": "https://lastweekin.ai/p/last-week-in-ai-345-5-new-models",
+      "source": "Last Week in AI",
+      "category": "Industry analysis",
+      "publishedAt": "2026-09-30T11:23:54+00:00",
+      "description": "Anthropic and OpenAI race to release smarter and cheaper models, OpenAI discloses nine misalignment incidents, and more!"
     },
     {
-      "title": "Helping small businesses put AI to work",
-      "url": "https://openai.com/index/helping-small-businesses-put-ai-to-work",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-30T10:00:00+00:00",
-      "description": "OpenAI is partnering with America’s SBDC to expand hands-on AI training and local support for small businesses, alongside a new report on how small teams are using AI."
+      "title": "LWiAI Podcast #257 - GPT 6 Astra, AI Extinction, Security Incidents",
+      "url": "https://lastweekin.ai/p/lwiai-podcast-257-gpt-6-astra-ai",
+      "source": "Last Week in AI",
+      "category": "Industry analysis",
+      "publishedAt": "2026-09-24T09:12:28+00:00",
+      "description": "A belated discussion of Astra’s release, a bunch of AI incidents, and the broader situation we are in with regards to AI safety."
     },
     {
-      "title": "Towards safety cases for frontier AI training",
-      "url": "https://openai.com/index/towards-safety-cases-for-frontier-ai-training",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-28T19:00:00+00:00",
-      "description": "Our early guidelines for safety cases in frontier AI training cover technical safeguards, operational practices, and investigating misalignment incidents"
+      "title": "Last Week in AI #344 - Navier–Stokes, Pacing the Frontier, AI Misuse",
+      "url": "https://lastweekin.ai/p/last-week-in-ai-344-navierstokes",
+      "source": "Last Week in AI",
+      "category": "Industry analysis",
+      "publishedAt": "2026-09-17T08:02:55+00:00",
+      "description": "OpenAI claims a Millennium Prize proof amid a feud with mathematicians, Anthropic's CEO calls to pace the frontier, extinction warnings spur a regulation push, and more!"
     },
     {
-      "title": "The Lenfest Institute grows landmark program with expanded OpenAI support",
-      "url": "https://openai.com/index/lenfest-ai-collaborative-expansion",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-28T07:00:00+00:00",
-      "description": "OpenAI is expanding the Lenfest AI Collaborative and Fellowship Program with $5 million in funding and up to $5 million in software credits and engineering support."
+      "title": "GPT-6 Astra, Looped Transformers, and Hidden Reasoning",
+      "url": "https://magazine.sebastianraschka.com/p/gpt-6-astra-looped-transformers-and",
+      "source": "Ahead of AI",
+      "category": "Technical analysis",
+      "publishedAt": "2026-09-09T11:14:25+00:00",
+      "description": "A Look at Recurrent Depth, Hidden Chains of Thought, and Recent Research on Looping Transformer Blocks"
     },
     {
-      "title": "Two years of OpenAI Academy",
-      "url": "https://openai.com/index/two-years-of-openai-academy",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-23T16:00:00+00:00",
-      "description": "Marking two years of OpenAI Academy and bringing AI skills to even more communities."
+      "title": "LWiAI Podcast #256 - Fable 5.1, Astra Tease, Gemini 3.8 Flash",
+      "url": "https://lastweekin.ai/p/lwiai-podcast-256-fable-51-astra",
+      "source": "Last Week in AI",
+      "category": "Industry analysis",
+      "publishedAt": "2026-09-09T08:01:40+00:00",
+      "description": "Anthropic launches Claude Fable 5.1, OpenAI Is About (already has) to Release Its First AI Model With ‘Critical’ Cyber Abilities, OpenAI’s rogue AI model incident was worse than we thought"
     },
     {
-      "title": "Ringg’s AI agents resolve up to 65% of customer calls with OpenAI",
-      "url": "https://openai.com/index/ringg",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-23T12:00:00+00:00",
-      "description": "Using GPT-5.6, Ringg powers multilingual agents across voice, chat, WhatsApp, and web for 90% less cost vs. GPT-4.1."
-    },
-    {
-      "title": "Sam Altman’s remarks at the United Nations Security Council",
-      "url": "https://openai.com/index/sam-altman-un-security-council-remarks",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-23T12:00:00+00:00",
-      "description": "OpenAI CEO Sam Altman discusses AI safety, human control, and international cooperation in remarks to the United Nations Security Council."
-    },
-    {
-      "title": "Introducing MentalHealthBench",
-      "url": "https://openai.com/index/introducing-mentalhealthbench",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-23T10:00:00+00:00",
-      "description": "MentalHealthBench is an expert-informed benchmark for evaluating helpful and safe AI responses across realistic mental health conversations."
-    },
-    {
-      "title": "Grab and OpenAI bring practical AI skills to Southeast Asia",
-      "url": "https://openai.com/index/grab-openai-ai-skills-southeast-asia",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-23T00:00:00+00:00",
-      "description": "OpenAI and Grab launch GO Forward with AI, a regional programme helping 30,000 partners build practical AI skills across Southeast Asia."
-    },
-    {
-      "title": "Priorities and principles for effective third party assessments",
-      "url": "https://openai.com/index/priorities-principles-third-party-assessments",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-22T00:00:00+00:00",
-      "description": "OpenAI outlines priorities and principles for rigorous, secure, and independent third-party AI safety assessments of frontier models and safeguards."
-    },
-    {
-      "title": "Advisory Group on Mathematics and Artificial Intelligence",
-      "url": "https://openai.com/index/advisory-group-on-mathematics-and-ai",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-21T12:00:00+00:00",
-      "description": "OpenAI is working with an independent Advisory Group on Mathematics and Artificial Intelligence to guide the review and communication of emerging AI results."
-    },
-    {
-      "title": "Higgsfield AI ships new video features in a day with GPT-6 Astra",
-      "url": "https://openai.com/index/higgsfield-from-prompt-to-production-with-astra",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-21T12:00:00+00:00",
-      "description": "With GPT-6 Astra, Higgsfield AI makes video ad creation easier for small businesses and brings new creative tools to market faster."
-    },
-    {
-      "title": "Building standards for the next phase of AI",
-      "url": "https://openai.com/index/building-standards-next-phase-ai",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-21T10:00:00+00:00",
-      "description": "OpenAI outlines a path to shared global AI standards, calling for coordinated evaluation, reporting, and governance to improve safety."
-    },
-    {
-      "title": "Expanding OpenAI Academy with new learning paths",
-      "url": "https://openai.com/index/expanding-openai-academy-with-new-learning-paths",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-21T07:00:00+00:00",
-      "description": "Explore new OpenAI Academy learning paths for employees, developers, leaders, educators, and students to build and demonstrate practical AI skills."
-    },
-    {
-      "title": "Introducing the Australian Youth Safety Blueprint",
-      "url": "https://openai.com/index/australian-youth-safety-blueprint",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-18T12:00:00+00:00",
-      "description": "OpenAI introduces the Australian Youth Safety Blueprint, a six-pillar roadmap for safer AI experiences that protect and empower young people."
-    },
-    {
-      "title": "Helping older adults use AI in everyday life",
-      "url": "https://openai.com/index/helping-older-adults-use-ai-in-everyday-life",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-16T16:00:00+00:00",
-      "description": "OpenAI and AARP are bringing free, hands-on ChatGPT workshops to 1,000 older adults across 10 U.S. cities to build practical AI skills safely."
-    },
-    {
-      "title": "Reimagining advertising with AI",
-      "url": "https://openai.com/index/reimagining-advertising-with-ai",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-16T13:00:00+00:00",
-      "description": "Explore new AI-powered advertising experiences from OpenAI, including Sponsored Agents, tools for marketers, and integrations with HubSpot and Shopify."
-    },
-    {
-      "title": "How to connect AI usage to business value",
-      "url": "https://openai.com/index/how-to-connect-ai-usage-to-business-value",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-16T12:00:00+00:00",
-      "description": "Learn how ChatGPT Work and Codex analytics help teams understand AI usage and spend, identify training needs, and connect adoption to business outcomes."
-    },
-    {
-      "title": "How workers are unlocking new ways of working",
-      "url": "https://openai.com/index/unlocking-new-ways-of-working",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-16T09:00:00+00:00",
-      "description": "New OpenAI Economic Research shows how workers use AI beyond traditional roles and which new activities become recurring parts of their work."
-    },
-    {
-      "title": "How Fyxer built an AI executive assistant people trust",
-      "url": "https://openai.com/index/fyxer",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-14T12:00:00+00:00",
-      "description": "Fyxer uses OpenAI models, fine-tuning, memory, and real user feedback to organize inboxes and draft emails in each user’s voice."
-    },
-    {
-      "title": "Now everyone can put data to work",
-      "url": "https://openai.com/index/put-data-to-work",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-10T15:00:00+00:00",
-      "description": "Meet the Data agent in ChatGPT Work. Connect company data, uncover insights, and build interactive dashboards with AI using natural language."
-    },
-    {
-      "title": "Expanding AI access and cyber defense for federal, state, local, and tribal governments",
-      "url": "https://openai.com/index/expanding-ai-access-us-government",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-10T07:00:00+00:00",
-      "description": "OpenAI and GSA will offer eligible federal, state, local, and tribal governments $0 license fees, 50% off usage, and expanded cyber defense support."
-    },
-    {
-      "title": "Paul Christiano joins OpenAI Foundation Board",
-      "url": "https://openai.com/index/paul-christiano-joins-openai-foundation-board",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-09T17:00:00+00:00",
-      "description": "Paul Christiano joins the OpenAI Foundation Board and its Safety and Security Committee, bringing experience in AI alignment, safety, and standards."
-    },
-    {
-      "title": "The AI policy window is open. We need to act.",
-      "url": "https://openai.com/index/ai-policy-window",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-09T13:00:00+00:00",
-      "description": "Chris Lehane argues that stronger AI capabilities require stronger safety evidence, shared standards, and durable policy action while the policy window remains open."
-    },
-    {
-      "title": "The Work Now Within Reach",
-      "url": "https://openai.com/index/the-work-now-within-reach",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-08T13:00:00+00:00",
-      "description": "Explore how more capable, affordable AI can expand the work people and businesses can accomplish—and make growth more economical."
-    },
-    {
-      "title": "On the Navier–Stokes Millennium Prize Problem",
-      "url": "https://openai.com/index/navier-stokes-solution",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-08T10:00:00+00:00",
-      "description": "We’re sharing an AI-generated solution to the Navier–Stokes Millennium Prize Problem, including a writeup and a formal proof in Lean."
-    },
-    {
-      "title": "Funding grants for new research into AI and teen development",
-      "url": "https://openai.com/index/teen-development-research-grants",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-08T09:00:00+00:00",
-      "description": "Apply now for OpenAI’s $5 million grant program supporting independent research on how generative AI affects teen development, well-being, and safety."
-    },
-    {
-      "title": "Supporting independent journalism in Ukraine",
-      "url": "https://openai.com/index/supporting-independent-journalism-in-ukraine",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-07T00:00:00+00:00",
-      "description": "OpenAI, AIRPPU and WAN-IFRA launch an AI program to help Ukrainian news organizations strengthen innovation, resilience, and independent journalism."
-    },
-    {
-      "title": "An Alien Mind",
-      "url": "https://openai.com/index/an-alien-mind",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-06T09:00:00+00:00",
-      "description": "Jakub Pachocki reflects on increasingly capable AI and the challenge of keeping it aligned. He calls for stronger safeguards and international coordination."
-    },
-    {
-      "title": "Research acceleration: The view inside OpenAI",
-      "url": "https://openai.com/index/research-acceleration-view-inside-openai",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-06T08:00:00+00:00",
-      "description": "Inside OpenAI, coding agents are reshaping AI research. Explore early data on agent usage, experiment velocity, task complexity, and research acceleration."
-    },
-    {
-      "title": "Daybreak for Frontline Defenders: $1B to protect essential services",
-      "url": "https://openai.com/index/daybreak-for-frontline-defenders",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-03T13:15:00+00:00",
-      "description": "OpenAI introduces Daybreak for Frontline Defenders. A $1 billion commitment expands access to frontier cyber AI, training, and support for essential services."
+      "title": "Last Week in AI #343 - GPT-6, OpenAI’s agents chatted on a wiki, Fable 5.1",
+      "url": "https://lastweekin.ai/p/last-week-in-ai-343-gpt-6-openais",
+      "source": "Last Week in AI",
+      "category": "Industry analysis",
+      "publishedAt": "2026-09-07T13:02:49+00:00",
+      "description": "GPT-6 Astra Is Here, Discovery of a new OpenAI agent message board, Anthropic launches Claude Fable 5.1 and says it’s up to 45 percent cheaper for agentic work, and more!"
     },
     {
       "title": "BenchMIRT: What are LLM benchmarks actually measuring?",
@@ -827,22 +1123,6 @@
       "description": ""
     },
     {
-      "title": "How AI-native companies turn workflows into operating capability",
-      "url": "https://openai.com/index/ai-native-company-workflows",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-01T17:00:00+00:00",
-      "description": "Basis, Clay, and Exa Labs use AI agents to improve onboarding, account management, and developer integrations. See what enterprise leaders can apply."
-    },
-    {
-      "title": "How law firm Gilbert + Tobin governs and scales AI with OpenAI",
-      "url": "https://openai.com/index/gilbert-tobin",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-09-01T01:00:00+00:00",
-      "description": "See how Gilbert + Tobin combines CEO-led commitment, rigorous governance, and human accountability to scale ChatGPT Enterprise and Codex across the firm."
-    },
-    {
       "title": "Introducing @huggingface/kernels: 200+ WebGPU Kernels for Local AI",
       "url": "https://huggingface.co/blog/webgpu-kernels",
       "source": "Hugging Face",
@@ -851,84 +1131,12 @@
       "description": ""
     },
     {
-      "title": "OpenAI supports California’s bill to advance youth AI safety",
-      "url": "https://openai.com/index/supporting-california-bill-advance-ai-youth-safety",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-31T07:00:00+00:00",
-      "description": "OpenAI supports California SB 1119, advancing strong, age-appropriate AI safeguards for teens while preserving opportunities to learn, create, and explore."
-    },
-    {
-      "title": "Polimill builds Japan's next-generation public AI infrastructure",
-      "url": "https://openai.com/index/polimill",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-31T07:00:00+00:00",
-      "description": "Polimill uses OpenAI GPT models and Codex to help municipalities search and use administrative knowledge while accelerating development."
-    },
-    {
-      "title": "A milestone in expanding access to AI",
-      "url": "https://openai.com/index/expanding-access-to-ai-with-chatgpt-ads",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-31T04:00:00+00:00",
-      "description": "ChatGPT Ads reaches $1 billion in annualized revenue run rate and expands globally, supporting broader access to AI through free and affordable options."
-    },
-    {
-      "title": "Supporting Thailand’s next generation of AI startups",
-      "url": "https://openai.com/index/supporting-next-generation-ai-startups-thailand",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-28T02:00:00+00:00",
-      "description": "OpenAI and Thailand’s MHESI launch an eight-week accelerator helping 10 health, wellness, and education startups turn AI prototypes into trusted products."
-    },
-    {
-      "title": "Expanding OpenAI’s presence in Brazil",
-      "url": "https://openai.com/index/expanding-our-presence-in-brazil",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-27T03:00:00+00:00",
-      "description": "OpenAI is expanding its presence in Brazil, deepening engagement with developers, businesses, and communities to support AI adoption across the country."
-    },
-    {
-      "title": "Bringing ChatGPT for Teachers to more U.S. school districts",
-      "url": "https://openai.com/index/bringing-chatgpt-for-teachers-to-more-us-school-districts",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-26T10:00:00+00:00",
-      "description": "ChatGPT for Teachers is expanding to 55 U.S. school systems, bringing secure AI tools, training, and support to over 100,000 more educators and staff."
-    },
-    {
-      "title": "Learning never stops: How AI makes learning continuous",
-      "url": "https://openai.com/index/learning-never-stops",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-26T10:00:00+00:00",
-      "description": "OpenAI’s new report explores how students and educators use ChatGPT to make learning more continuous, with support that extends beyond the classroom."
-    },
-    {
-      "title": "The Hugging Face incident and the road ahead",
-      "url": "https://openai.com/index/hugging-face-incident-and-the-road-ahead",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-26T00:00:00+00:00",
-      "description": "OpenAI shares findings from the Hugging Face security incident and the steps we’re taking to strengthen AI model security, monitoring, and alignment."
-    },
-    {
-      "title": "Jalapeño’s first results show industry-leading speed and efficiency in AI inference",
-      "url": "https://openai.com/index/jalapeno-first-results",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-25T07:00:00+00:00",
-      "description": "Jalapeño is a custom inference chip from OpenAI that delivers faster, more power-efficient AI inference, with higher throughput and lower latency for modern models."
-    },
-    {
-      "title": "Disrupting a new covert influence campaign from Russia",
-      "url": "https://openai.com/index/disrupting-malicious-uses-of-ai-influence-campaign-russia",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-25T00:00:00+00:00",
-      "description": "OpenAI banned Russia-origin accounts using AI to promote a fake Israel-based think tank and a “sovereignty” index praising Russia and criticizing the West."
+      "title": "Last Week in AI #342 - Last 3 Months in AI",
+      "url": "https://lastweekin.ai/p/last-week-in-ai-342-last-3-months",
+      "source": "Last Week in AI",
+      "category": "Industry analysis",
+      "publishedAt": "2026-08-25T13:25:48+00:00",
+      "description": "The newsletter is finally back!"
     },
     {
       "title": "Wire It, Run It, Deploy It: AI Workflows in Gradio",
@@ -937,6 +1145,14 @@
       "category": "Open source",
       "publishedAt": "2026-08-25T00:00:00+00:00",
       "description": ""
+    },
+    {
+      "title": "How Claude Watermarks AI-Generated Text",
+      "url": "https://magazine.sebastianraschka.com/p/claude-watermarking",
+      "source": "Ahead of AI",
+      "category": "Technical analysis",
+      "publishedAt": "2026-08-22T11:11:39+00:00",
+      "description": "A 48-minute video walkthrough of token sampling, watermark detection, and removal"
     },
     {
       "title": "How Hugging Face Inference Endpoints, Jobs, and Buckets Power Search on Papers with Code",
@@ -955,116 +1171,12 @@
       "description": ""
     },
     {
-      "title": "Introducing Intelligence Age",
-      "url": "https://openai.com/index/introducing-intelligence-age",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-20T07:00:00+00:00",
-      "description": "Introducing Intelligence Age, a new OpenAI blog exploring how transformative AI could reshape power, governance, the economy, and individual freedom."
-    },
-    {
-      "title": "Offering Zero Data Retention for frontier models",
-      "url": "https://openai.com/index/offering-zero-data-retention-for-frontier-models",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-19T19:00:00+00:00",
-      "description": "OpenAI reaffirms Zero Data Retention for eligible API customers and previews Private Safety Processing for advanced AI safety without compromising data privacy."
-    },
-    {
-      "title": "Strengthening democratic oversight in national security",
-      "url": "https://openai.com/index/strengthening-democratic-oversight-in-national-security",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-18T19:00:00+00:00",
-      "description": "OpenAI launches an initiative to strengthen democratic oversight of AI in national security, supporting government institutions with tools, training, and expertise."
-    },
-    {
-      "title": "Partnering with CodeAI to prepare the first AI generation",
-      "url": "https://openai.com/index/partnering-with-codeai",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-18T11:00:00+00:00",
-      "description": "OpenAI and CodeAI are partnering to help students build AI literacy, think critically about AI, and develop the skills to use and shape it responsibly."
-    },
-    {
-      "title": "Pacing model development in an era of cyber-critical capabilities",
-      "url": "https://openai.com/index/pacing-model-development-cyber-capabilities",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-18T11:00:00+00:00",
-      "description": "OpenAI is strengthening monitoring, alignment, and security for frontier AI models. See how new safeguards are guiding the pace of model development."
-    },
-    {
-      "title": "Introducing ChatGPT for Teens: Built for learning, backed by protections",
-      "url": "https://openai.com/index/chatgpt-for-teens",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-18T11:00:00+00:00",
-      "description": "ChatGPT for Teens helps teens learn, think critically, and use AI with confidence, with stronger built-in protections, healthy-use features, and additional controls for parents."
-    },
-    {
-      "title": "The Defender’s Window",
-      "url": "https://openai.com/index/the-defenders-window",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-17T05:30:00+00:00",
-      "description": "AI is reshaping cybersecurity for attackers and defenders alike. Learn how OpenAI is strengthening its defenses and what security teams can do now."
-    },
-    {
-      "title": "New policy ideas for the Intelligence Age",
-      "url": "https://openai.com/index/new-policy-ideas-for-the-intelligence-age",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-17T03:15:00+00:00",
-      "description": "OpenAI funds 14 independent projects exploring new AI policy ideas to expand economic opportunity and strengthen societal resilience in the Intelligence Age."
-    },
-    {
-      "title": "The builder’s guide to GPT‑5.6",
-      "url": "https://openai.com/index/builders-guide-to-gpt-5-6",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-13T11:00:00+00:00",
-      "description": "Learn how startups use GPT-5.6 to build faster, more cost-efficient AI agents with smarter model selection and new Responses API capabilities."
-    },
-    {
-      "title": "OpenAI appoints Dali Rajic as Chief Revenue Officer",
-      "url": "https://openai.com/index/dali-rajic-chief-revenue-officer",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-13T09:00:00+00:00",
-      "description": "OpenAI appoints Dali Rajic as Chief Revenue Officer to lead its global revenue organization and help businesses realize the full value of AI."
-    },
-    {
-      "title": "From assistance to execution: How enterprises put AI to work",
-      "url": "https://openai.com/index/how-enterprises-put-ai-to-work",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-12T06:00:00+00:00",
-      "description": "OpenAI research reveals how enterprises are adopting agentic AI, using ChatGPT and Codex, and how frontier firms are pulling ahead in AI adoption."
-    },
-    {
-      "title": "How RingCentral builds AI-native work from engineering to ops",
-      "url": "https://openai.com/index/ringcentral",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-12T00:00:00+00:00",
-      "description": "See how RingCentral uses ChatGPT Work and Codex to accelerate AI product development and centralize operational intelligence across engineering and operations."
-    },
-    {
-      "title": "What building an AI-native finance function taught me",
-      "url": "https://openai.com/index/building-an-ai-native-finance-function",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-10T17:00:00+00:00",
-      "description": "OpenAI CFO Sarah Friar shares five lessons for building an AI-native finance function, from automated forecasting to stronger controls and AI ROI."
-    },
-    {
-      "title": "OpenAI’s letter to Governor Abbott on responsible AI infrastructure in Texas",
-      "url": "https://openai.com/index/responsible-ai-infrastructure-texas",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-10T14:00:00+00:00",
-      "description": "OpenAI sent Governor Greg Abbott a letter outlining its commitment to responsible AI infrastructure in Texas. The letter supports reliable, transparent growth that benefits Texans."
+      "title": "Building an AI Text Detector From Scratch",
+      "url": "https://magazine.sebastianraschka.com/p/ai-detector-from-scratch",
+      "source": "Ahead of AI",
+      "category": "Technical analysis",
+      "publishedAt": "2026-08-15T11:54:24+00:00",
+      "description": "An End-to-End Project With Dataset Construction, Model Training, Local Deployment, and RLVR"
     },
     {
       "title": "Meta is back with Muse Glimmer: local, agentic, multimodal, and open source",
@@ -1075,76 +1187,12 @@
       "description": ""
     },
     {
-      "title": "How HSP GRUPPE builds AI capabilities for tax advisory",
-      "url": "https://openai.com/index/hsp-gruppe",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-07T09:00:00+00:00",
-      "description": "Discover how HSP GRUPPE uses ChatGPT Enterprise to boost productivity, improve work quality, and create more capacity for tax advisory and client service."
-    },
-    {
-      "title": "Working with the American Psychological Association on youth mental health and AI",
-      "url": "https://openai.com/index/openai-and-apa-partner-to-advance-responsible-ai",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-06T06:00:00+00:00",
-      "description": "OpenAI and the American Psychological Association advance evidence-based guidance, resources, and safeguards for responsible AI use and youth mental health."
-    },
-    {
       "title": "Baseten on Hugging Face Inference Providers 🔥",
       "url": "https://huggingface.co/blog/baseten",
       "source": "Hugging Face",
       "category": "Open source",
       "publishedAt": "2026-08-06T00:00:00+00:00",
       "description": ""
-    },
-    {
-      "title": "Third-party cyber evaluations involving OpenAI models",
-      "url": "https://openai.com/index/third-party-cyber-evaluations-involving-openai-models",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-04T19:00:00+00:00",
-      "description": "OpenAI explains recent third-party cybersecurity evaluation incidents and outlines new safeguards to strengthen AI model testing and evaluation."
-    },
-    {
-      "title": "How we built a realtime system for responsive voice AI in six months",
-      "url": "https://openai.com/index/continuous-voice-interaction-with-gpt-live",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-03T07:00:00+00:00",
-      "description": "GPT-Live enables continuous voice interaction with AI, using a turnless speech model and low-latency architecture for faster, more natural conversations."
-    },
-    {
-      "title": "Circles powers telco personalization with OpenAI technology",
-      "url": "https://openai.com/index/circles",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-08-03T00:00:00+00:00",
-      "description": "Circles uses the OpenAI API and Codex to power AI-native telco experiences, increasing ARPU by 22%, reducing churn by 9%, and improving development efficiency."
-    },
-    {
-      "title": "Advancing responsible AI across Europe",
-      "url": "https://openai.com/index/advancing-responsible-ai-across-europe",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-31T15:00:00+00:00",
-      "description": "OpenAI shares how its safety, security, transparency, and provenance practices support responsible AI governance in Europe. The work will continue as the EU AI Act advances."
-    },
-    {
-      "title": "Building abundant intelligence",
-      "url": "https://openai.com/index/building-abundant-intelligence",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-31T15:00:00+00:00",
-      "description": "A full-stack approach to making advanced AI more capable, more affordable, and more widely useful."
-    },
-    {
-      "title": "Univé builds an AI-ready workforce",
-      "url": "https://openai.com/index/unive",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-31T07:00:00+00:00",
-      "description": "See how Univé built an AI-ready workforce with ChatGPT Enterprise by combining leadership, responsible governance, and employee-led innovation to transform work at scale."
     },
     {
       "title": "GPU Management: Why Idle GPUs Are the New Grounded Aircraft",
@@ -1155,52 +1203,12 @@
       "description": ""
     },
     {
-      "title": "Advancing the price-performance frontier with GPT-5.6",
-      "url": "https://openai.com/index/advancing-the-price-performance-frontier-with-gpt-5-6",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-30T10:00:00+00:00",
-      "description": "Explore lower GPT‑5.6 pricing for Luna and Terra—and how OpenAI’s more efficient models help enterprises deploy AI workflows at scale."
-    },
-    {
-      "title": "Accelerating scientific discovery with ChatGPT for Academic Researchers",
-      "url": "https://openai.com/index/chatgpt-for-academic-researchers",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-29T10:00:00+00:00",
-      "description": "OpenAI is giving 100,000 academic researchers free access to ChatGPT's most advanced AI models to accelerate scientific research, collaboration, and discovery."
-    },
-    {
-      "title": "How GPT-5.6 fuses frontier intelligence with frontier efficiency",
-      "url": "https://openai.com/index/gpt-5-6-frontier-intelligence-efficiency",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-29T00:00:00+00:00",
-      "description": "GPT-5.6 improves AI efficiency across models, inference, and agentic workflows, helping deliver more useful intelligence per dollar."
-    },
-    {
-      "title": "Scientific computing in the age of agentic AI",
-      "url": "https://openai.com/index/scientific-computing-agentic-ai",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-28T17:00:00+00:00",
-      "description": "A new field report shows how scientists use AI coding agents to modernize scientific computing, accelerating software development and discovery in genomics and beyond."
-    },
-    {
       "title": "NVIDIA Cosmos-H-Dreams: Bringing Real-Time Generative Simulation to Surgical Robotics",
       "url": "https://huggingface.co/blog/nvidia/cosmos-h-dreams",
       "source": "Hugging Face",
       "category": "Open source",
       "publishedAt": "2026-07-27T09:32:20+00:00",
       "description": ""
-    },
-    {
-      "title": "How AI is expanding what people do at work",
-      "url": "https://openai.com/index/how-ai-is-expanding-what-people-do-at-work",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-27T03:30:00+00:00",
-      "description": "New OpenAI research shows how AI is expanding what workers do, with ChatGPT users taking on tasks across roles and reshaping job boundaries."
     },
     {
       "title": "Bringing Nunchaku 4-bit Diffusion Inference to Diffusers",
@@ -1211,116 +1219,36 @@
       "description": ""
     },
     {
-      "title": "Building AI infrastructure with the Effingham County community",
-      "url": "https://openai.com/index/building-ai-infrastructure-with-the-effingham-county-community",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-22T13:00:00+00:00",
-      "description": "OpenAI announces Project Camellia in Effingham County, Georgia, with commitments to responsible energy, community investment, jobs, and access to Codex."
+      "title": "LWiAI Podcast #252 - GPT 5.6, Grok 4.5, Nemotron-Labs-Diffusion, AI 2040",
+      "url": "https://lastweekin.ai/p/lwiai-podcast-252-gpt-56-grok-45",
+      "source": "Last Week in AI",
+      "category": "Industry analysis",
+      "publishedAt": "2026-07-21T12:03:29+00:00",
+      "description": "GPT-5.6 and Grok 4.5, Meta's Muse Spark 1.1, regulatory developments in AI and data centers, interpretability research from Anthropic, and the future of AI policy with AI 2040"
     },
     {
-      "title": "How news organizations are using AI to advance their vital missions",
-      "url": "https://openai.com/index/how-news-organizations-are-using-ai",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-22T13:00:00+00:00",
-      "description": "News organizations are using AI to strengthen reporting, grow audiences, and improve business operations, with OpenAI tools supporting journalists and publishers worldwide."
+      "title": "Last Week in AI #251 - Mythos Back, Sonnet 5, Etched, LongCat",
+      "url": "https://lastweekin.ai/p/last-week-in-ai-251-mythos-back-sonnet",
+      "source": "Last Week in AI",
+      "category": "Industry analysis",
+      "publishedAt": "2026-07-21T11:31:58+00:00",
+      "description": "Trump lifts restrictions on Anthropic, Anthropic launches Claude Sonnet 5, Google's NotebookLM updates, chips stories from Etched and Baidu, and more!"
     },
     {
-      "title": "Advancing the next era of national science",
-      "url": "https://openai.com/index/advancing-the-next-era-of-national-science",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-22T12:00:00+00:00",
-      "description": "OpenAI outlines its commitment to advancing American science working with the U.S. Department of Energy and national labs to use frontier AI to accelerate discovery."
+      "title": "Last Week in AI #250 - Mythos Mess, GPT 5.6-Sol, GLM 5.2",
+      "url": "https://lastweekin.ai/p/last-week-in-ai-250-mythos-mess-gpt",
+      "source": "Last Week in AI",
+      "category": "Industry analysis",
+      "publishedAt": "2026-07-21T11:03:19+00:00",
+      "description": "Anthropic's AI treaty discussions, US government's influence on AI model releases, OpenAI's processor development, memory market impacts, and more!"
     },
     {
-      "title": "Introducing OpenAI Presence",
-      "url": "https://openai.com/index/introducing-openai-presence",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-22T05:30:00+00:00",
-      "description": "Introducing OpenAI Presence, a proven enterprise AI agent platform that helps organizations deploy trusted voice and chat agents for customer and internal workflows."
-    },
-    {
-      "title": "NTT DATA Group cuts incident analysis to 30 minutes with Codex",
-      "url": "https://openai.com/index/ntt-data",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-22T00:00:00+00:00",
-      "description": "NTT DATA Group uses ChatGPT Enterprise and Codex to help 9,000 employees automate work, cut incident analysis to 30 minutes, and scale secure AI adoption."
-    },
-    {
-      "title": "Introducing the ChatGPT for small business program",
-      "url": "https://openai.com/index/introducing-chatgpt-small-business-program",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-21T17:00:00+00:00",
-      "description": "OpenAI launches the ChatGPT for Small Businesses program, helping entrepreneurs build AI skills, automate work, and grow with ChatGPT Work."
-    },
-    {
-      "title": "OpenAI and Hugging Face partner to address security incident during model evaluation",
-      "url": "https://openai.com/index/hugging-face-model-evaluation-security-incident",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-21T07:00:00+00:00",
-      "description": "OpenAI and Hugging Face share early findings from a security incident during AI model evaluation, highlighting advanced cyber capabilities and lessons for defenders."
-    },
-    {
-      "title": "Safety and alignment in an era of long-horizon models",
-      "url": "https://openai.com/index/safety-alignment-long-horizon-models",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-20T10:00:00+00:00",
-      "description": "OpenAI shares lessons from deploying long-running AI models, highlighting new safety risks, observed failures, and improved safeguards through iterative deployment."
-    },
-    {
-      "title": "A scorecard for the AI age",
-      "url": "https://openai.com/index/a-scorecard-for-the-ai-age",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-17T10:00:00+00:00",
-      "description": "Sarah Friar, CFO of OpenAI, introduces a practical AI scorecard to measure ROI through useful work, cost per successful task, dependability, and return on compute."
-    },
-    {
-      "title": "Why teens deserve access to safe AI",
-      "url": "https://openai.com/index/why-teens-deserve-access-safe-ai",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-16T16:00:00+00:00",
-      "description": "Learn how OpenAI is making ChatGPT safer for teens with age-appropriate protections, learning tools, parental controls, and expert partnerships."
-    },
-    {
-      "title": "How Codex became a collaborator for OpenAI’s creative team",
-      "url": "https://openai.com/index/codex-collaborator-creative-team",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-16T07:00:00+00:00",
-      "description": "How OpenAI’s creative team uses Codex to build custom creative tools, accelerate ideation, and prototype faster with context-aware AI."
-    },
-    {
-      "title": "How Cars24 scales conversations and builds faster with OpenAI",
-      "url": "https://openai.com/index/cars24",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-16T00:00:00+00:00",
-      "description": "Cars24 uses OpenAI-powered voice and chat agents to handle 1M+ monthly conversation minutes, recover 12% of lost leads, and bring agentic workflows to teams across the company."
-    },
-    {
-      "title": "The US is advancing AI safety through state and federal action",
-      "url": "https://openai.com/index/advancing-ai-safety-through-state-and-federal-action",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-15T12:00:00+00:00",
-      "description": "OpenAI outlines a “reverse federalism” approach to AI governance, where state laws help build a national framework for safe, democratic AI."
-    },
-    {
-      "title": "GPT-Red: Unlocking Self-Improvement for Robustness",
-      "url": "https://openai.com/index/unlocking-self-improvement-gpt-red",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-15T10:00:00+00:00",
-      "description": "Explore GPT-Red, OpenAI’s automated red teaming system that uses self-play to improve AI safety, alignment, and prompt injection robustness."
+      "title": "LWiAI Podcast #248 - Opus 4.8, MAI, Anthropic IPO, Minimax-M3",
+      "url": "https://lastweekin.ai/p/lwiai-podcast-248-opus-48-mai-anthropic",
+      "source": "Last Week in AI",
+      "category": "Industry analysis",
+      "publishedAt": "2026-07-21T10:03:37+00:00",
+      "description": "Exploring Claude Fable 5’s impact, Siri AI’s latest enhancements, and the competitive IPO landscape shaping AI’s future"
     },
     {
       "title": "Introducing Real World VoiceEQ: Measuring the human quality of voice AI",
@@ -1331,84 +1259,12 @@
       "description": ""
     },
     {
-      "title": "How to manage AI investments in the agentic era",
-      "url": "https://openai.com/index/managing-ai-investments-in-agentic-era",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-14T10:00:00+00:00",
-      "description": "Learn how enterprises can manage AI investments in the agentic era by measuring useful work per dollar, improving efficiency, and scaling high-value workflows."
-    },
-    {
-      "title": "How Deutsche Telekom is rewiring telecommunications with AI",
-      "url": "https://openai.com/index/deutsche-telekom",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-10T07:00:00+00:00",
-      "description": "How Deutsche Telekom is becoming an AI-native telco with OpenAI-transforming customer service, employee workflows, network operations, and the future of voice."
-    },
-    {
-      "title": "Getting started with ChatGPT",
-      "url": "https://openai.com/academy/getting-started",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-10T00:00:00+00:00",
-      "description": "Learn how to use ChatGPT, start your first conversation, and discover simple ways to write, brainstorm, and solve problems with AI."
-    },
-    {
-      "title": "GPT-5.6 is now the preferred model in Microsoft 365 Copilot",
-      "url": "https://openai.com/index/gpt-5-6-preferred-model-microsoft-365-copilot",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-09T13:00:00+00:00",
-      "description": "Learn how GPT-5.6 powers Microsoft 365 Copilot with stronger AI capabilities across Word, Excel, PowerPoint, Chat, and Cowork for faster, higher-quality work."
-    },
-    {
       "title": "NVIDIA Nemotron Achieves Benchmark-Leading Performance With LangChain Deep Agents Harness",
       "url": "https://blogs.nvidia.com/blog/nemotron-langchain-agents-open-stack/",
       "source": "NVIDIA",
       "category": "Industry",
       "publishedAt": "2026-07-08T15:00:27+00:00",
       "description": "NVIDIA Nemotron 3 Ultra is offering leading performance at lower cost than top closed models with the largest and most widely adopted AI agent orchestration platform. LangChain tuned its Deep Agents harness for NVIDIA Nemotron 3 Ultra, achieving the highest accuracy among open models, while completing more tasks at higher throughput and running at 10x […]"
-    },
-    {
-      "title": "Our approach to government and national security partnerships",
-      "url": "https://openai.com/index/government-national-security-partnerships",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-08T13:30:00+00:00",
-      "description": "Learn how OpenAI approaches government and national security partnerships, with principles for responsible AI use, democratic accountability, and public safety."
-    },
-    {
-      "title": "Separating signal from noise in coding evaluations",
-      "url": "https://openai.com/index/separating-signal-from-noise-coding-evaluations",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-08T13:00:00+00:00",
-      "description": "A new analysis from OpenAI reveals issues in SWE-Bench Pro, a popular coding benchmark, raising concerns about reliability and accuracy in evaluating AI models."
-    },
-    {
-      "title": "Helping K–12 educators build practical AI skills",
-      "url": "https://openai.com/index/k-12-educators-practical-skills",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-08T10:00:00+00:00",
-      "description": "OpenAI Academy and the Walton Family Foundation are bringing hands-on AI Skills Jams to help K–12 educators build practical AI skills for the classroom."
-    },
-    {
-      "title": "Introducing GPT-Live",
-      "url": "https://openai.com/index/introducing-gpt-live",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-08T00:00:00+00:00",
-      "description": "A new generation of voice models for natural human-AI interaction, now powering ChatGPT Voice."
-    },
-    {
-      "title": "MUFG aims to become AI-native with OpenAI",
-      "url": "https://openai.com/index/mufg",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-07-07T00:00:00+00:00",
-      "description": "MUFG uses ChatGPT Enterprise to build an AI-native organization, improve workflows, and deliver new AI-powered financial services at scale."
     },
     {
       "title": "Run AI workloads on any cloud, store on Hugging Face: zero-egress storage with SkyPilot",
@@ -1435,12 +1291,156 @@
       "description": ""
     },
     {
-      "title": "Introducing GeneBench-Pro",
-      "url": "https://openai.com/index/introducing-genebench-pro",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-06-30T00:00:00+00:00",
-      "description": "Introducing GeneBench-Pro, a new benchmark testing AI performance in genomics, biology, and scientific research using complex, real-world datasets."
+      "title": "DiScoFormer: One transformer for density and score, across distributions",
+      "url": "https://huggingface.co/blog/allenai/discoformer",
+      "source": "Hugging Face",
+      "category": "Open source",
+      "publishedAt": "2026-06-29T18:02:48+00:00",
+      "description": ""
+    },
+    {
+      "title": "Shipping huggingface_hub every week with AI, open tools, and a human in the loop",
+      "url": "https://huggingface.co/blog/huggingface-hub-release-ci",
+      "source": "Hugging Face",
+      "category": "Open source",
+      "publishedAt": "2026-06-23T00:00:00+00:00",
+      "description": ""
+    },
+    {
+      "title": "Is it agentic enough? Benchmarking open models on your own tooling",
+      "url": "https://huggingface.co/blog/is-it-agentic-enough",
+      "source": "Hugging Face",
+      "category": "Open source",
+      "publishedAt": "2026-06-18T00:00:00+00:00",
+      "description": ""
+    },
+    {
+      "title": "Agentic Resource Discovery: Let agents search",
+      "url": "https://huggingface.co/blog/agentic-resource-discovery-launch",
+      "source": "Hugging Face",
+      "category": "Open source",
+      "publishedAt": "2026-06-17T00:00:00+00:00",
+      "description": ""
+    },
+    {
+      "title": "LLM Research Papers: The 2026 List (January to May)",
+      "url": "https://magazine.sebastianraschka.com/p/llm-research-papers-2026-part1",
+      "source": "Ahead of AI",
+      "category": "Technical analysis",
+      "publishedAt": "2026-06-06T11:16:22+00:00",
+      "description": "A curated roundup of notable LLM research papers that came out this year"
+    },
+    {
+      "title": "Last Week in AI #341 - Musk loses to OpenAI, Google's IO updates, OpenAI solves Erdős",
+      "url": "https://lastweekin.ai/p/last-week-in-ai-341-musk-loses-to",
+      "source": "Last Week in AI",
+      "category": "Industry analysis",
+      "publishedAt": "2026-05-27T07:50:58+00:00",
+      "description": "Elon Musk Loses $150 Billion Suit Against OpenAI and Sam Altman, Google updates its Gemini app to take on ChatGPT and Claude at IO 2026, and more!"
+    },
+    {
+      "title": "LWiAI Podcast #246 - Gemini 3.5 + Omni, Musk Loses, OpenAI vs Erdős",
+      "url": "https://lastweekin.ai/p/lwiai-podcast-246-gemini-35-omni",
+      "source": "Last Week in AI",
+      "category": "Industry analysis",
+      "publishedAt": "2026-05-26T05:10:23+00:00",
+      "description": "Google unveils AI model Gemini 3.5 and AI agent Gemini Spark, Omni turns images, audio, and text into video, Musk loses OpenAI court battle"
+    },
+    {
+      "title": "Recent Developments in LLM Architectures: KV Sharing, mHC, and Compressed Attention",
+      "url": "https://magazine.sebastianraschka.com/p/recent-developments-in-llm-architectures",
+      "source": "Ahead of AI",
+      "category": "Technical analysis",
+      "publishedAt": "2026-05-16T11:33:51+00:00",
+      "description": "From Gemma 4 to DeepSeek V4, How New Open-Weight LLMs Are Reducing Long-Context Costs"
+    },
+    {
+      "title": "My Workflow for Understanding LLM Architectures",
+      "url": "https://magazine.sebastianraschka.com/p/workflow-for-understanding-llms",
+      "source": "Ahead of AI",
+      "category": "Technical analysis",
+      "publishedAt": "2026-04-18T11:24:36+00:00",
+      "description": "A learning-oriented workflow for understanding new open-weight model releases"
+    },
+    {
+      "title": "A Dream of Spring for Open-Weight LLMs: 10 Architectures from Jan-Feb 2026",
+      "url": "https://magazine.sebastianraschka.com/p/a-dream-of-spring-for-open-weight",
+      "source": "Ahead of AI",
+      "category": "Technical analysis",
+      "publishedAt": "2026-02-25T13:26:56+00:00",
+      "description": "A Round Up And Comparison of 10 Open-Weight LLM Releases in Spring 2026"
+    },
+    {
+      "title": "Categories of Inference-Time Scaling for Improved LLM Reasoning",
+      "url": "https://magazine.sebastianraschka.com/p/categories-of-inference-time-scaling",
+      "source": "Ahead of AI",
+      "category": "Technical analysis",
+      "publishedAt": "2026-01-24T11:23:18+00:00",
+      "description": "And an Overview of Recent Inference-Scaling Papers"
+    },
+    {
+      "title": "NVIDIA Rubin Platform, Open Models, Autonomous Driving: NVIDIA Presents Blueprint for the Future at CES",
+      "url": "https://blogs.nvidia.com/blog/2026-ces-special-presentation/",
+      "source": "NVIDIA",
+      "category": "Industry",
+      "publishedAt": "2026-01-05T23:30:18+00:00",
+      "description": "Editor’s note: The name of NVIDIA DRIVE Hyperion was changed to NVIDIA Hyperion in September 2026. All references to the name have been updated in this blog. NVIDIA founder and CEO Jensen Huang took the stage at the Fontainebleau Las Vegas to open CES 2026, declaring that AI is scaling into every domain and every […]"
+    },
+    {
+      "title": "The State Of LLMs 2025: Progress, Problems, and Predictions",
+      "url": "https://magazine.sebastianraschka.com/p/state-of-llms-2025",
+      "source": "Ahead of AI",
+      "category": "Technical analysis",
+      "publishedAt": "2025-12-30T12:22:26+00:00",
+      "description": "A 2025 review of large language models, from DeepSeek R1 and RLVR to inference-time scaling, benchmarks, architectures, and predictions for 2026."
+    },
+    {
+      "title": "LLM Research Papers: The 2025 List (July to December)",
+      "url": "https://magazine.sebastianraschka.com/p/llm-research-papers-2025-part2",
+      "source": "Ahead of AI",
+      "category": "Technical analysis",
+      "publishedAt": "2025-12-30T12:15:39+00:00",
+      "description": "In June, I shared a bonus article with my curated and bookmarked research paper lists to the paid subscribers who make this Substack possible."
+    },
+    {
+      "title": "As AI Grows More Complex, Model Builders Rely on NVIDIA",
+      "url": "https://blogs.nvidia.com/blog/leading-models-nvidia/",
+      "source": "NVIDIA",
+      "category": "Industry",
+      "publishedAt": "2025-12-11T19:19:57+00:00",
+      "description": "Unveiling what it describes as the most capable model series yet for professional knowledge work, OpenAI launched GPT-5.2 in December. The model was trained and deployed on NVIDIA infrastructure, including NVIDIA Hopper and GB200 NVL72 systems. GPT-5.3 Codex — the first OpenAI agentic coding model to help build itself — was released in February and […]"
+    },
+    {
+      "title": "Beyond Standard LLMs",
+      "url": "https://magazine.sebastianraschka.com/p/beyond-standard-llms",
+      "source": "Ahead of AI",
+      "category": "Technical analysis",
+      "publishedAt": "2025-11-04T13:06:07+00:00",
+      "description": "Linear Attention Hybrids, Text Diffusion, Code World Models, and Small Recursive Transformers"
+    },
+    {
+      "title": "Understanding the 4 Main Approaches to LLM Evaluation (From Scratch)",
+      "url": "https://magazine.sebastianraschka.com/p/llm-evaluation-4-approaches",
+      "source": "Ahead of AI",
+      "category": "Technical analysis",
+      "publishedAt": "2025-10-05T11:12:32+00:00",
+      "description": "Multiple-Choice Benchmarks, Verifiers, Leaderboards, and LLM Judges with Code Examples"
+    },
+    {
+      "title": "Reaching Across the Isles: UK-LLM Brings AI to UK Languages With NVIDIA Nemotron",
+      "url": "https://blogs.nvidia.com/blog/uk-llm-nemotron/",
+      "source": "NVIDIA",
+      "category": "Industry",
+      "publishedAt": "2025-09-14T01:00:21+00:00",
+      "description": "Celtic languages — including Cornish, Irish, Scottish Gaelic and Welsh — are the U.K.’s oldest living languages. To empower their speakers, the UK-LLM sovereign AI initiative is building an AI model based on NVIDIA Nemotron that can reason in both English and Welsh, a language spoken by about 850,000 people in Wales today. Enabling high-quality […]"
+    },
+    {
+      "title": "It’s the Humidity: How International Researchers in Poland, Deep Learning and NVIDIA GPUs Could Change the Forecast",
+      "url": "https://blogs.nvidia.com/blog/humidity/",
+      "source": "NVIDIA",
+      "category": "Industry",
+      "publishedAt": "2025-09-02T13:00:15+00:00",
+      "description": "For more than a century, meteorologists have chased storms with chalkboards, equations, and now, supercomputers. But for all the progress, they still stumble over one deceptively simple ingredient: water vapor. Humidity is the invisible fuel for thunderstorms, flash floods, and hurricanes. It’s the difference between a passing sprinkle and a summer downpour that sends you […]"
     }
   ],
   "sourceStatus": [
@@ -1450,24 +1450,9 @@
       "items": 699
     },
     {
-      "source": "Anthropic",
-      "ok": false,
-      "error": "HTTP Error 404: Not Found"
-    },
-    {
       "source": "Google AI",
       "ok": true,
       "items": 5
-    },
-    {
-      "source": "Google DeepMind",
-      "ok": false,
-      "error": "not well-formed (invalid token): line 1, column 0"
-    },
-    {
-      "source": "Microsoft AI",
-      "ok": false,
-      "error": "HTTP Error 410: Gone"
     },
     {
       "source": "NVIDIA",
@@ -1487,7 +1472,7 @@
     {
       "source": "arXiv ML",
       "ok": true,
-      "items": 0
+      "items": 163
     },
     {
       "source": "arXiv NLP",
@@ -1495,9 +1480,44 @@
       "items": 0
     },
     {
-      "source": "The Batch",
-      "ok": false,
-      "error": "HTTP Error 403: Forbidden"
+      "source": "MIT Technology Review",
+      "ok": true,
+      "items": 8
+    },
+    {
+      "source": "MarkTechPost",
+      "ok": true,
+      "items": 5
+    },
+    {
+      "source": "Ahead of AI",
+      "ok": true,
+      "items": 13
+    },
+    {
+      "source": "Last Week in AI",
+      "ok": true,
+      "items": 15
+    },
+    {
+      "source": "The Verge AI",
+      "ok": true,
+      "items": 6
+    },
+    {
+      "source": "Microsoft Research",
+      "ok": true,
+      "items": 9
+    },
+    {
+      "source": "AWS Machine Learning",
+      "ok": true,
+      "items": 17
+    },
+    {
+      "source": "MIT News AI",
+      "ok": true,
+      "items": 30
     }
   ]
 }
