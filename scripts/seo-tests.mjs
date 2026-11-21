@@ -34,7 +34,6 @@ const read = (p) => readFileSync(resolve(root, p), 'utf8');
 const ownedPages = [
   ['index.html', 'https://gogocompany.in/', true],
   ['about/index.html', 'https://gogocompany.in/about/', true],
-  ['about.html', 'https://gogocompany.in/about.html', true],
   ['contact/index.html', 'https://gogocompany.in/contact/', true],
   ['disclaimer/index.html', 'https://gogocompany.in/disclaimer/', true],
   ['privacy-policy/index.html', 'https://gogocompany.in/privacy-policy/', true],
@@ -160,7 +159,7 @@ check('sitemap.xml: locs absolute, unique, targets exist, no noindex URLs', () =
     else if (path.endsWith('/')) path += 'index.html';
     assert(existsSync(resolve(root, path)), 'sitemap target missing in repo: ' + path);
   }
-  const forbidden = ['/account/', '/admin/', '/unsubscribe/', '/404.html', '/arrow-out/', '/crystal-quest/', '/sarkari/', '/pikanews/'];
+  const forbidden = ['/account/', '/admin/', '/unsubscribe/', '/404.html', '/about.html', '/arrow-out/', '/crystal-quest/', '/sarkari/', '/pikanews/'];
   for (const f of forbidden) {
     assert(!locs.some((l) => l.endsWith(f)), 'noindex/redirect URL must not be in sitemap: ' + f);
   }
@@ -170,7 +169,7 @@ check('sitemap.xml: all indexable gogo pages, product roots and arrowout sub-pag
   const sm = read('sitemap.xml');
   const must = [
     'https://gogocompany.in/',
-    'https://gogocompany.in/about.html',
+    'https://gogocompany.in/about/',
     'https://gogocompany.in/contact/',
     'https://gogocompany.in/disclaimer/',
     'https://gogocompany.in/privacy-policy/',
@@ -253,6 +252,7 @@ const stubs = [
   ['arrow-out/index.html', 'https://gogocompany.in/arrowout/', '/arrowout/'],
   ['crystal-quest/index.html', 'https://gogocompany.in/crystalquest/', '/crystalquest/'],
   ['sarkari/index.html', 'https://gogocompany.in/sarkari-sarthi/', '/sarkari-sarthi/'],
+  ['about.html', 'https://gogocompany.in/about/', '/about/'],
 ];
 for (const [file, canon, target] of stubs) {
   check(file + ': redirect stub correct (noindex, canonical, refresh, target exists)', () => {
