@@ -768,7 +768,7 @@ async function loadFeaturedNews() {
             <div class="news-card featured-card" style="--category-color: ${Utils.getCategoryColor(article.category)}">
                 <div class="news-card-image">
                     ${article.image_url ? `
-                        <img src="${Utils.escapeHtml(article.image_url)}" alt="${Utils.escapeHtml(article.title)}" width="640" height="360" loading="${index === 0 ? 'eager' : 'lazy'}" ${index === 0 ? 'fetchpriority="high"' : ''} decoding="async" onerror="this.parentNode.innerHTML='<div class=\"news-card-placeholder\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M9 9h6v6H9z\"/></svg></div>'">
+                        <img src="${Utils.escapeHtml(article.image_url)}" alt="${Utils.escapeHtml(article.title)}" width="640" height="360" loading="${index === 0 ? 'eager' : 'lazy'}" ${index === 0 ? 'fetchpriority="high"' : ''} decoding="async" onerror="this.onerror=null;this.src='images/pikanews-logo.svg'"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M9 9h6v6H9z\"/></svg></div>'">
                     ` : `
                         <div class="news-card-placeholder">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -780,7 +780,7 @@ async function loadFeaturedNews() {
                     <span class="news-card-category" style="background-color: var(--category-color);">${Utils.escapeHtml(article.category)}</span>
                 </div>
                 <div class="news-card-content">
-                    <h3 class="news-card-title">${Utils.escapeHtml(article.title)}</h3>
+                    <h3 class="news-card-title"><a href="article.html?id=${encodeURIComponent(article.id)}">${Utils.escapeHtml(article.title)}</a></h3>
                     <p class="news-card-summary">${Utils.escapeHtml(Utils.truncate(article.summary, 100))}</p>
                     <div class="news-card-meta">
                         <span class="news-card-source">${Utils.escapeHtml(article.source)}</span>
@@ -833,7 +833,7 @@ async function loadLatestNews() {
             <div class="news-card" style="--category-color: ${Utils.getCategoryColor(article.category)}">
                 <div class="news-card-image">
                     ${article.image_url ? `
-                        <img src="${Utils.escapeHtml(article.image_url)}" alt="${Utils.escapeHtml(article.title)}" loading="lazy" onerror="this.parentNode.innerHTML='<div class=\"news-card-placeholder\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M9 9h6v6H9z\"/></svg></div>'">
+                        <img src="${Utils.escapeHtml(article.image_url)}" alt="${Utils.escapeHtml(article.title)}" loading="lazy" onerror="this.onerror=null;this.src='images/pikanews-logo.svg'"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M9 9h6v6H9z\"/></svg></div>'">
                     ` : `
                         <div class="news-card-placeholder">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -845,7 +845,7 @@ async function loadLatestNews() {
                     <span class="news-card-category" style="background-color: var(--category-color);">${Utils.escapeHtml(article.category)}</span>
                 </div>
                 <div class="news-card-content">
-                    <h3 class="news-card-title">${Utils.escapeHtml(article.title)}</h3>
+                    <h3 class="news-card-title"><a href="article.html?id=${encodeURIComponent(article.id)}">${Utils.escapeHtml(article.title)}</a></h3>
                     <p class="news-card-summary">${Utils.escapeHtml(Utils.truncate(article.summary, 100))}</p>
                     <div class="news-card-meta">
                         <span class="news-card-source">${Utils.escapeHtml(article.source)}</span>
@@ -898,7 +898,7 @@ async function loadTrendingNews() {
             <div class="news-card" style="--category-color: ${Utils.getCategoryColor(article.category)}">
                 <div class="news-card-image">
                     ${article.image_url ? `
-                        <img src="${Utils.escapeHtml(article.image_url)}" alt="${Utils.escapeHtml(article.title)}" loading="lazy" onerror="this.parentNode.innerHTML='<div class=\"news-card-placeholder\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M9 9h6v6H9z\"/></svg></div>'">
+                        <img src="${Utils.escapeHtml(article.image_url)}" alt="${Utils.escapeHtml(article.title)}" loading="lazy" onerror="this.onerror=null;this.src='images/pikanews-logo.svg'"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M9 9h6v6H9z\"/></svg></div>'">
                     ` : `
                         <div class="news-card-placeholder">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -910,7 +910,7 @@ async function loadTrendingNews() {
                     <span class="news-card-category" style="background-color: var(--category-color);">${Utils.escapeHtml(article.category)}</span>
                 </div>
                 <div class="news-card-content">
-                    <h3 class="news-card-title">${Utils.escapeHtml(article.title)}</h3>
+                    <h3 class="news-card-title"><a href="article.html?id=${encodeURIComponent(article.id)}">${Utils.escapeHtml(article.title)}</a></h3>
                     <p class="news-card-summary">${Utils.escapeHtml(Utils.truncate(article.summary, 100))}</p>
                     <div class="news-card-meta">
                         <span class="news-card-source">${Utils.escapeHtml(article.source)}</span>
@@ -966,7 +966,7 @@ async function loadCategoryNews() {
                 <div class="news-card" style="--category-color: ${Utils.getCategoryColor(article.category)}">
                     <div class="news-card-image">
                         ${article.image_url ? `
-                            <img src="${Utils.escapeHtml(article.image_url)}" alt="${Utils.escapeHtml(article.title)}" loading="lazy" onerror="this.parentNode.innerHTML='<div class=\"news-card-placeholder\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M9 9h6v6H9z\"/></svg></div>'">
+                            <img src="${Utils.escapeHtml(article.image_url)}" alt="${Utils.escapeHtml(article.title)}" loading="lazy" onerror="this.onerror=null;this.src='images/pikanews-logo.svg'"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M9 9h6v6H9z\"/></svg></div>'">
                         ` : `
                             <div class="news-card-placeholder">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -978,7 +978,7 @@ async function loadCategoryNews() {
                         <span class="news-card-category" style="background-color: var(--category-color);">${Utils.escapeHtml(article.category)}</span>
                     </div>
                     <div class="news-card-content">
-                        <h3 class="news-card-title">${Utils.escapeHtml(article.title)}</h3>
+                        <h3 class="news-card-title"><a href="article.html?id=${encodeURIComponent(article.id)}">${Utils.escapeHtml(article.title)}</a></h3>
                         <p class="news-card-summary">${Utils.escapeHtml(Utils.truncate(article.summary, 80))}</p>
                         <div class="news-card-meta">
                             <span class="news-card-source">${Utils.escapeHtml(article.source)}</span>
