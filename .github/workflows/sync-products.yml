@@ -160,6 +160,26 @@ jobs:
           test -f sarkari-sarthi/script.js
           test -f sarkari-sarthi/style.css
           test -f sarkari-sarthi/jobs/job_manifest.json
+
+          # Verify the current Sarkari Sarthi social links and evidence gate
+          # before publishing the central GoGo domain.
+          grep -Fq 'https://whatsapp.com/channel/0029VbE1ulAAjPXQZiUbbu1Z' sarkari-sarthi/index.html
+          grep -Fq 'https://whatsapp.com/channel/0029Vb5zVwjICVfnQ95zT10F' sarkari-sarthi/index.html
+          grep -Fq 'Secondary-source leads stay out of public search' sarkari-sarthi/index.html
+          node - <<'NODE'
+          const fs = require('fs');
+          const source = fs.readFileSync('sarkari-sarthi/script.js', 'utf8');
+          const start = source.indexOf('const SEARCH_ELIGIBLE_VERIFICATION_STATUSES = new Set([');
+          const end = source.indexOf(']);', start);
+          if (start < 0 || end < 0) throw new Error('Sarkari search verification allowlist is missing');
+          const allowlist = source.slice(start, end);
+          if (allowlist.includes('secondary_source_only')) {
+            throw new Error('Secondary-only job leads must not be searchable');
+          }
+          if (!allowlist.includes('official_verified')) {
+            throw new Error('Official verified jobs must remain searchable');
+          }
+          NODE
           # GoGo Central notifications pairing (guard: the module and its FCM
           # worker arrive from the upstream product repos after their
           # central-notifications merges; until then both are absent and these
