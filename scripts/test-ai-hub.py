@@ -10,6 +10,10 @@ assert 'application/ld+json' in page and 'CollectionPage' in page
 assert 'id="latest"' in page and 'id="models"' in page and 'id="research"' in page and 'id="tools"' in page
 assert 'not a quality ranking' in page.lower() or 'not a quality ranking' in page
 assert 'Original coverage' in page or 'Daily collection is starting' in page
+assert 'id="newsSearch"' in page and 'data-filter="research"' in page
+assert 'data-category=' in page and 'prefers-reduced-motion' in page
+assert 'id="modelRows"' in page and 'AI Models & API Pricing' in page
+assert 'ARTICLE_COUNT' not in page and 'MODEL_COUNT' not in page and 'FEED_COUNT' not in page
 news=json.loads((root/"ai/data/ai-news.json").read_text(encoding="utf-8"))
 for item in news.get("articles",[]):
  assert item.get("title") and item.get("source") and item.get("url","").startswith("https://")
