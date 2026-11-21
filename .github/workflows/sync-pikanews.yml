@@ -5,7 +5,7 @@ on:
     # Every 30 minutes at :10 and :40 UTC - 10 minutes after the
     # PikaNews news_collector runs (:00/:30 UTC), so the collector has
     # already pushed fresh news_json/ data before we publish it.
-    # A reviewed push to this workflow file is the supported immediate
+    # A reviewed push to this workflow file is the supported immediate refresh trigger after an upstream PikaNews collector run. This also refreshes new global category pages and guest topic preferences; the schedule remains the fallback.
     # refresh trigger after an upstream PikaNews collector run; the schedule
     # remains the fallback at :10 and :40 UTC when no manual refresh is needed.
     - cron: '10,40 * * * *'
@@ -104,6 +104,14 @@ jobs:
           test -f pikanews/data/gaming.json
           test -f pikanews/data/business.json
           test -f pikanews/data/sports.json
+          # Global coverage and guest-first personalization are part of the
+          # published contract; fail the sync if any required file is absent.
+          test -f pikanews/world.html
+          test -f pikanews/science.html
+          test -f pikanews/js/preferences.js
+          test -f pikanews/data/world.json
+          test -f pikanews/data/science.json
+          test -f pikanews/data/politics.json
           # FCM notification click targets must use an exact HTTPS GoGo origin.
           test -f pikanews/firebase-messaging-sw.js
           if grep -Fq 'client.url.indexOf' pikanews/firebase-messaging-sw.js; then
