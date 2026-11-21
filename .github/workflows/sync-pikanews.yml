@@ -5,9 +5,9 @@ on:
     # Every 30 minutes at :10 and :40 UTC - 10 minutes after the
     # PikaNews news_collector runs (:00/:30 UTC), so the collector has
     # already pushed fresh news_json/ data before we publish it.
-    # A reviewed push to this workflow file is the supported immediate refresh trigger after an upstream PikaNews collector run. This also refreshes new global category pages and guest topic preferences; the schedule remains the fallback.
-    # refresh trigger after an upstream PikaNews collector run; the schedule
-    # remains the fallback at :10 and :40 UTC when no manual refresh is needed.
+    # A reviewed push to this workflow file is the supported immediate refresh
+    # after an upstream PikaNews collector run. The sync validates the new World,
+    # Science and guest-preference files; the schedule remains the fallback.
     - cron: '10,40 * * * *'
   workflow_dispatch:
   push:
