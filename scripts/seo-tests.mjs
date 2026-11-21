@@ -160,7 +160,7 @@ check('sitemap.xml: locs absolute, unique, targets exist, no noindex URLs', () =
     else if (path.endsWith('/')) path += 'index.html';
     assert(existsSync(resolve(root, path)), 'sitemap target missing in repo: ' + path);
   }
-  const forbidden = ['/account/', '/admin/', '/unsubscribe/', '/404.html', '/arrow-out/', '/crystal-quest/', '/sarkari/', '/pikanews/'];
+  const forbidden = ['/account/', '/admin/', '/unsubscribe/', '/404.html', '/arrow-out/', '/crystal-quest/', '/sarkari/'];
   for (const f of forbidden) {
     assert(!locs.some((l) => l.endsWith(f)), 'noindex/redirect URL must not be in sitemap: ' + f);
   }
@@ -181,6 +181,7 @@ check('sitemap.xml: all indexable gogo pages, product roots and arrowout sub-pag
     'https://gogocompany.in/arrowout/privacy.html',
     'https://gogocompany.in/crystalquest/',
     'https://gogocompany.in/sarkari-sarthi/',
+    'https://gogocompany.in/pikanews/',
   ];
   for (const u of must) assert(sm.includes(u), 'sitemap missing ' + u);
 });
@@ -209,12 +210,11 @@ check('robots.txt: nothing blocked, exactly three active sitemaps declared and r
   }
 });
 
-// PikaNews is a publisher-attributed aggregator. Keep listings noindex until editorial review thresholds are met.
-check('PikaNews aggregated hubs and story pages remain noindex until original editorial thresholds are met', () => {
+// PikaNews homepage is a useful discovery landing page; syndicated listings and story excerpts remain noindex.
+check('PikaNews homepage is indexable and listed; syndicated listings and story pages stay noindex', () => {
   const pages = [
-    'index.html', 'latest.html', 'trending.html', 'bollywood.html',
-    'hollywood.html', 'entertainment.html', 'technology.html',
-    'gaming.html', 'business.html', 'sports.html',
+    'latest.html', 'trending.html', 'bollywood.html', 'hollywood.html',
+    'entertainment.html', 'technology.html', 'gaming.html', 'business.html', 'sports.html',
   ];
   const sm = read('pikanews/sitemap.xml');
   const pikaHome = read('pikanews/index.html');
@@ -222,12 +222,14 @@ check('PikaNews aggregated hubs and story pages remain noindex until original ed
   assert((pikaHome.match(/rel="canonical"/g) || []).length === 1, 'PikaNews homepage must have exactly one canonical');
   assert((pikaHome.match(/property="og:title"/g) || []).length === 1, 'PikaNews homepage must have exactly one Open Graph title');
   assert((pikaHome.match(/property="og:description"/g) || []).length === 1, 'PikaNews homepage must have exactly one Open Graph description');
+  assert(!(robotsOf(pikaHome) || '').includes('noindex'), 'PikaNews discovery homepage must be indexable');
+  assert(canonicalOf(pikaHome) === 'https://gogocompany.in/pikanews/', 'PikaNews homepage canonical mismatch');
+  assert(sm.includes('<loc>https://gogocompany.in/pikanews/</loc>'), 'PikaNews homepage must be in its sitemap');
   for (const page of pages) {
     const html = read('pikanews/' + page);
-    assert((robotsOf(html) || '').includes('noindex'), page + ' must remain noindex until editorial review thresholds are met');
-    assert(canonicalOf(html) === 'https://gogocompany.in/pikanews/' + (page === 'index.html' ? '' : page), page + ' canonical mismatch');
-    const sitemapUrl = 'https://gogocompany.in/pikanews/' + (page === 'index.html' ? '' : page);
-    assert(!sm.includes('<loc>' + sitemapUrl + '</loc>'), page + ' must not be included in the PikaNews sitemap while noindex');
+    assert((robotsOf(html) || '').includes('noindex'), page + ' must remain noindex until editorial value is added');
+    assert(canonicalOf(html) === 'https://gogocompany.in/pikanews/' + page, page + ' canonical mismatch');
+    assert(!sm.includes('<loc>https://gogocompany.in/pikanews/' + page + '</loc>'), page + ' must not be included in the PikaNews sitemap while noindex');
   }
   const articleRoot = resolve(root, 'pikanews/news');
   const articleDir = readdirSync(articleRoot, { withFileTypes: true }).find(entry =>
