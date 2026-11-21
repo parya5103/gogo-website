@@ -312,7 +312,37 @@ check('owned pages and main.js: every <img> has alt text', () => {
   for (const img of jsImgs) assert(/\balt=/.test(img), 'img without alt in main.js: ' + img.slice(0, 80));
 });
 
-console.log('SEO regression suite: ' + passed + ' checks passed, ' + failures.length + ' failed.');
+
+
+// Phase 1: prevent the old mixed-language Google Trends keyword dump from
+// returning through either the React source or the scheduled static prerender.
+check('homepage: no mixed-language search-trend dump in source or prerender output', () => {
+  const homepage = getHtml('index.html');
+  const app = read('frontend/src/App.jsx');
+  const prerender = read('scripts/prerender-home.mjs');
+  assert(!/TRENDING SEARCHES IN INDIA|trends-strip|gogo-trending/i.test(homepage), 'rendered homepage still contains the search-trend dump');
+  assert(!/TRENDING SEARCHES IN INDIA|trends-strip|trends\.length/i.test(app), 'React homepage still renders the search-trend component');
+  assert(!/trends\.google\.com\/trending\/rss|fetchTrends|trends:\s*\[\]/i.test(prerender), 'scheduled prerender still fetches or serializes Google Trends');
+});
+
+check('canonical routes: legacy about URL is noindex and excluded; folder URLs are unique', () => {
+  const sitemap = read('sitemap.xml');
+  const about = read('about.html');
+  const aboutCanonical = canonicalOf(getHtml('about/index.html'));
+  const contactCanonical = canonicalOf(getHtml('contact/index.html'));
+  assert((robotsOf(about) || '').includes('noindex'), 'legacy /about.html must remain noindex');
+  assert(canonicalOf(about) === 'https://gogocompany.in/about/', 'legacy /about.html must canonicalize to /about/');
+  assert(!sitemap.includes('<loc>https://gogocompany.in/about.html</loc>'), 'legacy /about.html must not appear in sitemap');
+  assert.equal(aboutCanonical, 'https://gogocompany.in/about/', 'folder About canonical mismatch');
+  assert.equal(contactCanonical, 'https://gogocompany.in/contact/', 'folder Contact canonical mismatch');
+  const locs = [...sitemap.matchAll(/<loc>\s*([^<]+)\s*<\/loc>/gi)].map(match => match[1].trim());
+  assert.equal(new Set(locs).size, locs.length, 'root sitemap contains duplicate URL entries');
+  assert.equal(locs.filter(url => url === 'https://gogocompany.in/about/').length, 1, 'About canonical must appear exactly once');
+  assert.equal(locs.filter(url => url === 'https://gogocompany.in/contact/').length, 1, 'Contact canonical must appear exactly once');
+  assert(!locs.some(url => /\/index\.html(?:$|[?#])/i.test(url)), 'root sitemap must use folder URLs instead of index.html aliases');
+});
+
+\nconsole.log('SEO regression suite: ' + passed + ' checks passed, ' + failures.length + ' failed.');
 if (failures.length > 0) {
   console.error('\nSEO failures:');
   for (const f of failures) console.error(' - ' + f);
