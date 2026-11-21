@@ -5,7 +5,7 @@
  * Product sub-portals keep their own sitemaps; this script never crawls or
  * guesses URLs and never includes noindex or redirect routes.
  */
-import { readFile, writeFile, access } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 const ROOT = process.cwd();
