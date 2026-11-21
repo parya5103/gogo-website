@@ -2,7 +2,7 @@ name: Refresh GoGo AI Intelligence Hub
 
 on:
   schedule:
-    - cron: '20 3 * * *' # Daily at 08:50 IST
+    - cron: '20 3 * * *' # Daily at 08:50 IST; dispatch on collector updates to regenerate the committed HTML snapshot.
   push:
     branches: [main]
     paths:
