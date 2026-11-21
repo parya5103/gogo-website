@@ -6,7 +6,7 @@ Canonical identity:
 - Official name: Gogo Company
 - Alternate names: GOGO COMPANY; Gogo Company India; gogocompany.in
 - Official homepage: https://gogocompany.in/
-- Company profile: https://gogocompany.in/about.html
+- Company profile: https://gogocompany.in/about/
 - Founder: Pratik Arya
 - Headquarters: Indore, Madhya Pradesh, India
 - Public contact: officialgogocompany@gmail.com
