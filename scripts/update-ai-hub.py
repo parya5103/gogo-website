@@ -102,6 +102,7 @@ for model in catalogue.get("models",[]):
  for key in ("input","output"):
   value=model.get(key)
   if value is None:continue
+  if isinstance(value,bool):model[key]=None;continue
   try:
    amount=float(value)
    model[key]=round(amount,5) if math.isfinite(amount) and amount>=0 else None
