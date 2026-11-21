@@ -116,7 +116,11 @@ if sitemap_path.exists():
  sitemap=sitemap_path.read_text(encoding="utf-8")
  entry='<url><loc>https://gogocompany.in/ai/</loc><lastmod>'+dt.datetime.now(dt.timezone.utc).date().isoformat()+'</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>'
  if "https://gogocompany.in/ai/" in sitemap:
-  sitemap=re.sub(r'<url>\\s*<loc>https://gogocompany\\.in/ai/</loc>[\\s\\S]*?</url>',entry,sitemap)
+  marker="<loc>https://gogocompany.in/ai/</loc>"
+  start=sitemap.find(marker); end=sitemap.find("</url>",start)
+  block=sitemap[start:end]
+  block=re.sub(r"<lastmod>[^<]*</lastmod>", "<lastmod>"+dt.datetime.now(dt.timezone.utc).date().isoformat()+"</lastmod>", block)
+  sitemap=sitemap[:start]+block+sitemap[end:]
  else:sitemap=sitemap.replace("</urlset>", "  "+entry+"\\n</urlset>")
  sitemap_path.write_text(sitemap,encoding="utf-8")
 print("AI hub generated; source feeds successful:",good,"articles:",len(news.get("articles",[])),"models:",len(catalogue.get("models",[])))
