@@ -1,5 +1,164 @@
 [
   {
+    "id": "848b92e33420b0243c807608820173fd2caa4325d0c437656db78cd9db29dcaa",
+    "title": "How This Year’s Movies From ‘Artificial’ to ‘I Play Rocky’ Turn Political Anxiety Into Compelling Stories",
+    "summary": "For years, Simon Rich wanted to sound the alarm about AI. Rich’s childhood friend Dan Selsam worked as a researcher at OpenAI; Selsam showed Rich, a writer known for humorous essays and for the film “An American Pickle,” an early version of the software, and the two friends discussed its ramifications. “It seemed to have [&#8230;]",
+    "category": "technology",
+    "source": "Variety",
+    "url": "https://variety.com/2026/film/focus/political-anxietyartificial-ink-weight-rocky-1236953703",
+    "published_at": "2026-11-21T17:05:00+00:00",
+    "date_unverified": false,
+    "image_url": "https://variety.com/wp-content/uploads/2026/10/Artificial-1000.jpg",
+    "collection_timestamp": "2026-11-21T19:44:15.191202+00:00",
+    "thin": false,
+    "author": "Carolehorst",
+    "tags": [
+      "Focus",
+      "Artificial",
+      "Being Heumann",
+      "I Play Rocky",
+      "Ink",
+      "The Weight"
+    ]
+  },
+  {
+    "id": "f05d61b62f856fba4f22a7d4cc2f926090ad56be713fde88c0564e8613c5baf6",
+    "title": "Anthropic’s record IPO collides with tech’s worst week on Wall Street since 2020",
+    "summary": "Anthropic held its historic Nasdaq debut a day before Nvidia's stock closed out its longest weekly losing streak since 2008.",
+    "category": "technology",
+    "source": "CNBC",
+    "url": "https://www.cnbc.com/2026/11/21/anthropic-ipo-tech-selloff.html",
+    "published_at": "2026-11-21T16:40:05+00:00",
+    "date_unverified": false,
+    "image_url": "https://image.cnbcfm.com/api/v1/image/108555254-1795098552302-gettyimages-2305298530-AFP_D7ZG87P.jpeg?v=1795137591&w=1920&h=1080",
+    "collection_timestamp": "2026-11-21T16:54:25.938465+00:00",
+    "thin": false
+  },
+  {
+    "id": "1e9cc1564da72c9750c673d28aeff099b733f9fce269275ab46bd49e8b7bbfc8",
+    "title": "D&D Publisher Officially Hands Record-Breaking AI Settlement Money to Authors",
+    "summary": "Wizards of the Coast is entitled to a hefty sum of Anthropic settlement money, but it's giving it to Dungeons & Dragons writers.",
+    "category": "technology",
+    "source": "Polygon",
+    "url": "https://www.polygon.com/dnd-dungeons-dragons-authors-get-settlement-money-wizards-of-the-coast",
+    "published_at": "2026-11-21T15:59:00+00:00",
+    "date_unverified": false,
+    "image_url": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/10/dungeons-dragons-world-of-warcraft-bronze-dragons.jpg",
+    "collection_timestamp": "2026-11-21T16:54:25.938096+00:00",
+    "thin": false,
+    "author": "Ashely Claudino",
+    "tags": [
+      "News",
+      "Dungeons & Dragons"
+    ]
+  },
+  {
+    "id": "fd0908678abf0084654ea864a88e2b80eec3ced613ebf98e0635c70b61430aca",
+    "title": "What China Gets From Its AI Honeypots and Smuggled Chips",
+    "summary": "Jensen Huang had an affair with an alleged Chinese spy. But what will the Chinese actually do with Nvidia chips?",
+    "category": "technology",
+    "source": "Rolling Stone",
+    "url": "https://www.rollingstone.com/politics/politics-features/what-china-gets-ai-honeypots-smuggled-chips-1235662019",
+    "published_at": "2026-11-21T15:00:00+00:00",
+    "date_unverified": false,
+    "image_url": "https://www.rollingstone.com/wp-content/uploads/2026/11/china-and-chips-jensen-huang.jpg?w=1600&h=900&crop=1",
+    "collection_timestamp": "2026-11-21T15:13:04.403336+00:00",
+    "thin": false,
+    "author": "Ryan Bort",
+    "tags": [
+      "Politics",
+      "Politics Features",
+      "AI",
+      "controversy",
+      "Jensen Huang",
+      "NVIDIA"
+    ]
+  },
+  {
+    "id": "00d2a30c39127126821d3d565e7df23a93669567441831f10936ee26f24111ab",
+    "title": "The FBI and USDA were reportedly hacked",
+    "summary": "Friday, it was reported that both the US Department of Agriculture (USDA) and the FBI were hacked. In reporting on the FBI hack, CNN noted that this is the second such attack on the agency in the last few months, this time targeting the National Crime Information Center (NCIC), which federal, state, and local law [&#8230;]",
+    "category": "technology",
+    "source": "The Verge",
+    "url": "https://www.theverge.com/tech/1039543/fbi-usda-hacked",
+    "published_at": "2026-11-21T12:42:27-05:00",
+    "date_unverified": false,
+    "image_url": "https://platform.theverge.com/wp-content/uploads/sites/2/chorus/uploads/chorus_asset/file/23318430/akrales_220309_4977_0038.jpg?quality=90&strip=all&crop=0,0,100,100",
+    "collection_timestamp": "2026-11-21T19:44:15.194039+00:00",
+    "thin": false,
+    "author": "Terrence O’Brien",
+    "tags": [
+      "News",
+      "Security",
+      "Tech"
+    ]
+  },
+  {
+    "id": "82e5d6d3f254a907f161c2673e934b2374b07f56b83e7cabc68ce7561c185de0",
+    "title": "John Roberts, the voice of Linda Belcher, is just happy to finish a thing",
+    "summary": "You probably know John Roberts best as the voice of Linda Belcher on Bob's Burgers. The show just wrapped up its 16th season and shows no signs of slowing down anytime soon. The show remains a reliable source of laughs, top-notch puns, and frankly wholesome fun. Comedy is just part of Roberts' life, however. In [&#8230;]",
+    "category": "technology",
+    "source": "The Verge",
+    "url": "https://www.theverge.com/report/1038463/john-roberts-linda-belcher-bobs-burgers-interview",
+    "published_at": "2026-11-21T11:00:00-05:00",
+    "date_unverified": false,
+    "image_url": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/John_Roberts_1.jpg?quality=90&strip=all&crop=0,0,100,100",
+    "collection_timestamp": "2026-11-21T16:54:25.917571+00:00",
+    "thin": false,
+    "author": "Terrence O’Brien",
+    "tags": [
+      "Entertainment",
+      "Interview",
+      "Music",
+      "Report",
+      "TV Shows"
+    ]
+  },
+  {
+    "id": "41500e4233025297ce60b7ab9a8977286dd9dcbe2176f295ed7d083f29a765c6",
+    "title": "Can Anthropic afford to put safety first?",
+    "summary": "Today, I’m talking with Hayden Field, The Verge’s senior AI reporter, about the Anthropic IPO for the third and final episode in our series about AI in real life. The AI lab behind Claude went public on the Nasdaq last Thursday. The numbers are gigantic, but not really that important for this conversation, except to [&#8230;]",
+    "category": "technology",
+    "source": "The Verge",
+    "url": "https://www.theverge.com/podcast/1038701/anthropic-ipo-ai-safety-openai-nvidia-structure",
+    "published_at": "2026-11-21T10:00:00-05:00",
+    "date_unverified": false,
+    "image_url": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/VRG_DCD_1121_Site.jpg?quality=90&strip=all&crop=0,0,100,100",
+    "collection_timestamp": "2026-11-21T15:13:04.409508+00:00",
+    "thin": false,
+    "author": "Nilay Patel",
+    "tags": [
+      "AI",
+      "Anthropic",
+      "Business",
+      "Decoder",
+      "OpenAI",
+      "Podcasts",
+      "Tech"
+    ]
+  },
+  {
+    "id": "3250d3f2096c2a80b45229ae42014936609291af39369133adb197762fe53f7c",
+    "title": "Our go-to earbuds for taking calls have fallen to their lowest price to date",
+    "summary": "If you’re looking for a new pair of earbuds, the Soundcore Liberty 5 Pro are on sale for $129.99 at Amazon, Best Buy, and Walmart right now. That’s the lowest price we’ve seen for Anker’s excellent wireless earbuds, which normally retail for $169.99 and come in four colors (black, white, blue, and pink) all of [&#8230;]",
+    "category": "technology",
+    "source": "The Verge",
+    "url": "https://www.theverge.com/gadgets/1039160/anker-soundcore-liberty-5-pro-black-friday-2026-deal-sale",
+    "published_at": "2026-11-21T09:55:28-05:00",
+    "date_unverified": false,
+    "image_url": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/05/268539_Soundcore_Liberty_5_Pro_JHiggins_0001.jpg?quality=90&strip=all&crop=0,0,100,100",
+    "collection_timestamp": "2026-11-21T15:13:04.409783+00:00",
+    "thin": false,
+    "author": "Brad Bourque",
+    "tags": [
+      "Black Friday",
+      "Cyber Monday",
+      "Deals",
+      "Gadgets",
+      "Verge Shopping"
+    ]
+  },
+  {
     "id": "f0c6738268e813263c6ce0ce2dafb17e2f3f8fab1637f4915cf19fe488482edb",
     "title": "The Xiaomi 18 Pro proves two screens aren’t better than one",
     "summary": "Xiaomi introduced a second screen to its flagship phones with last year's 17 Pros, but didn't release them outside China. That means the new 18 Pro and Pro Max are the first chance I've had to find out if a screen on the back of a phone is any more useful now than it was [&#8230;]",
@@ -322,7 +481,7 @@
     "source": "CNBC",
     "url": "https://www.cnbc.com/2026/11/20/ai-coding-tools-software-engineers.html",
     "published_at": "2026-11-20T06:00:01+00:00",
-    "image_url": null,
+    "image_url": "https://image.cnbcfm.com/api/v1/image/108554003-1795002776289-gettyimages-2214834060-ma117501.jpeg?v=1795002796&w=1920&h=1080",
     "collection_timestamp": "2026-11-20T12:29:55.755669+00:00",
     "thin": false
   },
@@ -2349,157 +2508,17 @@
     ]
   },
   {
-    "id": "4cec312a62a3f198571b2b1810dfd48b718184f72ca7ecbc35f215b5a4d836df",
-    "title": "Apple TV is getting video podcasts you can watch for free",
-    "summary": "Apple's streaming service will soon have a video podcasts section, the New York Times reports. It will start testing the feature in a developer release today, so expect a new update for iOS 27.3 beta testers to roll out in a few hours. Once it rolls out fully, the new video podcasts section will be [&#8230;]",
+    "id": "5082dfda10bff74f000a79d57567c7e87de16691fdbad697271e5cb0ec100b12",
+    "title": "REA: The Open-Source AI Tool That Can Reverse Engineer Almost Anything (2026 Guide)",
+    "summary": "What if you could ask your AI assistant how any app works and get a real answer, backed by evidence, without ever seeing the source code? You use an app, tap a feature, and wonder how it was built. Maybe it is a fast search bar, a clever clipboard trick, or a mechanic in an old game. Until recently, finding out meant months of learning disassemblers and reading assembly code. A new open-source project called REA changes that. It has earned more than 430,000 stars on GitHub, and in this guide I w",
     "category": "technology",
-    "source": "The Verge",
-    "url": "https://www.theverge.com/entertainment/1034168/apple-tv-video-podcasts",
-    "published_at": "2026-11-16T09:45:56-05:00",
+    "source": "TechCrunch",
+    "url": "https://techncruncher.blogspot.com/2026/11/rea-open-source-ai-tool-that-can.html",
+    "published_at": "2026-11-05T11:03:50+00:00",
+    "date_unverified": false,
     "image_url": null,
-    "collection_timestamp": "2026-11-16T17:16:56.660715+00:00",
+    "collection_timestamp": "2026-11-21T15:13:04.407261+00:00",
     "thin": false,
-    "author": "Stevie Bonifield",
-    "tags": [
-      "Apple",
-      "Entertainment",
-      "News",
-      "Podcasts",
-      "Streaming",
-      "Tech"
-    ]
-  },
-  {
-    "id": "88f2b4f5ce4b72ee817ca3d4e1949488af065b38e743f7b75ed01026dadb12fb",
-    "title": "America’s air traffic control system couldn’t handle a single bad router",
-    "summary": "Thirty minutes outside Atlanta, the pilot got on the intercom to announce that something was wrong. A communications issue with the Federal Aviation Administration was cascading across the country. The pilot didn't offer much detail except to say that the issue might affect gate access and connecting flights. For Amanda Khera, the timing couldn't be [&#8230;]",
-    "category": "technology",
-    "source": "The Verge",
-    "url": "https://www.theverge.com/transportation/1034039/faa-aviation-glitch-meltdown-ground-stop",
-    "published_at": "2026-11-16T09:43:48-05:00",
-    "image_url": null,
-    "collection_timestamp": "2026-11-16T17:16:56.660953+00:00",
-    "thin": false,
-    "author": "Darryl Campbell",
-    "tags": [
-      "Aviation",
-      "Policy",
-      "Tech",
-      "Transportation"
-    ]
-  },
-  {
-    "id": "b40dd13b4229371dbe730f4c45d10b82759a528a29198290a51ac62eadf3ccf0",
-    "title": "Audible is trying to make it easier to find audiobooks you’ll actually like",
-    "summary": "Audible is introducing an AI-assisted synopsis feature that's designed to help users determine whether they'll enjoy an audiobook before they jump in and start listening to it. The new audio discovery feature combines audiobook samples, AI overviews, and author commentary to give users more information before choosing their next story, in addition to recommended audiobook [&#8230;]",
-    "category": "technology",
-    "source": "The Verge",
-    "url": "https://www.theverge.com/tech/1034083/audible-audio-discovery-ai-feature-availability",
-    "published_at": "2026-11-16T09:00:00-05:00",
-    "image_url": null,
-    "collection_timestamp": "2026-11-16T17:16:56.661212+00:00",
-    "thin": false,
-    "author": "Jess Weatherbed",
-    "tags": [
-      "AI",
-      "Amazon",
-      "Audio",
-      "News",
-      "Tech"
-    ]
-  },
-  {
-    "id": "6e6fc1b013f3b3adfe4c1f1882ce03013f2a39e420b06289a6836628de95ec56",
-    "title": "Google Maps can now create trip itineraries for you",
-    "summary": "Google is launching a new AI trip-planning feature for Maps that allows the app to create custom itineraries for you and provide real-time details about each stop. The update, which is rolling out to the Gemini-powered Ask Maps chatbot inside the app, lets you plan a one-day outing or a trip spanning several days. As [&#8230;]",
-    "category": "technology",
-    "source": "The Verge",
-    "url": "https://www.theverge.com/tech/1034110/google-ask-maps-ai-trip-planning",
-    "published_at": "2026-11-16T09:00:00-05:00",
-    "image_url": null,
-    "collection_timestamp": "2026-11-16T17:16:56.661436+00:00",
-    "thin": false,
-    "author": "Emma Roth",
-    "tags": [
-      "AI",
-      "Apps",
-      "Google",
-      "News",
-      "Tech"
-    ]
-  },
-  {
-    "id": "e953f5eaef4db4f93c8e61fc25ff94a6885cc8d4c5101a831b1aa4593bbca644",
-    "title": "The Nvidia scandal isn’t slowing down",
-    "summary": "For years, Jensen Huang has had an almost unprecedented power to shape AI's advancement as Nvidia's CEO, cofounder, and president. As The Verge wrote last week, Nvidia's chips are \"the bedrock upon which advanced AI technology in the US is being built.\" Ever-increasing demand has consistently outpaced supply, leading AI CEOs to essentially bow at [&#8230;]",
-    "category": "technology",
-    "source": "The Verge",
-    "url": "https://www.theverge.com/ai-artificial-intelligence/1031740/jensen-huang-nvidia-scandal-isnt-slowing-down",
-    "published_at": "2026-11-16T08:00:00-05:00",
-    "image_url": null,
-    "collection_timestamp": "2026-11-16T17:16:56.661669+00:00",
-    "thin": false,
-    "author": "Hayden Field",
-    "tags": [
-      "AI",
-      "Analysis",
-      "Chips",
-      "Gadgets",
-      "Nvidia",
-      "Policy",
-      "Report",
-      "Tech"
-    ]
-  },
-  {
-    "id": "78300035511d1fb51407f5251712108cf4a74a6f0ae41ab1f5573791f5cdd933",
-    "title": "Tech world's calls for Jensen Huang to return to Nvidia are growing",
-    "summary": "Calls for Jensen Huang's return as Nvidia CEO are growing, with tech executives and major shareholders backing a potential comeback following his resignation.",
-    "category": "technology",
-    "source": "CNBC",
-    "url": "https://www.cnbc.com/2026/11/16/nvidia-jensen-huang-return-tech.html",
-    "published_at": "2026-11-16T03:35:09+00:00",
-    "image_url": null,
-    "collection_timestamp": "2026-11-16T07:02:25.961960+00:00",
-    "thin": false
-  },
-  {
-    "id": "ce02a8cf9f1a6b5cafd3e9bae239917be652b1348d2f5b024c4736ba74665194",
-    "title": "From Artist-Approved Headphones to Diamonds and Decor, Here Are 20 Luxury Gifts Worth Giving This Year",
-    "summary": "From fancy tech to designer accessories, these are the best gifts for loved ones you want to spoil a little (or a lot)",
-    "category": "technology",
-    "source": "Rolling Stone",
-    "url": "https://www.rollingstone.com/product-recommendations/gift-guide/best-luxury-gift-guide-1234644291",
-    "published_at": "2026-11-15T22:29:00+00:00",
-    "image_url": null,
-    "collection_timestamp": "2026-11-16T00:10:34.209905+00:00",
-    "thin": false,
-    "tags": [
-      "Gift Guide",
-      "RS Recommends",
-      "Beauty",
-      "Fashion",
-      "gifts",
-      "noads"
-    ]
-  },
-  {
-    "id": "cd30705f62410856caadcda643c58da945ce27b05368d30828c21f64a7c55390",
-    "title": "Apple’s new study looks to improve the effectiveness of AI health tools",
-    "summary": "Apple announced a new study today with the goal of better understanding how people interact with conversational AI health tools and how useful their responses actually are. The company is conducting the Apple Health AI Usage Study in collaboration with OpenEvidence, a clinical AI platform used by healthcare professionals that generates answers based on medical [&#8230;]",
-    "category": "technology",
-    "source": "The Verge",
-    "url": "https://www.theverge.com/tech/1033355/apples-new-study-looks-to-improve-the-effectiveness-of-ai-health-tools",
-    "published_at": "2026-11-15T20:26:56-05:00",
-    "image_url": null,
-    "collection_timestamp": "2026-11-16T07:02:25.946116+00:00",
-    "thin": false,
-    "author": "Andrew Liszewski",
-    "tags": [
-      "AI",
-      "Apple",
-      "News",
-      "Tech"
-    ]
+    "author": "noreply@blogger.com (Unknown)"
   }
 ]
