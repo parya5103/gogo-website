@@ -320,7 +320,8 @@ check('homepage: no mixed-language search-trend dump in source or prerender outp
   const homepage = getHtml('index.html');
   const app = read('frontend/src/App.jsx');
   const prerender = read('scripts/prerender-home.mjs');
-  assert(!/TRENDING SEARCHES IN INDIA|trends-strip|gogo-trending/i.test(homepage), 'rendered homepage still contains the search-trend dump');
+  assert(!/TRENDING SEARCHES IN INDIA|trends-strip|gogo-trending|Today on GoGo Company/i.test(homepage), 'rendered homepage still contains feed or search-trend content');
+  assert(!/TodayOnGoGo|id=[\"']today[\"']/.test(app), 'React homepage still renders the mixed feed section');
   assert(!/TRENDING SEARCHES IN INDIA|trends-strip|trends\.length/i.test(app), 'React homepage still renders the search-trend component');
   assert(!/trends\.google\.com\/trending\/rss|fetchTrends|trends:\s*\[\]/i.test(prerender), 'scheduled prerender still fetches or serializes Google Trends');
 });
