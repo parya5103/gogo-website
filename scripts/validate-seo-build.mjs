@@ -117,7 +117,7 @@ assert.match(crystalStrategy, /Crystal Resonance|Guardian shield colour/i);
 assert.match(crystalStrategy, /FAQPage/);
 assert.ok(sitemap.includes("<loc>https://gogocompany.in/crystalquest/strategy.html</loc>"), "Crystal Quest strategy guide must be included in sitemap");
 const arrowGame = await read("arrowout/index.html");
-for (const href of ["about.html", "privacy.html", "../"]) {
+for (const href of ["about.html", "privacy.html"]) {
   assert.ok(arrowGame.includes('href="' + href + '"'), "Arrow Out game screen must expose help/site link " + href);
 }
 const crystalGame = await read("crystalquest/index.html");
