@@ -67,6 +67,7 @@ jobs:
           node --check scripts/validate-seo.mjs
           node --check scripts/update-trending-seo.mjs
           node --check scripts/generate-pseo-hubs.mjs
+          node --check scripts/generate-root-sitemap.mjs
           node --check scripts/test-seo-generators.mjs
           node --check scripts/validate-seo-build.mjs
           node --check scripts/generate-pikanews-news-sitemap.mjs
@@ -83,6 +84,7 @@ jobs:
         run: |
           node scripts/update-trending-seo.mjs
           node scripts/generate-pseo-hubs.mjs
+          node scripts/generate-root-sitemap.mjs
       - name: Test SEO generator helpers
         run: node scripts/test-seo-generators.mjs
       - name: Generate and validate PikaNews news sitemap
@@ -93,4 +95,6 @@ jobs:
       - name: Validate generated SEO pages
         run: node scripts/validate-seo-build.mjs
       - name: Validate SEO implementation
-        run: node scripts/validate-seo.mjs
+        run: |
+          node scripts/validate-seo.mjs
+          node scripts/seo-tests.mjs
