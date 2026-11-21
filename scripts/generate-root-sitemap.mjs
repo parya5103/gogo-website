@@ -52,8 +52,10 @@ export async function generateRootSitemap(root = ROOT) {
     let html;
     try { html = await readFile(resolve(root, relative), "utf8"); }
     catch { failures.push(pathname + " (missing file)"); continue; }
-    const canonical = readTag(html, /<link\b[^>]*\brel=["']canonical["'][^>]*\bhref=["']([^"']+)["'][^>]*>/i);
-    const robots = readTag(html, /<meta\b[^>]*\bname=["']robots["'][^>]*\bcontent=["']([^"']+)["'][^>]*>/i);
+    const canonicalMatch = html.match(/<link\b(?=[^>]*\brel=["']canonical["'])(?=[^>]*\bhref=["']([^"']+)["'])[^>]*>/i);
+    const robotsMatch = html.match(/<meta\b(?=[^>]*\bname=["']robots["'])(?=[^>]*\bcontent=["']([^"']+)["'])[^>]*>/i);
+    const canonical = canonicalMatch?.[1]?.trim() || "";
+    const robots = robotsMatch?.[1]?.trim() || "";
     if (canonical !== url || /\bnoindex\b/i.test(robots)) continue;
     const lastmod = readTag(oldBlock, /<lastmod>\s*(\d{4}-\d{2}-\d{2})\s*<\/lastmod>/i) || new Date().toISOString().slice(0, 10);
     const changefreq = readTag(oldBlock, /<changefreq>\s*([^<]+)\s*<\/changefreq>/i) || "weekly";
