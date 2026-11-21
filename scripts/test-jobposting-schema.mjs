@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { injectJobPosting, iso } from "../sarkari-sarthi/assets/js/sarkari-schema-injector.js";
+import { isIndexableJob } from "./job-indexing-policy.mjs";
 
 assert.equal(iso("02-11-2026"), "2026-11-02T00:00:00.000Z", "DD-MM-YYYY must be interpreted as day-month-year");
 assert.equal(iso("2026-11-02"), "2026-11-02T00:00:00.000Z", "ISO date must remain unchanged");
@@ -59,3 +60,24 @@ assert.equal(scripts.length, 0);
 assert.equal(injectJobPosting(({ ...validJob, job_title: undefined })), false, "Notice heading alone must not be used as the job title");
 assert.equal(scripts.length, 0);
 console.log("JobPosting generator tests passed: strict dates, optional expiry, canonical detail guard and secure application URL.");
+
+const completeIndexableJob = {
+  status: "active",
+  verification_status: "official_verified",
+  job_title: "Computer Science Teacher",
+  organization: "Sainik School Nagrota",
+  vacancies: 12,
+  qualification: "B.Ed. and relevant postgraduate degree",
+  important_dates: { last_date: "30-12-2099" },
+  official_notification_url: "https://recruit.example/notification.pdf",
+  official_application_url: "https://recruit.example/apply",
+  description_complete: true,
+  description: "Complete verified details for the recruitment, eligibility, selection and application."
+};
+assert.equal(isIndexableJob(completeIndexableJob), true, "complete active official jobs may be indexed");
+assert.equal(isIndexableJob({ ...completeIndexableJob, verification_status: "needs_review" }), false);
+assert.equal(isIndexableJob({ ...completeIndexableJob, official_notification_url: null }), false);
+assert.equal(isIndexableJob({ ...completeIndexableJob, vacancies: null }), false);
+assert.equal(isIndexableJob({ ...completeIndexableJob, qualification: "Not specified in official notification" }), false);
+assert.equal(isIndexableJob({ ...completeIndexableJob, important_dates: { last_date: "01-01-2020" } }), false);
+assert.equal(isIndexableJob({ ...completeIndexableJob, status: "expired" }), false);
