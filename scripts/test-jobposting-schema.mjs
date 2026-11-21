@@ -70,6 +70,10 @@ const completeIndexableJob = {
   vacancies: 12,
   qualification: "B.Ed. and relevant postgraduate degree",
   important_dates: { last_date: "30-12-2099" },
+  published_date: "02-11-2026",
+  valid_through: "30-12-2099",
+  location: "Nagrota, Jammu and Kashmir",
+  employment_type: "FULL_TIME",
   official_notification_url: "https://recruit.example/notification.pdf",
   official_application_url: "https://recruit.example/apply",
   description_complete: true,
@@ -82,6 +86,10 @@ assert.equal(isIndexableJob({ ...completeIndexableJob, vacancies: null }), false
 assert.equal(isIndexableJob({ ...completeIndexableJob, qualification: "Not specified in official notification" }), false);
 assert.equal(isIndexableJob({ ...completeIndexableJob, important_dates: { last_date: "01-01-2020" } }), false);
 assert.equal(isIndexableJob({ ...completeIndexableJob, status: "expired" }), false);
+assert.equal(isIndexableJob({ ...completeIndexableJob, published_date: null }), false, "JobPosting pages require a verified publication date");
+assert.equal(isIndexableJob({ ...completeIndexableJob, location: null }), false, "JobPosting pages require a real locality");
+assert.equal(isIndexableJob({ ...completeIndexableJob, employment_type: null }), false, "JobPosting pages require a supported employment type");
+assert.equal(isIndexableJob({ ...completeIndexableJob, valid_through: null }), false, "JobPosting pages require a verified future expiry date");
 
 for (const id of ["en_e720d528a5699f9ac7d3cf27f799ce9c", "en_214e74070f15cf22b137f10a8019fbe1"]) {
   const page = await readFile(new URL("../sarkari-sarthi/job/" + id + "/index.html", import.meta.url), "utf8");
