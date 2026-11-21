@@ -215,6 +215,7 @@ jobs:
         run: |
           node scripts/update-trending-seo.mjs
           node scripts/generate-pseo-hubs.mjs
+          node scripts/generate-root-sitemap.mjs
 
       - name: Refresh SEO sitemap and notify IndexNow
         run: node scripts/seo-sync-ping.mjs
