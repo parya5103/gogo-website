@@ -14,6 +14,9 @@ news=json.loads((root/"ai/data/ai-news.json").read_text(encoding="utf-8"))
 for item in news.get("articles",[]):
  assert item.get("title") and item.get("source") and item.get("url","").startswith("https://")
 generator=(root/"scripts/update-ai-hub.py").read_text(encoding="utf-8")
+assert 'id="newsSearch"' in generator and 'data-filter="research"' in generator
+assert 'data-category=' in generator and 'prefers-reduced-motion' in generator
+assert 'id="modelRows"' in generator and 'modelInput' in generator
 assert 'fair_articles(news.get("articles",[]),36,4)' in generator
 assert 'fair_articles(news.get("articles",[]),50,7)' in generator
 models=json.loads((root/"ai/data/model-catalogue.json").read_text(encoding="utf-8"))
