@@ -430,8 +430,10 @@ try {
     if (!(await cards.count())) throw new Error("article cards did not render");
     const cardBox = await cards.first().boundingBox();
     if (!cardBox || cardBox.width > 390 + 1) throw new Error("article card exceeds mobile viewport");
-    const readButton = page.locator('.news-card .news-card-action[aria-label^="Read article:"]').first();
-    if (!(await readButton.count())) throw new Error("no article card exposes an accessible read action");
+    const readButton = page.locator(".news-card .news-card-action").filter({ hasText: "Read" }).first();
+    if (!(await readButton.count())) throw new Error("no article card exposes a visible Read action");
+    const readName = (await readButton.getAttribute("aria-label")) || (await readButton.innerText()).trim();
+    if (!readName || !/read/i.test(readName)) throw new Error("article read action has no accessible name");
     await readButton.click();
     await page.waitForURL(url => url.pathname.includes("/pikanews/news/") || url.pathname.includes("article.html") && url.search.includes("id="), { timeout: 10000 });
     if (!page.url().includes("/pikanews/news/") && !page.url().includes("article.html?id=")) throw new Error("article card did not open its detail route");
