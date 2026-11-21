@@ -5,7 +5,7 @@
    legacy redirect stubs, internal link resolution and image alt text.
    Exits 1 on any failure so CI blocks SEO regressions. */
 
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { runInNewContext } from 'node:vm';
 
@@ -229,7 +229,12 @@ check('PikaNews aggregated hubs and story pages remain noindex until original ed
     const sitemapUrl = 'https://gogocompany.in/pikanews/' + (page === 'index.html' ? '' : page);
     assert(!sm.includes('<loc>' + sitemapUrl + '</loc>'), page + ' must not be included in the PikaNews sitemap while noindex');
   }
-  const article = read('pikanews/news/cathie-wood-s-ark-invest-was-a-big-buyer-of-anthropic-during-b5e0cfa7/index.html');
+  const articleRoot = resolve(root, 'pikanews/news');
+  const articleDir = readdirSync(articleRoot, { withFileTypes: true }).find(entry =>
+    entry.isDirectory() && existsSync(join(articleRoot, entry.name, 'index.html'))
+  );
+  assert(articleDir, 'at least one generated PikaNews story page should exist');
+  const article = read('pikanews/news/' + articleDir.name + '/index.html');
   assert((robotsOf(article) || '').includes('noindex'), 'syndicated excerpt pages should remain noindex');
   assert(!sm.includes('/pikanews/news/'), 'thin syndicated story pages must not be added to the standard sitemap');
 });
