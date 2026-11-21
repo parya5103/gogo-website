@@ -17,7 +17,7 @@ assert.match(html, /GTA 6 Guide/, 'GTA 6 has a visible homepage product card');
 assert.match(html, /application\/ld\+json/, 'JSON-LD is in initial HTML');
 assert.match(html, /Brand disambiguation/i, 'brand disambiguation is in initial HTML');
 assert.match(html, /Frequently asked[\s\S]*?questions/i, 'FAQ is in initial HTML');
-assert.match(html, /window\.__GOGO_FEEDS__=/, 'feed snapshot is serialized for hydration');
+assert.doesNotMatch(html, /window\\.__GOGO_FEEDS__=|Today on GoGo Company|TRENDING SEARCHES IN INDIA|trends-strip|gogo-trending/i, 'homepage must not embed feeds or volatile search-trend keywords');
 for (const path of ['arrowout/index.html','crystalquest/index.html','sarkari-sarthi/index.html','pikanews/index.html','CNAME','robots.txt','sitemap.xml','firebase-messaging-sw.js','assets/js/gogo-account.js','assets/js/gogo-notifications.min.js']) {
   await stat(root + '/' + path);
 }
