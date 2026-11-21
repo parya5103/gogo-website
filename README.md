@@ -9,7 +9,7 @@ This repository contains the central portal and the ONLY deployment that owns th
 
 ## Products (unified domain)
 
-All four products run directly under gogocompany.in:
+All products and the GTA 6 guide run directly under gogocompany.in:
 
 | Product | Final URL | Source repository |
 | --- | --- | --- |
@@ -17,6 +17,7 @@ All four products run directly under gogocompany.in:
 | Crystal Quest (full game) | https://gogocompany.in/crystalquest/ | github.com/parya5103/crystal-quest-web (branch `main`) |
 | Sarkari Sarthi (full portal) | https://gogocompany.in/sarkari-sarthi/ | github.com/parya5103/sarkarisarthi (branch `gh-pages`) |
 | PikaNews (news portal) | https://gogocompany.in/pikanews/ | github.com/parya5103/PikaNews (branch `main`) |
+| GoGo AI Intelligence (AI news & model hub) | https://gogocompany.in/ai/ | This repository (`ai/`, daily collector workflow) |
 
 Old product paths redirect to the new ones (query strings preserved by
 JavaScript):
@@ -30,7 +31,7 @@ JavaScript):
 `.github/workflows/sync-products.yml` publishes the latest production
 source of Arrow Out, Crystal Quest and Sarkari Sarthi into this
 repository, and `.github/workflows/sync-pikanews.yml` publishes PikaNews.
-Both use the same `sync-products` concurrency group, so they can never
+The product and PikaNews workflows use the same `sync-products` concurrency group, so they can never
 race each other into a failed push.
 
 1. They check out the product source repositories at their published
@@ -56,7 +57,7 @@ How updates propagate:
   data into `/pikanews/`, so news stays current. The sync verification
   requires the news sitemap and refuses sitemaps that still list
   query-parameter article URLs.
-- Both syncs also run manually: Actions tab -> "Sync product apps" or
+- Both product syncs also run manually: Actions tab -> "Sync product apps" or
   "Sync PikaNews" -> "Run workflow".
 - The product repositories remain the single source of truth; nothing is
   hand-edited inside `/arrowout/`, `/crystalquest/`, `/sarkari-sarthi/` or
@@ -113,12 +114,22 @@ npm test                # Runs unit tests, ESLint security rules check, and upst
 | Path | Content |
 | --- | --- |
 | `/` | Homepage - company intro and product cards |
+| `/ai/` | Global AI news, model catalogue, pricing metadata, research and open-source AI resources; refreshed daily by `.github/workflows/refresh-ai-hub.yml` |
 | `/account/` | GoGo Account & Cloud Save management |
 | `/unsubscribe/` | Email marketing preference & one-click authenticated unsubscribe center |
 | `/admin/` | Protected GoGo Admin Dashboard (verified admins only) |
 | `/about/` `/contact/` | Company info |
 | `/privacy-policy/` `/terms-and-conditions/` `/disclaimer/` | Legal pages |
 | `404.html` | Not-found page (noindex) |
+
+## GoGo AI Intelligence Hub
+
+- `ai/index.html` is generated as static, crawlable HTML with canonical metadata, JSON-LD, original-source links and responsive sections.
+- `scripts/update-ai-hub.py` collects public RSS/Atom feeds from AI labs, Hugging Face and arXiv, plus OpenRouter's public model catalogue. It needs no LLM API key.
+- `ai/data/ai-news.json` and `ai/data/model-catalogue.json` retain the latest source-backed snapshots; failed source fetches do not erase previous news.
+- `ai/feed.xml` exposes a dedicated RSS feed. The main sitemap is refreshed with the AI hub's last-modified date.
+- Model context windows and prices are provider-declared metadata, not a quality leaderboard. Benchmark comparisons link to their original providers; no scores are fabricated.
+- The scheduled refresh runs daily at 08:50 IST and uses the existing `sync-products` concurrency group to avoid publishing races.
 
 ## Architecture
 
