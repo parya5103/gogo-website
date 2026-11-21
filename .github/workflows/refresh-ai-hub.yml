@@ -14,7 +14,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: sync-products
+  group: gogo-ai-hub-refresh
   cancel-in-progress: false
 
 jobs:
@@ -48,6 +48,21 @@ jobs:
             echo "AI Intelligence Hub is already current."
           else
             git commit -m "content: refresh daily GoGo AI Intelligence"
-            git pull --rebase --autostash origin main
-            git push origin main
+            # Keep AI publishing independent from product sync queues. If another
+            # publisher updates main at the same time, rebase and retry safely.
+            for attempt in 1 2 3; do
+              git fetch origin main
+              if ! git rebase origin/main; then
+                git rebase --abort || true
+                echo "::error::AI refresh could not rebase cleanly onto main."
+                exit 1
+              fi
+              if git push origin HEAD:main; then
+                exit 0
+              fi
+              echo "Push attempt $attempt failed; retrying after a fresh fetch/rebase."
+              sleep $((attempt * 5))
+            done
+            echo "::error::Could not publish AI snapshot after 3 safe push attempts."
+            exit 1
           fi

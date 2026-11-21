@@ -20,6 +20,8 @@ on:
       - 'scripts/test-site-build.mjs'
       - 'scripts/update-trending-seo.mjs'
       - 'scripts/validate-seo-build.mjs'
+      - 'scripts/update-ai-hub.py'
+      - 'scripts/test-ai-hub.py'
       - 'assets/js/main.js'
       - '.github/workflows/build-frontend-assets.yml'
   pull_request:
@@ -39,6 +41,8 @@ on:
       - 'scripts/test-site-build.mjs'
       - 'scripts/update-trending-seo.mjs'
       - 'scripts/validate-seo-build.mjs'
+      - 'scripts/update-ai-hub.py'
+      - 'scripts/test-ai-hub.py'
       - 'assets/js/main.js'
       - '.github/workflows/build-frontend-assets.yml'
   workflow_dispatch:

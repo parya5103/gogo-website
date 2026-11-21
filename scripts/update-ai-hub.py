@@ -4,12 +4,21 @@ from pathlib import Path
 from urllib.parse import urlparse
 ROOT=Path(__file__).resolve().parents[1]; AI=ROOT/"ai"; DATA=AI/"data"; DATA.mkdir(parents=True,exist_ok=True)
 FEEDS=[
-("OpenAI","https://openai.com/news/rss.xml","Company releases"),("Anthropic","https://www.anthropic.com/news/rss.xml","Company releases"),
-("Google AI","https://blog.google/technology/ai/rss/","Company releases"),("Google DeepMind","https://deepmind.google/blog/rss.xml","Research"),
-("Microsoft AI","https://blogs.microsoft.com/ai/feed/","Company releases"),("NVIDIA","https://blogs.nvidia.com/blog/category/deep-learning/feed/","Industry"),
-("Hugging Face","https://huggingface.co/blog/feed.xml","Open source"),("arXiv AI","https://export.arxiv.org/rss/cs.AI","Research papers"),
-("arXiv ML","https://export.arxiv.org/rss/cs.LG","Research papers"),("arXiv NLP","https://export.arxiv.org/rss/cs.CL","Research papers"),
-("The Batch","https://www.deeplearning.ai/the-batch/feed/","Industry analysis")]
+("OpenAI","https://openai.com/news/rss.xml","Company releases"),
+("Google AI","https://blog.google/technology/ai/rss/","Company releases"),
+("NVIDIA","https://blogs.nvidia.com/blog/category/deep-learning/feed/","Industry"),
+("Hugging Face","https://huggingface.co/blog/feed.xml","Open source"),
+("arXiv AI","https://rss.arxiv.org/rss/cs.AI","Research papers"),
+("arXiv ML","https://rss.arxiv.org/rss/cs.LG","Research papers"),
+("arXiv NLP","https://rss.arxiv.org/rss/cs.CL","Research papers"),
+("MIT Technology Review","https://technologyreview.com/topic/artificial-intelligence/feed/","Independent reporting"),
+("MarkTechPost","https://www.marktechpost.com/feed/","AI industry reporting"),
+("Ahead of AI","https://magazine.sebastianraschka.com/feed","Technical analysis"),
+("Last Week in AI","https://lastweekin.ai/feed","Industry analysis"),
+("The Verge AI","https://www.theverge.com/rss/ai-artificial-intelligence/index.xml","Technology reporting"),
+("Microsoft Research","https://www.microsoft.com/en-us/research/feed/","Research"),
+("AWS Machine Learning","https://aws.amazon.com/blogs/machine-learning/feed/","Industry and engineering"),
+("MIT News AI","https://news.mit.edu/rss/topic/artificial-intelligence2","Research and academia")]
 KEY=re.compile(r"\b(ai|artificial intelligence|machine learning|deep learning|llm|language model|generative|agentic|robotics|neural|transformer|diffusion|gpu|inference)\b",re.I)
 def get(url):
  req=urllib.request.Request(url,headers={"User-Agent":"GoGoAIIntelligence/1.0 (+https://gogocompany.in/ai/)"})
@@ -35,6 +44,15 @@ def load(p,d):
  try:return json.loads(p.read_text(encoding="utf-8"))
  except:return d
 def save(p,x):p.write_text(json.dumps(x,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+def fair_articles(values,limit,per_source_cap):
+ ordered=sorted(values,key=lambda x:x.get("publishedAt",""),reverse=True)
+ selected=[]; counts={}
+ for item in ordered:
+  source=item.get("source") or "Unknown"
+  if counts.get(source,0)>=per_source_cap:continue
+  selected.append(item);counts[source]=counts.get(source,0)+1
+  if len(selected)>=limit:break
+ return selected
 old=load(DATA/"ai-news.json",{"articles":[]}); items={x["url"]:x for x in old.get("articles",[]) if safe(x.get("url"))}; good=0; status=[]
 for source,url,category in FEEDS:
  try:
@@ -53,7 +71,7 @@ for source,url,category in FEEDS:
   good+=1;status.append({"source":source,"ok":True,"items":count})
  except Exception as e:status.append({"source":source,"ok":False,"error":str(e)[:100]})
 if good:
- articles=sorted(items.values(),key=lambda x:x.get("publishedAt",""),reverse=True)[:180]
+ articles=fair_articles(items.values(),180,24)
  news={"generatedAt":dt.datetime.now(dt.timezone.utc).isoformat(),"successfulFeeds":good,"articles":articles,"sourceStatus":status}
  save(DATA/"ai-news.json",news)
 else:news=old
@@ -76,7 +94,7 @@ def date_label(s):
  try:return dt.datetime.fromisoformat(s.replace("Z","+00:00")).strftime("%d %b %Y")
  except:return "Date not supplied"
 cards=[]
-for a in news.get("articles",[])[:36]:
+for a in fair_articles(news.get("articles",[]),36,4):
  cards.append('<article class="story"><div class="meta">'+esc(a.get("category"))+' · '+esc(date_label(a.get("publishedAt","")))+'</div><h3><a target="_blank" rel="noopener noreferrer" href="'+esc(a["url"])+'">'+esc(a["title"])+'</a></h3><p>'+esc(a.get("description") or "Open the original source for full details.")+'</p><small>Source: '+esc(a.get("source"))+' · <a target="_blank" rel="noopener noreferrer" href="'+esc(a["url"])+'">Original coverage ↗</a></small></article>')
 if not cards:cards=['<p>Daily collection is starting. Please check again soon.</p>']
 rows=[]
@@ -106,7 +124,7 @@ page='''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="v
 page=page.replace("SCHEMA_HERE",json.dumps(schema,ensure_ascii=False).replace("</","<\\/")).replace("NEWS_HERE","".join(cards)).replace("MODELS_HERE","".join(rows)).replace("DATE_HERE",esc(date_label(modified))).replace("YEAR_HERE",str(dt.datetime.now().year))
 AI.mkdir(exist_ok=True);(AI/"index.html").write_text(page,encoding="utf-8")
 rss_items=[]
-for a in news.get("articles",[])[:50]:
+for a in fair_articles(news.get("articles",[]),50,7):
  rss_items.append("<item><title>"+esc(a["title"])+"</title><link>"+esc(a["url"])+"</link><guid>"+esc(a["url"])+"</guid><description>"+esc(a.get("description"))+"</description><source>"+esc(a.get("source"))+"</source></item>")
 rss='<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>GoGo AI Intelligence</title><link>https://gogocompany.in/ai/</link><description>Global AI news with original source links</description>'+''.join(rss_items)+'</channel></rss>'
 (AI/"feed.xml").write_text(rss,encoding="utf-8")

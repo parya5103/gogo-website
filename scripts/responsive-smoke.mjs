@@ -5,7 +5,7 @@ import { chromium } from "playwright";
 const base = process.env.BASE_URL || "http://127.0.0.1:4173";
 const widths = [320, 360, 390, 430, 768, 1024, 1440];
 const routes = [
-  "/", "/about/index.html", "/contact/index.html", "/account/index.html",
+  "/", "/ai/", "/about/index.html", "/contact/index.html", "/account/index.html",
   "/admin/index.html", "/arrowout/", "/arrowout/about.html",
   "/arrowout/contact.html", "/arrowout/privacy.html", "/crystalquest/",
   "/crystalquest/guide.html", "/sarkari-sarthi/", "/sarkari-sarthi/admin.html",
