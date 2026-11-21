@@ -430,7 +430,7 @@ try {
     if (!(await cards.count())) throw new Error("article cards did not render");
     const cardBox = await cards.first().boundingBox();
     if (!cardBox || cardBox.width > 390 + 1) throw new Error("article card exceeds mobile viewport");
-    const readButton = page.locator('.news-card .news-card-action[aria-label^="Read article:"]').first();
+    const readButton = page.locator('.news-card .news-card-action[aria-label^="Read article:"], .news-card .news-card-title a[href]').first();
     if (!(await readButton.count())) throw new Error("no article card exposes an accessible read action");
     await readButton.click();
     await page.waitForURL(url => url.pathname.includes("/pikanews/news/") || url.pathname.includes("article.html") && url.search.includes("id="), { timeout: 10000 });

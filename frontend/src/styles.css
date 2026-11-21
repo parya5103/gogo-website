@@ -32,3 +32,6 @@
 
 /* Product-specific social follow links on the GoGo homepage. */
 .tile-social-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;position:relative;z-index:3}.tile-social-links a{display:inline-flex;align-items:center;gap:5px;padding:7px 10px;border:1px solid var(--gogo-line);border-radius:999px;background:var(--gogo-surface);color:var(--gogo-muted);font-size:10px;font-weight:800;text-decoration:none;transition:color .18s,border-color .18s,transform .18s}.tile-social-links a:hover{color:var(--gogo-brand);border-color:var(--gogo-brand);transform:translateY(-1px)}.tile-social-links a:focus-visible{outline:3px solid var(--gogo-brand);outline-offset:3px}
+
+/* GoGo AI Intelligence card */
+.product-tile.tone-teal{background:linear-gradient(135deg,#e8fbf7 0%,#f5fbff 100%);border-color:#b9e8dc}.dark .product-tile.tone-teal{background:linear-gradient(135deg,#123b3a 0%,#14263a 100%);border-color:#285b58}.product-tile.tone-teal .eyebrow{color:#087e70}.dark .product-tile.tone-teal .eyebrow{color:#75dfca}.product-tile.tone-teal .tag-row span{background:#d8f4ed;color:#176b60}.dark .product-tile.tone-teal .tag-row span{background:#1c4c48;color:#b8f4e7}
