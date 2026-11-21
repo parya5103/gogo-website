@@ -8,9 +8,9 @@ const rx=s=>s, esc=s=>String(s).replaceAll("&","&amp;").replaceAll('"',"&quot;")
 async function read(p){try{return await readFile(resolve(ROOT,p),"utf8")}catch{return null}}
 async function write(p,s){const f=resolve(ROOT,p);await mkdir(f.slice(0,f.lastIndexOf("/")),{recursive:true});await writeFile(f,s.endsWith("\n")?s:s+"\n","utf8")}
 function robotsMeta(h,value){
-  const tags=[...h.matchAll(/<meta\\b(?=[^>]*\\bname=["']robots["'])[^>]*>/gi)];
+  const tags=[...h.matchAll(/<meta\b(?=[^>]*\bname=["']robots["'])[^>]*>/gi)];
   const tag='<meta name="robots" content="'+esc(value)+'">';
-  if(!tags.length)return h.replace(/<\\/head>/i,"  "+tag+"\\n</head>");
+  if(!tags.length)return h.replace(/<\/head>/i,"  "+tag+"\n</head>");
   let output=h.replace(tags[0][0],tag);
   for(const duplicate of tags.slice(1))output=output.replace(duplicate[0],"");
   return output;
