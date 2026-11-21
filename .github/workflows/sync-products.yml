@@ -165,7 +165,7 @@ jobs:
           # Verify the current Sarkari Sarthi social links and evidence gate
           # before publishing the central GoGo domain.
           grep -Fq 'https://whatsapp.com/channel/0029VbE1ulAAjPXQZiUbbu1Z' sarkari-sarthi/index.html
-          grep -Fq 'https://whatsapp.com/channel/0029Vb5zVwjICVfnQ95zT10F' sarkari-sarthi/index.html
+          grep -Fq 'https://whatsapp.com/channel/0029Vb5zVwjICVfnQ95zT10F' pikanews/index.html
           grep -Fq 'Secondary-source leads stay out of public search' sarkari-sarthi/index.html
           node - <<'NODE'
           const fs = require('fs');
