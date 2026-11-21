@@ -346,7 +346,8 @@ check('canonical routes: legacy about URL is noindex and excluded; folder URLs a
   assert(!locs.some(url => /\/index\.html(?:$|[?#])/i.test(url)), 'root sitemap must use folder URLs instead of index.html aliases');
 });
 
-\nconsole.log('SEO regression suite: ' + passed + ' checks passed, ' + failures.length + ' failed.');
+
+console.log('SEO regression suite: ' + passed + ' checks passed, ' + failures.length + ' failed.');
 if (failures.length > 0) {
   console.error('\nSEO failures:');
   for (const f of failures) console.error(' - ' + f);
