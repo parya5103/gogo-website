@@ -10,7 +10,8 @@ on:
     # Science and guest-preference files; the schedule remains the fallback.
     - cron: '10,40 * * * *'
   workflow_dispatch:
-  # Run after the central product copy completes to avoid concurrent main pushes.
+  # Run only after the central product copy succeeds; the shared concurrency lock
+  # then serializes the two publishers without cancelling either one.
   workflow_run:
     workflows: ["Sync product apps"]
     types: [completed]
