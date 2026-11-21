@@ -5,7 +5,7 @@
    legacy redirect stubs, internal link resolution and image alt text.
    Exits 1 on any failure so CI blocks SEO regressions. */
 
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { runInNewContext } from 'node:vm';
 
@@ -229,8 +229,15 @@ check('PikaNews aggregated hubs and story pages remain noindex until original ed
     const sitemapUrl = 'https://gogocompany.in/pikanews/' + (page === 'index.html' ? '' : page);
     assert(!sm.includes('<loc>' + sitemapUrl + '</loc>'), page + ' must not be included in the PikaNews sitemap while noindex');
   }
-  const article = read('pikanews/news/cathie-wood-s-ark-invest-was-a-big-buyer-of-anthropic-during-b5e0cfa7/index.html');
-  assert((robotsOf(article) || '').includes('noindex'), 'syndicated excerpt pages should remain noindex');
+  const storyRoot = resolve(root, 'pikanews/news');
+  const storyDirs = existsSync(storyRoot) ? readdirSync(storyRoot, { withFileTypes: true }).filter(entry => entry.isDirectory()) : [];
+  for (const entry of storyDirs) {
+    const storyPath = 'pikanews/news/' + entry.name + '/index.html';
+    const storyFile = resolve(root, storyPath);
+    if (!existsSync(storyFile)) continue;
+    const storyHtml = read(storyPath);
+    assert((robotsOf(storyHtml) || '').includes('noindex'), storyPath + ' syndicated excerpt page should remain noindex');
+  }
   assert(!sm.includes('/pikanews/news/'), 'thin syndicated story pages must not be added to the standard sitemap');
 });
 
