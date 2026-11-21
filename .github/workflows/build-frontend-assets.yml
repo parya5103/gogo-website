@@ -74,13 +74,13 @@ jobs:
       - name: Build and safely publish the prerendered React homepage
         run: npm run build:site
 
-      - name: Run regression suite
-        run: npm test
-
       - name: Validate GoGo AI Intelligence page and feeds
         run: |
           python3 -m py_compile scripts/update-ai-hub.py scripts/test-ai-hub.py
           python3 scripts/test-ai-hub.py
+
+      - name: Run regression suite
+        run: npm test
 
       - name: Commit generated browser bundles
         run: |
