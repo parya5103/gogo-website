@@ -3,7 +3,7 @@
 Official website of Gogo Company — an independent Indian technology, digital media and web gaming organization headquartered in Indore, Madhya Pradesh, India, founded by Pratik Arya.
 
 **Official website:** https://gogocompany.in/  
-**Company profile:** https://gogocompany.in/about.html
+**Company profile:** https://gogocompany.in/about/
 
 This repository contains the central portal and the ONLY deployment that owns the custom domain `gogocompany.in`.
 
@@ -65,9 +65,10 @@ How updates propagate:
 
 ## AdSense readiness (NOT yet active)
 
-The site is technically ready for Google AdSense, but advertising is
-currently OFF. Nothing loads and no ad requests are made while the
-publisher ID is empty.
+The AdSense publisher ID and existing ad-unit IDs are configured, but advertising is
+currently OFF because `cmpReady` is `false` in the central and PikaNews loaders.
+No ad requests are made until the required certified consent setup is verified
+and the site is approved for serving.
 
 - `assets/js/ads.js` - central, shared integration. Config at the top:
   `publisherId` (empty = fully off), `cmpReady` (EEA/UK/CH gate) and
