@@ -15,6 +15,8 @@ permissions:
   id-token: write
 
 concurrency:
+  # PikaNews follows this workflow via workflow_run; do not launch both
+  # publishers at once because they share the same main-branch write lock.
   group: sync-products
   cancel-in-progress: false
 
