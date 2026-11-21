@@ -95,5 +95,23 @@ jobs:
             echo "Generated browser bundles are already up to date."
           else
             git commit -m "build: publish optimized account assets and prerendered homepage"
-            git push origin HEAD:${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}
+            target_ref="${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
+            # AI content refreshes and other publishers may update main while
+            # the frontend build is running. Rebase and retry instead of losing
+            # either publisher's changes.
+            for attempt in 1 2 3; do
+              git fetch origin "$target_ref"
+              if ! git rebase "origin/$target_ref"; then
+                git rebase --abort || true
+                echo "::error::Frontend build could not rebase cleanly onto $target_ref."
+                exit 1
+              fi
+              if git push origin "HEAD:$target_ref"; then
+                exit 0
+              fi
+              echo "Push attempt $attempt failed; retrying after a fresh fetch/rebase."
+              sleep $((attempt * 5))
+            done
+            echo "::error::Could not publish frontend assets after 3 safe push attempts."
+            exit 1
           fi
