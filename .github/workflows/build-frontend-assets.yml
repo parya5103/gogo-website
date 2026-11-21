@@ -87,6 +87,7 @@ jobs:
         run: npm test
 
       - name: Commit generated browser bundles
+        if: github.event_name != 'pull_request'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -95,6 +96,9 @@ jobs:
             echo "Generated browser bundles are already up to date."
           else
             git commit -m "build: publish optimized account assets and prerendered homepage"
+            # npm test/build helpers may leave tracked generated files outside the
+            # publish allowlist. Clear those post-commit changes before rebasing.
+            git reset --hard HEAD
             target_ref="${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
             # AI content refreshes and other publishers may update main while
             # the frontend build is running. Rebase and retry instead of losing

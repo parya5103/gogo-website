@@ -10,11 +10,12 @@ on:
     # Science and guest-preference files; the schedule remains the fallback.
     - cron: '10,40 * * * *'
   workflow_dispatch:
-  push:
+  # Run only after the central product copy succeeds; the shared concurrency lock
+  # then serializes the two publishers without cancelling either one.
+  workflow_run:
+    workflows: ["Sync product apps"]
+    types: [completed]
     branches: [main]
-    paths:
-      - '.github/workflows/sync-pikanews.yml'
-      - 'frontend/src/App.jsx'  # refresh product copies when homepage product links change
 
 permissions:
   contents: write
@@ -29,6 +30,7 @@ concurrency:
 
 jobs:
   sync:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout central site
