@@ -27,6 +27,16 @@ for item in models.get("models",[]):
  for key in ("input","output"):
   value=item.get(key)
   assert value is None or (isinstance(value,(int,float)) and math.isfinite(value) and value>=0), f"invalid {key} price for {item.get('id')}: {value}"
+pika=(root/"pikanews/index.html").read_text(encoding="utf-8")
+pika_sitemap=(root/"pikanews/sitemap.xml").read_text(encoding="utf-8")
+assert re.search(r'<meta name="robots" content="noindex,follow">',pika,re.I)
+assert len(re.findall(r'<meta name="description"',pika,re.I))==1
+assert len(re.findall(r'<link rel="canonical"',pika,re.I))==1
+assert "<loc>https://gogocompany.in/pikanews/</loc>" not in pika_sitemap
+for name in ("latest","trending","bollywood","hollywood","entertainment","technology","gaming","business","sports"):
+ hub=(root/"pikanews"/(name+".html")).read_text(encoding="utf-8")
+ assert re.search(r'<meta name="robots" content="noindex, ?follow">',hub,re.I), f"PikaNews hub {name} must remain noindex"
+ assert f"<loc>https://gogocompany.in/pikanews/{name}.html</loc>" not in pika_sitemap
 ET.parse(root/"ai/feed.xml")
 sitemap=(root/"sitemap.xml").read_text(encoding="utf-8")
 assert "https://gogocompany.in/ai/" in sitemap
