@@ -129,7 +129,7 @@ npm test                # Runs unit tests, ESLint security rules check, and upst
 - `ai/data/ai-news.json` and `ai/data/model-catalogue.json` retain the latest source-backed snapshots; failed source fetches do not erase previous news.
 - `ai/feed.xml` exposes a dedicated RSS feed. The main sitemap is refreshed with the AI hub's last-modified date.
 - Model context windows and prices are provider-declared metadata, not a quality leaderboard. Benchmark comparisons link to their original providers; no scores are fabricated.
-- The scheduled refresh runs daily at 08:50 IST and uses the existing `sync-products` concurrency group to avoid publishing races.
+- The scheduled refresh runs daily at 08:50 IST in its own concurrency group, so it does not cancel product/PikaNews sync jobs. If another publisher updates `main` at the same time, the collector safely fetches, rebases and retries its push up to three times.
 
 ## Architecture
 
