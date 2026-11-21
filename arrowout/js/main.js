@@ -1488,7 +1488,7 @@ const Game = (function() {
       if (this.enabled && this.provider && this.provider.requestRewarded) {
         this.provider.requestRewarded(onReward);
       } else {
-        onReward(true);
+        onReward(false);
       }
     }
   };

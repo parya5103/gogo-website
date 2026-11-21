@@ -100,6 +100,21 @@ function getVerificationInfo(status) {
     return VERIFICATION_LABELS[String(status).toLowerCase()] || null;
 }
 
+// Public search only includes records with an explicit source-quality state.
+// "needs_review" and unknown states remain in the manifest for the review
+// workflow, but are not presented as open vacancies to visitors.
+const SEARCH_ELIGIBLE_VERIFICATION_STATUSES = new Set([
+    'official_verified',
+    'official_link_pending',
+    'secondary_source_only'
+]);
+
+function isSearchEligibleJob(job) {
+    if (!job || typeof job !== 'object') return false;
+    const status = String(job.verification_status || '').toLowerCase();
+    return SEARCH_ELIGIBLE_VERIFICATION_STATUSES.has(status);
+}
+
 // ---- Bookmarks (Phase 3) --------------------------------------------
 // Saved jobs live only in this browser (localStorage). No account,
 // no tracking, nothing leaves the device.
@@ -142,7 +157,6 @@ function toggleBookmark(jobId) {
 
 // Global variables
 let jobsData = [];
-let needsReviewJobsCount = 0;
 let jobsLoadFailed = false; // true when the job manifest could not be loaded (no fake fallback jobs)
 let filteredJobs = [];
 let currentPage = 1;
@@ -356,37 +370,23 @@ function getRecordTimestamp(job) {
  * Filter out jobs whose last date has already passed, so closed
  * vacancies are never displayed as active openings.
  */
-function isJobSearchEligible(job, now) {
-    const status = String(job.status || '').toLowerCase();
-    const verificationStatus = String(job.verification_status || '').toLowerCase();
-    if (['cancelled', 'expired', 'closed'].includes(status)) return false;
-    if (!['official_verified', 'secondary_source_only'].includes(verificationStatus)) return false;
-    const verifiedAt = Date.parse(job.last_verified || '');
-    if (!Number.isFinite(verifiedAt)) return false;
-    const nowMs = now instanceof Date ? now.getTime() : Date.parse(now);
-    if (!Number.isFinite(nowMs)) return false;
-    return nowMs >= verifiedAt && nowMs - verifiedAt <= 14 * 24 * 60 * 60 * 1000;
-}
-
 function filterExpiredJobs(jobs) {
     const now = new Date();
-    const today = new Date(now);
-    today.setHours(0, 0, 0, 0);
+    now.setHours(0, 0, 0, 0);
     return jobs.filter(job => {
         // Server-side normalized status (Phase B) is authoritative when
         // present; the date check below remains a safety net for old
         // records that never passed through normalize_job.
         const status = String(job.status || '').toLowerCase();
-        if (['cancelled', 'expired', 'closed'].includes(status)) return false;
-        // Needs-review, unknown, and verification records older than 14 days
-        // are withheld from search until the source is checked again.
-        if (!isJobSearchEligible(job, now)) return false;
+        const verificationStatus = String(job.verification_status || '').toLowerCase();
+        if (['cancelled', 'expired', 'closed'].includes(status)
+            || ['cancelled', 'expired'].includes(verificationStatus)) return false;
         const lastDateStr = job.important_dates && job.important_dates.last_date;
         const lastDate = parseJobDate(lastDateStr);
         // Keep jobs without a parseable last date: absence of a date is
         // not evidence that a vacancy has closed.
         if (!lastDate) return true;
-        return lastDate >= today;
+        return lastDate >= now;
     });
 }
 
@@ -399,7 +399,7 @@ function populateCategoryFilter() {
     if (!categoryFilter) return;
     const selected = categoryFilter.value;
     const counts = {};
-    jobsData.forEach(job => {
+    jobsData.filter(isSearchEligibleJob).forEach(job => {
         if (job.category) counts[job.category] = (counts[job.category] || 0) + 1;
     });
     while (categoryFilter.options.length > 1) {
@@ -428,20 +428,12 @@ async function loadJobs() {
         const response = await fetch('jobs/job_manifest.json');
         if (response.ok) {
             const manifest = await response.json();
-            const allJobs = Array.isArray(manifest.jobs) ? manifest.jobs : [];
-            const now = new Date();
-            needsReviewJobsCount = allJobs.filter(job => {
-                const status = String(job.status || '').toLowerCase();
-                return !['cancelled', 'expired', 'closed'].includes(status)
-                    && !isJobSearchEligible(job, now);
-            }).length;
-            jobsData = filterExpiredJobs(allJobs);
+            jobsData = filterExpiredJobs(manifest.jobs || []);
             populateCategoryFilter();
         } else {
             // Manifest missing or unreachable: show an honest error
             // state. Never fall back to hard-coded sample jobs.
             jobsData = [];
-            needsReviewJobsCount = 0;
             jobsLoadFailed = true;
         }
 
@@ -459,7 +451,6 @@ async function loadJobs() {
         console.error('Error loading jobs:', error);
         // Honest error state: no fake sample-job fallback.
         jobsData = [];
-        needsReviewJobsCount = 0;
         jobsLoadFailed = true;
 
         jobsData.forEach(job => {
@@ -483,7 +474,7 @@ function applyFilters() {
     const searchTerm = jobSearch ? jobSearch.value.toLowerCase().trim() : '';
     const selectedCategory = categoryFilter ? categoryFilter.value : '';
 
-    let base = jobsData;
+    let base = jobsData.filter(isSearchEligibleJob);
     if (searchTerm !== '') {
         base = base.filter(job => job._searchString.includes(searchTerm));
     }
@@ -1088,8 +1079,9 @@ function showLoading(show) {
  */
 function updateJobCounts() {
     const categoryCounts = {};
+    const searchableJobs = jobsData.filter(isSearchEligibleJob);
 
-    jobsData.forEach(job => {
+    searchableJobs.forEach(job => {
         categoryCounts[job.category] = (categoryCounts[job.category] || 0) + 1;
     });
 
@@ -1107,12 +1099,13 @@ function updateJobCounts() {
 
     const totalActiveEl = document.getElementById('totalActiveJobsCount');
     if (totalActiveEl) {
-        totalActiveEl.textContent = String(jobsData.length);
+        totalActiveEl.textContent = String(searchableJobs.length);
     }
 
     const needsReviewEl = document.getElementById('needsReviewJobsCount');
     if (needsReviewEl) {
-        needsReviewEl.textContent = String(needsReviewJobsCount);
+        const needsReviewCount = jobsData.filter(job => !isSearchEligibleJob(job)).length;
+        needsReviewEl.textContent = String(needsReviewCount);
     }
 }
 
