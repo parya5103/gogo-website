@@ -230,6 +230,7 @@ check('PikaNews homepage is indexable and listed; syndicated listings and story 
   for (const page of pages) {
     const html = read('pikanews/' + page);
     assert((robotsOf(html) || '').includes('noindex'), page + ' must remain noindex until editorial value is added');
+    assert((html.match(/name=[\"']robots[\"']/gi) || []).length === 1, page + ' must have exactly one robots directive');
     assert(canonicalOf(html) === 'https://gogocompany.in/pikanews/' + page, page + ' canonical mismatch');
     assert(!sm.includes('<loc>https://gogocompany.in/pikanews/' + page + '</loc>'), page + ' must not be included in the PikaNews sitemap while noindex');
   }
@@ -240,6 +241,7 @@ check('PikaNews homepage is indexable and listed; syndicated listings and story 
   assert(articleDir, 'at least one generated PikaNews story page should exist');
   const article = read('pikanews/news/' + articleDir.name + '/index.html');
   assert((robotsOf(article) || '').includes('noindex'), 'syndicated excerpt pages should remain noindex');
+  assert((article.match(/name=[\"']robots[\"']/gi) || []).length === 1, 'syndicated article must have exactly one robots directive');
   assert(!sm.includes('/pikanews/news/'), 'thin syndicated story pages must not be added to the standard sitemap');
 });
 
