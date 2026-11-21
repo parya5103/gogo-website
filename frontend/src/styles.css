@@ -26,3 +26,6 @@
 .product-tile.tone-gta:not(.featured){background:linear-gradient(135deg,#f4f6fb 0%,#e7edf8 100%);border-color:#d7dfed}
 .product-tile.tone-gta:not(.featured) .eyebrow{color:#334b7d}
 .product-tile.tone-gta:not(.featured) .tile-copy p{max-width:52ch}
+
+
+@media(max-width:680px){.product-tile.tone-gta:not(.featured) .tile-copy{max-width:100%;width:100%}}
