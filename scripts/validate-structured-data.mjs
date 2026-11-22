@@ -54,7 +54,7 @@ console.log("Structured data validation passed: two games, guarded job detail sc
 
 
 const homepage = await read("index.html");
-const homepageGraph = schemas(homepage);
+const homepageGraph = schemas(homepage).flatMap(schema => Array.isArray(schema["@graph"]) ? schema["@graph"] : [schema]);
 const organization = homepageGraph.find(schema => schema["@type"] === "Organization" && schema.name === "GoGo Company");
 const founder = homepageGraph.find(schema => schema["@type"] === "Person" && schema.name === "Pratik Arya");
 const website = homepageGraph.find(schema => schema["@type"] === "WebSite" && schema.url === "https://gogocompany.in/");
