@@ -569,7 +569,7 @@ runStep('No visitor-facing GitHub profile/repository links on any gogo-owned pag
   for (const page of gogoOwnedPages) {
     const html = readFileSync(resolve(root, page), 'utf8');
     // Founder sameAs in JSON-LD is entity metadata, not a visitor-facing link.
-    const visitorHtml = html.replace(/<script\\s+type=[\"']application\\/ld\\+json[\"'][^>]*>[\\s\\S]*?<\\/script>/gi, '');
+    const visitorHtml = html.replace('"sameAs": ["https://github.com/parya5103"],', '');
     assert.ok(
       !visitorHtml.includes('github.com/parya5103'),
       `${page} must not link the public GitHub account/repository`
