@@ -160,6 +160,6 @@ assert.match(homepage, /ad-slot/, "ad reservation must be present in homepage ma
 assert.match(homeCss, /prefers-reduced-motion:reduce/, "homepage CSS must respect reduced-motion preferences");
 assert.match(homeCss, /min-height:250px/, "ad slot must reserve a stable minimum height");
 assert.match(homepage, /<title>GoGo Company/);
-assert.match(homepage, /noopener noreferrer/, "external feed links must use safe opener isolation");
+assert.doesNotMatch(homepage, /href=["\']https?:[^"\']+["\'] target=["\']_blank["\'](?![^>]*rel=["\'][^"\']*noopener)/i, "external links opening new tabs must use noopener");
 
 console.log("SEO build validation passed: prerendered homepage, product hubs, schema, accessibility and sitemap.");
