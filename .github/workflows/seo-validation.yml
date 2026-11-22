@@ -97,4 +97,5 @@ jobs:
       - name: Validate SEO implementation
         run: |
           node scripts/validate-seo.mjs
+          node scripts/validate-all-canonicals.mjs
           node scripts/seo-tests.mjs
