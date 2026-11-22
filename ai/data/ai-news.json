@@ -1,7 +1,39 @@
 {
-  "generatedAt": "2026-11-21T19:13:39.784144+00:00",
+  "generatedAt": "2026-11-22T11:30:14.741245+00:00",
   "successfulFeeds": 15,
   "articles": [
+    {
+      "title": "Best Personal AI Agents in 2026: OpenClaw, Hermes Agent, Gemini Spark and More, Compared on Memory, Security and Cost",
+      "url": "https://www.marktechpost.com/2026/11/22/best-personal-ai-agents-2026/",
+      "source": "MarkTechPost",
+      "category": "AI industry reporting",
+      "publishedAt": "2026-11-22T10:36:17+00:00",
+      "description": "Hermes Agent, OpenClaw, Gemini Spark, OpenAI dots, Meta Muse and Perplexity Personal Computer ranked on memory, security defaults and real cost. The post Best Personal AI Agents in 2026: OpenClaw, Hermes Agent, Gemini Spark and More, Compared on Memory, Security and Cost appeared first on MarkTechPost ."
+    },
+    {
+      "title": "Google AI Previews Tool Retrieval in the Gemini API for Large Tool Libraries",
+      "url": "https://www.marktechpost.com/2026/11/22/google-gemini-api-tool-retrieval/",
+      "source": "MarkTechPost",
+      "category": "AI industry reporting",
+      "publishedAt": "2026-11-22T10:03:54+00:00",
+      "description": "Google launched Gemini API Tool Retrieval in preview. Agents keep a large tool library on standby and load each parameter schema only when needed, inside one Interactions API request. The post Google AI Previews Tool Retrieval in the Gemini API for Large Tool Libraries appeared first on MarkTechPost ."
+    },
+    {
+      "title": "Meta ads is now available in AWS Quick",
+      "url": "https://aws.amazon.com/blogs/machine-learning/meta-ads-is-now-available-in-aws-quick/",
+      "source": "AWS Machine Learning",
+      "category": "Industry and engineering",
+      "publishedAt": "2026-11-22T01:59:13+00:00",
+      "description": "AWS Quick now has a Meta ads AI connector. Meta advertisers can use natural language in Quick to create, manage, and analyze campaigns while staying connected to the Meta ad management network, and combine Meta ad data with first- and third-party sources to build dashboards, documents, slide decks, and automated workflows."
+    },
+    {
+      "title": "A Team of Researchers from Columbia and CertiK Introduce TensorLean for Formal Verification of GPU Kernels",
+      "url": "https://www.marktechpost.com/2026/11/21/columbia-certik-tensorlean-formal-verification-gpu-kernels/",
+      "source": "MarkTechPost",
+      "category": "AI industry reporting",
+      "publishedAt": "2026-11-22T01:51:43+00:00",
+      "description": "TensorLean, from Columbia University and CertiK, formally verifies production GPU kernels at the PTX level using Lean. It checked 149 kernel instances, proved 83 correct, and found 38 bugs in FlashAttention, DeepGEMM and more. The post A Team of Researchers from Columbia and CertiK Introduce TensorLean for Formal Verification of GPU Kernels appeared first on MarkTechPost ."
+    },
     {
       "title": "Meet Thinking Machines Inkling 2 Mini: 26B Looped MoE Runs on a 32GB Mac",
       "url": "https://www.marktechpost.com/2026/11/21/thinking-machines-inkling-2-mini-looped-transformer/",
@@ -1409,38 +1441,6 @@
       "category": "Technical analysis",
       "publishedAt": "2025-12-30T12:15:39+00:00",
       "description": "In June, I shared a bonus article with my curated and bookmarked research paper lists to the paid subscribers who make this Substack possible."
-    },
-    {
-      "title": "As AI Grows More Complex, Model Builders Rely on NVIDIA",
-      "url": "https://blogs.nvidia.com/blog/leading-models-nvidia/",
-      "source": "NVIDIA",
-      "category": "Industry",
-      "publishedAt": "2025-12-11T19:19:57+00:00",
-      "description": "Unveiling what it describes as the most capable model series yet for professional knowledge work, OpenAI launched GPT-5.2 in December. The model was trained and deployed on NVIDIA infrastructure, including NVIDIA Hopper and GB200 NVL72 systems. GPT-5.3 Codex — the first OpenAI agentic coding model to help build itself — was released in February and […]"
-    },
-    {
-      "title": "Beyond Standard LLMs",
-      "url": "https://magazine.sebastianraschka.com/p/beyond-standard-llms",
-      "source": "Ahead of AI",
-      "category": "Technical analysis",
-      "publishedAt": "2025-11-04T13:06:07+00:00",
-      "description": "Linear Attention Hybrids, Text Diffusion, Code World Models, and Small Recursive Transformers"
-    },
-    {
-      "title": "Understanding the 4 Main Approaches to LLM Evaluation (From Scratch)",
-      "url": "https://magazine.sebastianraschka.com/p/llm-evaluation-4-approaches",
-      "source": "Ahead of AI",
-      "category": "Technical analysis",
-      "publishedAt": "2025-10-05T11:12:32+00:00",
-      "description": "Multiple-Choice Benchmarks, Verifiers, Leaderboards, and LLM Judges with Code Examples"
-    },
-    {
-      "title": "Reaching Across the Isles: UK-LLM Brings AI to UK Languages With NVIDIA Nemotron",
-      "url": "https://blogs.nvidia.com/blog/uk-llm-nemotron/",
-      "source": "NVIDIA",
-      "category": "Industry",
-      "publishedAt": "2025-09-14T01:00:21+00:00",
-      "description": "Celtic languages — including Cornish, Irish, Scottish Gaelic and Welsh — are the U.K.’s oldest living languages. To empower their speakers, the UK-LLM sovereign AI initiative is building an AI model based on NVIDIA Nemotron that can reason in both English and Welsh, a language spoken by about 850,000 people in Wales today. Enabling high-quality […]"
     }
   ],
   "sourceStatus": [
@@ -1472,7 +1472,7 @@
     {
       "source": "arXiv ML",
       "ok": true,
-      "items": 163
+      "items": 0
     },
     {
       "source": "arXiv NLP",
@@ -1487,7 +1487,7 @@
     {
       "source": "MarkTechPost",
       "ok": true,
-      "items": 5
+      "items": 7
     },
     {
       "source": "Ahead of AI",
@@ -1502,7 +1502,7 @@
     {
       "source": "The Verge AI",
       "ok": true,
-      "items": 7
+      "items": 6
     },
     {
       "source": "Microsoft Research",
