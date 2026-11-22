@@ -68,8 +68,8 @@ const gameShell = '<html><body><div id="app"><footer class="game-controls">Contr
 assert.equal(addKeywordSection(gameShell,{heading:"No game injection",intro:"Do not alter gameplay."}), gameShell, "game shells without a semantic main must remain untouched");
 console.log("SEO generator tests passed.");
 
-const gamesHub = await readFile(new URL("../free-online-games/index.html", import.meta.url), "utf8");
-assert.ok(gamesHub.includes('href="/arrowout/guide/"'), "game hub must link to the canonical Arrow Out guide");
-assert.ok(gamesHub.includes('href="/crystalquest/guide/"'), "game hub must link to the canonical Crystal Quest guide");
-assert.ok(!gamesHub.includes('/arrowout/about.html'), "legacy Arrow Out guide URL must not be linked");
-assert.ok(!gamesHub.includes('/crystalquest/guide.html'), "legacy Crystal Quest guide URL must not be linked");
+const publishedGamesHub = await readFile(new URL("../free-online-games/index.html", import.meta.url), "utf8");
+assert.ok(publishedGamesHub.includes('href="/arrowout/guide/"'), "game hub must link to the canonical Arrow Out guide");
+assert.ok(publishedGamesHub.includes('href="/crystalquest/guide/"'), "game hub must link to the canonical Crystal Quest guide");
+assert.ok(!publishedGamesHub.includes('/arrowout/about.html'), "legacy Arrow Out guide URL must not be linked");
+assert.ok(!publishedGamesHub.includes('/crystalquest/guide.html'), "legacy Crystal Quest guide URL must not be linked");
