@@ -61,4 +61,4 @@ const website = homepageGraph.find(schema => schema["@type"] === "WebSite" && sc
 assert.ok(organization, "homepage must disambiguate the GoGo Company organization entity");
 assert.ok(founder && founder.sameAs?.includes("https://github.com/parya5103"), "founder profile should use the verified public GitHub profile");
 assert.ok(website && website.name === "GoGo Company", "homepage WebSite entity must use the consistent brand name");
-assert.match(homepage, /GoGo Company — Free HTML5 Browser Games &amp; Sarkari Exam Tools/);
+assert.match(homepage, /GoGo Company — Free HTML5 Browser Games & Sarkari Exam Tools/);
