@@ -14,7 +14,10 @@ const ALIASES = new Map([
   ["about.html", "/about/"],
   ["arrow-out/index.html", "/arrowout/"],
   ["crystal-quest/index.html", "/crystalquest/"],
-  ["sarkari/index.html", "/sarkari-sarthi/"]
+  ["sarkari/index.html", "/sarkari-sarthi/"],
+  ["frontend/index.html", "/"],
+  ["scripts/content/arrowout-strategy.html", "/arrowout/strategy.html"],
+  ["scripts/content/crystalquest-strategy.html", "/crystalquest/strategy.html"]
 ]);
 
 async function collect(dir) {
