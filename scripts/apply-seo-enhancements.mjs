@@ -15,8 +15,23 @@ function robotsMeta(h,value){
   for(const duplicate of tags.slice(1))output=output.replace(duplicate[0],"");
   return output;
 }
-function meta(h,attr,key,val){const r=new RegExp("<meta\b(?=[^>]*\b"+attr+"=[\"']"+rx(key)+"[\"'])[^>]*>","i"),t='<meta '+attr+'="'+esc(key)+'" content="'+esc(val)+'">';return r.test(h)?h.replace(r,t):h.replace(/<\/head>/i,"  "+t+"\n</head>")}
-function link(h,rel,href,extra=""){const r=new RegExp("<link\b(?=[^>]*\brel=[\"']"+rx(rel)+"[\"'])[^>]*>","i"),t='<link rel="'+rel+'" href="'+esc(href)+'"'+(extra?" "+extra:"")+">";return r.test(h)?h.replace(r,t):h.replace(/<\/head>/i,"  "+t+"\n</head>")}
+function upsertUniqueTag(h,regex,tag){
+  const matches=[...h.matchAll(regex)];
+  if(!matches.length)return h.replace(/<\/head>/i,"  "+tag+"\n</head>");
+  let output=h.replace(matches[0][0],tag);
+  for(const duplicate of matches.slice(1))output=output.replace(duplicate[0],"");
+  return output;
+}
+function meta(h,attr,key,val){
+  const regex=new RegExp("<meta\\b(?=[^>]*\\b"+attr+"=[\\"']"+rx(key)+"[\\"'])[^>]*>","gi");
+  const tag='<meta '+attr+'="'+esc(key)+'" content="'+esc(val)+'">';
+  return upsertUniqueTag(h,regex,tag);
+}
+function link(h,rel,href,extra=""){
+  const regex=new RegExp("<link\\b(?=[^>]*\\brel=[\\"']"+rx(rel)+"[\\"'])[^>]*>","gi");
+  const tag='<link rel="'+rel+'" href="'+esc(href)+'"'+(extra?" "+extra:"")+">";
+  return upsertUniqueTag(h,regex,tag);
+}
 function title(h,v){const t="<title>"+v+"</title>";return /<title\b[^>]*>[\s\S]*?<\/title>/i.test(h)?h.replace(/<title\b[^>]*>[\s\S]*?<\/title>/i,t):h.replace(/<\/head>/i,"  "+t+"\n</head>")}
 function serializeJsonLd(obj,space=0) {
   return JSON.stringify(obj,null,space).replace(/[<>&]/g,ch=>({"<":"\\u003c",">":"\\u003e","&":"\\u0026"})[ch]);
