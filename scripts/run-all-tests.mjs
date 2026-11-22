@@ -568,8 +568,10 @@ const gogoOwnedScripts = [
 runStep('No visitor-facing GitHub profile/repository links on any gogo-owned page or script', () => {
   for (const page of gogoOwnedPages) {
     const html = readFileSync(resolve(root, page), 'utf8');
+    // Founder sameAs in JSON-LD is entity metadata, not a visitor-facing link.
+    const visitorHtml = html.replace(/<script\\s+type=[\"']application\\/ld\\+json[\"'][^>]*>[\\s\\S]*?<\\/script>/gi, '');
     assert.ok(
-      !html.includes('github.com/parya5103'),
+      !visitorHtml.includes('github.com/parya5103'),
       `${page} must not link the public GitHub account/repository`
     );
     assert.ok(
