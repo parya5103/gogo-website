@@ -93,9 +93,9 @@ for (const phrase of [
   "Choose the puzzle style that fits you",
   "Arrow Out! — a tap-away arrow puzzle",
   "Crystal Quest — a 27-level match-3 adventure",
-  "Read the complete Arrow Out! game guide",
+  "Read the complete Arrow Out! tap-away puzzle guide",
   "Arrow Out! strategy guide",
-  "Read the Crystal Quest match-3 guide"
+  "Read the Crystal Quest match-3 browser game guide"
 ]) {
   assert.ok(gamesHub.includes(phrase), "free games hub is missing useful player guidance: " + phrase);
 }

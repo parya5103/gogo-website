@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import { decodeEntities, parseGoogleTrendsRss, renderTrendingSection, safeUrl, serializeJsonLd as serializeHomeJsonLd } from "./update-trending-seo.mjs";
 import { renderHub, escapeHtml, serializeJsonLd as serializeHubJsonLd } from "./generate-pseo-hubs.mjs";
 import { addKeywordSection, renderKeywordSection } from "./seo-keyword-content.mjs";
@@ -39,9 +40,9 @@ for (const phrase of [
   "Choose the puzzle style that fits you",
   "Arrow Out! — a tap-away arrow puzzle",
   "Crystal Quest — a 27-level match-3 adventure",
-  "Read the complete Arrow Out! game guide",
+  "Read the complete Arrow Out! tap-away puzzle guide",
   "Arrow Out! strategy guide",
-  "Read the Crystal Quest match-3 guide",
+  "Read the Crystal Quest match-3 browser game guide",
   "Crystal Quest strategy guide",
   "How to start playing",
   "Which game should you try first?"
@@ -66,3 +67,9 @@ assert.equal(addKeywordSection(keywordPage,{heading:"Duplicate",intro:"Duplicate
 const gameShell = '<html><body><div id="app"><footer class="game-controls">Controls</footer></div></body></html>';
 assert.equal(addKeywordSection(gameShell,{heading:"No game injection",intro:"Do not alter gameplay."}), gameShell, "game shells without a semantic main must remain untouched");
 console.log("SEO generator tests passed.");
+
+const publishedGamesHub = await readFile(new URL("../free-online-games/index.html", import.meta.url), "utf8");
+assert.ok(publishedGamesHub.includes('href="/arrowout/guide/"'), "game hub must link to the canonical Arrow Out guide");
+assert.ok(publishedGamesHub.includes('href="/crystalquest/guide/"'), "game hub must link to the canonical Crystal Quest guide");
+assert.ok(!publishedGamesHub.includes('/arrowout/about.html'), "legacy Arrow Out guide URL must not be linked");
+assert.ok(!publishedGamesHub.includes('/crystalquest/guide.html'), "legacy Crystal Quest guide URL must not be linked");

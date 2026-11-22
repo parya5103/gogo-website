@@ -14,7 +14,8 @@ const SITEMAP = resolve(ROOT, "sitemap.xml");
 const REQUIRED = [
   "/", "/about/", "/contact/", "/privacy-policy/", "/terms-and-conditions/",
   "/disclaimer/", "/free-online-games/", "/gta6/", "/arrowout/",
-  "/crystalquest/", "/sarkari-sarthi/", "/ai/"
+  "/crystalquest/", "/sarkari-sarthi/", "/ai/",
+  "/arrowout/guide/", "/crystalquest/guide/"
 ];
 
 function fileForPath(path) {

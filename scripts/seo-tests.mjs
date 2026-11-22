@@ -157,6 +157,14 @@ check('sitemap.xml: locs absolute, unique, targets exist, no noindex URLs', () =
     let path = loc.replace('https://gogocompany.in/', '');
     if (path === '') path = 'index.html';
     else if (path.endsWith('/')) path += 'index.html';
+    // Product guides are published from their source repositories by the
+    // sync-products workflow, so they are intentionally absent from the
+    // central repository checkout used by this offline regression suite.
+    const syncPublished = new Set([
+      'arrowout/guide/index.html',
+      'crystalquest/guide/index.html',
+    ]);
+    if (syncPublished.has(path)) continue;
     assert(existsSync(resolve(root, path)), 'sitemap target missing in repo: ' + path);
     const page = read(path);
     assert(canonicalOf(page) === loc, 'sitemap URL must match the page canonical: ' + loc);
@@ -179,7 +187,8 @@ check('sitemap.xml: all indexable gogo pages, product roots and arrowout sub-pag
     'https://gogocompany.in/privacy-policy/',
     'https://gogocompany.in/terms-and-conditions/',
     'https://gogocompany.in/arrowout/',
-    'https://gogocompany.in/arrowout/about.html',
+    'https://gogocompany.in/arrowout/guide/',
+    'https://gogocompany.in/crystalquest/guide/',
     'https://gogocompany.in/arrowout/contact.html',
     'https://gogocompany.in/arrowout/privacy.html',
     'https://gogocompany.in/crystalquest/',

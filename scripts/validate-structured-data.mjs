@@ -51,3 +51,14 @@ for (const dir of newsDirs.filter(entry => entry.isDirectory())) {
 }
 assert.ok(staticPages > 0, "At least one static PikaNews article page should be validated");
 console.log("Structured data validation passed: two games, guarded job detail schema, " + checked + " eligible original NewsArticle(s), and " + noindexedAggregates + " correctly noindexed aggregated pages.");
+
+
+const homepage = await read("index.html");
+const homepageGraph = schemas(homepage).flatMap(schema => Array.isArray(schema["@graph"]) ? schema["@graph"] : [schema]);
+const organization = homepageGraph.find(schema => schema["@type"] === "Organization" && schema.name === "GoGo Company");
+const founder = homepageGraph.find(schema => schema["@type"] === "Person" && schema.name === "Pratik Arya");
+const website = homepageGraph.find(schema => schema["@type"] === "WebSite" && schema.url === "https://gogocompany.in/");
+assert.ok(organization, "homepage must disambiguate the GoGo Company organization entity");
+assert.ok(founder && founder.sameAs?.includes("https://github.com/parya5103"), "founder profile should use the verified public GitHub profile");
+assert.ok(website && website.name === "GoGo Company", "homepage WebSite entity must use the consistent brand name");
+assert.match(homepage, /GoGo Company — Free HTML5 Browser Games & Sarkari Exam Tools/);
