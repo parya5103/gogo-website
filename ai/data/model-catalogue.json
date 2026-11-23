@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-22T11:30:14.800216+00:00",
+  "generatedAt": "2026-11-23T12:53:03.113293+00:00",
   "note": "Provider-declared catalogue metadata, not quality benchmarks. Verify current rates with providers.",
   "models": [
     {
@@ -531,8 +531,8 @@
       "id": "moonshotai/kimi-k3.1-pro",
       "name": "MoonshotAI: Kimi K3.1 Pro",
       "context": 1048576,
-      "input": 0.253,
-      "output": 8.8
+      "input": 0.2403,
+      "output": 8.4023
     },
     {
       "id": "moonshotai/kimi-k3.1-pro:batch",
@@ -626,6 +626,13 @@
       "output": 2.1
     },
     {
+      "id": "inclusionai/ling-3.1-flash",
+      "name": "inclusionAI: Ling 3.1 Flash",
+      "context": 1048576,
+      "input": 0.06,
+      "output": 0.18
+    },
+    {
       "id": "unbiased/pareto-26.10-preview",
       "name": "Pareto 26.10 Preview",
       "context": 1048576,
@@ -672,7 +679,7 @@
       "name": "DeepSeek: DeepSeek Pro Latest",
       "context": 1048576,
       "input": 0.0999,
-      "output": 8.0
+      "output": 5.0
     },
     {
       "id": "~deepseek/deepseek-flash-latest",
@@ -694,13 +701,6 @@
       "context": 1048576,
       "input": 0.05,
       "output": 0.15
-    },
-    {
-      "id": "meta/muse-spark-1.3-contributor",
-      "name": "Meta: Muse Spark 1.3 Contributor",
-      "context": 1048576,
-      "input": 0.1,
-      "output": 0.2
     }
   ]
 }
