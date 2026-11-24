@@ -57,7 +57,7 @@ secrets here by design. Last updated: 2026-11-24 (documentation-sync audit).
   stubs). Synced product folders are intentionally excluded; product repos
   need their own tag if wanted.
 - assets/js/gogo-notifications.js + firebase-messaging-sw.js wire the GoGo
-  Central FCM backend (optim-in notifications; config gates fail closed).
+  Central FCM backend (opt-in notifications; config gates fail closed).
 - After a successful product sync, the workflow posts a product-update event
   to POST /api/v1/automation/publish on the central backend with a GitHub
   Actions OIDC token (audience gogo-central-notifications). Do not weaken
