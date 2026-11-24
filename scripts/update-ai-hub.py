@@ -93,7 +93,22 @@ try:
  models.sort(key=lambda m:m.get("context") or 0,reverse=True)
  catalogue={"generatedAt":dt.datetime.now(dt.timezone.utc).isoformat(),"note":"Provider-declared catalogue metadata, not quality benchmarks. Verify current rates with providers.","models":models[:100]}
  save(DATA/"model-catalogue.json",catalogue)
-except Exception:catalogue=load(DATA/"model-catalogue.json",{"models":[]})
+except Exception:
+ catalogue=load(DATA/"model-catalogue.json",{"models":[]})
+# Sanitize cached prices too: a stale snapshot may contain OpenRouter's
+# negative sentinel, malformed values, or booleans from a bad prior write.
+for model in catalogue.get("models",[]):
+ if not isinstance(model,dict):continue
+ for key in ("input","output"):
+  value=model.get(key)
+  if value is None:continue
+  if isinstance(value,bool):model[key]=None;continue
+  try:
+   amount=float(value)
+   model[key]=round(amount,5) if math.isfinite(amount) and amount>=0 else None
+  except (TypeError,ValueError,OverflowError):
+   model[key]=None
+save(DATA/"model-catalogue.json",catalogue)
 def esc(s):return html.escape(str(s or ""),quote=True)
 def date_label(s):
  try:return dt.datetime.fromisoformat(s.replace("Z","+00:00")).strftime("%d %b %Y")
