@@ -13,15 +13,12 @@
   "skills": [
     "Data Entry"
   ],
-  "scraped_at": "2026-11-21T19:24:28.864105",
+  "scraped_at": "2026-11-22T03:24:11.237270",
   "links": [],
   "organization": null,
   "department": null,
   "recruitment_board": null,
-  "job_title": null,
-  "work_mode": null,
   "location": null,
-  "country": null,
   "state": null,
   "district": null,
   "vacancies": null,
@@ -42,10 +39,8 @@
   "official_website": null,
   "description_summary": null,
   "published_date": null,
-  "description_complete": null,
-  "date_posted_verified": null,
   "original_source_url": "https://allgovernmentjobs.in/nimhans-notification-2026-apply-online-for-02-technical-assistant-posts/45453",
-  "last_verified": "2026-11-21T19:24:28.864105",
+  "last_verified": "2026-11-22T03:24:11.237270",
   "status": "active",
   "verification_status": "secondary_source_only"
 }

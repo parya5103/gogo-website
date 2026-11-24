@@ -4,28 +4,42 @@
    listings - never beside job cards, Apply buttons, or within the
    listings grid. Job detail pages: one unit after the article. Games (/arrowout/, /crystalquest/) never load ads.
 
-   STATUS (2026-11-03):
+   STATUS (2026-11-06):
    1. DONE: publisherId set to the owner-verified ID
       ca-pub-2895136878543415.
    2. DONE: the exact AdSense loader tag is included directly in the
       <head> of the portal page and every job detail page. This script
-      detects that tag and never injects a second copy.
+      detects that tag and never injects a second copy. Pages that carry
+      the loader tag are also ready for Auto ads (Anchor / Vignette /
+      In-page / Multiplex) once those formats are enabled by the owner
+      in the AdSense dashboard - Auto ads need no extra page code.
    3. DONE: /ads.txt exists at the gogocompany.in site root with the
       real publisher ID (managed in the gogo-website repository).
    4. DONE (2026-11-03): CONFIG.slots filled with the owner-created
       AdSense units: responsive display 7200569170 on the listing
       page (sarkari-mid), in-article fluid 4574405834 on job detail
       pages (sarkari-detail-bottom).
-   5. REMAINING (EEA / UK / Switzerland): ad units stay OFF for those
-      regions until a Google-certified CMP (e.g. Funding Choices)
-      handles consent. Set cmpReady to true only after that
-      integration is verified. */
+   5. CONSENT (updated 2026-11-06): browser language and timezone are NOT
+      reliable consent or geolocation signals, so this script no longer
+      guesses the visitor's region from them. Ads stay OFF for ALL
+      visitors while cmpReady is false (fail closed). The owner flips
+      cmpReady to true only after a Google-certified CMP is enabled and
+      verified in the AdSense account (recommended: the built-in consent
+      messaging under AdSense -> Privacy & messaging, or Funding
+      Choices). Once that is live, Google's certified CMP handles
+      EEA / UK / Switzerland consent using its own reliable signals, and
+      ad serving follows that consent state.
+   6. A configured publisher id does NOT mean the site is approved for
+      serving; approval status must be confirmed in the AdSense dashboard
+      by the owner. Manual placements simply do not fill before approval. */
 (function () {
   "use strict";
 
   var CONFIG = {
     publisherId: "ca-pub-2895136878543415",   /* owner-verified AdSense publisher ID (2026-11-03) */
     cmpReady: false,    /* true only after a Google-certified CMP handles consent */
+    /* Placement-key -> AdSense unit id map. Set a placement's id to ""
+       to disable that single placement without touching page HTML. */
     slots: {
       "sarkari-mid": "7200569170",           /* listing page: between the category grid and job listings */
       "sarkari-detail-bottom": "4574405834" /* job detail pages: in-article fluid unit, after the article */
@@ -40,31 +54,14 @@
     }
   };
 
-  /* ISO 3166-1 alpha-2 codes for EEA, UK and Switzerland. */
-  var CONSENT_REGIONS = ["GB", "IM", "JE", "GG", "AT", "BE", "BG", "HR", "CY", "CZ", "DK",
-    "EE", "FI", "FR", "DE", "GR", "HU", "IS", "IE", "IT", "LV", "LI", "LT", "LU", "MT",
-    "NL", "NO", "PL", "PT", "RO", "SK", "SI", "ES", "SE", "CH"];
-
-  function regionFromLanguage() {
-    var m = (navigator.language || "").match(/[-_]([A-Za-z]{2})$/);
-    return m ? m[1].toUpperCase() : "";
-  }
-
-  function inConsentRequiredRegion() {
-    var r = regionFromLanguage();
-    if (r) return CONSENT_REGIONS.indexOf(r) !== -1;
-    try {
-      return /Europe\/|Atlantic\/(Madeira|Canary)/.test(
-        Intl.DateTimeFormat().resolvedOptions().timeZone || ""
-      );
-    } catch (e) {
-      return true; /* cannot tell -> safest default: treat as consent region */
-    }
-  }
-
   function adsAllowed() {
     if (!CONFIG.publisherId) return false; /* not configured -> nothing serves */
-    if (!CONFIG.cmpReady && inConsentRequiredRegion()) return false;
+    /* Fail closed: no ad request is made anywhere until the owner has
+       verified that a Google-certified CMP is live. Browser language and
+       timezone must never be used as a substitute for consent or reliable
+       geolocation. After cmpReady is true, EEA/UK/CH consent is enforced
+       by Google's certified CMP, not by this script. */
+    if (!CONFIG.cmpReady) return false;
     return true;
   }
 

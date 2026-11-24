@@ -13,15 +13,12 @@
   "skills": [
     "Hindi"
   ],
-  "scraped_at": "2026-11-20T04:08:10.556197",
+  "scraped_at": "2026-11-20T04:18:54.506502",
   "links": [],
   "organization": null,
   "department": null,
   "recruitment_board": null,
-  "job_title": null,
-  "work_mode": null,
   "location": null,
-  "country": null,
   "state": null,
   "district": null,
   "vacancies": null,
@@ -42,10 +39,8 @@
   "official_website": null,
   "description_summary": null,
   "published_date": null,
-  "description_complete": null,
-  "date_posted_verified": null,
   "original_source_url": "https://allgovernmentjobs.in/mrvc-notification-2026-apply-for-03-additional-general-manager-joint-general-manager-deputy-general-manager-posts/45398",
-  "last_verified": "2026-11-20T04:08:10.556197",
+  "last_verified": "2026-11-20T04:18:54.506502",
   "status": "active",
   "verification_status": "secondary_source_only"
 }

@@ -1,0 +1,27 @@
+# Gitleaks configuration: default rules plus documented, project-specific allowlists.
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "SHA-256 password-verification hash from the old client-side admin gate in admin.js/public/admin.js history. The gate was removed from HEAD by #200 (admin is now a read-only viewer); a one-way hash of a retired default is not a usable credential."
+regexes = [
+  '''8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918''',
+]
+
+# SECURITY NOTE (owner action required): the historical .github/workflows/fetch.yml
+# (removed from HEAD; the workflow was renamed) once hardcoded a real Telegram bot
+# token in its env blocks. Current HEAD uses ${{ secrets.TELEGRAM_BOT_TOKEN }} only.
+# That historical token must be treated as compromised and REVOKED via @BotFather
+# (/revoke). This path allowlist keeps the CI gate from failing forever on that dead
+# historical file; do NOT extend this allowlist to any file that exists on HEAD.
+[[allowlists]]
+description = "Historical .github/workflows/fetch.yml only: removed from HEAD, superseded by daily-job-fetch-deploy.yml. Its hardcoded Telegram bot token moved to GitHub Secrets; the owner is required to revoke the old token via @BotFather."
+paths = [
+  '''\.github/workflows/fetch\.yml''',
+]
+
+[[allowlists]]
+description = "Public Firebase web API key of the shared GoGo Firebase project (client-safe by design: a web API key identifies the project, it is not a credential; access is governed by Firebase Security Rules). Shipped in the GoGo Central notifications module and its FCM service worker, matching the public web config already on the GoGo portal."
+regexes = [
+  '''AIzaSyCtfvrvfRSlZmiNBluRLeHCLNgaNkuY-_4''',
+]

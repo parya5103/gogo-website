@@ -100,20 +100,6 @@ function getVerificationInfo(status) {
     return VERIFICATION_LABELS[String(status).toLowerCase()] || null;
 }
 
-// Public search only includes records with an explicit source-quality state.
-// "needs_review" and unknown states remain in the manifest for the review
-// workflow, but are not presented as open vacancies to visitors.
-const SEARCH_ELIGIBLE_VERIFICATION_STATUSES = new Set([
-    'official_verified',
-    'official_link_pending'
-]);
-
-function isSearchEligibleJob(job) {
-    if (!job || typeof job !== 'object') return false;
-    const status = String(job.verification_status || '').toLowerCase();
-    return SEARCH_ELIGIBLE_VERIFICATION_STATUSES.has(status);
-}
-
 // ---- Bookmarks (Phase 3) --------------------------------------------
 // Saved jobs live only in this browser (localStorage). No account,
 // no tracking, nothing leaves the device.
@@ -178,7 +164,6 @@ const footerTelegramBtn = document.getElementById('footerTelegramBtn');
 const whatsappBtn = document.getElementById('whatsappBtn');
 const footerWhatsappBtn = document.getElementById('footerWhatsappBtn');
 const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-const menuBackdrop = document.getElementById('menuBackdrop');
 const jobModal = document.getElementById('jobModal');
 const modalClose = document.getElementById('modalClose');
 const modalClose2 = document.getElementById('modalClose2');
@@ -188,14 +173,10 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
 });
 
-let appInitialized = false;
-
 /**
  * Initialize the application
  */
 function initializeApp() {
-    if (appInitialized) return;
-    appInitialized = true;
     setupEventListeners();
     loadTheme();
     loadJobs();
@@ -244,51 +225,31 @@ function setupEventListeners() {
         footerTelegramBtn.addEventListener('click', openTelegramChannel);
     }
 
-    // WhatsApp channel controls are ordinary safe anchor links in the HTML.
+    // WhatsApp buttons
+    if (whatsappBtn) {
+        whatsappBtn.addEventListener('click', openWhatsappChannel);
+    }
+    if (footerWhatsappBtn) {
+        footerWhatsappBtn.addEventListener('click', openWhatsappChannel);
+    }
 
-    // Mobile menu toggle
+    // Mobile menu toggle (real <button>: click fires for mouse, Enter and
+    // Space, so no separate keydown handler is needed - it would
+    // double-toggle on Enter).
     if (mobileMenuToggle) {
         mobileMenuToggle.addEventListener('click', toggleMobileMenu);
-        mobileMenuToggle.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                toggleMobileMenu();
-            }
-        });
     }
 
-    if (menuBackdrop) {
-        menuBackdrop.addEventListener('click', function() {
-            toggleMobileMenu(false);
-        });
-    }
-
-    // Close mobile menu when a navigation link is clicked
+    // Close the drawer after a navigation link is selected
     document.querySelectorAll('.nav-menu .nav-link').forEach(link => {
-        link.addEventListener('click', function() {
-            const navMenu = document.querySelector('.nav-menu');
-            if (navMenu && navMenu.classList.contains('active')) {
-                toggleMobileMenu(false);
-            }
-        });
+        link.addEventListener('click', closeMobileMenu);
     });
 
-    // Reset filters button in search bar
-    const resetFiltersBtn = document.getElementById('resetFiltersBtn');
-    if (resetFiltersBtn) {
-        resetFiltersBtn.addEventListener('click', clearAllFilters);
+    // Close the drawer when the backdrop is tapped
+    const menuBackdrop = document.getElementById('menuBackdrop');
+    if (menuBackdrop) {
+        menuBackdrop.addEventListener('click', closeMobileMenu);
     }
-
-    // Quick category filter bar buttons
-    document.querySelectorAll('[data-quick-category]').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const cat = this.dataset.quickCategory || '';
-            if (categoryFilter) {
-                categoryFilter.value = cat;
-            }
-            handleFilter();
-        });
-    });
 
     // Modal functionality
     if (modalClose) {
@@ -371,9 +332,7 @@ function filterExpiredJobs(jobs) {
         // present; the date check below remains a safety net for old
         // records that never passed through normalize_job.
         const status = String(job.status || '').toLowerCase();
-        const verificationStatus = String(job.verification_status || '').toLowerCase();
-        if (['cancelled', 'expired', 'closed'].includes(status)
-            || ['cancelled', 'expired'].includes(verificationStatus)) return false;
+        if (status === 'cancelled' || status === 'expired') return false;
         const lastDateStr = job.important_dates && job.important_dates.last_date;
         const lastDate = parseJobDate(lastDateStr);
         // Keep jobs without a parseable last date: absence of a date is
@@ -392,7 +351,7 @@ function populateCategoryFilter() {
     if (!categoryFilter) return;
     const selected = categoryFilter.value;
     const counts = {};
-    jobsData.filter(isSearchEligibleJob).forEach(job => {
+    jobsData.forEach(job => {
         if (job.category) counts[job.category] = (counts[job.category] || 0) + 1;
     });
     while (categoryFilter.options.length > 1) {
@@ -467,7 +426,7 @@ function applyFilters() {
     const searchTerm = jobSearch ? jobSearch.value.toLowerCase().trim() : '';
     const selectedCategory = categoryFilter ? categoryFilter.value : '';
 
-    let base = jobsData.filter(isSearchEligibleJob);
+    let base = jobsData;
     if (searchTerm !== '') {
         base = base.filter(job => job._searchString.includes(searchTerm));
     }
@@ -479,26 +438,6 @@ function applyFilters() {
     }
     filteredJobs = [...base];
     currentPage = 1;
-
-    // Sync active visual state on category cards and quick filter buttons
-    document.querySelectorAll('.category-card').forEach(card => {
-        card.classList.toggle('active', Boolean(selectedCategory && card.dataset.category === selectedCategory));
-    });
-    document.querySelectorAll('[data-quick-category]').forEach(btn => {
-        btn.classList.toggle('active', (btn.dataset.quickCategory || '') === selectedCategory);
-    });
-
-    const summaryEl = document.getElementById('jobsResultSummary');
-    if (summaryEl && !jobsLoadFailed) {
-        const parts = [];
-        if (selectedCategory) parts.push(`Category: ${selectedCategory}`);
-        if (searchTerm) parts.push(`Query: "${jobSearch.value.trim()}"`);
-        if (savedOnly) parts.push('Saved on this device');
-        summaryEl.textContent = parts.length > 0
-            ? `Showing ${filteredJobs.length} matching notification${filteredJobs.length === 1 ? '' : 's'} (${parts.join(' · ')})`
-            : `Showing ${filteredJobs.length} recruitment listing${filteredJobs.length === 1 ? '' : 's'}. Check each source label and the official notification before applying.`;
-    }
-
     handleSort();
 }
 
@@ -1072,34 +1011,18 @@ function showLoading(show) {
  */
 function updateJobCounts() {
     const categoryCounts = {};
-    const searchableJobs = jobsData.filter(isSearchEligibleJob);
 
-    searchableJobs.forEach(job => {
+    jobsData.forEach(job => {
         categoryCounts[job.category] = (categoryCounts[job.category] || 0) + 1;
     });
 
     document.querySelectorAll('.category-card').forEach(card => {
         const category = card.dataset.category;
         const countElement = card.querySelector('.category-count');
-        if (countElement) {
-            if (categoryCounts[category]) {
-                countElement.textContent = `${categoryCounts[category]}+ Jobs`;
-            } else {
-                countElement.textContent = '0 Active Jobs';
-            }
+        if (countElement && categoryCounts[category]) {
+            countElement.textContent = `${categoryCounts[category]}+ Jobs`;
         }
     });
-
-    const totalActiveEl = document.getElementById('totalActiveJobsCount');
-    if (totalActiveEl) {
-        totalActiveEl.textContent = String(searchableJobs.length);
-    }
-
-    const needsReviewEl = document.getElementById('needsReviewJobsCount');
-    if (needsReviewEl) {
-        const needsReviewCount = jobsData.filter(job => !isSearchEligibleJob(job)).length;
-        needsReviewEl.textContent = String(needsReviewCount);
-    }
 }
 
 /**
@@ -1136,7 +1059,6 @@ function animateCounters() {
  * Setup intersection observer for animations
  */
 function setupIntersectionObserver() {
-    if (typeof IntersectionObserver === 'undefined') return;
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
@@ -1195,47 +1117,47 @@ function openTelegramChannel() {
  * Open WhatsApp channel
  */
 function openWhatsappChannel() {
-    window.open(
-        'https://whatsapp.com/channel/0029VbE1ulAAjPXQZiUbbu1Z',
-        '_blank',
-        'noopener,noreferrer'
-    );
+    // Replace with actual WhatsApp invite link
+    window.open('https://chat.whatsapp.com/your-invite-link', '_blank', 'noopener,noreferrer');
+}
+
+/**
+ * Mobile menu drawer helpers.
+ * CSS contract: .nav-menu.active slides the drawer in (style.css),
+ * .menu-backdrop uses the hidden attribute, body.menu-open locks
+ * page scroll. All state changes go through these two functions so
+ * the button, backdrop, Escape key and nav links can never disagree.
+ */
+function openMobileMenu() {
+    const navMenu = document.getElementById('navMenu');
+    const menuBackdrop = document.getElementById('menuBackdrop');
+    if (!navMenu || navMenu.classList.contains('active')) return;
+    navMenu.classList.add('active');
+    if (menuBackdrop) menuBackdrop.hidden = false;
+    document.body.classList.add('menu-open');
+    if (mobileMenuToggle) mobileMenuToggle.setAttribute('aria-expanded', 'true');
+}
+
+function closeMobileMenu() {
+    const navMenu = document.getElementById('navMenu');
+    const menuBackdrop = document.getElementById('menuBackdrop');
+    if (!navMenu || !navMenu.classList.contains('active')) return;
+    navMenu.classList.remove('active');
+    if (menuBackdrop) menuBackdrop.hidden = true;
+    document.body.classList.remove('menu-open');
+    if (mobileMenuToggle) mobileMenuToggle.setAttribute('aria-expanded', 'false');
 }
 
 /**
  * Toggle mobile menu
  */
-function toggleMobileMenu(forceOpen) {
-    const navMenu = document.querySelector('.nav-menu');
+function toggleMobileMenu() {
+    const navMenu = document.getElementById('navMenu');
     if (!navMenu) return;
-
-    const isOpen = typeof forceOpen === 'boolean'
-        ? forceOpen
-        : !navMenu.classList.contains('active');
-
-    navMenu.classList.toggle('active', isOpen);
-    if (mobileMenuToggle) {
-        mobileMenuToggle.classList.toggle('active', isOpen);
-        mobileMenuToggle.setAttribute('aria-expanded', String(isOpen));
-    }
-    if (menuBackdrop) {
-        menuBackdrop.hidden = !isOpen;
-        menuBackdrop.setAttribute('aria-hidden', String(!isOpen));
-        if (isOpen) {
-            // Keep the overlay's clickable area below the drawer so it never
-            // competes with navigation links for pointer events.
-            menuBackdrop.style.top = navMenu.getBoundingClientRect().bottom + 'px';
-        } else {
-            menuBackdrop.style.removeProperty('top');
-        }
-    }
-    document.body.classList.toggle('menu-open', isOpen);
-
-    if (isOpen) {
-        const firstLink = navMenu.querySelector('.nav-link');
-        if (firstLink) firstLink.focus();
-    } else if (mobileMenuToggle) {
-        mobileMenuToggle.focus();
+    if (navMenu.classList.contains('active')) {
+        closeMobileMenu();
+    } else {
+        openMobileMenu();
     }
 }
 
@@ -1243,23 +1165,30 @@ function toggleMobileMenu(forceOpen) {
  * Handle keyboard navigation
  */
 function handleKeyboardNavigation(e) {
-    // Close modal with Escape key
-    if (e.key === 'Escape' && jobModal && jobModal.classList.contains('active')) {
-        closeModal();
+    // Close mobile menu drawer with Escape key
+    const navMenu = document.getElementById('navMenu');
+    if (e.key === 'Escape' && navMenu && navMenu.classList.contains('active')) {
+        closeMobileMenu();
+        if (mobileMenuToggle) mobileMenuToggle.focus();
     }
 
-    // Close mobile menu with Escape key
-    const navMenu = document.querySelector('.nav-menu');
-    if (e.key === 'Escape' && navMenu && navMenu.classList.contains('active')) {
-        toggleMobileMenu(false);
+    // Close modal with Escape key
+    if (e.key === 'Escape' && jobModal.classList.contains('active')) {
+        closeModal();
     }
 
     // Search with Ctrl+K or Cmd+K
     if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
-        if (jobSearch) jobSearch.focus();
+        jobSearch.focus();
     }
 }
+
+/**
+ * Security utility: Escape HTML to prevent XSS
+ * (single definition - see the escapeHTML at the top of this file;
+ * the duplicate definition that used to sit here was removed)
+ */
 
 /**
  * Sanitizes URLs to ensure they only use http/https protocols.

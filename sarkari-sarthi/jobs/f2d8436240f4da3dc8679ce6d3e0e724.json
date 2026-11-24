@@ -12,15 +12,12 @@
   "skills": [
     "Hindi"
   ],
-  "scraped_at": "2026-11-20T04:08:10.556096",
+  "scraped_at": "2026-11-20T04:18:54.506433",
   "links": [],
   "organization": null,
   "department": null,
   "recruitment_board": null,
-  "job_title": null,
-  "work_mode": null,
   "location": null,
-  "country": null,
   "state": null,
   "district": null,
   "vacancies": null,
@@ -41,10 +38,8 @@
   "official_website": null,
   "description_summary": null,
   "published_date": null,
-  "description_complete": null,
-  "date_posted_verified": null,
   "original_source_url": "https://allgovernmentjobs.in/angrau-notification-2026-walk-in-interview-for-02-teaching-associate-posts/45404",
-  "last_verified": "2026-11-20T04:08:10.556096",
+  "last_verified": "2026-11-20T04:18:54.506433",
   "status": "active",
-  "verification_status": "needs_review"
+  "verification_status": "secondary_source_only"
 }
