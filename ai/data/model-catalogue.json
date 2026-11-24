@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T12:53:03.113293+00:00",
+  "generatedAt": "2026-11-24T13:49:02.385799+00:00",
   "note": "Provider-declared catalogue metadata, not quality benchmarks. Verify current rates with providers.",
   "models": [
     {
@@ -552,8 +552,8 @@
       "id": "deepseek/deepseek-v4.1-flash-1017",
       "name": "DeepSeek: DeepSeek V4.1 Flash 1017",
       "context": 1048576,
-      "input": 0.15,
-      "output": 0.6
+      "input": 0.03,
+      "output": 0.2
     },
     {
       "id": "deepseek/deepseek-v4.1-flash-1017:batch",
@@ -629,8 +629,8 @@
       "id": "inclusionai/ling-3.1-flash",
       "name": "inclusionAI: Ling 3.1 Flash",
       "context": 1048576,
-      "input": 0.06,
-      "output": 0.18
+      "input": 0.075,
+      "output": 0.225
     },
     {
       "id": "unbiased/pareto-26.10-preview",
@@ -685,15 +685,15 @@
       "id": "~deepseek/deepseek-flash-latest",
       "name": "DeepSeek: DeepSeek Flash Latest",
       "context": 1048576,
-      "input": 0.036,
-      "output": 0.5
+      "input": 0.03,
+      "output": 0.2
     },
     {
       "id": "deepseek/deepseek-v4.1-flash",
       "name": "DeepSeek: DeepSeek V4.1 Flash",
       "context": 1048576,
-      "input": 0.0498,
-      "output": 0.1992
+      "input": 0.0507,
+      "output": 0.2028
     },
     {
       "id": "deepseek/deepseek-v4.1-flash:batch",
