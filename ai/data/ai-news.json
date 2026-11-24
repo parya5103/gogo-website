@@ -1,7 +1,55 @@
 {
-  "generatedAt": "2026-11-24T13:49:02.346085+00:00",
+  "generatedAt": "2026-11-24T18:19:43.346729+00:00",
   "successfulFeeds": 15,
   "articles": [
+    {
+      "title": "Raising the stakes for enterprise networks with AI modernization",
+      "url": "https://www.technologyreview.com/2026/11/24/1148091/raising-the-stakes-for-enterprise-networks-with-ai-modernization/",
+      "source": "MIT Technology Review",
+      "category": "Independent reporting",
+      "publishedAt": "2026-11-24T15:15:16+00:00",
+      "description": "Enterprise networks are under severe strain. As companies rush to deploy artificial intelligence, the technology is quickly becoming the biggest source of demand on the network. Now, agentic AI is adding to the load. Tasks conducted by AI agents generate an estimated 450% more network traffic than the same tasks done by human workers. As…"
+    },
+    {
+      "title": "OpenAI and Cisco Releases Shirudo: An Open-Source Linux Runtime Allowing Agents to Defend Systems Without Downtime",
+      "url": "https://www.marktechpost.com/2026/11/24/openai-cisco-shirudo-ebpf-linux-runtime/",
+      "source": "MarkTechPost",
+      "category": "AI industry reporting",
+      "publishedAt": "2026-11-24T14:16:53+00:00",
+      "description": "OpenAI and Cisco released Shirudo, a pre-release, BSD-licensed eBPF runtime for Linux. AI agents write signed \"shields\" that block exploit paths on running systems while teams test and roll out real patches. The post OpenAI and Cisco Releases Shirudo: An Open-Source Linux Runtime Allowing Agents to Defend Systems Without Downtime appeared first on MarkTechPost ."
+    },
+    {
+      "title": "David Fincher is being dragged for suspected use of AI in his latest film",
+      "url": "https://www.theverge.com/entertainment/1041417/david-fincher-netflix-cliff-booth-ai-interpositive",
+      "source": "The Verge AI",
+      "category": "Technology reporting",
+      "publishedAt": "2026-11-24T13:12:33-05:00",
+      "description": "Though David Fincher's fans had been eagerly anticipating The Further Mis-Adventures of Cliff Booth, early screenings of the Once Upon a Time in Hollywood sequel starring Brad Pitt have raised questions about whether generative AI was used in the film. People have claimed that the movie is chock-full of uncanny, inconsistent visuals that make it […]"
+    },
+    {
+      "title": "Tidal will start banning AI-generated music next month",
+      "url": "https://www.theverge.com/entertainment/1041362/tidal-ai-music-ban",
+      "source": "The Verge AI",
+      "category": "Technology reporting",
+      "publishedAt": "2026-11-24T12:17:09-05:00",
+      "description": "Tidal is officially banning AI-generated music on December 9th. As a result of this change, Tidal will delete around 29 million AI-generated songs and reject an estimated 80,000 to 85,000 tracks per day, according to Tidal music lead Robert Andersen. The move comes just months after Tidal began labeling and demonetizing tracks identified as 100 […]"
+    },
+    {
+      "title": "The New York Times warns photographers not to update Photoshop over AI features",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/1041227/the-new-york-times-warns-photographers-not-to-update-photoshop-over-ai-features",
+      "source": "The Verge AI",
+      "category": "Technology reporting",
+      "publishedAt": "2026-11-24T11:52:41-05:00",
+      "description": "The New York Times is asking freelance photographers not to use the newest version of Adobe Photoshop because features in the 2027 update use AI \"in ways that may not be apparent to users.\" In an email seen by The Verge and posted on Threads, two of the Times' photography leaders, Meaghan Looram and Josh […]"
+    },
+    {
+      "title": "Jensen Huang deepfakes are the hot new AI slop",
+      "url": "https://www.theverge.com/tech/1041222/jensen-huang-nvidia-scandal-deepfakes",
+      "source": "The Verge AI",
+      "category": "Technology reporting",
+      "publishedAt": "2026-11-24T11:18:12-05:00",
+      "description": "Jensen Huang is partying it up in Ibiza. In a video with nearly 6 million views on Instagram, the former CEO of Nvidia is dancing in a crowded club, champagne glass in hand, still wearing his signature black leather jacket. Suddenly, from behind him, Alice Huang - the Chinese technology executive and suspected spy he […]"
+    },
     {
       "title": "MixFold: Sub-4-Bit Mixed-Precision LLM Inference via Output-Channel Grouping on Mobile NPUs",
       "url": "https://arxiv.org/abs/2611.26976",
@@ -1393,54 +1441,6 @@
       "category": "Research and academia",
       "publishedAt": "2026-11-09T05:00:00+00:00",
       "description": "By learning how matter moves, the WorldParticle system could assist with developing soft robots, medicines, and more."
-    },
-    {
-      "title": "AI-assisted learning platform helps robots reason beyond literal commands",
-      "url": "https://news.mit.edu/2026/ai-assisted-learning-platform-helps-robots-reason-beyond-literal-commands-1109",
-      "source": "MIT News AI",
-      "category": "Research and academia",
-      "publishedAt": "2026-11-09T05:00:00+00:00",
-      "description": "The new approach, known as FLEX, could lead to more intuitive, interactive household and assistive robots."
-    },
-    {
-      "title": "Partnering with Hacktron to find vulnerabilities in OpenAI’s systems",
-      "url": "https://openai.com/index/partnering-with-hacktron",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-11-06T08:00:00+00:00",
-      "description": "OpenAI is partnering with Hacktron to find vulnerabilities, test connections with third-party services, and strengthen defenses with frontier AI."
-    },
-    {
-      "title": "Measuring how AI agents handle everyday wet-lab science",
-      "url": "https://openai.com/index/measuring-how-ai-agents-handle-wet-lab-science",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-11-06T00:00:00+00:00",
-      "description": "OpenAI introduces BioBasicsBench, a 100-task benchmark measuring how well AI agents interpret raw experimental data and handle everyday wet-lab science."
-    },
-    {
-      "title": "Australian universities are creating AI-native graduates",
-      "url": "https://openai.com/index/australian-universities-ai-native-graduates",
-      "source": "OpenAI",
-      "category": "Company releases",
-      "publishedAt": "2026-11-05T17:00:00+00:00",
-      "description": "Australian universities are expanding access to ChatGPT and bringing AI into teaching and learning to prepare students for an AI-enabled workforce."
-    },
-    {
-      "title": "Formally verifying agent-written full-stack web apps with PDD Kit",
-      "url": "https://www.microsoft.com/en-us/research/blog/formally-verifying-agent-written-full-stack-web-apps-with-pdd-kit/",
-      "source": "Microsoft Research",
-      "category": "Research",
-      "publishedAt": "2026-11-05T16:00:00+00:00",
-      "description": "AI agents can generate code at a scale that’s hard for humans to review line-by-line. PDD Kit helps ensure the code is doing what the developer intended by creating formal specifications and testing against them. It converts developer intent into a Verus specification, proves AI-generated code meets it for every input, and uses tests where proofs aren't practical. Developers review intent, not every line. The post Fo"
-    },
-    {
-      "title": "Learn the rules: The hacker mindset",
-      "url": "https://www.microsoft.com/en-us/research/podcast/learn-the-rules-the-hacker-mindset/",
-      "source": "Microsoft Research",
-      "category": "Research",
-      "publishedAt": "2026-11-03T17:14:38+00:00",
-      "description": "Research Manager Mike Walker reflects on a career spanning hacker culture, cybersecurity, and AI, sharing lessons about trust, teamwork, leadership, and why solving difficult problems requires curiosity, judgment, agility—and an understanding of the rules. The post Learn the rules: The hacker mindset appeared first on Microsoft Research ."
     }
   ],
   "sourceStatus": [
@@ -1452,7 +1452,7 @@
     {
       "source": "Google AI",
       "ok": true,
-      "items": 5
+      "items": 4
     },
     {
       "source": "NVIDIA",
@@ -1502,7 +1502,7 @@
     {
       "source": "The Verge AI",
       "ok": true,
-      "items": 5
+      "items": 7
     },
     {
       "source": "Microsoft Research",
