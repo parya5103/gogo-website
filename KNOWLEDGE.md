@@ -2,7 +2,7 @@
 
 Consolidated operational knowledge for gogo-website (gogocompany.in),
 kept in-repo so context survives across sessions and machines. No
-secrets here by design. Last updated: 2026-11-21.
+secrets here by design. Last updated: 2026-11-24 (documentation-sync audit).
 
 ## What this repo is
 
@@ -13,7 +13,12 @@ secrets here by design. Last updated: 2026-11-21.
 - Publishes synced copies of the product apps into folders:
   arrowout/ (from Fletch_Game), crystalquest/ (from
   crystal-quest-web), pikanews/ (from PikaNews), sarkari-sarthi/
-  (from Sarkari-Sarthi).
+  (from the Sarkari Sarthi published site).
+- Also hosts the GoGo AI Intelligence hub: ai/index.html generated from
+  public RSS/Atom feeds (AI labs, Hugging Face, arXiv) + the OpenRouter
+  public model catalogue by scripts/update-ai-hub.py, refreshed daily at
+  08:50 IST by refresh-ai-hub.yml. No LLM API key; failed feeds never
+  erase previous data; model prices/context are provider-declared metadata.
 
 ## Deployment pipeline
 
@@ -24,6 +29,10 @@ secrets here by design. Last updated: 2026-11-21.
 - "Sync product apps" runs manually or on a 06:15 IST cron;
   "sync-pikanews" mirrors PikaNews. After merging an upstream fix,
   run the sync to propagate it here.
+- VERIFIED 2026-11-24: sync-products.yml currently checks out
+  parya5103/sarkarisarthi @gh-pages as the Sarkari Sarthi published-site
+  source. Confirm the actual source repository in the workflow file before
+  assuming Sarkari-Sarthi (uppercase) feeds this path.
 - Feature branches + PRs only. Never merge without owner approval.
   Never commit directly to main.
 
@@ -40,6 +49,19 @@ secrets here by design. Last updated: 2026-11-21.
   PikaNews (pytest, with string invariants that also scan comments),
   Fletch_Game (scripts/pages-test.js), Crystal Quest
   (tests/game.test.js).
+
+## GoGo tag and central backend integration
+
+- A Google Tag Manager web container (GTM-T5MRTKJZ) is installed once per
+  GoGo-owned HTML page (13 pages including index, legal pages and redirect
+  stubs). Synced product folders are intentionally excluded; product repos
+  need their own tag if wanted.
+- assets/js/gogo-notifications.js + firebase-messaging-sw.js wire the GoGo
+  Central FCM backend (optim-in notifications; config gates fail closed).
+- After a successful product sync, the workflow posts a product-update event
+  to POST /api/v1/automation/publish on the central backend with a GitHub
+  Actions OIDC token (audience gogo-central-notifications). Do not weaken
+  that auth or hardcode credentials.
 
 ## Advertising (Google AdSense)
 

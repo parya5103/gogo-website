@@ -4,7 +4,7 @@ This file applies to work in parya5103/gogo-website.
 
 ## Repository architecture
 - Keep the root homepage on its existing React + Vite + static-site-generation architecture. Do not replace it with a different framework for routine visual changes.
-- Preserve the public product routes: /arrowout/, /crystalquest/, /sarkari-sarthi/, /pikanews/, and /gta6/.
+- Preserve the public product routes: /arrowout/, /crystalquest/, /sarkari-sarthi/, /pikanews/, /gta6/, and the /ai/ intelligence hub.
 - Preserve GoGo Account, Firebase Authentication, Cloud Firestore, legal pages, and current publishing workflows unless the owner explicitly asks for a change.
 - Work on feature branches and open pull requests. Do not commit directly to main.
 
@@ -19,6 +19,18 @@ This file applies to work in parya5103/gogo-website.
 - Sarkari Sarthi: calculate application deadlines in Asia/Kolkata; expired/cancelled jobs must not be searchable. needs_review and unknown verification states stay withheld from public search. Never invent missing dates, eligibility, or application links.
 - GTA 6 guide: verify time-sensitive platform/release/cheat claims against current authoritative sources, attribute third-party reporting, and avoid duplicate FAQ/disclaimer copy.
 - Ads: AdSense/AdMob must remain fail-closed until the real consent and provider integrations are configured and tested. ads.txt authorization or an account status is not proof of live impressions or earnings.
+
+## AI hub, GoGo tag and central backend
+
+- The /ai/ hub is generated from public feeds + the OpenRouter public model
+  catalogue. Model context windows and prices are provider-declared metadata,
+  not a quality leaderboard; never fabricate scores, benchmarks or prices.
+- The Google Tag Manager container (GTM-T5MRTKJZ) must remain exactly once
+  per GoGo-owned HTML page; do not add it to synced product folders (they
+  are overwritten by sync; tag product repos individually instead).
+- Keep the GoGo Central notification module (assets/js/gogo-notifications.js)
+  fail-closed; the OIDC-authorized /api/v1/automation/publish dispatch from
+  the sync workflow must keep its audience-scoped token flow.
 
 ## Security, SEO and privacy
 - No visitor-facing GitHub repository links/buttons or source-repository URLs.
