@@ -124,3 +124,5 @@ No indexing or submission success is claimed in this document; all of the above 
 2. Review open SEO PRs #71, #72, #86 and #145 for merge order and overlap; do not duplicate or merge them automatically.
 3. Audit page readability with rendered-page review and real user value, not arbitrary word-count targets. Improve only pages with unclear headings, long paragraphs, weak source attribution or thin original guidance.
 4. Use Search Console query/page exports and Links report to prioritize follow-up content and evaluate referring domains.
+
+- Anti-stuffing correction: the post-sync generator no longer appends a generic list of variants such as “sarkari naukri 2026” and “12th pass ki sarkari naukri” to the Sarkari Sarthi homepage. The existing job-discovery H1 and verified listings carry the intent; tests protect against reintroducing the keyword paragraph.
