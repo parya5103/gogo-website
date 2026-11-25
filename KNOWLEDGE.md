@@ -115,3 +115,5 @@ secrets here by design. Last updated: 2026-11-24 (documentation-sync audit).
 - Backlinks cannot be manufactured safely by code. Follow the ethical outreach plan in `docs/SEO_OFFPAGE_PLAN.md`; no paid links, PBNs, bulk directories or automated link exchanges.
 - Validation updates require checking the prerendered build output and SEO tests. This change has not been run locally in this GitHub-only session; CI results must be checked on the PR before merge.
 - Existing open SEO PRs (#71, #72, #86, #145) are separate work and must be reviewed for overlap/merge order rather than silently merged or overwritten.
+
+- First PR checks exposed a stale hard-coded H1 expectation in `scripts/prerender-home.mjs` (it required the old “Play. Prepare.” slogan). The SEO build and responsive jobs stopped at that guard, before their downstream checks. Updated the prerender guard to the new descriptive H1 and corrected the new H1/meta validation regexes; rerun CI and inspect all job results before marking validation complete.
