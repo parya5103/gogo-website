@@ -117,3 +117,5 @@ secrets here by design. Last updated: 2026-11-24 (documentation-sync audit).
 - Existing open SEO PRs (#71, #72, #86, #145) are separate work and must be reviewed for overlap/merge order rather than silently merged or overwritten.
 
 - First PR checks exposed a stale hard-coded H1 expectation in `scripts/prerender-home.mjs` (it required the old “Play. Prepare.” slogan). The SEO build and responsive jobs stopped at that guard, before their downstream checks. Updated the prerender guard to the new descriptive H1 and corrected the new H1/meta validation regexes; rerun CI and inspect all job results before marking validation complete.
+
+- Follow-up CI showed React server rendering HTML-escapes the ampersand in the H1 as `&amp;`. The prerender and publish guards were updated to check the serialized HTML entity, matching the actual rendered output. Re-run CI on the new head; previous failure is not a product runtime failure.
