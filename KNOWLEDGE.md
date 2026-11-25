@@ -30,9 +30,8 @@ secrets here by design. Last updated: 2026-11-24 (documentation-sync audit).
   "sync-pikanews" mirrors PikaNews. After merging an upstream fix,
   run the sync to propagate it here.
 - VERIFIED 2026-11-24: sync-products.yml currently checks out
-  parya5103/sarkarisarthi @gh-pages as the Sarkari Sarthi published-site
-  source. Confirm the actual source repository in the workflow file before
-  assuming Sarkari-Sarthi (uppercase) feeds this path.
+  parya5103/Sarkari-Sarthi @gh-pages as the Sarkari Sarthi published-site
+  source. The unhyphenated repository name is not the active source.
 - Feature branches + PRs only. Never merge without owner approval.
   Never commit directly to main.
 
@@ -119,3 +118,5 @@ secrets here by design. Last updated: 2026-11-24 (documentation-sync audit).
 - First PR checks exposed a stale hard-coded H1 expectation in `scripts/prerender-home.mjs` (it required the old “Play. Prepare.” slogan). The SEO build and responsive jobs stopped at that guard, before their downstream checks. Updated the prerender guard to the new descriptive H1 and corrected the new H1/meta validation regexes; rerun CI and inspect all job results before marking validation complete.
 
 - Follow-up CI showed React server rendering HTML-escapes the ampersand in the H1 as `&amp;`. The prerender and publish guards were updated to check the serialized HTML entity, matching the actual rendered output. Re-run CI on the new head; previous failure is not a product runtime failure.
+
+- CI exposed a stale repository-name assertion in `scripts/run-all-tests.mjs`: it expected the nonexistent `parya5103/sarkarisarthi` and prohibited the actual source. Verified GitHub repository `parya5103/Sarkari-Sarthi` exists and its `gh-pages` branch exists; corrected the test and README/knowledge to match the live workflow. No sync source or workflow behavior was changed.
