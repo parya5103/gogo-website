@@ -18,7 +18,7 @@ for (const path of protectedDirs) {
 }
 const before = new Map(await Promise.all(protectedFiles.map(async path=>[path,await digest(path)])));
 const builtIndex = await readFile(join(output,'index.html'),'utf8');
-if (!builtIndex.includes('id="root"') || !builtIndex.includes('GoGo Company: Browser Games, AI & Digital Media') || !builtIndex.includes('application/ld+json')) {
+if (!builtIndex.includes('id="root"') || !builtIndex.includes('GoGo Company: Browser Games, AI &amp; Digital Media') || !builtIndex.includes('application/ld+json')) {
   throw new Error('Refusing to publish: built homepage is not fully prerendered/SEO complete');
 }
 const builtAssets = join(output,'assets','gogo-home');
