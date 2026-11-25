@@ -122,3 +122,5 @@ secrets here by design. Last updated: 2026-11-24 (documentation-sync audit).
 - CI exposed a stale repository-name assertion in `scripts/run-all-tests.mjs`: it expected the nonexistent `parya5103/sarkarisarthi` and prohibited the actual source. Verified GitHub repository `parya5103/Sarkari-Sarthi` exists and its `gh-pages` branch exists; corrected the test and README/knowledge to match the live workflow. No sync source or workflow behavior was changed.
 
 - To avoid keyword stuffing, removed the generic search-term paragraph from the Sarkari Sarthi homepage post-sync enhancement. Its existing H1 (“Latest Government Jobs in India”), page-specific title/description, real job listings and official-source verification remain the search-intent signals. The regression test now protects that useful H1 and forbids the artificial keyword-list copy.
+
+- The GoGo AI Intelligence hub had a poetic H1 that omitted its actual search intent. Updated both its daily generator (`scripts/update-ai-hub.py`) and current generated `ai/index.html` to the concise descriptive H1 “AI News, Models & Research”; daily refresh will preserve it.
