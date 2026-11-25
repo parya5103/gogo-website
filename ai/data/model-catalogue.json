@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T18:19:57.757451+00:00",
+  "generatedAt": "2026-11-25T13:00:27.780274+00:00",
   "note": "Provider-declared catalogue metadata, not quality benchmarks. Verify current rates with providers.",
   "models": [
     {
@@ -416,6 +416,13 @@
       "output": 7.5
     },
     {
+      "id": "xiaomi/mimo-v2.6-flash-mopd",
+      "name": "Xiaomi: MiMo-V2.6-Flash-MOPD",
+      "context": 1048576,
+      "input": 0.5,
+      "output": 1.0
+    },
+    {
       "id": "thinkingmachines/inkling-2-mini",
       "name": "Thinking Machines: Inkling 2 Mini",
       "context": 1048576,
@@ -545,15 +552,15 @@
       "id": "minimax/minimax-m3.1-flash",
       "name": "MiniMax: MiniMax M3.1 Flash",
       "context": 1048576,
-      "input": 0.075,
-      "output": 0.3
+      "input": 0.15,
+      "output": 0.6
     },
     {
       "id": "deepseek/deepseek-v4.1-flash-1017",
       "name": "DeepSeek: DeepSeek V4.1 Flash 1017",
       "context": 1048576,
-      "input": 0.03,
-      "output": 0.2
+      "input": 0.15,
+      "output": 0.6
     },
     {
       "id": "deepseek/deepseek-v4.1-flash-1017:batch",
@@ -685,8 +692,8 @@
       "id": "~deepseek/deepseek-flash-latest",
       "name": "DeepSeek: DeepSeek Flash Latest",
       "context": 1048576,
-      "input": 0.03,
-      "output": 0.2
+      "input": 0.036,
+      "output": 0.5
     },
     {
       "id": "deepseek/deepseek-v4.1-flash",
@@ -694,13 +701,6 @@
       "context": 1048576,
       "input": 0.0507,
       "output": 0.2028
-    },
-    {
-      "id": "deepseek/deepseek-v4.1-flash:batch",
-      "name": "DeepSeek: DeepSeek V4.1 Flash (batch)",
-      "context": 1048576,
-      "input": 0.05,
-      "output": 0.15
     }
   ]
 }
