@@ -1117,8 +1117,8 @@ function openTelegramChannel() {
  * Open WhatsApp channel
  */
 function openWhatsappChannel() {
-    // Replace with actual WhatsApp invite link
-    window.open('https://chat.whatsapp.com/your-invite-link', '_blank', 'noopener,noreferrer');
+    // Official GoGo Sarkari Sarthi WhatsApp channel
+    window.open('https://whatsapp.com/channel/0029VbE1ulAAjPXQZiUbbu1Z', '_blank', 'noopener,noreferrer');
 }
 
 /**
