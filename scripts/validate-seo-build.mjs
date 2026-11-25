@@ -133,7 +133,7 @@ const crystalGuide = await read("crystalquest/guide.html");
 assert.match(crystalGuide, /href="strategy\.html"/, "Crystal Quest base guide must link to the strategy guide after product sync");
 
 const sarkariHome = await read("sarkari-sarthi/index.html");
-const sarkariH1 = sarkariHome.match(/<h1\\b[^>]*>([\\s\\S]*?)<\\/h1>/i)?.[1]?.replace(/<[^>]+>/g, " ").replace(/\\s+/g, " ").trim() || "";
+const sarkariH1 = sarkariHome.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i)?.[1]?.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim() || "";
 assert.equal(sarkariH1, "Latest Government Jobs in India", "Sarkari Sarthi homepage must retain its real jobs-discovery H1");
 assert.doesNotMatch(sarkariHome, /search terms such as|12th pass ki sarkari naukri/i, "Sarkari Sarthi must not inject a keyword-list paragraph");
 const keywordPages = [
