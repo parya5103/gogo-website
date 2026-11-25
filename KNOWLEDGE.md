@@ -124,3 +124,5 @@ secrets here by design. Last updated: 2026-11-24 (documentation-sync audit).
 - To avoid keyword stuffing, removed the generic search-term paragraph from the Sarkari Sarthi homepage post-sync enhancement. Its existing H1 (“Latest Government Jobs in India”), page-specific title/description, real job listings and official-source verification remain the search-intent signals. The regression test now protects that useful H1 and forbids the artificial keyword-list copy.
 
 - The GoGo AI Intelligence hub had a poetic H1 that omitted its actual search intent. Updated both its daily generator (`scripts/update-ai-hub.py`) and current generated `ai/index.html` to the concise descriptive H1 “AI News, Models & Research”; daily refresh will preserve it.
+
+- Latest validation snapshot (2026-11-25): SEO validation, CI Tests, frontend build/performance and security scan passed on the current feature branch; responsive regression reported horizontal overflow on `/sarkari-sarthi/` at 390px and 430px in the previous completed run. This is not a verified fix and remains a separate mobile QA item. CodeQL status must be checked again before merge.
