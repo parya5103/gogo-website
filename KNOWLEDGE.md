@@ -130,3 +130,5 @@ secrets here by design. Last updated: 2026-11-24 (documentation-sync audit).
 - CI rerun found the prerender content guard relied on brittle raw-HTML substring checks. It now normalizes rendered visible text (scripts/styles/tags/entities/whitespace) before checking the homepage H1, brand disambiguation and FAQ heading. Awaiting a fresh full CI run.
 
 - Latest GitHub Actions logs pinpointed a JavaScript syntax error in the new prerender guard: regex literals contained doubled backslashes, so the closing script/style regex parsed an invalid flags sequence. Corrected the regex literals to normal JavaScript regex syntax. This is a CI-only validation-script fix; verify the next PR run before merging.
+
+- Next CI run parsed the regexes successfully but the FAQ guard still had a doubled backslash (`\\s`) in its whitespace matcher, causing a false negative. Corrected it to JavaScript `\s+` so the check accepts the rendered heading whitespace. Recheck the complete CI suite; the current branch has not been merged or deployed.
