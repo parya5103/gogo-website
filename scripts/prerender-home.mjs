@@ -13,7 +13,7 @@ try {
   let html = await readFile(path, 'utf8');
   if (!html.includes('<div id="root" data-prerender-placeholder></div>')) throw new Error('Vite output is missing the deterministic #root prerender placeholder');
   html = html.replace('<div id="root" data-prerender-placeholder></div>', '<div id="root">' + markup + '</div>');
-  if (!html.includes('Play. Prepare.') || !(/Brand disambiguation/i.test(html)) || !html.includes('Frequently asked')) throw new Error('Prerendered HTML is missing required indexable content');
+  if (!html.includes('GoGo Company: Browser Games, AI & Digital Media') || !(/Brand disambiguation/i.test(html)) || !html.includes('Frequently asked')) throw new Error('Prerendered HTML is missing required indexable content');
   await writeFile(path, html);
   console.log('[prerender] Built the clean product-first homepage without third-party feed excerpts or search-trend snapshots.');
 } finally { await server.close(); }
