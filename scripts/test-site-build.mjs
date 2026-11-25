@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile, stat } from 'node:fs/promises';
 const root = process.cwd();
 const html = await readFile(root + '/index.html','utf8');
-assert.match(html, /Play\. Prepare\./, 'homepage has an SSR hero heading');
+assert.match(html, /GoGo Company: Browser Games, AI &amp; Digital Media/, 'homepage has a descriptive SSR SEO heading');
 assert.match(html, /href="\/arrowout\//, 'Arrow Out link is crawlable');
 assert.match(html, /href="\/crystalquest\//, 'Crystal Quest link is crawlable');
 assert.match(html, /href="\/sarkari-sarthi\//, 'Sarkari Sarthi link is crawlable');
