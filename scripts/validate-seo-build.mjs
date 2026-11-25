@@ -132,8 +132,10 @@ for (const href of ["guide.html", "privacy.html", "terms.html", "../"]) {
 const crystalGuide = await read("crystalquest/guide.html");
 assert.match(crystalGuide, /href="strategy\.html"/, "Crystal Quest base guide must link to the strategy guide after product sync");
 
+const sarkariHome = await read("sarkari-sarthi/index.html");
+assert.match(sarkariHome, /<h1>Latest Government Jobs in India<\\/h1>/, "Sarkari Sarthi homepage must retain its real jobs-discovery H1");
+assert.doesNotMatch(sarkariHome, /search terms such as|12th pass ki sarkari naukri/i, "Sarkari Sarthi must not inject a keyword-list paragraph");
 const keywordPages = [
-  ["sarkari-sarthi/index.html", /sarkari naukri 2026/i],
   ["arrowout/about.html", /arrow wala puzzle game/i]
 ];
 const pikanews = await read("pikanews/index.html");
