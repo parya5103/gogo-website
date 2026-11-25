@@ -104,3 +104,14 @@ secrets here by design. Last updated: 2026-11-24 (documentation-sync audit).
 - AdSense/AdMob remain disabled until required consent and provider integrations are actually configured and verified. The shared AdSense loader uses a fail-closed CMP gate (cmpReady=false). Never claim revenue or real ad serving based on a placeholder, connected-provider label, ads.txt authorization or account status alone.
 - Public pages must not expose GitHub repository links/buttons. The master test suite includes visitor-facing GitHub-link absence checks.
 - OpenUI reference skill lives at .agents/skills/openui/SKILL.md. No OpenUI agent/app or local inference endpoint is currently configured. OpenUI rendering still requires model inference; Gateway requires a server-side THESYS_API_KEY. Do not add fake model responses or place secrets in client code. A keyless alternative requires a separately hosted local model endpoint (for example Ollama/llama.cpp) and an authorized connection to that host.
+
+
+## SEO quality improvement round (2026-11-25)
+
+- Working branch: `seo/content-quality-audit-2026-11` (feature branch; do not merge without owner approval).
+- Re-audit found that the homepage title still described the portfolio as “Sarkari Exam Tools” and omitted the AI hub, while the hero H1 (“Play. Prepare. Grow with GoGo.”) was brand-friendly but did not state the site's main topics. The source is `frontend/index.html` + `frontend/src/App.jsx`; the root `index.html` is generated output and must remain in sync.
+- Proposed homepage positioning: title “GoGo Company | Browser Games, AI & Digital Media”; description names Arrow Out!, Crystal Quest, Sarkari Sarthi, PikaNews and GoGo AI Intelligence; one descriptive H1 names browser games, AI and digital media. This is a focused relevance improvement, not a ranking guarantee.
+- Existing product landing pages already have distinct titles and one relevant H1 in the sampled source review. Keep product-specific intent on each product page; do not force every keyword onto the homepage.
+- Backlinks cannot be manufactured safely by code. Follow the ethical outreach plan in `docs/SEO_OFFPAGE_PLAN.md`; no paid links, PBNs, bulk directories or automated link exchanges.
+- Validation updates require checking the prerendered build output and SEO tests. This change has not been run locally in this GitHub-only session; CI results must be checked on the PR before merge.
+- Existing open SEO PRs (#71, #72, #86, #145) are separate work and must be reviewed for overlap/merge order rather than silently merged or overwritten.
