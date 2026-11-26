@@ -16,12 +16,11 @@ Scope: earned editorial references for the GoGo Company portfolio. This is a pro
 
 | Prospect | Fit | Cost / conditions observed | Next action |
 |---|---|---|---|
-| [OttersPlay — Submit a browser game](https://ottersplay.com/submit/) | Arrow Out! and Crystal Quest: accepts original browser games, requests controls, gameplay and creator details | Free review is available; no account required; no backlink required; no guaranteed listing. Paid priority exists but is not recommended | Prepare separate free submissions; email option is listed on the page |
-| [Zadely — Submit a game](https://zadely.com/submit/) | Both browser puzzle games | Free review by email; no backlink required; no guaranteed review/listing date. Paid priority exists but is not recommended | Prepare separate free submissions |
-| [IndieRadar](https://indieradar.games/submit) | Puzzle category fits both games | Manual review; asks for 200–400 character pitch, cover image URL and contact email; no listing guarantee | Prepare one pitch per game and use an approved public cover image |
-| [GAMES.GG — Free listing](https://partners.games.gg/free-listing) | Browser game listings | Site states $0 listing and human review; current wait shown as about three weeks. Listing/traffic is not guaranteed | Submit both games if the free intake remains available |
-| [DLE.GAMES](https://dle.games/submit) | Browser-first puzzle games | Free submission; account required; editorial review; no SDK required | Create a listing only after checking current account and content terms |
-| [Game Dev Assembly — Indie Games Directory](https://gamedevassembly.com/pages/submit-indie-game-directory) | Browser games are accepted, although the directory also targets PC/Mac/Linux/console/mobile | Submission reviewed; no feature guarantee | Lower priority; submit only if browser titles are in current scope |
+| [OttersPlay — Submit a browser game](https://ottersplay.com/submit/) | Accepts AI-made and indie browser games; both GoGo games fit as indie originals if their live builds and credits pass review | Free review is $0, no account and no backlink required; no promised review date, listing or traffic. Optional $9.90 priority is not recommended | High-priority free review; send one factual email per game to gx03410@gmail.com |
+| [Zadely — Submit a game](https://zadely.com/submit/) | Accepts indie browser games and asks for live URL, gameplay, controls and creator details | Free email review; usually 2–3 weeks or longer; no backlink required. Published creator/source links are rel=nofollow, so treat this as referral discovery, not followed-link SEO | High-priority free review; send one email per game to xu250618@gmail.com |
+| [IndieRadar](https://indieradar.games/submit) | Puzzle category fits both games; direct playable URL accepted | Listing currently free; human editorial review; 200–400 character pitch, direct 16:9 image URL and contact email required. Badge optional; no traffic or ranking guarantee | Prepare two short pitches and an image GoGo has rights to share |
+| [DLE.GAMES](https://dle.games/submit) | Strong topical fit: browser-first daily puzzles, logic challenges and replayable web games | Free registration and submission; account required; human review; stable browser URL is sufficient, no SDK required | High-priority candidate after checking current account and privacy terms |
+| [GAMES.GG — Free listing](https://partners.games.gg/free-listing) | General indie-game directory, but its intake asks for Steam, itch.io or store link and supported platforms | Listing is $0 and manually reviewed; wait shown about three weeks; paid fast-track is optional and not recommended | Hold: GoGo games are browser-only; ask whether direct browser URLs are accepted before submitting |
 
 ### Do not use without further rights/policy review
 
@@ -66,6 +65,12 @@ Scope: earned editorial references for the GoGo Company portfolio. This is a pro
 - Multiplayer: Single-player (confirm on the live build before sending).
 - Embedding: Unknown / not granted by this submission note. Answer “No” or “Unknown” unless a separate distribution permission is approved.
 - Cover image: Use only an image GoGo owns and can authorize for directory use; do not copy third-party art.
+
+
+### IndieRadar 200–400 character pitches
+
+- **Arrow Out!** — Arrow Out! is a free browser logic puzzle with 1,000 levels. Read each arrow's direction, find an unobstructed route to the board edge and plan the order that clears the board. A short-session spatial reasoning challenge from GoGo Company.
+- **Crystal Quest** — Crystal Quest: Gem Legends is a free fantasy match-3 browser adventure with 27 levels across three regions. Swap neighbouring gems, create special matches and complete level objectives in a compact campaign from GoGo Company.
 
 ## Copy drafts
 
