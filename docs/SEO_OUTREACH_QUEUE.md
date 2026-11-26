@@ -266,3 +266,11 @@ Do not post both games to the same subreddit on the same day. Check the current 
 - SMEPost Search Console property `sc-domain:gogocompany.in` is available in free recent-three-days mode only. On 2026-11-26, the latest returned range was 2026-11-21..2026-11-23: Sarkari Sarthi MP jobs 13 impressions/0 clicks/avg position 34.31; PikaNews 8/0/9.25; homepage 6/0/9.50; branded query “gogo company” 4/0/position 5. These are a tiny three-day sample, not monthly totals.
 - GSC Wizard access is blocked by expired subscription; OpenSEO backlink overview remains blocked by insufficient credits. Referring-domain totals and GA4 referral sessions remain unverified.
 - Never count a directory submission as a published backlink. Verify the exact public listing, canonical/indexability, destination URL and `rel` attribute before recording a backlink. Then monitor GA4 referral sessions/engagement and GSC links when access allows.
+
+
+## 2026-11-26 — final identity check on just1more.games
+
+- The just1more.games form is free, has no login, payment, reciprocal badge or CAPTCHA, and requires only game name, playable URL and creator/studio. Email is optional.
+- The automation's search results mapped “Arrow Out!” to `https://arrowsout.io/` by NISHAD GAMES (Pvt) Ltd. and “Crystal Quest” to `https://dosgames.com/game/crystal-quest-2/` by Patrick Buckland / Casady & Greene. Both are unrelated same-name products, not GoGo Company's games.
+- No submission was made. Do not submit or claim either result. The correct GoGo destinations remain `https://gogocompany.in/arrowout/` (Arrow Out!) and `https://gogocompany.in/crystalquest/` (Crystal Quest: Gem Legends), with creator/studio GoGo Company.
+- A future just1more submission is technically possible without an email address, but it must use the exact GoGo-hosted URLs and GoGo Company as studio, and only if the submitter confirms the creator-rights checkbox. Do not use the mismatched third-party game URLs.
