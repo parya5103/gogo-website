@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T13:00:27.780274+00:00",
+  "generatedAt": "2026-11-26T12:41:35.327518+00:00",
   "note": "Provider-declared catalogue metadata, not quality benchmarks. Verify current rates with providers.",
   "models": [
     {
@@ -573,7 +573,7 @@
       "id": "reflection/beam-1.0-501b-a23b",
       "name": "Reflection: Beam 1.0 501B A23B",
       "context": 1048576,
-      "input": 0.25,
+      "input": 0.3,
       "output": 1.0
     },
     {
@@ -589,20 +589,6 @@
       "context": 1048576,
       "input": 0.15,
       "output": 0.47
-    },
-    {
-      "id": "unbiased/pareto-26.10",
-      "name": "Pareto 26.10",
-      "context": 1048576,
-      "input": 0.8,
-      "output": 3.2
-    },
-    {
-      "id": "~unbiased/pareto-latest",
-      "name": "Pareto Latest",
-      "context": 1048576,
-      "input": 0.8,
-      "output": 3.2
     },
     {
       "id": "google/gemini-4-argon",
@@ -638,13 +624,6 @@
       "context": 1048576,
       "input": 0.075,
       "output": 0.225
-    },
-    {
-      "id": "unbiased/pareto-26.10-preview",
-      "name": "Pareto 26.10 Preview",
-      "context": 1048576,
-      "input": 0.8,
-      "output": 3.2
     },
     {
       "id": "fireworks/ember-1",
@@ -685,8 +664,8 @@
       "id": "~deepseek/deepseek-pro-latest",
       "name": "DeepSeek: DeepSeek Pro Latest",
       "context": 1048576,
-      "input": 0.0999,
-      "output": 5.0
+      "input": 0.111,
+      "output": 4.44
     },
     {
       "id": "~deepseek/deepseek-flash-latest",
@@ -699,8 +678,29 @@
       "id": "deepseek/deepseek-v4.1-flash",
       "name": "DeepSeek: DeepSeek V4.1 Flash",
       "context": 1048576,
-      "input": 0.0507,
-      "output": 0.2028
+      "input": 0.14,
+      "output": 0.42
+    },
+    {
+      "id": "deepseek/deepseek-v4.1-flash:batch",
+      "name": "DeepSeek: DeepSeek V4.1 Flash (batch)",
+      "context": 1048576,
+      "input": 0.05,
+      "output": 0.15
+    },
+    {
+      "id": "meta/muse-spark-1.3-contributor",
+      "name": "Meta: Muse Spark 1.3 Contributor",
+      "context": 1048576,
+      "input": 0.1,
+      "output": 0.2
+    },
+    {
+      "id": "meta/muse-spark-1.3",
+      "name": "Meta: Muse Spark 1.3",
+      "context": 1048576,
+      "input": 1.25,
+      "output": 4.25
     }
   ]
 }
