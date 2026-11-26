@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T12:41:35.327518+00:00",
+  "generatedAt": "2026-11-26T16:31:26.387448+00:00",
   "note": "Provider-declared catalogue metadata, not quality benchmarks. Verify current rates with providers.",
   "models": [
     {
@@ -552,8 +552,8 @@
       "id": "minimax/minimax-m3.1-flash",
       "name": "MiniMax: MiniMax M3.1 Flash",
       "context": 1048576,
-      "input": 0.15,
-      "output": 0.6
+      "input": 0.075,
+      "output": 0.3
     },
     {
       "id": "deepseek/deepseek-v4.1-flash-1017",
@@ -678,8 +678,8 @@
       "id": "deepseek/deepseek-v4.1-flash",
       "name": "DeepSeek: DeepSeek V4.1 Flash",
       "context": 1048576,
-      "input": 0.14,
-      "output": 0.42
+      "input": 0.0507,
+      "output": 0.2028
     },
     {
       "id": "deepseek/deepseek-v4.1-flash:batch",
