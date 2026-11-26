@@ -131,6 +131,14 @@ jobs:
           grep -Fq "parsed.protocol === 'https:'" pikanews/firebase-messaging-sw.js
           grep -Fq "parsed.hostname === 'gogocompany.in'" pikanews/firebase-messaging-sw.js
           grep -Fq 'parsed.origin === self.location.origin' pikanews/firebase-messaging-sw.js
+          # Keep the deployed sitemap exactly aligned with the upstream generator.
+          cmp -s src-pikanews/frontend/sitemap.xml pikanews/sitemap.xml || {
+            echo "::error::Published PikaNews sitemap is stale or differs from the upstream source."
+            diff -u src-pikanews/frontend/sitemap.xml pikanews/sitemap.xml || true
+            exit 1
+          }
+          grep -Eiq '<meta name="robots" content="index,follow' pikanews/index.html
+          grep -Fq '<link rel="canonical" href="https://gogocompany.in/pikanews/">' pikanews/index.html
           # Sitemaps and feed must reference the production domain.
           grep -q 'gogocompany.in/pikanews/' pikanews/sitemap.xml
           grep -q 'gogocompany.in/pikanews/' pikanews/feed.xml
