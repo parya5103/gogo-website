@@ -2,7 +2,7 @@
 
 Consolidated operational knowledge for gogo-website (gogocompany.in),
 kept in-repo so context survives across sessions and machines. No
-secrets here by design. Last updated: 2026-11-24 (documentation-sync audit).
+secrets here by design. Last updated: 2026-11-26 (PR audit and earned-link outreach update).
 
 ## What this repo is
 
@@ -32,8 +32,7 @@ secrets here by design. Last updated: 2026-11-24 (documentation-sync audit).
 - VERIFIED 2026-11-24: sync-products.yml currently checks out
   parya5103/Sarkari-Sarthi @gh-pages as the Sarkari Sarthi published-site
   source. The unhyphenated repository name is not the active source.
-- Feature branches + PRs only. Never merge without owner approval.
-  Never commit directly to main.
+- Feature branches + PRs only. Merge only when the owner explicitly requests it and the diff, CI state, and compatibility have been reviewed. Never merge an open PR solely because it is open; never commit feature changes directly to main.
 
 ## Key tests and gates
 
@@ -145,3 +144,13 @@ secrets here by design. Last updated: 2026-11-24 (documentation-sync audit).
 - docs/SEO_OFFPAGE_PLAN.md now records GSC evidence, why the empty PikaNews News sitemap is intentionally not declared, and how stale SEO PRs must be ported safely.
 - Stale open SEO PRs #71/#72/#86/#145 are not safe to merge as-is: they are diverged and 46–183 commits behind current main. Port selected ideas to a fresh branch after checking current generated sources. Avoid generic meta-description suffixes and thin pSEO indexing.
 - GSC Wizard URL Inspection/full historical reports are blocked by expired subscription; SMEPost currently exposes only 3 finalized days and no comparison. CrawlSEO has not been deployed because no authorized remote/SSH device is connected; do not guess Oracle credentials, secrets or deploy defaults.
+
+
+## 2026-11-26 PR and backlink outreach continuation
+
+- GitHub PR audit for `parya5103/gogo-website`: merged #148 (CodeQL init 4.39.4), #149 (CodeQL upload-sarif 4.39.4), and #151 (CodeQL analyze 4.39.4). These are narrow pinned-action updates. No site source or GitHub Pages publishing workflow was changed by these merges.
+- The remaining 14 open PRs were inspected by metadata and changed-file/patch review. Do not merge stale/non-mergeable branches as-is. #145 canonical audit, #72 PikaNews descriptions, #71 programmatic hubs, #78 Sarkari published-output, #86 AdSense/content quality, and #109 OpenUI renderer have diverged from current main and need selective port/rebase plus fresh tests. #57 upload-artifact v7 is non-mergeable. #83 terms wording must be reconciled with the live optional GoGo Account/cloud-save implementation before merge. Major dependency PRs #153 Vite 8, #150 plugin-react 6, #24 Firebase 13, #23 rules-unit-testing 6, #22 esbuild 0.28, and #10 Vitest 5 are not approved for blind merge; validate supported Node engines, account build, tests and deploy workflow first. PR count snapshot after merges: 14 still open.
+- Earned-link outreach started with no paid placement and no reciprocal-link promises. PlayNewt accepted Arrow Out! submission #515 (status URL recorded in docs/SEO_OUTREACH_QUEUE.md; review pending) and accepted Crystal Quest submission #11322032 (review pending). GAMES.GG accepted free listing requests for Arrow Out! and Crystal Quest; both are queued for editorial review, with the free queue showing up to six weeks. None is a published backlink yet; verify the public listing URL and link attribute before marking earned.
+- just1more.games Arrow Out! form was filled and submitted through the browser, but Cloudflare Turnstile appeared and no success confirmation was visible. Treat it as unconfirmed; do not count it as a submission or backlink until checked.
+- OpenSEO backlink-overview lookup for gogocompany.in was blocked because the connected organization has insufficient credits. Do not retry until credits are available; use free/manual checks in the meantime. No backlink count or referring-domain metric is currently verified.
+- Continue outreach only to relevant free editorial browser-game directories. Track accepted, pending, published, declined, link rel attribute, and referral traffic separately. Never claim ranking impact from a pending listing.
