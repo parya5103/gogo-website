@@ -405,7 +405,7 @@ check('PikaNews: non-editorial category and stream pages remain noindex and outs
   for (const page of ['pikanews/bollywood.html', 'pikanews/technology.html', 'pikanews/latest.html', 'pikanews/article.html']) {
     const html = read(page);
     assert((robotsOf(html) || '').includes('noindex'), page + ' must remain noindex until original editorial exists');
-    const url = 'https://gogocompany.in/' + page.replace(/^pikanews\//, 'pikanews/');
+    const url = 'https://gogocompany.in/' + page;
     assert(!sitemap.includes(url), page + ' must not appear in the indexable PikaNews sitemap');
   }
 });
@@ -419,7 +419,7 @@ check('PikaNews: latest and terms descriptions meet length limits', () => {
 
 check('Sarkari Sarthi: heading hierarchy does not skip levels', () => {
   const html = read('sarkari-sarthi/index.html');
-  const levels = [...html.matchAll(/<h([1-6])\\b[^>]*>/gi)].map(match => Number(match[1]));
+  const levels = [...html.matchAll(/<h([1-6])\b[^>]*>/gi)].map(match => Number(match[1]));
   for (let i = 1; i < levels.length; i += 1) {
     assert(levels[i] <= levels[i - 1] + 1, 'heading hierarchy skips from H' + levels[i - 1] + ' to H' + levels[i]);
   }
