@@ -130,3 +130,24 @@ GoGo Company
 ## Measurement sheet
 
 Record one row for every actual submission: date, target, product, free/paid status, submission URL, status, response date, published listing URL, link attribute (if known), referral sessions and notes. Never mark “submitted” until the form/email is actually sent, and never mark “backlink earned” until the published page is verified.
+
+
+## 2026-11-26 — actual submissions and follow-up status
+
+| Date | Directory | Product | Cost | Submission / confirmation | Current status | Backlink status |
+|---|---|---|---:|---|---|---|
+| 2026-11-26 | [PlayNewt](https://playnewt.com/submit/) | Arrow Out! | Free | [Submission #515](https://playnewt.com/submit/status/?id=515&t=1d4103a2381e31104de36010c683be9b&n=new) | Received; in editorial/browser review | Not earned yet; verify published page and link attribute |
+| 2026-11-26 | [PlayNewt](https://playnewt.com/submit/) | Crystal Quest | Free | [Submission #11322032](https://playnewt.com/submit/11322032/status/) | Received; status page available | Not earned yet; verify published page and link attribute |
+| 2026-11-26 | [GAMES.GG](https://partners.games.gg/free-listing) | Arrow Out! | Free | [Thank-you page](https://partners.games.gg/thank-you/free-listing) | Accepted into free editorial queue; up to 6 weeks | Not earned yet; verify listing page and outbound link |
+| 2026-11-26 | [GAMES.GG](https://partners.games.gg/free-listing) | Crystal Quest | Free | [Thank-you page](https://partners.games.gg/thank-you/free-listing) | Accepted into free editorial queue | Not earned yet; verify listing page and outbound link |
+| 2026-11-26 | [just1more.games](https://just1more.games/submit) | Arrow Out! | Free | Browser form filled; no visible confirmation | Unconfirmed — Cloudflare Turnstile appeared | Do not count |
+
+**Important:** GAMES.GG's Crystal Quest form required a contact email and the browser submission used `contact@gogocompany.in`. Confirm that this inbox is monitored so editorial follow-up is not missed. The Arrow Out! form did not require sign-in or a paid option. No paid fast-track was selected for either game.
+
+### Next follow-up
+
+1. Check the two PlayNewt status pages and complete developer-page verification if requested.
+2. Monitor GAMES.GG free-listing queue and respond to editorial requests from the submitted contact inbox.
+3. Revisit just1more.games only if the submission status can be verified; avoid duplicate submission while uncertain.
+4. Once listings publish, record each public listing URL, inspect whether its outbound link is followed/nofollow/UGC, and add GA4 referral measurement where available.
+5. Recheck Search Console referring domains after the pages are public and indexed. OpenSEO backlink API currently cannot be queried because the connected account has insufficient credits.
