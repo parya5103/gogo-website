@@ -3,7 +3,7 @@ from pathlib import Path
 import json,re,math,xml.etree.ElementTree as ET
 root=Path(__file__).resolve().parents[1]
 page=(root/"ai/index.html").read_text(encoding="utf-8")
-assert '<title>AI News Today, Latest AI Models &amp; Comparisons | GoGo AI Intelligence</title>' in page
+assert '<title>AI News &amp; Model Updates | GoGo AI Intelligence</title>' in page
 assert 'name="description"' in page and 'name="keywords"' in page
 assert 'rel="canonical" href="https://gogocompany.in/ai/"' in page
 assert 'application/ld+json' in page and 'CollectionPage' in page
@@ -33,10 +33,14 @@ assert re.search(r'<meta name="robots" content="index,follow,max-image-preview:l
 assert len(re.findall(r'<meta name="description"',pika,re.I))==1
 assert len(re.findall(r'<link rel="canonical"',pika,re.I))==1
 assert "<loc>https://gogocompany.in/pikanews/</loc>" in pika_sitemap
-for name in ("latest","trending","bollywood","hollywood","entertainment","technology","gaming","business","sports"):
+for name in ("latest","trending","bollywood","hollywood","entertainment","technology","gaming","business","sports","world","science"):
  hub=(root/"pikanews"/(name+".html")).read_text(encoding="utf-8")
- assert re.search(r'<meta name="robots" content="noindex, ?follow">',hub,re.I), f"PikaNews hub {name} must remain noindex"
- assert f"<loc>https://gogocompany.in/pikanews/{name}.html</loc>" not in pika_sitemap
+ listed=f"<loc>https://gogocompany.in/pikanews/{name}.html</loc>" in pika_sitemap
+ if name=="trending" or not listed:
+  assert re.search(r'<meta name="robots" content="noindex, ?follow">',hub,re.I), f"PikaNews hub {name} must stay noindex unless it passes the listing quality gate"
+ else:
+  assert re.search(r'<meta name="robots" content="index, ?follow">',hub,re.I), f"Indexable PikaNews hub {name} must declare index,follow"
+assert "<loc>https://gogocompany.in/pikanews/trending.html</loc>" not in pika_sitemap
 ET.parse(root/"ai/feed.xml")
 sitemap=(root/"sitemap.xml").read_text(encoding="utf-8")
 assert "https://gogocompany.in/ai/" in sitemap
