@@ -127,7 +127,7 @@ if not rows:rows=['<tr><td colspan="4">Model catalogue will appear after refresh
 modified=news.get("generatedAt",dt.datetime.now(dt.timezone.utc).isoformat())
 schema={"@context":"https://schema.org","@type":"CollectionPage","name":"GoGo AI Intelligence — Global AI News, Models & Research","url":"https://gogocompany.in/ai/","description":"Daily global AI news, model catalogue and comparison resources, open-source tools and research updates.","isPartOf":{"@id":"https://gogocompany.in/#website"},"publisher":{"@id":"https://gogocompany.in/#organization"},"dateModified":modified}
 page='''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AI News Today, Latest AI Models &amp; Comparisons | GoGo AI Intelligence</title>
+<title>AI News &amp; Model Updates | GoGo AI Intelligence</title>
 <meta name="description" content="Global AI news updated daily: GPT, Gemini, Claude and open-source model releases, AI tools, model API pricing, research papers, robotics and industry updates with original sources.">
 <meta name="keywords" content="AI news today, latest AI news, global artificial intelligence news, AI models comparison, GPT vs Gemini vs Claude, open source AI models, AI tools, machine learning research, LLM API pricing, AI model leaderboard, AI research papers, AI agents, robotics news, generative AI updates 2026">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1"><link rel="canonical" href="https://gogocompany.in/ai/"><meta name="theme-color" content="#10182d">
