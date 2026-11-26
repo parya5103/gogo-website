@@ -38,6 +38,9 @@ This file applies to work in parya5103/gogo-website.
 - Firebase client-side admin checks are not authorization; enforce access in Firestore Security Rules/server-side policy.
 - Do not publish private login email collections or promotional lists without explicit authorization and a documented privacy basis.
 - Keep canonical, robots, sitemap, structured data and visible content consistent. Do not add noindex pages to sitemaps.
+- Use one descriptive H1 per indexable landing page and page-specific titles/descriptions. Place each primary search intent on its most relevant page; never stuff repeated keywords into body copy or add generic SEO blocks to aggregated feeds.
+- Readability improvements must help visitors (clear headings, concise paragraphs, descriptive links and useful original guidance), not inflate word counts. Do not claim keyword volume or ranking gains without dated Search Console/keyword-source evidence.
+- Backlink work must be earned and relevant. Never buy links, use PBNs, bulk directory spam, automated comments or forced reciprocal exchanges.
 
 ## OpenUI and local inference
 - The OpenUI skill/reference is in .agents/skills/openui/SKILL.md.

@@ -30,9 +30,8 @@ secrets here by design. Last updated: 2026-11-24 (documentation-sync audit).
   "sync-pikanews" mirrors PikaNews. After merging an upstream fix,
   run the sync to propagate it here.
 - VERIFIED 2026-11-24: sync-products.yml currently checks out
-  parya5103/sarkarisarthi @gh-pages as the Sarkari Sarthi published-site
-  source. Confirm the actual source repository in the workflow file before
-  assuming Sarkari-Sarthi (uppercase) feeds this path.
+  parya5103/Sarkari-Sarthi @gh-pages as the Sarkari Sarthi published-site
+  source. The unhyphenated repository name is not the active source.
 - Feature branches + PRs only. Never merge without owner approval.
   Never commit directly to main.
 
@@ -104,3 +103,34 @@ secrets here by design. Last updated: 2026-11-24 (documentation-sync audit).
 - AdSense/AdMob remain disabled until required consent and provider integrations are actually configured and verified. The shared AdSense loader uses a fail-closed CMP gate (cmpReady=false). Never claim revenue or real ad serving based on a placeholder, connected-provider label, ads.txt authorization or account status alone.
 - Public pages must not expose GitHub repository links/buttons. The master test suite includes visitor-facing GitHub-link absence checks.
 - OpenUI reference skill lives at .agents/skills/openui/SKILL.md. No OpenUI agent/app or local inference endpoint is currently configured. OpenUI rendering still requires model inference; Gateway requires a server-side THESYS_API_KEY. Do not add fake model responses or place secrets in client code. A keyless alternative requires a separately hosted local model endpoint (for example Ollama/llama.cpp) and an authorized connection to that host.
+
+
+## SEO quality improvement round (2026-11-25)
+
+- Working branch: `seo/content-quality-audit-2026-11` (feature branch; do not merge without owner approval).
+- Re-audit found that the homepage title still described the portfolio as “Sarkari Exam Tools” and omitted the AI hub, while the hero H1 (“Play. Prepare. Grow with GoGo.”) was brand-friendly but did not state the site's main topics. The source is `frontend/index.html` + `frontend/src/App.jsx`; the root `index.html` is generated output and must remain in sync.
+- Proposed homepage positioning: title “GoGo Company | Browser Games, AI & Digital Media”; description names Arrow Out!, Crystal Quest, Sarkari Sarthi, PikaNews and GoGo AI Intelligence; one descriptive H1 names browser games, AI and digital media. This is a focused relevance improvement, not a ranking guarantee.
+- Existing product landing pages already have distinct titles and one relevant H1 in the sampled source review. Keep product-specific intent on each product page; do not force every keyword onto the homepage.
+- Backlinks cannot be manufactured safely by code. Follow the ethical outreach plan in `docs/SEO_OFFPAGE_PLAN.md`; no paid links, PBNs, bulk directories or automated link exchanges.
+- Validation updates require checking the prerendered build output and SEO tests. This change has not been run locally in this GitHub-only session; CI results must be checked on the PR before merge.
+- Existing open SEO PRs (#71, #72, #86, #145) are separate work and must be reviewed for overlap/merge order rather than silently merged or overwritten.
+
+- First PR checks exposed a stale hard-coded H1 expectation in `scripts/prerender-home.mjs` (it required the old “Play. Prepare.” slogan). The SEO build and responsive jobs stopped at that guard, before their downstream checks. Updated the prerender guard to the new descriptive H1 and corrected the new H1/meta validation regexes; rerun CI and inspect all job results before marking validation complete.
+
+- Follow-up CI showed React server rendering HTML-escapes the ampersand in the H1 as `&amp;`. The prerender and publish guards were updated to check the serialized HTML entity, matching the actual rendered output. Re-run CI on the new head; previous failure is not a product runtime failure.
+
+- CI exposed a stale repository-name assertion in `scripts/run-all-tests.mjs`: it expected the nonexistent `parya5103/sarkarisarthi` and prohibited the actual source. Verified GitHub repository `parya5103/Sarkari-Sarthi` exists and its `gh-pages` branch exists; corrected the test and README/knowledge to match the live workflow. No sync source or workflow behavior was changed.
+
+- To avoid keyword stuffing, removed the generic search-term paragraph from the Sarkari Sarthi homepage post-sync enhancement. Its existing H1 (“Latest Government Jobs in India”), page-specific title/description, real job listings and official-source verification remain the search-intent signals. The regression test now protects that useful H1 and forbids the artificial keyword-list copy.
+
+- The GoGo AI Intelligence hub had a poetic H1 that omitted its actual search intent. Updated both its daily generator (`scripts/update-ai-hub.py`) and current generated `ai/index.html` to the concise descriptive H1 “AI News, Models & Research”; daily refresh will preserve it.
+
+- Latest validation snapshot (2026-11-25): SEO validation, CI Tests, frontend build/performance and security scan passed on the current feature branch; responsive regression reported horizontal overflow on `/sarkari-sarthi/` at 390px and 430px in the previous completed run. This is not a verified fix and remains a separate mobile QA item. CodeQL completed successfully; the responsive regression remains failed on `/sarkari-sarthi/` at 390px and 430px and is not fixed by this PR.
+
+- CI rerun found the prerender content guard relied on brittle raw-HTML substring checks. It now normalizes rendered visible text (scripts/styles/tags/entities/whitespace) before checking the homepage H1, brand disambiguation and FAQ heading. Awaiting a fresh full CI run.
+
+- Latest GitHub Actions logs pinpointed a JavaScript syntax error in the new prerender guard: regex literals contained doubled backslashes, so the closing script/style regex parsed an invalid flags sequence. Corrected the regex literals to normal JavaScript regex syntax. This is a CI-only validation-script fix; verify the next PR run before merging.
+
+- Next CI run parsed the regexes successfully but the FAQ guard still had a doubled backslash (`\\s`) in its whitespace matcher, causing a false negative. Corrected it to JavaScript `\s+` so the check accepts the rendered heading whitespace. Recheck the complete CI suite; the current branch has not been merged or deployed.
+
+- 2026-11-26: PR #156 branch was synchronized with current `main` using a two-parent merge commit while preserving the newest generated PikaNews/AI datasets. Responsive regression root cause confirmed: the closed fixed `.nav-menu` drawer is translated beyond the viewport and inflates document scroll width on narrow screens. Added mobile-only horizontal clipping at the document boundary; verify drawer open/close, keyboard access, and the complete responsive matrix before merge.

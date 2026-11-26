@@ -17,7 +17,12 @@ const reactHomepage = await read("assets/js/gogo-home-react.js");
 const homeCss = await read("frontend/src/styles.css");
 const reactHomepageCss = await read("assets/css/gogo-home-react.css");
 const sitemap = await read("sitemap.xml");
-assert.match(homepage, /Play\. Prepare\./, "homepage must render its primary heading in initial HTML");
+assert.match(homepage, /<h1>GoGo Company: Browser Games, AI &amp; Digital Media<\/h1>/, "homepage H1 must describe the brand and its real product categories");
+assert.equal([...homepage.matchAll(/<h1\b/gi)].length, 1, "homepage must expose exactly one primary H1");
+const homeTitle = homepage.match(/<title>([^<]+)<\/title>/i)?.[1] || "";
+const homeDescription = homepage.match(/<meta name="description" content="([^"]*)"/i)?.[1] || "";
+assert.ok(homeTitle.length >= 25 && homeTitle.length <= 60, "homepage title must be concise and descriptive");
+assert.ok(homeDescription.length >= 70 && homeDescription.length <= 155, "homepage description must be useful without keyword stuffing");
 assert.match(homepage, /verification context|verify recruitment details/i, "Sarkari Sarthi source-verification guidance must be present");
 assert.match(homepage, /publisher-attributed|original publisher/i, "PikaNews attribution must be present");
 assert.doesNotMatch(homepage, /esm\.sh\/react|id=["']gogo-react-root["']/, "homepage must not depend on a CDN-only empty React shell");
@@ -127,8 +132,11 @@ for (const href of ["guide.html", "privacy.html", "terms.html", "../"]) {
 const crystalGuide = await read("crystalquest/guide.html");
 assert.match(crystalGuide, /href="strategy\.html"/, "Crystal Quest base guide must link to the strategy guide after product sync");
 
+const sarkariHome = await read("sarkari-sarthi/index.html");
+const sarkariH1 = sarkariHome.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i)?.[1]?.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim() || "";
+assert.equal(sarkariH1, "Latest Government Jobs in India", "Sarkari Sarthi homepage must retain its real jobs-discovery H1");
+assert.doesNotMatch(sarkariHome, /search terms such as|12th pass ki sarkari naukri/i, "Sarkari Sarthi must not inject a keyword-list paragraph");
 const keywordPages = [
-  ["sarkari-sarthi/index.html", /sarkari naukri 2026/i],
   ["arrowout/about.html", /arrow wala puzzle game/i]
 ];
 const pikanews = await read("pikanews/index.html");

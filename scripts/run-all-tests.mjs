@@ -730,8 +730,9 @@ runStep('Sync workflows keep the service-worker guard (with the notifications al
   assert.ok(productsYml.includes('arrowout/fcm/firebase-messaging-sw.js'), 'arrowout pairing check present');
   assert.ok(productsYml.includes('crystalquest/fcm/firebase-messaging-sw.js'), 'crystalquest pairing check present');
   assert.ok(productsYml.includes('sarkari-sarthi/firebase-messaging-sw.js'), 'sarkari pairing check present');
-  assert.ok(productsYml.includes('repository: parya5103/sarkarisarthi'), 'Sarkari Sarthi must sync from the current source repository');
-  assert.ok(!productsYml.includes('repository: parya5103/Sarkari-Sarthi'), 'legacy hyphenated repository must never be used for product publishing');
+  assert.ok(productsYml.includes('repository: parya5103/Sarkari-Sarthi'), 'Sarkari Sarthi must sync from the existing source repository');
+  assert.ok(productsYml.includes('ref: gh-pages'), 'Sarkari Sarthi must publish the gh-pages site branch');
+  assert.ok(!productsYml.includes('repository: parya5103/sarkarisarthi'), 'nonexistent unhyphenated repository must never be used for product publishing');
   assert.ok(productsYml.includes('SARKARI_NOTIFICATION_BACKUP'), 'central Sarkari notification assets must be backed up before rsync --delete');
   assert.ok(productsYml.includes('cp "$SARKARI_NOTIFICATION_BACKUP/$file" "sarkari-sarthi/$file"'), 'missing upstream notification assets must be restored after sync');
   assert.ok(productsYml.includes('<script src="gogo-notifications.js"></script>'), 'Sarkari homepage must load the centrally managed opt-in notifications module');
