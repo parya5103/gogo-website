@@ -2,7 +2,7 @@
 
 Consolidated operational knowledge for gogo-website (gogocompany.in),
 kept in-repo so context survives across sessions and machines. No
-secrets here by design. Last updated: 2026-11-26 (PR audit and earned-link outreach update).
+secrets here by design. Last updated: 2026-11-27 (GSC CTR review and same-day SEO changes).
 
 ## What this repo is
 
@@ -95,7 +95,7 @@ secrets here by design. Last updated: 2026-11-26 (PR audit and earned-link outre
 
 - Root homepage remains React + Vite + SSG (frontend source, generated static output). PR #108 fixed frontend CI path filters. The live homepage was inspected with TinyFish: server-rendered content, canonical/indexable metadata, product navigation and FAQ interactions were present. Do not rebuild the architecture solely for visual polish; preserve product routes and account flow.
 - PR #110 improved the synced portfolio copies: public Sarkari counts distinguish current listings from withheld review records, stale/unverified records are not treated as verified vacancies, the Arrow Out fake rewarded-hint timer was removed from the synced copy, and duplicate GTA 6 FAQ/disclaimer text was cleaned up. Main CI, responsive, build, Lighthouse, SEO and security checks passed.
-- PikaNews aggregated homepage intentionally stays noindex,follow and outside the root sitemap until its editorial policy is met: four reviewed original stories overall, three for a category. PR #112 restored this guardrail after PR #111 temporarily changed the directive; PR #113 was closed without merge. Do not index an aggregator page by overriding the editorial policy.
+- PikaNews homepage is `index,follow` with the clean `/pikanews/` canonical and is included in its product sitemap. Individual third-party aggregated story pages remain `noindex,follow` and excluded from both regular and Google News sitemaps. Only source-diverse topic hubs meeting the live quality thresholds enter the regular sitemap; the Google News sitemap is reserved for reviewed original editorial. Never confuse the homepage/topic-hub policy with individual aggregated-story policy.
 - Arrow Out source of truth is parya5103/Fletch_Game. PR #61 removed the fake five-second rewarded-ad timer from the upstream game, disabled the unavailable rewarded-hint button, and updated public About/Privacy/README/AdMob copy. Three free hints remain. No real rewarded provider or advertising SDK is enabled; do not simulate an ad reward.
 - Sarkari Sarthi uses India-local dates for application deadlines. PR #13 changed deadline calculations to Asia/Kolkata; UTC evening runs must not keep already-expired Indian deadlines active. Latest manifest snapshot: 176 records, 155 status-active, 21 expired, 114 Needs Review. The public search applies stricter verification/freshness eligibility; manifest active counts are not the same as publicly searchable current listings. Missing dates must not be guessed.
 - PikaNews, Arrow Out, Crystal Quest and Sarkari Sarthi folders are synced copies. Make fixes in their upstream repositories first; use the product-sync workflow to propagate them. The current Arrow Out synced copy already contains the fake-demo removal from PR #110, and upstream PR #61 is now merged.
@@ -182,3 +182,13 @@ secrets here by design. Last updated: 2026-11-26 (PR audit and earned-link outre
 
 - Four free editorial outreach emails were prepared as Gmail drafts for OttersPlay and Zadely (one per GoGo game). They were not sent; owner review and explicit send action remain required. See `docs/SEO_OUTREACH_QUEUE.md`.
 - Secure browser sign-in setup links were generated for Central India Tech and Desh Crux. Both are free company-directory prospects, but no account or company profile has been submitted. Do not ask the owner for passwords in chat.
+
+
+## 2026-11-27 — same-day Search Console and SEO update
+
+- Read-only Search Console sample for India is limited to 2026-11-21..2026-11-23 (free recent-three-days access; no period comparison). Homepage: 6 impressions, 0 clicks, average position 9.5. Canonical About page: 4 impressions, 0 clicks, average position 4.25. Legacy `/about.html` redirect URL: 34 impressions, 1 click, average position 6.15 across all countries. PikaNews: 8 impressions, 0 clicks, average position 9.25. Sarkari Sarthi root: 5 impressions, 0 clicks, average position 14.4. AI hub: 1 impression. Arrow Out and Crystal Quest each had 1 impression in this sample. These are very small samples, not monthly traffic estimates.
+- India-filtered query rows showed `gogo digital media` on both About (2 impressions, position 8) and homepage (1 impression, position 19), a possible but low-volume intent overlap. The About title/description now target company story/founder intent; homepage remains the main portfolio/category destination. This is a snippet/intent refinement, not a ranking guarantee.
+- About page copy now uses the full public product name “Crystal Quest: Gem Legends” and accurately describes Sarkari Sarthi as a mixed-source recruitment information portal with source and verification context. Its sitemap lastmod is updated to 2026-11-27.
+- At inspection, the upstream PikaNews sitemap (`parya5103/PikaNews/frontend/sitemap.xml`) contained 16 URLs, including 9 indexable topic/listing hubs beyond the 7 URLs in the synced `gogo-website/pikanews/sitemap.xml`. The upstream repository is the source of truth; never hand-edit the synced `pikanews/` folder. The central `sync-pikanews.yml` workflow runs every 30 minutes and supports manual dispatch. A new CI guard compares the published sitemap with the upstream-generated sitemap so future drift fails visibly.
+- Correction to earlier historical notes: the PikaNews homepage is indexable; third-party aggregated story pages remain noindex. The sitemap policy must preserve that distinction.
+- No traffic increase, new backlink, or indexing result is claimed from these code/document changes. Verify the sync workflow and recheck Search Console after Google recrawls.
