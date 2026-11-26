@@ -234,3 +234,35 @@ Do not post both games to the same subreddit on the same day. Check the current 
 - For each published listing inspect canonical URL, indexability, outbound anchor destination, rel attributes (follow/nofollow/ugc/sponsored), and whether Google indexes the page.
 - Track referral sessions and engaged sessions by source/medium in analytics. Do not treat a directory listing as a backlink win until its page is live.
 - Do not buy placements, badges or followed links. Do not exchange links or mass-post identical copy.
+
+
+## 2026-11-26 — follow-up verification and new prospects
+
+### Verified official GoGo game identity and contact
+
+- Live Arrow Out! page: https://gogocompany.in/arrowout/ (canonical, index/follow). It describes GoGo Company's own 1,000-level, free, offline-first tap-away browser puzzle. Its product contact page explicitly publishes `officialgogocompany@gmail.com` as the developer contact.
+- Live Crystal Quest page: https://gogocompany.in/crystalquest/ (canonical, index/follow). Its public title is “Crystal Quest: Gem Legends”; its description says free mobile-first match-3 with 27 levels. Use the full title to disambiguate it from the unrelated 1987 Mac game with the same generic name.
+- The root sitemap currently lists `/ai/`, `/arrowout/`, `/crystalquest/`, `/free-online-games/`, `/sarkari-sarthi/` and other public pages. Do not infer that every sitemap URL is indexable or commercially ready without checking its page metadata and content.
+
+### New directory checks (no unverified submission counted)
+
+| Directory | Fit / evidence | Result | Next step |
+|---|---|---|---|
+| [Foundplay](https://foundplay.io/submit) | Free browser-game discovery; listing flow requires email or Google sign-in | An “Arrow Out” listing exists at https://foundplay.io/games/arrow-out, but it links to remix.gg and credits @Splendor_Defi, not GoGo Company. It is a different same-name game; do not claim it as our listing or attempt to claim it. Crystal Quest was not found. No submission made. | Owner sign-in needed before any new listing; use the exact GoGo official game URL and full title |
+| [OpenPlayer.One](https://openplayer.one/submit/) | Free browser-game directory; no reciprocal link required | Automation found a different FRVR-hosted “Arrow Out!” (developer/publisher data did not match GoGo) and an unrelated 1987 “Crystal Quest” result. Form attempts returned “expired or submitted too quickly” / CSRF errors. No successful confirmation; NOT submitted. | Do not submit those mismatched entities. Revisit only with the exact GoGo URLs and correct studio identity |
+| [just1more.games](https://just1more.games/submit) | Free human-reviewed browser-game listing | Automation run did not return a completed result in this check; status remains unknown. Do not mark submitted. | Check the existing run/status before any retry; avoid duplicate submission |
+| [Central India Tech](https://centralindiatech.com/submit) | Free company/startup profile; explicitly targets Indore and Central India | Sign-in required. A dedicated browser profile setup link was created; no account or company listing has been submitted. | Owner must sign in through the provided browser profile setup flow, then review the profile fields before submit |
+| [Desh Crux](https://deshcrux.com/) | Free India company/founder discovery listing | Submission is available via account registration; no listing submitted. | Consider only after account access and truthful profile-field review |
+
+### SubmitForBacklinks account and reciprocal badge decision
+
+- The connected SubmitForBacklinks account currently has zero owner-scoped submissions. Its taxonomy has no browser-game category; it is designed for AI/software/product listings, so do not force Arrow Out! or Crystal Quest into unrelated SaaS categories.
+- No reciprocal badge has been issued or installed. The user has expressed willingness to use a badge if needed, but the tool requires a real eligible listing and a separately approved visible placement. Do not add a sitewide footer or hidden link. Reconsider only if a genuinely eligible GoGo AI/software product listing is created and the owner approves a specific placement.
+- A badge is not a free backlink guarantee: publication and indexation are not guaranteed, and the follow-link window only starts after publication and successful verification.
+
+### Search and measurement notes
+
+- Keyword Tool guest suggestions are useful for ideation but most returned keywords have no cached search volume/competition metrics. Treat those as suggestions, not measured demand. One cached India/Google row for “sarkari naukri” reported 1,220,000 monthly searches, trend -18%, ads competition 0 and a $0.01–$0.26 top-of-page bid range. Ads competition is not organic SEO difficulty.
+- SMEPost Search Console property `sc-domain:gogocompany.in` is available in free recent-three-days mode only. On 2026-11-26, the latest returned range was 2026-11-21..2026-11-23: Sarkari Sarthi MP jobs 13 impressions/0 clicks/avg position 34.31; PikaNews 8/0/9.25; homepage 6/0/9.50; branded query “gogo company” 4/0/position 5. These are a tiny three-day sample, not monthly totals.
+- GSC Wizard access is blocked by expired subscription; OpenSEO backlink overview remains blocked by insufficient credits. Referring-domain totals and GA4 referral sessions remain unverified.
+- Never count a directory submission as a published backlink. Verify the exact public listing, canonical/indexability, destination URL and `rel` attribute before recording a backlink. Then monitor GA4 referral sessions/engagement and GSC links when access allows.
