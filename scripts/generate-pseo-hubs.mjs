@@ -30,8 +30,12 @@ function hasEvidence(value) {
   const text = String(value).trim();
   return Boolean(text && !PLACEHOLDER_VALUES.has(text.toLowerCase()));
 }
-function secureHttpsUrl(value) {
-  try { return new URL(value).protocol === "https:"; } catch { return false; }
+function secureOfficialUrl(value) {
+  try {
+    const url = new URL(value);
+    const host = url.hostname.toLowerCase();
+    return url.protocol === "https:" && (host.endsWith(".gov.in") || host.endsWith(".nic.in"));
+  } catch { return false; }
 }
 
 /**
@@ -46,7 +50,7 @@ export function isQualityJob(job, now = new Date()) {
   if (String(job.description || "").trim().length < 180) return false;
   if (!hasEvidence(job.organization) || !hasEvidence(job.source)) return false;
   if (!safeUrl(job.url || job.original_source_url)) return false;
-  if (!secureHttpsUrl(job.official_notification_url || job.official_application_url)) return false;
+  if (![job.official_notification_url, job.official_application_url, job.url, job.original_source_url].some(secureOfficialUrl)) return false;
   const verifiedAt = new Date(job.last_verified || "");
   if (!Number.isFinite(verifiedAt.getTime())) return false;
   const age = now.getTime() - verifiedAt.getTime();
