@@ -129,3 +129,9 @@ No indexing or submission success is claimed in this document; all of the above 
 
 - AI hub heading alignment: changed the generated `/ai/` H1 to “AI News, Models & Research” in both `scripts/update-ai-hub.py` and the current generated page, so the daily updater preserves a heading aligned with its title and actual content.
 - CI on the latest validated commit: SEO validation, CI Tests, frontend build/performance and security scan passed; CodeQL completed successfully. Responsive regression failed: `/sarkari-sarthi/` reports horizontal overflow at 390px and 430px. This is outside the homepage-only changes and must be investigated before treating mobile QA as green.
+
+## Sarkari Sarthi manifest quality snapshot — 2026-11-26
+
+The central synced manifest contained 298 records: 258 active and 40 expired. Of the active records, 224 were marked secondary_source_only, 33 needs_review and only 1 official_verified. The active snapshot had only 2 source domains, no official_notification_url or official_application_url values, and only 1 record with an organization or published_date value. Category counts were Medical 57, General 124, Engineering 30, Teaching 9, Administrative 29, SSC 1, IT 1, Railway 1, Banking 3, Defence 2 and UPSC 1.
+
+This is not sufficient evidence for programmatic category pages. The individual detail-page JobPosting policy already requires complete official-verified evidence. The SEO hub generator now applies a separate quality gate: at least 5 fresh (14-day) official-verified records, substantial descriptions, meaningful recruitment fields, an HTTPS official notice/application URL, and at least 3 distinct source domains. Until then, job hubs remain accessible to users but carry noindex and are excluded from the sitemap. The main Sarkari Sarthi portal remains available and indexable; no records were deleted or relabelled.

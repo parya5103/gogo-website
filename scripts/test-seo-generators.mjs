@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { decodeEntities, parseGoogleTrendsRss, renderTrendingSection, safeUrl, serializeJsonLd as serializeHomeJsonLd } from "./update-trending-seo.mjs";
-import { renderHub, escapeHtml, serializeJsonLd as serializeHubJsonLd } from "./generate-pseo-hubs.mjs";
+import { renderHub, escapeHtml, isQualityJob, isIndexableJobHub, serializeJsonLd as serializeHubJsonLd } from "./generate-pseo-hubs.mjs";
 import { addKeywordSection, renderKeywordSection } from "./seo-keyword-content.mjs";
 
 assert.equal(decodeEntities("&amp;lt;script&amp;gt;"), "&lt;script&gt;", "RSS entities must be decoded exactly once");
@@ -33,6 +33,51 @@ assert.match(page,/Recruitment &lt;2026&gt;/);
 assert.match(page,/rel="canonical"/);
 assert.match(page,/<meta name="robots" content="noindex,follow,max-image-preview:large">/,"thin job hubs must stay out of the index");
 assert.doesNotMatch(page,/\[TODO\]|placeholder/i);
+
+const qualityNow = new Date("2026-11-26T12:00:00Z");
+const qualityJob = (id, host) => ({
+  id,
+  status: "active",
+  verification_status: "official_verified",
+  description: "This official recruitment notice explains the post, eligibility, selection process, required documents and application steps in substantial detail. ".repeat(2),
+  organization: "Example Recruiting Authority",
+  vacancies: 12,
+  qualification: "Graduate degree",
+  age_limit: "18 to 30 years",
+  important_dates: { last_date: "2026-12-10" },
+  official_notification_url: "https://authority.gov.in/notice.pdf",
+  official_application_url: "https://authority.gov.in/apply",
+  salary: "As per official pay scale",
+  selection_process: "Written examination and document verification",
+  source: host,
+  url: "https://" + host + "/jobs/" + id,
+  last_verified: "2026-11-25T10:00:00Z"
+});
+assert.equal(isQualityJob(qualityJob("good-1", "jobs-a.example"), qualityNow), true,
+  "only fresh, complete, official-verified recruitment records should qualify");
+assert.equal(isQualityJob({ ...qualityJob("secondary-1", "jobs-a.example"), verification_status: "secondary_source_only" }, qualityNow), false);
+assert.equal(isQualityJob({ ...qualityJob("stale-1", "jobs-a.example"), last_verified: "2026-10-01T10:00:00Z" }, qualityNow), false);
+assert.equal(isQualityJob({ ...qualityJob("missing-1", "jobs-a.example"), official_notification_url: null, official_application_url: null }, qualityNow), false);
+assert.equal(isQualityJob({ ...qualityJob("fake-official-1", "jobs-a.example"), official_notification_url: "https://example.com/fake.pdf", official_application_url: null }, qualityNow), false,
+  "a third-party HTTPS link must not qualify as official evidence");
+assert.equal(isQualityJob({ ...qualityJob("official-source-1", "jobs-a.example"), official_notification_url: null, official_application_url: null, url: "https://department.gov.in/recruitment/notice" }, qualityNow), true,
+  "a record published directly by a recognized government domain can qualify without a second official URL field");
+const sourceDiverseJobs = [
+  qualityJob("a1", "jobs-a.example"),
+  qualityJob("a2", "jobs-a.example"),
+  qualityJob("b1", "jobs-b.example"),
+  qualityJob("b2", "jobs-b.example"),
+  qualityJob("c1", "jobs-c.example")
+];
+assert.equal(isIndexableJobHub(sourceDiverseJobs, qualityNow), true,
+  "a job hub needs at least five fresh quality records from at least three distinct publishers");
+assert.equal(isIndexableJobHub(sourceDiverseJobs.slice(0, 4), qualityNow), false,
+  "a hub with fewer than five quality records must remain noindex");
+assert.equal(isIndexableJobHub(sourceDiverseJobs.map(job => ({ ...job, url: "https://jobs-a.example/" + job.id })), qualityNow), false,
+  "a hub dominated by fewer than three source domains must remain noindex");
+assert.equal(isIndexableJobHub(sourceDiverseJobs.map(job => ({ ...job, verification_status: "secondary_source_only" })), qualityNow), false,
+  "secondary-source-only listings must not qualify an SEO hub for indexing");
+
 const gamesHub = {path:"free-online-games/index.html",slug:"free-online-games",title:"Free Online Browser Games | Play on Mobile & PC",description:"Play two free browser puzzle games on mobile or PC: Arrow Out! has 1,000 tap-away levels; Crystal Quest has 27 match-3 fantasy levels.",h1:"Play Free Online Browser Games",kind:"games",faq:[["Can I play these games without downloading an app?","Yes. Both games run in supported browsers."]]};
 const gamesPage = renderHub(gamesHub);
 assert.match(gamesPage,/<meta name="robots" content="index,follow,max-image-preview:large">/,"substantial games hub may be indexed");
