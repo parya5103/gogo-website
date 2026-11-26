@@ -191,3 +191,46 @@ All 14 remaining open PRs were closed after diff, branch divergence and workflow
 4. On every published listing, inspect outbound link rel attribute (follow/nofollow/ugc/sponsored), canonical, indexability and whether the listing page is public.
 5. GSC Wizard subscription is inactive and OpenSEO lacks credits. Restore access before reporting referring domains; use GA4/available analytics referral sessions only if connector access is active.
 6. No paid placements, link exchanges or paid badges. Do not submit to directories that require open-source/embedding rights unless the licence is confirmed.
+
+
+## 2026-11-26 — indie community and company-profile outreach plan
+
+### Community rules checked before outreach
+
+- [Reddit for Developers — Community Engagement Playbook](https://developers.reddit.com/docs/guides/best-practices/community_games): prioritize relevance and value, read each community's rules and recent posts, contact moderators before a first post unless self-promotion is clearly allowed, and avoid generic repeated pitches.
+- [r/playmygame — posting guidance](https://www.reddit.com/r/playmygame/comments/1eg08dh/how_to_avoid_having_your_posts_removed_version_2/): game must be playable for free, direct playable link should be provided, and developers should contribute meaningful feedback to other creators rather than post-and-leave.
+- [r/IndieGames — self-promotion clarification](https://www.reddit.com/r/indiegames/comments/1esd7yf/new_rule_no_developer_self_promotion_posts_under_guise_of_asking_feedback/): self-promotion is allowed within reason, but do not disguise promotion as feedback requests; make an honest promotion post with a fitting title.
+- No Reddit or Discord post was published from this workflow. Posting requires the owner's authenticated social account and ongoing comment participation; do not impersonate the owner or use a fake account.
+
+### Community-ready post concepts (not yet published)
+
+**r/playmygame — Arrow Out!**
+
+Title: [Web] Arrow Out! — a free 1,000-level arrow-path logic puzzle (GoGo Company)
+
+Body: I made Arrow Out!, a free HTML5 browser puzzle. Each arrow can leave only when its path to the board edge is clear, so the challenge is planning the right removal order. It has a 1,000-level progression and can be played directly in a browser: https://gogocompany.in/arrowout/ . I would value specific feedback on the clarity of the arrow-path rules and the difficulty curve. I will also spend time giving useful feedback on other games posted here.
+
+**r/IndieGames — Crystal Quest**
+
+Title: Crystal Quest: Gem Legends — a free browser match-3 adventure from GoGo Company
+
+Body: We built Crystal Quest: Gem Legends, a browser-based match-3 puzzle adventure with 27 levels across three regions. Swap adjacent gems, trigger special gem effects and complete level objectives. It is free to play on the web: https://gogocompany.in/crystalquest/ . Sharing it as a developer showcase; happy to answer questions about the game and its development.
+
+Do not post both games to the same subreddit on the same day. Check the current rules and recent posts immediately before publishing. Avoid generic "please play/upvote" requests, undisclosed affiliate links, or repeated cross-posting.
+
+### Genuine company / technology directory prospects
+
+| Prospect | Fit | Current submission state | Next step |
+|---|---|---|---|
+| [Central India Tech](https://centralindiatech.com/submit) | Strong local fit for Indore-based tech/digital-media studio; free company profile | Requires account; no profile created | Owner creates/authorizes account, then submit basic listing only |
+| [AIIIN](https://www.aiiin.in/submit) | Relevant only for GoGo AI Intelligence as a real AI information/product resource; free reviewed listing | Account required; not submitted | Confirm AI hub meets their listing scope; then create account and submit accurate product listing |
+| [iShruti](https://www.ishruti.org/for-startups) | Indian founder/startup discovery; free profile | Account required; not submitted | Use only if GoGo meets their startup profile criteria; do not invent funding/traction |
+| [Startup India](https://www.startupindia.gov.in/) | Official ecosystem visibility | Not submitted | Only apply if legal entity and DPIIT eligibility/recognition requirements are met; do not claim recognition without proof |
+
+### Outreach measurement rules
+
+- Record only submissions with a real confirmation. A form opened or pre-filled is not a submission.
+- Distinguish pending editorial submissions, published listing pages, and actual backlinks.
+- For each published listing inspect canonical URL, indexability, outbound anchor destination, rel attributes (follow/nofollow/ugc/sponsored), and whether Google indexes the page.
+- Track referral sessions and engaged sessions by source/medium in analytics. Do not treat a directory listing as a backlink win until its page is live.
+- Do not buy placements, badges or followed links. Do not exchange links or mass-post identical copy.
