@@ -151,3 +151,43 @@ Record one row for every actual submission: date, target, product, free/paid sta
 3. Revisit just1more.games only if the submission status can be verified; avoid duplicate submission while uncertain.
 4. Once listings publish, record each public listing URL, inspect whether its outbound link is followed/nofollow/UGC, and add GA4 referral measurement where available.
 5. Recheck Search Console referring domains after the pages are public and indexed. OpenSEO backlink API currently cannot be queried because the connected account has insufficient credits.
+
+
+## 2026-11-26 — second outreach batch and PR cleanup
+
+### Additional directory checks
+
+| Directory | Product / company | Cost | Result | Backlink status |
+|---|---|---:|---|---|
+| [Still Online](https://www.stillonline.games/submit) | Crystal Quest: Gem Legends | Free | Form saved; manual review pending. Site confirmed no email was sent. | Not live yet; verify public listing and link attribute after review |
+| [Still Online](https://www.stillonline.games/submit) | Arrow Out! | Free | Form saved; manual review pending. Site confirmed no email was sent. | Not live yet; verify public listing and link attribute after review |
+| [OpenPlayer.One](https://openplayer.one/submit/) | Arrow Out! | Free | Form fields prepared truthfully; server repeatedly rejected CSRF/anti-bot token. Not submitted. | None |
+| [Central India Tech](https://centralindiatech.com/submit) | GoGo Company | Free basic listing | Requires sign-in/account; no account credentials available, so not submitted | None |
+| [AIIIN](https://www.aiiin.in/submit) | GoGo AI Intelligence (potential product fit) | Free listing; account required | Prospect only; check AI product/company eligibility and create account only if approved by owner | None |
+| [iShruti](https://www.ishruti.org/for-startups) | GoGo Company | Free listing; account/profile | Prospect only; profile expects founder/startup narrative and verified details | None |
+
+### Verified free submission totals (as of this update)
+
+- PlayNewt: two accepted submissions (Arrow Out! #515 and Crystal Quest #11322032), pending editorial review.
+- GAMES.GG: two accepted free-listing requests (Arrow Out! and Crystal Quest), pending queue/review.
+- Still Online: both Crystal Quest and Arrow Out! accepted for manual review.
+- OpenPlayer.One: Arrow Out! not submitted because CSRF/anti-bot validation failed.
+- Central India Tech: company listing not submitted; account required.
+- just1more.games: Arrow Out! still unconfirmed due Cloudflare Turnstile.
+
+### Company profile copy (ready for verified listings)
+
+**GoGo Company** — Independent Indian technology, digital media and web gaming organization based in Indore, Madhya Pradesh. Builds original browser games, public-information products and AI research/news resources. Website: https://gogocompany.in/ . Founder: Pratik Arya. Do not add legal incorporation, funding, team-size, customer, revenue or startup-recognition claims unless documented.
+
+### PR cleanup (2026-11-26)
+
+All 14 remaining open PRs were closed after diff, branch divergence and workflow review. Every PR body includes the exact reason and safe reopening requirements. This is a cleanup, not a claim that all proposed changes were merged. The following remain merged: #148, #149, #151 and #159. No product publishing workflow or synced product directory was changed by this cleanup.
+
+### Follow-up and measurement
+
+1. Check both Still Online submissions; verify public listing URLs only after editorial approval.
+2. Check PlayNewt and GAMES.GG review queues; update status only after a public page is live.
+3. Create/verify company accounts only with owner authorization; do not invent corporate/legal fields.
+4. On every published listing, inspect outbound link rel attribute (follow/nofollow/ugc/sponsored), canonical, indexability and whether the listing page is public.
+5. GSC Wizard subscription is inactive and OpenSEO lacks credits. Restore access before reporting referring domains; use GA4/available analytics referral sessions only if connector access is active.
+6. No paid placements, link exchanges or paid badges. Do not submit to directories that require open-source/embedding rights unless the licence is confirmed.
