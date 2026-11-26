@@ -42,3 +42,26 @@ Maintain a manual record of the referring page, domain, date discovered, relevan
 ## Next review
 
 After 30 days, compare new referring domains and referral visits with the baseline. Keep outreach selective; stop channels that produce irrelevant traffic or complaints. Rankings and indexing are not guaranteed.
+
+## Open-source tooling review (2026-11-26)
+
+### Selected for evaluation: CrawlSEO
+
+- Repository: https://github.com/crawlseo/crawlseo
+- License: MIT (verified from the repository metadata and README).
+- Current repository metadata at review: public, not archived, TypeScript, 728 stars, 107 forks; last pushed 2026-11-22.
+- Relevant capabilities documented upstream: Google Search Console analytics, site crawler (2,000 pages per crawl by default), Core Web Vitals, rank tracking and backlink data through optional DataForSEO BYOK.
+- Important limitation: it monitors/audits backlinks; it does not ethically create or guarantee backlinks. Backlink data requires the operator's own DataForSEO key; do not assume that feature is free.
+- Deployment fit: it is a separate self-hosted Next.js + PostgreSQL application. It must not be embedded into the GitHub Pages static site or modify product publishing workflows. Evaluate separately for a low-cost VPS/Oracle deployment after dependency, OAuth, secrets, resource and outbound-network review.
+- Security/privacy note: the upstream README documents Google, Bing, DataForSEO, crawled sites, optional webhook/SMTP and GitHub release-check outbound traffic. Configure only required integrations; use a dedicated least-privilege Google account and secure server-side secrets.
+
+### Not selected as the primary platform: Backlink Intelligence
+
+- Repository: https://github.com/alok-vibe-code/backlink-intelligence
+- License: MIT; repository is public and not archived.
+- Repository metadata at review: Python, 3 stars, 2 forks, pushed 2026-09-26.
+- It advertises prospect qualification and backlink monitoring, but its much smaller adoption and older push date make it a secondary code reference only. Audit the code and dependencies before reuse; do not connect it to production credentials.
+
+### Adoption decision
+
+Use CrawlSEO as an optional monitoring/audit companion, not as an automated link-building bot. First finish GoGo's technical SEO, then connect Search Console and run a crawl. Any prospect must be manually reviewed for relevance, editorial quality, real audience and spam risk. No auto-posting, paid-link schemes, PBNs, mass directory submissions or forced reciprocal links. Keep the GoGo static site independent of this dashboard.
