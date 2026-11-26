@@ -72,6 +72,7 @@ export function isQualityJob(job, now = new Date()) {
 /**
  * Require five quality records and at least three distinct source domains.
  * This prevents one secondary feed from creating a thin programmatic doorway.
+ * Keep this threshold stricter than rich-result eligibility; indexing is not a schema guarantee.
  */
 export function isIndexableJobHub(jobs, now = new Date()) {
   if (!Array.isArray(jobs)) return false;
