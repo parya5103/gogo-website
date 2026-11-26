@@ -178,3 +178,7 @@ secrets here by design. Last updated: 2026-11-26 (PR audit and earned-link outre
 
 
 - Final just1more.games check (2026-11-26): the form is free and requires no login, payment, reciprocal link or CAPTCHA; email is optional. However, its public search resolved “Arrow Out!” to NISHAD GAMES' `arrowsout.io` and “Crystal Quest” to a DOS/Mac classic. Both are unrelated same-name games, so no submission was made. Use only GoGo's canonical game URLs and the full title “Crystal Quest: Gem Legends” in future outreach.
+
+
+- Four free editorial outreach emails were prepared as Gmail drafts for OttersPlay and Zadely (one per GoGo game). They were not sent; owner review and explicit send action remain required. See `docs/SEO_OUTREACH_QUEUE.md`.
+- Secure browser sign-in setup links were generated for Central India Tech and Desh Crux. Both are free company-directory prospects, but no account or company profile has been submitted. Do not ask the owner for passwords in chat.
