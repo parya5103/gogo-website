@@ -175,3 +175,6 @@ secrets here by design. Last updated: 2026-11-26 (PR audit and earned-link outre
 - Current keyword guest data is suggestion-only except limited cached metrics; the cached `sarkari naukri` volume is 1.22M India/Google monthly searches, with -18% trend. Ads competition is not organic SEO difficulty.
 - SMEPost GSC access is restricted to 2026-11-21..2026-11-23; GSC Wizard is subscription-blocked and OpenSEO credits are insufficient. Do not claim verified backlink counts, referring domains or referral growth.
 - A Central India Tech browser profile was prepared for owner sign-in; no company profile has been submitted. See the outreach queue for the setup step and verified prospects.
+
+
+- Final just1more.games check (2026-11-26): the form is free and requires no login, payment, reciprocal link or CAPTCHA; email is optional. However, its public search resolved “Arrow Out!” to NISHAD GAMES' `arrowsout.io` and “Crystal Quest” to a DOS/Mac classic. Both are unrelated same-name games, so no submission was made. Use only GoGo's canonical game URLs and the full title “Crystal Quest: Gem Legends” in future outreach.
