@@ -135,3 +135,17 @@ No indexing or submission success is claimed in this document; all of the above 
 The central synced manifest contained 298 records: 258 active and 40 expired. Of the active records, 224 were marked secondary_source_only, 33 needs_review and only 1 official_verified. The active snapshot had only 2 source domains, no official_notification_url or official_application_url values, and only 1 record with an organization or published_date value. Category counts were Medical 57, General 124, Engineering 30, Teaching 9, Administrative 29, SSC 1, IT 1, Railway 1, Banking 3, Defence 2 and UPSC 1.
 
 This is not sufficient evidence for programmatic category pages. The individual detail-page JobPosting policy already requires complete official-verified evidence. The SEO hub generator now applies a separate quality gate: at least 5 fresh (14-day) official-verified records, substantial descriptions, meaningful recruitment fields, an HTTPS official notice/application URL, and at least 3 distinct source domains. Until then, job hubs remain accessible to users but carry noindex and are excluded from the sitemap. The main Sarkari Sarthi portal remains available and indexable; no records were deleted or relabelled.
+
+## Fresh 50-page crawl — 2026-11-26 (OpenSEO free-tier crawl)
+
+- Crawl completed 50/50 pages; the free-tier page cap stopped discovery with 71 URLs not crawled. No Lighthouse run was included.
+- 4 critical internal-link failures came from Arrow Out Guide footer links pointing to non-existent /arrowout/guide/privacy.html and /arrowout/guide/contact.html. They now point to the existing /arrowout/privacy.html and /arrowout/contact.html pages.
+- AI hub title was 68 characters and description 180 characters. Both have been shortened to the recommended snippet ranges.
+- PikaNews latest page description was 167 characters; shortened. PikaNews terms description was 64 characters; expanded.
+- Sarkari Sarthi footer used H4 directly after H2, skipping H3. Footer section headings are now H3 while retaining the existing footer-title class.
+- PikaNews is a publisher-attributed news discovery feed, not a newsroom. Homepage structured data was changed from NewsMediaOrganization to WebSite with GoGo Company as publisher. Category, latest, trending and article-template pages remain noindex until original reviewed editorial content exists; the PikaNews sitemap continues to include only its canonical static pages.
+- Canonicalized aliases and intentional noindex pages in the crawl are expected; do not treat them as errors. The 404s above were the only broken internal targets in this crawl.
+
+### PikaNews source-of-truth and indexation policy
+
+PikaNews is a publisher-attributed discovery feed, not a newsroom. Its homepage uses WebSite schema with GoGo Company as publisher. Topic hubs (Latest and categories) may be indexable only when the upstream generator's quality gate passes: sufficient recent stories, enough distinct publishers and useful excerpts. The central post-sync enhancer must preserve that source-generated robots status and sitemap membership; it must not blanket-noindex category hubs. Individual third-party story pages and the trending feed remain noindex; original editorial articles may be indexed only when they have a named author, explicit review, substantial original text and valid publication metadata. The Google News sitemap remains empty until those original editorial criteria are met.

@@ -372,6 +372,64 @@ check('canonical routes: legacy about URL is noindex and excluded; folder URLs a
 });
 
 
+
+check('Arrow Out guide: privacy and contact links resolve to product-level pages', () => {
+  const guide = read('arrowout/guide/index.html');
+  assert(guide.includes('href="../privacy.html"'), 'guide must link to /arrowout/privacy.html');
+  assert(guide.includes('href="../contact.html"'), 'guide must link to /arrowout/contact.html');
+  assert(!guide.includes('href="privacy.html"'), 'guide must not link to missing guide/privacy.html');
+  assert(!guide.includes('href="contact.html"'), 'guide must not link to missing guide/contact.html');
+});
+
+check('AI hub: title and meta description stay within search snippet limits', () => {
+  const ai = read('ai/index.html');
+  const title = titleOf(ai) || '';
+  const description = descOf(ai) || '';
+  assert(title.length >= 10 && title.length <= 60, 'AI title length ' + title.length + ' outside 10-60');
+  assert(description.length >= 70 && description.length <= 160, 'AI description length ' + description.length + ' outside 70-160');
+});
+
+check('PikaNews homepage: accurate discovery-feed schema and search metadata', () => {
+  const pika = read('pikanews/index.html');
+  const title = titleOf(pika) || '';
+  const description = descOf(pika) || '';
+  assert(title.length >= 10 && title.length <= 60, 'PikaNews title length ' + title.length + ' outside 10-60');
+  assert(description.length >= 70 && description.length <= 160, 'PikaNews description length ' + description.length + ' outside 70-160');
+  assert(pika.includes('"@type": "WebSite"'), 'PikaNews should use WebSite schema for a discovery feed');
+  assert(!pika.includes('"@type": "NewsMediaOrganization"'), 'aggregator must not claim NewsMediaOrganization');
+  assert(pika.includes('original publisher'), 'PikaNews must make original-source links clear');
+});
+
+check('PikaNews: topic hubs follow the source quality gate and article templates stay noindex', () => {
+  const sitemap = read('pikanews/sitemap.xml');
+  for (const page of ['pikanews/latest.html', 'pikanews/bollywood.html', 'pikanews/technology.html']) {
+    const html = read(page);
+    const noindex = (robotsOf(html) || '').includes('noindex');
+    const listed = sitemap.includes('https://gogocompany.in/' + page);
+    assert(noindex ? !listed : listed, page + ' indexation must agree with the quality-gated sitemap');
+  }
+  for (const page of ['pikanews/trending.html', 'pikanews/article.html']) {
+    const html = read(page);
+    assert((robotsOf(html) || '').includes('noindex'), page + ' must remain noindex');
+    assert(!sitemap.includes('https://gogocompany.in/' + page), page + ' must remain out of the sitemap');
+  }
+});
+
+check('PikaNews: latest and terms descriptions meet length limits', () => {
+  const latest = read('pikanews/latest.html');
+  const terms = read('pikanews/terms.html');
+  assert((descOf(latest) || '').length <= 160, 'latest description exceeds 160 characters');
+  assert((descOf(terms) || '').length >= 70, 'terms description is too short');
+});
+
+check('Sarkari Sarthi: heading hierarchy does not skip levels', () => {
+  const html = read('sarkari-sarthi/index.html');
+  const levels = [...html.matchAll(/<h([1-6])\b[^>]*>/gi)].map(match => Number(match[1]));
+  for (let i = 1; i < levels.length; i += 1) {
+    assert(levels[i] <= levels[i - 1] + 1, 'heading hierarchy skips from H' + levels[i - 1] + ' to H' + levels[i]);
+  }
+});
+
 console.log('SEO regression suite: ' + passed + ' checks passed, ' + failures.length + ' failed.');
 if (failures.length > 0) {
   console.error('\nSEO failures:');
