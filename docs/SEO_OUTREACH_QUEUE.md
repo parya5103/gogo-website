@@ -274,3 +274,30 @@ Do not post both games to the same subreddit on the same day. Check the current 
 - The automation's search results mapped “Arrow Out!” to `https://arrowsout.io/` by NISHAD GAMES (Pvt) Ltd. and “Crystal Quest” to `https://dosgames.com/game/crystal-quest-2/` by Patrick Buckland / Casady & Greene. Both are unrelated same-name products, not GoGo Company's games.
 - No submission was made. Do not submit or claim either result. The correct GoGo destinations remain `https://gogocompany.in/arrowout/` (Arrow Out!) and `https://gogocompany.in/crystalquest/` (Crystal Quest: Gem Legends), with creator/studio GoGo Company.
 - A future just1more submission is technically possible without an email address, but it must use the exact GoGo-hosted URLs and GoGo Company as studio, and only if the submitter confirms the creator-rights checkbox. Do not use the mismatched third-party game URLs.
+
+
+## 2026-11-26 — editorial email drafts prepared
+
+Four Gmail drafts were created for owner review; **none was sent**.
+
+| Recipient | Product | Draft subject | Status |
+|---|---|---|---|
+| gx03410@gmail.com (OttersPlay) | Arrow Out! | Game submission: Arrow Out! — GoGo Company | Draft saved; owner review/send required |
+| gx03410@gmail.com (OttersPlay) | Crystal Quest: Gem Legends | Game submission: Crystal Quest: Gem Legends — GoGo Company | Draft saved; owner review/send required |
+| xu250618@gmail.com (Zadely) | Arrow Out! | Game submission: Arrow Out! — GoGo Company | Draft saved; owner review/send required |
+| xu250618@gmail.com (Zadely) | Crystal Quest: Gem Legends | Game submission: Crystal Quest: Gem Legends — GoGo Company | Draft saved; owner review/send required |
+
+Drafts use the official GoGo game URLs, GoGo Company as creator/studio, and the publicly listed contact `officialgogocompany@gmail.com`. They request free editorial review only and do not ask for guaranteed publication or followed links. Check each draft in Gmail before sending.
+
+### Account setup needed for company listings
+
+- Central India Tech offers a free startup/company profile and explicitly covers Indore. Browser sign-in setup: https://agent.tinyfish.ai/profile-setup-access?profile_setup_handoff=JD4zKU1GMe7ctv6cpB25TILm6EqBbQXTgN1E3qacAI8
+- Desh Crux offers a free company listing; account sign-in setup: https://agent.tinyfish.ai/profile-setup-access?profile_setup_handoff=62kAEZqIIqqJVes87nMu63LelMdntNXCZsTDWQCzjy4
+- Both require the owner to sign in through the respective secure setup page and save the browser profile. No passwords should be shared in chat. No listing has been submitted yet.
+
+### Current no-submit decisions
+
+- Foundplay's same-name Arrow Out listing belongs to another creator and links to remix.gg; not GoGo's game.
+- OpenPlayer.One search results resolved to unrelated FRVR / classic-game entries and its form did not return a successful submission confirmation.
+- just1more.games form is free, but search results mapped both names to unrelated games. No submissions were made.
+- SubmitForBacklinks currently has zero owner submissions and no browser-game category; no unsuitable game listing or reciprocal badge was created.
