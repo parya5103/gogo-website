@@ -400,13 +400,18 @@ check('PikaNews homepage: accurate discovery-feed schema and search metadata', (
   assert(pika.includes('original publisher'), 'PikaNews must make original-source links clear');
 });
 
-check('PikaNews: non-editorial category and stream pages remain noindex and outside sitemap', () => {
+check('PikaNews: topic hubs follow the source quality gate and article templates stay noindex', () => {
   const sitemap = read('pikanews/sitemap.xml');
-  for (const page of ['pikanews/bollywood.html', 'pikanews/technology.html', 'pikanews/latest.html', 'pikanews/article.html']) {
+  for (const page of ['pikanews/latest.html', 'pikanews/bollywood.html', 'pikanews/technology.html']) {
     const html = read(page);
-    assert((robotsOf(html) || '').includes('noindex'), page + ' must remain noindex until original editorial exists');
-    const url = 'https://gogocompany.in/' + page;
-    assert(!sitemap.includes(url), page + ' must not appear in the indexable PikaNews sitemap');
+    const noindex = (robotsOf(html) || '').includes('noindex');
+    const listed = sitemap.includes('https://gogocompany.in/' + page);
+    assert(noindex ? !listed : listed, page + ' indexation must agree with the quality-gated sitemap');
+  }
+  for (const page of ['pikanews/trending.html', 'pikanews/article.html']) {
+    const html = read(page);
+    assert((robotsOf(html) || '').includes('noindex'), page + ' must remain noindex');
+    assert(!sitemap.includes('https://gogocompany.in/' + page), page + ' must remain out of the sitemap');
   }
 });
 
