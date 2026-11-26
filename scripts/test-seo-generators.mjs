@@ -58,6 +58,10 @@ assert.equal(isQualityJob(qualityJob("good-1", "jobs-a.example"), qualityNow), t
 assert.equal(isQualityJob({ ...qualityJob("secondary-1", "jobs-a.example"), verification_status: "secondary_source_only" }, qualityNow), false);
 assert.equal(isQualityJob({ ...qualityJob("stale-1", "jobs-a.example"), last_verified: "2026-10-01T10:00:00Z" }, qualityNow), false);
 assert.equal(isQualityJob({ ...qualityJob("missing-1", "jobs-a.example"), official_notification_url: null, official_application_url: null }, qualityNow), false);
+assert.equal(isQualityJob({ ...qualityJob("fake-official-1", "jobs-a.example"), official_notification_url: "https://example.com/fake.pdf", official_application_url: null }, qualityNow), false,
+  "a third-party HTTPS link must not qualify as official evidence");
+assert.equal(isQualityJob({ ...qualityJob("official-source-1", "jobs-a.example"), official_notification_url: null, official_application_url: null, url: "https://department.gov.in/recruitment/notice" }, qualityNow), true,
+  "a record published directly by a recognized government domain can qualify without a second official URL field");
 const sourceDiverseJobs = [
   qualityJob("a1", "jobs-a.example"),
   qualityJob("a2", "jobs-a.example"),
