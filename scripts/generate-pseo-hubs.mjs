@@ -22,6 +22,65 @@ export function serializeJsonLd(value) {
   })[character]);
 }
 function safeUrl(value) { try { const url = new URL(value); return ["https:","http:"].includes(url.protocol) ? url.href : null; } catch { return null; } }
+
+const INDEXABLE_JOB_WINDOW_MS = 14 * 24 * 60 * 60 * 1000;
+const PLACEHOLDER_VALUE = /^(?:not specified|not available|n\\/a|na|unknown|to be announced|[-—])$/i;
+function hasEvidence(value) {
+  if (value === null || value === undefined) return false;
+  const text = String(value).trim();
+  return Boolean(text && !PLACEHOLDER_VALUE.test(text));
+}
+function secureHttpsUrl(value) {
+  try { return new URL(value).protocol === "https:"; } catch { return false; }
+}
+
+/**
+ * A recruitment card is eligible for an indexable topic hub only when the
+ * underlying record has current, explicit official evidence. Aggregated
+ * secondary-source listings remain visible in the portal but do not qualify.
+ */
+export function isQualityJob(job, now = new Date()) {
+  if (!job || typeof job !== "object") return false;
+  if (String(job.status || "").toLowerCase() !== "active") return false;
+  if (String(job.verification_status || "").toLowerCase() !== "official_verified") return false;
+  if (String(job.description || "").trim().length < 180) return false;
+  if (!hasEvidence(job.organization) || !hasEvidence(job.source)) return false;
+  if (!safeUrl(job.url || job.original_source_url)) return false;
+  if (!secureHttpsUrl(job.official_notification_url || job.official_application_url)) return false;
+  const verifiedAt = new Date(job.last_verified || "");
+  if (!Number.isFinite(verifiedAt.getTime())) return false;
+  const age = now.getTime() - verifiedAt.getTime();
+  if (age < -5 * 60 * 1000 || age > INDEXABLE_JOB_WINDOW_MS) return false;
+  const dates = job.important_dates || {};
+  const evidence = [
+    job.vacancies,
+    job.qualification || job.minimum_qualification,
+    job.age_limit,
+    dates.last_date || job.last_date,
+    job.official_notification_url,
+    job.official_application_url,
+    job.salary || job.pay_scale,
+    job.selection_process
+  ];
+  return evidence.filter(hasEvidence).length >= 4;
+}
+
+/**
+ * Require five quality records and at least three distinct source domains.
+ * This prevents one secondary feed from creating a thin programmatic doorway.
+ */
+export function isIndexableJobHub(jobs, now = new Date()) {
+  if (!Array.isArray(jobs)) return false;
+  const qualified = jobs.filter(job => isQualityJob(job, now));
+  const sourceDomains = new Set();
+  for (const job of qualified) {
+    try {
+      const url = new URL(job.url || job.original_source_url);
+      sourceDomains.add(url.hostname.toLowerCase().replace(/^www\\./, ""));
+    } catch {}
+  }
+  return qualified.length >= 5 && sourceDomains.size >= 3;
+}
 async function readJson(path, fallback) { try { return JSON.parse(await readFile(path,"utf8")); } catch { return fallback; } }
 function jobCard(job) {
   const url = safeUrl(job.url || job.original_source_url);
@@ -65,7 +124,7 @@ function gameCards() {
   return '<article class="hub-card"><h3><a href="/arrowout/">Arrow Out! — Free Arrow Puzzle Game</a></h3><p>Solve arrow-path logic puzzles across a large level collection with touch-friendly controls.</p></article>' +
     '<article class="hub-card"><h3><a href="/crystalquest/">Crystal Quest — Free Match-3 Adventure</a></h3><p>Match magical gems through a 27-level fantasy puzzle adventure with supported PWA offline play.</p></article>';
 }
-export function renderHub(hub, jobs = [], indexable = hub.kind === "games" || jobs.length >= 4) {
+export function renderHub(hub, jobs = [], indexable = hub.kind === "games" || isIndexableJobHub(jobs)) {
   const cards = hub.kind === "games" ? gameCards() : jobs.map(jobCard).filter(Boolean).slice(0, 24).join("\n");
   const fallback = hub.kind === "games" ? "" : '<p class="hub-empty">No matching live entries are available in the current synced dataset. Browse the <a href="/sarkari-sarthi/">Sarkari Sarthi portal</a> for the latest collection. This page will populate when matching records are published.</p>';
   const url = DOMAIN + "/" + hub.path.replace(/index\.html$/, "");
@@ -103,7 +162,7 @@ export async function generateHubs(root = ROOT) {
     const jobs = hub.keywords ? allJobs.filter(job => hub.keywords.test([job.title,job.description,job.category,job.state,job.location].filter(Boolean).join(" "))) : [];
     const path = root + "/" + hub.path;
     await mkdir(dirname(path),{recursive:true});
-    const indexable = hub.kind === "games" || jobs.length >= 4;
+    const indexable = hub.kind === "games" || isIndexableJobHub(jobs);
     await writeFile(path,renderHub(hub,jobs,indexable));
     const loc = DOMAIN + "/" + hub.path.replace(/index\.html$/,"");
     const escapedLoc = loc.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
