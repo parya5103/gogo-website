@@ -12,7 +12,7 @@ const pages = [
 ];
 const homepage = await read("index.html");
 const about = await read("about/index.html");
-const aboutTitle = about.match(/<title>([^<]+)<\\/title>/i)?.[1] || "";
+const aboutTitle = about.split("<title>")[1]?.split("</title>")[0] || "";
 const aboutDescription = about.match(/<meta name="description" content="([^"]*)"/i)?.[1] || "";
 assert.equal(aboutTitle, "About GoGo Company India | Founder & Products", "about page must target company/about intent rather than repeat homepage product categories");
 assert.match(aboutDescription, /founded by Pratik Arya in Indore/i, "about description must identify the verified founder and location");
