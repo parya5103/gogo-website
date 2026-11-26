@@ -28,7 +28,7 @@ const PLACEHOLDER_VALUE = /^(?:not specified|not available|n\\/a|na|unknown|to b
 function hasEvidence(value) {
   if (value === null || value === undefined) return false;
   const text = String(value).trim();
-  return Boolean(text && !PLACEHOLDER_VALUE.test(text));
+  return Boolean(text && !PLACEHOLDER_VALUES.has(text.toLowerCase()));
 }
 function secureHttpsUrl(value) {
   try { return new URL(value).protocol === "https:"; } catch { return false; }
