@@ -24,7 +24,7 @@ export function serializeJsonLd(value) {
 function safeUrl(value) { try { const url = new URL(value); return ["https:","http:"].includes(url.protocol) ? url.href : null; } catch { return null; } }
 
 const INDEXABLE_JOB_WINDOW_MS = 14 * 24 * 60 * 60 * 1000;
-const PLACEHOLDER_VALUE = /^(?:not specified|not available|n\\/a|na|unknown|to be announced|[-—])$/i;
+const PLACEHOLDER_VALUES = new Set(["not specified", "not available", "n/a", "na", "unknown", "to be announced", "-", "—"]);
 function hasEvidence(value) {
   if (value === null || value === undefined) return false;
   const text = String(value).trim();
@@ -76,7 +76,7 @@ export function isIndexableJobHub(jobs, now = new Date()) {
   for (const job of qualified) {
     try {
       const url = new URL(job.url || job.original_source_url);
-      sourceDomains.add(url.hostname.toLowerCase().replace(/^www\\./, ""));
+      sourceDomains.add(url.hostname.toLowerCase().replace(/^www[.]/, ""));
     } catch {}
   }
   return qualified.length >= 5 && sourceDomains.size >= 3;
