@@ -160,7 +160,7 @@ Record one row for every actual submission: date, target, product, free/paid sta
 | Directory | Product / company | Cost | Result | Backlink status |
 |---|---|---:|---|---|
 | [Still Online](https://www.stillonline.games/submit) | Crystal Quest: Gem Legends | Free | Form saved; manual review pending. Site confirmed no email was sent. | Not live yet; verify public listing and link attribute after review |
-| [Still Online](https://www.stillonline.games/submit) | Arrow Out! | Free | Submission attempt launched; final status requires verification | Not earned |
+| [Still Online](https://www.stillonline.games/submit) | Arrow Out! | Free | Form saved; manual review pending. Site confirmed no email was sent. | Not live yet; verify public listing and link attribute after review |
 | [OpenPlayer.One](https://openplayer.one/submit/) | Arrow Out! | Free | Form fields prepared truthfully; server repeatedly rejected CSRF/anti-bot token. Not submitted. | None |
 | [Central India Tech](https://centralindiatech.com/submit) | GoGo Company | Free basic listing | Requires sign-in/account; no account credentials available, so not submitted | None |
 | [AIIIN](https://www.aiiin.in/submit) | GoGo AI Intelligence (potential product fit) | Free listing; account required | Prospect only; check AI product/company eligibility and create account only if approved by owner | None |
@@ -170,7 +170,7 @@ Record one row for every actual submission: date, target, product, free/paid sta
 
 - PlayNewt: two accepted submissions (Arrow Out! #515 and Crystal Quest #11322032), pending editorial review.
 - GAMES.GG: two accepted free-listing requests (Arrow Out! and Crystal Quest), pending queue/review.
-- Still Online: Crystal Quest accepted for manual review; Arrow Out! submission attempt requires final status check.
+- Still Online: both Crystal Quest and Arrow Out! accepted for manual review.
 - OpenPlayer.One: Arrow Out! not submitted because CSRF/anti-bot validation failed.
 - Central India Tech: company listing not submitted; account required.
 - just1more.games: Arrow Out! still unconfirmed due Cloudflare Turnstile.
@@ -185,7 +185,7 @@ All 14 remaining open PRs were closed after diff, branch divergence and workflow
 
 ### Follow-up and measurement
 
-1. Check Still Online Arrow Out! final status; if not accepted, don't count it.
+1. Check both Still Online submissions; verify public listing URLs only after editorial approval.
 2. Check PlayNewt and GAMES.GG review queues; update status only after a public page is live.
 3. Create/verify company accounts only with owner authorization; do not invent corporate/legal fields.
 4. On every published listing, inspect outbound link rel attribute (follow/nofollow/ugc/sponsored), canonical, indexability and whether the listing page is public.
