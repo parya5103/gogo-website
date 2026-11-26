@@ -15,7 +15,7 @@ All products and the GTA 6 guide run directly under gogocompany.in:
 | --- | --- | --- |
 | Arrow Out! (full game) | https://gogocompany.in/arrowout/ | github.com/parya5103/Fletch_Game (branch `main`) |
 | Crystal Quest (full game) | https://gogocompany.in/crystalquest/ | github.com/parya5103/crystal-quest-web (branch `main`) |
-| Sarkari Sarthi (full portal) | https://gogocompany.in/sarkari-sarthi/ | github.com/parya5103/sarkarisarthi (branch `gh-pages`) |
+| Sarkari Sarthi (full portal) | https://gogocompany.in/sarkari-sarthi/ | github.com/parya5103/Sarkari-Sarthi (branch `gh-pages`) |
 | PikaNews (news portal) | https://gogocompany.in/pikanews/ | github.com/parya5103/PikaNews (branch `main`) |
 | GoGo AI Intelligence (AI news & model hub) | https://gogocompany.in/ai/ | This repository (`ai/`, daily collector workflow) |
 
@@ -156,3 +156,13 @@ npm test                # Runs unit tests, ESLint security rules check, and upst
 Deployed from branch `main`, folder root. See DEPLOYMENT.md for the
 one-time Pages + GoDaddy DNS setup and the post-deploy verification
 checklist.
+
+
+## SEO quality and growth
+
+- The homepage title, description and single H1 describe GoGo Company as a browser-games, AI and digital-media hub; product names and search intents belong on their own relevant landing pages.
+- Keep keyword use natural. Do not repeat exact-match phrases, inject generic SEO paragraphs into aggregated feeds, or create thin pages solely to target a query.
+- Keep page titles, descriptions, H1s, visible copy, canonical URLs, robots directives, structured data and sitemap membership aligned.
+- Use `npm run build:site` followed by the SEO/build validation commands in CI after homepage-source changes.
+- Off-page growth is editorial and relationship-led: earn relevant mentions through useful original guides, genuine partner/resource pages and product showcases. Do not buy links, use automated submissions, private blog networks or reciprocal-link schemes. See `docs/SEO_OFFPAGE_PLAN.md`.
+- Search Console impressions, clicks, indexing and Core Web Vitals are measured outcomes; code validation alone does not prove Google ranking or traffic growth.

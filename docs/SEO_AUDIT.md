@@ -93,3 +93,39 @@ No indexing or submission success is claimed in this document; all of the above 
 - PikaNews footer brand line is plain text on all 18 pages (linking it means touching every page + the exact-string footer test; low same-domain SEO value, deferred).
 - Original editorial content on PikaNews (aggregation excerpts alone may underperform) - product decision, not technical.
 - Main sitemap has no lastmod by design (no fabricated dates).
+
+
+## Round 3 — homepage relevance, content quality and off-page policy (2026-11-25)
+
+### Findings from repository source review
+
+- The central homepage previously used the title “GoGo Company — Free HTML5 Browser Games & Sarkari Exam Tools” and a slogan-only H1 (“Play. Prepare. Grow with GoGo.”). The title did not represent the AI hub and used a generic “Sarkari Exam Tools” label instead of the actual product brand.
+- The sampled product landing pages already had distinct, descriptive titles and one H1 each: Arrow Out!, Crystal Quest, Sarkari Sarthi, PikaNews, GoGo AI Intelligence, Free Online Browser Games and GTA 6. Preserve these page-specific intents; do not force them into the homepage.
+- The homepage's short visible intro was readable but could better explain the full portfolio. No broad keyword-density rewrite is justified from the source inspection alone.
+- The old scripts/prerender-home.mjs and scripts/publish-site-build.mjs both hard-coded the previous H1, so changing the hero without updating those publishing guards caused CI to stop. Both guards are now aligned with the new H1.
+
+### Changes in PR #156
+
+- Homepage title, description, Open Graph and Twitter metadata now describe browser games, AI and digital media; the description names Arrow Out!, Crystal Quest, Sarkari Sarthi, PikaNews and GoGo AI Intelligence.
+- Homepage hero now uses one descriptive H1: “GoGo Company: Browser Games, AI & Digital Media”, followed by a plain-language summary of its real destinations.
+- Generated root HTML and source template are kept in sync; the social preview SVG no longer describes only games, government jobs and news.
+- Build/publish guards and SEO tests now validate the new H1, exactly one homepage H1, title length and description length.
+- Added docs/SEO_OFFPAGE_PLAN.md for selective, editorially earned mentions and backlinks. No outreach has been sent and no backlinks are claimed.
+
+### Validation status
+
+- Initial CI run exposed the stale H1 guard in the prerender/publish scripts; the failure was caused by the intentional H1 update, not by product runtime changes. The guard was corrected in the branch.
+- A fresh CI run on the latest PR head is required. Do not merge until SEO validation, CI tests, responsive regression, CodeQL, security scan and frontend build/performance checks complete successfully.
+- Google indexing, ranking, traffic and backlink growth are not proven by repository tests. Search Console owner access and future off-page measurement remain required.
+
+### Next work after PR #156
+
+1. Re-run all CI jobs and inspect failures individually; fix any regression before merge.
+2. Review open SEO PRs #71, #72, #86 and #145 for merge order and overlap; do not duplicate or merge them automatically.
+3. Audit page readability with rendered-page review and real user value, not arbitrary word-count targets. Improve only pages with unclear headings, long paragraphs, weak source attribution or thin original guidance.
+4. Use Search Console query/page exports and Links report to prioritize follow-up content and evaluate referring domains.
+
+- Anti-stuffing correction: the post-sync generator no longer appends a generic list of variants such as “sarkari naukri 2026” and “12th pass ki sarkari naukri” to the Sarkari Sarthi homepage. The existing job-discovery H1 and verified listings carry the intent; tests protect against reintroducing the keyword paragraph.
+
+- AI hub heading alignment: changed the generated `/ai/` H1 to “AI News, Models & Research” in both `scripts/update-ai-hub.py` and the current generated page, so the daily updater preserves a heading aligned with its title and actual content.
+- CI on the latest validated commit: SEO validation, CI Tests, frontend build/performance and security scan passed; CodeQL completed successfully. Responsive regression failed: `/sarkari-sarthi/` reports horizontal overflow at 390px and 430px. This is outside the homepage-only changes and must be investigated before treating mobile QA as green.
