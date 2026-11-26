@@ -65,3 +65,10 @@ After 30 days, compare new referring domains and referral visits with the baseli
 ### Adoption decision
 
 Use CrawlSEO as an optional monitoring/audit companion, not as an automated link-building bot. First finish GoGo's technical SEO, then connect Search Console and run a crawl. Any prospect must be manually reviewed for relevance, editorial quality, real audience and spam risk. No auto-posting, paid-link schemes, PBNs, mass directory submissions or forced reciprocal links. Keep the GoGo static site independent of this dashboard.
+### CrawlSEO deployment guardrails before any installation
+
+- Upstream Compose starts separate app, worker and PostgreSQL containers. Do not assume this is suitable for a tiny free-tier VM without measuring RAM, CPU, disk and crawl load.
+- Never deploy upstream defaults: replace the sample PostgreSQL password, generate a strong stable Auth secret, configure HTTPS/reverse proxy and Google OAuth redirect URIs, and keep PostgreSQL bound to loopback/private Compose networking only.
+- Pin a reviewed release image rather than deploying an unpinned `:latest` tag; review upstream changes and dependency/security advisories before upgrades.
+- Backlink analysis is optional and uses a separately supplied DataForSEO credential. Do not add paid API use unless the cost is explicitly approved. The initial GoGo setup should start with GSC + crawler + PageSpeed only.
+- No installation or third-party credentials were changed as part of this PR. Deployment remains a separate, measured follow-up.
