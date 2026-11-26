@@ -145,6 +145,20 @@ check('homepage Organization and WebSite schema share one publisher entity', () 
 });
 
 // Sitemap integrity
+
+check('About page accurately represents the full GoGo portfolio and Sarkari Sarthi source labels', () => {
+  const about = read('about/index.html');
+  assert(about.includes('GoGo AI Intelligence'), 'About page must include the current AI product');
+  assert(about.includes('../ai/'), 'About page must link to the AI hub');
+  assert(about.includes('secondary public sources'), 'About page must disclose the Sarkari Sarthi source mix');
+  assert(about.includes('verification status'), 'About page must explain source/verification labels');
+  assert(!about.includes('Sarkari listings always link official government sources'), 'About page must not overstate verification');
+  const title = titleOf(about) || '';
+  const description = descOf(about) || '';
+  assert(title.length >= 10 && title.length <= 75, 'About title length out of range');
+  assert(description.length >= 50 && description.length <= 165, 'About description length out of range');
+});
+
 check('sitemap.xml: locs absolute, unique, targets exist, no noindex URLs', () => {
   const sm = read('sitemap.xml');
   const locs = [...sm.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
