@@ -72,3 +72,41 @@ Use CrawlSEO as an optional monitoring/audit companion, not as an automated link
 - Pin a reviewed release image rather than deploying an unpinned `:latest` tag; review upstream changes and dependency/security advisories before upgrades.
 - Backlink analysis is optional and uses a separately supplied DataForSEO credential. Do not add paid API use unless the cost is explicitly approved. The initial GoGo setup should start with GSC + crawler + PageSpeed only.
 - No installation or third-party credentials were changed as part of this PR. Deployment remains a separate, measured follow-up.
+
+## 2026-11-26 follow-up — Search Console evidence and outreach prospects
+
+### Search Console snapshot (India; 2026-11-21 through 2026-11-23)
+
+Read-only SMEPost Search Console connection returned a free recent-three-days window only; no prior-period comparison is available.
+
+- /about.html: 11 impressions, 0 clicks, 0% CTR, average position 6.55. This is a legacy noindex,follow redirect stub whose canonical and redirect target are /about/; it is not the page whose snippet should be rewritten. Google may still be showing stale redirect-URL data. Fresh Google URL Inspection is still needed to confirm the selected canonical.
+- /about.html queries included gogo company (4 impressions, position 5), gogo (3, position 7.33), and gogo digital media (2, position 8).
+- Homepage: 3 impressions, 0 clicks, average position 11.33; query rows included go company and gogo digital media.
+- /sarkari-sarthi/mp-govt-jobs/: 9 impressions, 0 clicks, average position 31.11. This hub is already noindex,follow, canonical to itself and absent from the root sitemap because the current inventory does not justify a Madhya Pradesh jobs landing page. Do not re-index it just because a few impressions appeared; confirm Google’s latest inspection first.
+
+### Changes made after the snapshot
+
+- Improved the canonical About page title and description to include the real portfolio: browser games, AI and digital media.
+- Added GoGo AI Intelligence to the About product lineup with a descriptive internal link.
+- Corrected Sarkari Sarthi wording: the current data includes both official and secondary public sources; the About page now explains source/verification labels and instructs applicants to verify with the recruiting authority. It no longer claims every listing comes from official websites.
+- Updated root sitemap homepage lastmod to 2026-11-26 after the homepage content change.
+- Added regression coverage for the About portfolio and source-accuracy claims.
+- Root robots.txt intentionally does not advertise the PikaNews Google News sitemap while that sitemap is empty. Its generator only includes reviewed original editorial pages (named author, explicit review, substantial original text and a valid recent publication date). The existing SEO validator correctly enforces this; adding the empty News sitemap to root robots.txt would be a regression.
+
+### Outreach prospects researched
+
+See SEO_OUTREACH_QUEUE.md. Free editorial-review candidates include OttersPlay, Zadely, IndieRadar, GAMES.GG and DLE.GAMES. These are prospects, not earned backlinks. No form or email has been submitted. Paid priority queues are deliberately excluded. Tabatu is excluded until compatible embedding/redistribution rights are confirmed.
+
+### Open PR disposition
+
+- #71 (programmatic category hubs), #72 (short PikaNews meta descriptions), #86 (AdSense/content quality) and #145 (all-HTML canonical audit) are stale/diverged from current main (respectively about 183, 183, 132 and 46 commits behind at review). Do not merge their old branch heads.
+- #71 contains useful ideas: only build category pages where inventory supports them, and noindex thin job hubs. Port only after testing against the current manifest and generator.
+- #72's generic suffix-based description expansion risks creating repetitive metadata; do not blindly port it. Improve descriptions from real article content only.
+- #86 contains worthwhile content-quality ideas (a substantive job-verification guide, explicit secondary-source disclosure, and better drawer interaction). The About-page disclosure is now corrected; a separate upstream-source implementation of the guide and menu interaction remains to be reviewed.
+- #145's one-canonical-per-HTML audit is valuable but must be rebased/reimplemented on current main and run across generated PikaNews, Sarkari Sarthi and game files before enabling as a hard CI gate.
+
+### Remaining access and measurement constraints
+
+- GSC Wizard URL Inspection and full historical reporting were unavailable because the connected GSC Wizard subscription/trial has ended. SMEPost provides only the most recent three finalized days, with no comparison.
+- CrawlSEO deployment was not performed: no Desktop Commander/SSH device is connected to this session, so the Oracle VM cannot be inspected or provisioned safely here. Keep it separate from GitHub Pages; do not invent secrets or expose PostgreSQL publicly.
+- No external outreach has been sent. Submissions remain a human-reviewed step; do not claim links until the published referring page is verified.
