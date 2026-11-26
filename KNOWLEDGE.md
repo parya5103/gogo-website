@@ -164,3 +164,14 @@ secrets here by design. Last updated: 2026-11-26 (PR audit and earned-link outre
 - Expanded free game directory submissions: Still Online accepted both Crystal Quest and Arrow Out! for manual review. OpenPlayer.One Arrow Out! form was fully prepared but its CSRF/anti-bot validation repeatedly failed, so it is NOT submitted. Central India Tech offers free basic listings but requires an account; no credentials were available, so no listing was submitted.
 - GSC Wizard now refuses all calls because the connected subscription/trial has ended. OpenSEO backlink overview is also blocked by insufficient credits. Until access is restored, do not claim verified referring-domain counts or backlink metrics; manually verify published pages and use available analytics referrals.
 - Keep PR queue empty by opening fresh, narrowly scoped PRs from current main, with CI evidence and accurate docs. Never merge a major dependency bump without full gates and Node engine compatibility.
+
+
+## 2026-11-26 backlink outreach verification
+
+- Updated `docs/SEO_OUTREACH_QUEUE.md` with the latest live product identity/contact verification, directory checks, account/login blockers, SubmitForBacklinks suitability and current measurement limits.
+- Foundplay's same-name “Arrow Out” page is a different game: it links to remix.gg and credits @Splendor_Defi. Do not claim it as GoGo's listing. OpenPlayer.One search also returned mismatched FRVR/1987-game entities and no successful submission confirmation.
+- The connected SubmitForBacklinks account has no submissions and its product taxonomy has no browser-game category. Do not submit GoGo games under unrelated SaaS categories or add a reciprocal badge without a genuinely eligible listing and an owner-approved visible placement.
+- The official Arrow Out! contact page publishes `officialgogocompany@gmail.com`; use it only for legitimate editor follow-up. The product pages confirm Arrow Out! and Crystal Quest: Gem Legends are GoGo-hosted browser games.
+- Current keyword guest data is suggestion-only except limited cached metrics; the cached `sarkari naukri` volume is 1.22M India/Google monthly searches, with -18% trend. Ads competition is not organic SEO difficulty.
+- SMEPost GSC access is restricted to 2026-11-21..2026-11-23; GSC Wizard is subscription-blocked and OpenSEO credits are insufficient. Do not claim verified backlink counts, referring domains or referral growth.
+- A Central India Tech browser profile was prepared for owner sign-in; no company profile has been submitted. See the outreach queue for the setup step and verified prospects.
