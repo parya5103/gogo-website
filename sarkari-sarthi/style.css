@@ -48,11 +48,17 @@ html {
 }
 
 body {
+    /* Prevent off-canvas fixed UI or oversized children from widening the mobile page. */
+    overflow-x: clip;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: var(--text-primary);
     background-color: var(--background-primary);
     transition: all 0.3s ease;
+}
+
+@supports not (overflow-x: clip) {
+    body { overflow-x: hidden; }
 }
 
 .container {
