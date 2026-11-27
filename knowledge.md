@@ -57,7 +57,7 @@ Last verified: 2026-11-27
 - The PikaNews static-first architecture and central GoGo publishing sync remain unchanged; no second Pages deploy was added.
 - Newly discovered publishers are not automatically activated. Review availability, attribution, reuse permissions, region/language and image policy first.
 - Third-party RSS article pages remain noindex; original editorial and topic-hub eligibility gates remain in force.
-- CI status checks were not returned by the connected GitHub status endpoint after merge. Do not claim tests passed; inspect the Actions runs and resolve any failures before relying on the new collector in production.
+- The user confirmed on 2026-11-27 that PikaNews CI/tests passed after merge. The connected GitHub status endpoint had earlier returned no status rows, so this remains user-reported confirmation rather than independently verified run metadata.
 
 ## Root sitemap integrity gate (2026-11-27)
 - Added `scripts/validate-root-sitemap.mjs` on branch `seo/root-sitemap-integrity-2026-11`.
@@ -66,3 +66,12 @@ Last verified: 2026-11-27
 - This is a build-time consistency safeguard; it does not prove Google crawled or indexed a URL and does not predict rankings.
 - Validation has not yet been run in a local checkout or GitHub Actions in this session. Merge only after CI confirms the current sitemap and all generated pages pass.
 - PR will be linked here after creation; product sync workflows and synced product directories remain untouched.
+
+
+## SEO regression fixes discovered during PR validation (2026-11-27)
+- The GoGo repository's `Build frontend performance assets` workflow exposed two existing SEO regression failures in `scripts/seo-tests.mjs`: Arrow Out guide privacy/contact links resolved under the wrong directory, and the AI hub meta description measured 180 characters against the project's 160-character limit.
+- AI hub source `ai/index.html` updated on this branch: meta description shortened to 131 characters while retaining AI news, models, pricing, research, open-source and original-source intent; document locale changed to `en-IN`.
+- Arrow Out source repository `parya5103/Fletch_Game` PR #68 fixes all four guide privacy/contact links to resolve to product-root pages. Do not edit the synced `gogo-website/arrowout/` copy manually.
+- The first PR #168 workflow attempt failed in the existing SEO regression suite on those two issues. The AI change is now committed to this branch and the Arrow Out source fix is in PR #68; rerun CI after the latest commits and require green checks before merging PR #168.
+- PR #168: https://github.com/parya5103/gogo-website/pull/168
+- Arrow Out PR #68: https://github.com/parya5103/Fletch_Game/pull/68
