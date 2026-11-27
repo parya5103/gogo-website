@@ -10,8 +10,8 @@ on:
     # Science and guest-preference files; the schedule remains the fallback.
     - cron: '10,40 * * * *'
   workflow_dispatch:
-  # Allow an intentional workflow-file update to publish the latest upstream
-  # PikaNews source immediately instead of waiting for the next 30-minute cron.
+  # An intentional workflow-file update triggers an immediate source refresh after
+  # upstream collector commits; the 30-minute cron remains the automatic fallback.
   push:
     branches: [main]
     paths:
