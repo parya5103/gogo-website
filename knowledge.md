@@ -45,15 +45,16 @@ Last verified: 2026-11-27
 
 ## Current access limitation (2026-11-27)
 - The connected GSC Wizard tools returned payment_required because the connected account has no active subscription. Therefore live Search Console property, sitemap-processing, query and page-performance evidence was not available in this session.
-- A successful GitHub repository metadata read confirmed access to the public main repository. File-level changes must be tested and reviewed before merge.
-
+- GitHub repository access is available. Do not claim live GSC performance, indexing or traffic improvements without fresh Search Console evidence.
 
 ## PikaNews five-phase collector upgrade (2026-11-27)
 - PikaNews source repository: parya5103/PikaNews.
-- Feature implementation is in PR #98: https://github.com/parya5103/PikaNews/pull/98 (branch feat/news-collector-five-phase-upgrade).
+- Implementation PR #98 was successfully squash-merged into main on 2026-11-27.
+- Merge commit: c228caf748a9288b4993ab11f99d257d52783b6c.
+- PR: https://github.com/parya5103/PikaNews/pull/98 (branch feat/news-collector-five-phase-upgrade).
 - Scope: conditional HTTP requests (ETag/Last-Modified), Actions-cached feed bodies and source health, safe redirect checks, bounded retry/backoff, JSON Feed parsing, RSS/Atom/JSON Feed discovery helper, health/priority-aware fetch order, limited reading-context extraction, and sitemap-to-page/canonical/robots validation.
-- PikaNews README.md and PikaNews/knowledge.md were updated on the feature branch.
-- The PikaNews static-first architecture and central GoGo publishing sync remain unchanged; do not add a second Pages deploy.
-- Do not activate newly discovered publishers automatically. Review availability, attribution, reuse permissions, region/language and image policy first.
+- PikaNews README.md and PikaNews/knowledge.md document the architecture and indexation policy.
+- The PikaNews static-first architecture and central GoGo publishing sync remain unchanged; no second Pages deploy was added.
+- Newly discovered publishers are not automatically activated. Review availability, attribution, reuse permissions, region/language and image policy first.
 - Third-party RSS article pages remain noindex; original editorial and topic-hub eligibility gates remain in force.
-- PR is open and mergeable, but no CI status was returned at the time of this note. Do not claim tests passed or merge until CI is green.
+- CI status checks were not returned by the connected GitHub status endpoint after merge. Do not claim tests passed; inspect the Actions runs and resolve any failures before relying on the new collector in production.
