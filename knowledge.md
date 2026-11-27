@@ -58,3 +58,11 @@ Last verified: 2026-11-27
 - Newly discovered publishers are not automatically activated. Review availability, attribution, reuse permissions, region/language and image policy first.
 - Third-party RSS article pages remain noindex; original editorial and topic-hub eligibility gates remain in force.
 - CI status checks were not returned by the connected GitHub status endpoint after merge. Do not claim tests passed; inspect the Actions runs and resolve any failures before relying on the new collector in production.
+
+## Root sitemap integrity gate (2026-11-27)
+- Added `scripts/validate-root-sitemap.mjs` on branch `seo/root-sitemap-integrity-2026-11`.
+- The validator checks the root sitemap is advertised by root robots.txt, rejects duplicate/query/fragment/non-canonical-host URLs, resolves each listed URL to a published local HTML file, checks canonical alignment, rejects noindex pages in the sitemap, and validates optional lastmod syntax.
+- Added the validator to the `npm test` chain before the existing SEO build checks.
+- This is a build-time consistency safeguard; it does not prove Google crawled or indexed a URL and does not predict rankings.
+- Validation has not yet been run in a local checkout or GitHub Actions in this session. Merge only after CI confirms the current sitemap and all generated pages pass.
+- PR will be linked here after creation; product sync workflows and synced product directories remain untouched.
