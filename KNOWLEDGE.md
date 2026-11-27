@@ -2,7 +2,7 @@
 
 Consolidated operational knowledge for gogo-website (gogocompany.in),
 kept in-repo so context survives across sessions and machines. No
-secrets here by design. Last updated: 2026-11-27 (GSC CTR review and same-day SEO changes).
+secrets here by design. Last updated: 2026-11-27 (GSC CTR review, SEO changes, PikaNews sync verification and documentation corrections).
 
 ## What this repo is
 
@@ -50,10 +50,7 @@ secrets here by design. Last updated: 2026-11-27 (GSC CTR review and same-day SE
 
 ## GoGo tag and central backend integration
 
-- A Google Tag Manager web container (GTM-T5MRTKJZ) is installed once per
-  GoGo-owned HTML page (13 pages including index, legal pages and redirect
-  stubs). Synced product folders are intentionally excluded; product repos
-  need their own tag if wanted.
+- A Google Tag Manager web container (GTM-TH4NX8MH) is the active container in the current GoGo-owned site files. Preserve existing placements and avoid duplicate loads. Synced product folders are managed separately by their upstream repositories.
 - assets/js/gogo-notifications.js + firebase-messaging-sw.js wire the GoGo
   Central FCM backend (opt-in notifications; config gates fail closed).
 - After a successful product sync, the workflow posts a product-update event
@@ -194,3 +191,14 @@ secrets here by design. Last updated: 2026-11-27 (GSC CTR review and same-day SE
 - No traffic increase, new backlink, or indexing result is claimed from these code/document changes. Verify the sync workflow and recheck Search Console after Google recrawls.
 
 - The 2026-11-27 CI failure in the AI-hub check exposed a stale generator/test title contract and stale PikaNews hub assertions. Aligned the daily AI-hub generator with its concise published title (“AI News & Model Updates | GoGo AI Intelligence”) and made the PikaNews regression check respect the live policy: qualified topic hubs are indexable and listed; unqualified hubs and Trending stay noindex/out of sitemap.
+
+
+## 2026-11-27 — post-merge deployment and documentation verification
+
+- PR #165 merged as `76cd5d83dc14413c84be93cb806deb59c98d6c92`; its About-intent, AI title-contract and PikaNews sitemap/hub-policy validation changes are on `main`.
+- Verified PikaNews sync run #109 (`45942749653`) completed successfully. Its sync, SEO enhancements, Google News sitemap generation, validation, topic-hub refresh, sitemap/IndexNow and commit steps all completed successfully; only the optional Central notification step was skipped.
+- Verified the central Pages deployment run (`45942784361`) completed successfully after the sync.
+- Compared `parya5103/PikaNews/frontend/sitemap.xml` with `parya5103/gogo-website/pikanews/sitemap.xml`: both contain the same 16 URLs and have the same blob SHA (`5a4cba6e86769ac131f6b4a2adedd695b5d9f4a1`). Do not hand-edit the central synced sitemap.
+- Corrected stale agent/knowledge guidance: PikaNews homepage is indexable; only qualified source-diverse topic hubs are eligible for indexing, while unqualified hubs, Trending and individual third-party story pages remain noindex. Google News sitemap is reserved for reviewed original editorial.
+- Corrected the stale GTM container ID in these docs to the active ID observed in current GoGo-owned files: `GTM-TH4NX8MH` (the prior `GTM-T5MRTKJZ` note was outdated). No tracking code or analytics configuration was changed.
+- The live PikaNews page's static HTML explains the feed and source policy; its headlines are populated client-side, so a text-only crawl showing loading placeholders is not proof that the feed is broken. No live-feed runtime claim is made from that crawl.
