@@ -204,3 +204,12 @@ secrets here by design. Last updated: 2026-11-27 (GSC CTR review, SEO changes, P
 - The live PikaNews page's static HTML explains the feed and source policy; its headlines are populated client-side, so a text-only crawl showing loading placeholders is not proof that the feed is broken. No live-feed runtime claim is made from that crawl.
 
 - Test correction from PR #166 CI (2026-11-27): PikaNews Latest is currently indexable and listed; Hollywood, Entertainment, Technology, Gaming, World and Science are also eligible. Trending, Bollywood, Business and Sports remain noindex and excluded. The offline SEO regression test now asserts each page's actual robots directive and sitemap membership instead of incorrectly forcing every listing page to noindex.
+
+
+## 2026-11-27 PikaNews indexation verification
+
+- Upstream PikaNews PR #94 merged as `0166fa7a1996547a1a62af445b9e6d2221c3ab23`; the automatic collector run `45950549857` completed successfully.
+- Sitemap/robots mismatch root cause: the sitemap evaluated the full feed while category pages rendered only the first 12 eligible stories. PR #94 aligned category-hub sitemap eligibility with the rendered 12-story window and added a regression test.
+- Verified upstream collector output: 13 sitemap URLs; Business and Sports both declare `noindex,follow` and are excluded from the sitemap. Current snapshot also marks Latest and Gaming noindex; Hollywood, Entertainment, Technology, World and Science are indexable. This list is a snapshot, not a permanent allowlist; quality gates may change as the feed changes.
+- A follow-up fix is being tested for Latest: its sitemap eligibility must also use the same 12-story window. Do not merge central sync changes until the upstream Latest sitemap fix is merged, the collector succeeds, and the central sync publishes the matching sitemap.
+- Central SEO regression tests should assert the invariant `sitemap membership === robots is indexable` for every hub, rather than hardcoding which hubs qualify on a given day.
