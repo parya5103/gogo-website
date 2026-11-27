@@ -119,7 +119,11 @@ def request_model(task: str, context: str, api_base: str, model: str) -> dict:
         raise RuntimeError(f"Local model request failed: {exc}") from exc
 
     content = body["choices"][0]["message"]["content"].strip()
-    content = re.sub(r"^\s*\`\`\`(?:json)?\s*|\s*\`\`\`\s*$", "", content, flags=re.I)
+    fence = chr(96) * 3
+    if content.startswith(fence):
+        content = content.split("\n", 1)[-1]
+    if content.rstrip().endswith(fence):
+        content = content.rstrip()[:-len(fence)].rstrip()
     start, end = content.find("{"), content.rfind("}")
     if start < 0 or end <= start:
         raise ValueError("Model response did not contain a JSON object.")
