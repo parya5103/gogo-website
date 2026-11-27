@@ -237,10 +237,14 @@ check('robots.txt: nothing blocked, exactly three active sitemaps declared and r
 
 // PikaNews homepage is a useful discovery landing page; syndicated listings and story excerpts remain noindex.
 check('PikaNews homepage is indexable and listed; syndicated listings and story pages stay noindex', () => {
-  const pages = [
-    'latest.html', 'trending.html', 'bollywood.html', 'hollywood.html',
-    'entertainment.html', 'technology.html', 'gaming.html', 'business.html', 'sports.html',
+  const indexableHubs = [
+    'latest.html', 'hollywood.html', 'entertainment.html',
+    'technology.html', 'gaming.html', 'world.html', 'science.html',
   ];
+  const noindexHubs = [
+    'trending.html', 'bollywood.html', 'business.html', 'sports.html',
+  ];
+  const pages = [...indexableHubs, ...noindexHubs];
   const sm = read('pikanews/sitemap.xml');
   const pikaHome = read('pikanews/index.html');
   assert((pikaHome.match(/name="description"/g) || []).length === 1, 'PikaNews homepage must have exactly one meta description');
@@ -252,10 +256,13 @@ check('PikaNews homepage is indexable and listed; syndicated listings and story 
   assert(sm.includes('<loc>https://gogocompany.in/pikanews/</loc>'), 'PikaNews homepage must be in its sitemap');
   for (const page of pages) {
     const html = read('pikanews/' + page);
-    assert((robotsOf(html) || '').includes('noindex'), page + ' must remain noindex until editorial value is added');
-    assert((html.match(/name=[\"']robots[\"']/gi) || []).length === 1, page + ' must have exactly one robots directive');
+    const indexable = indexableHubs.includes(page);
+    const robots = robotsOf(html) || '';
+    assert(indexable ? !robots.includes('noindex') : robots.includes('noindex'), page + ' robots directive does not match its editorial eligibility');
+    assert((html.match(/name=["']robots["']/gi) || []).length === 1, page + ' must have exactly one robots directive');
     assert(canonicalOf(html) === 'https://gogocompany.in/pikanews/' + page, page + ' canonical mismatch');
-    assert(!sm.includes('<loc>https://gogocompany.in/pikanews/' + page + '</loc>'), page + ' must not be included in the PikaNews sitemap while noindex');
+    const listed = sm.includes('<loc>https://gogocompany.in/pikanews/' + page + '</loc>');
+    assert(indexable ? listed : !listed, page + ' sitemap membership does not match its robots directive');
   }
   const articleRoot = resolve(root, 'pikanews/news');
   const articleDir = readdirSync(articleRoot, { withFileTypes: true }).find(entry =>
