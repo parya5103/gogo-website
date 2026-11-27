@@ -58,7 +58,7 @@ def safe_patch_paths(patch: str) -> list[str]:
     return sorted(set(paths))
 
 
-def collect_context(root: Path, max_files: int = 35, max_chars: int = 42_000) -> str:
+def collect_context(root: Path, max_files: int = 25, max_chars: int = 24_000) -> str:
     result = subprocess.run(
         ["git", "ls-files", "-z"], cwd=root, check=True, capture_output=True
     )
@@ -104,7 +104,7 @@ def request_model(task: str, context: str, api_base: str, model: str) -> dict:
         "model": model,
         "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
         "temperature": 0.1,
-        "max_tokens": 4096,
+        "max_tokens": 2048,
     }
     request = urllib.request.Request(
         api_base.rstrip("/") + "/chat/completions",
