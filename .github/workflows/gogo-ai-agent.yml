@@ -1,0 +1,161 @@
+name: GoGo GitHub-only AI Agent
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_repo:
+        description: Target repository (owner/name)
+        required: true
+        type: string
+        default: parya5103/gogo-website
+      base_ref:
+        description: Existing target branch
+        required: true
+        type: string
+        default: main
+      task:
+        description: One bounded coding task; never include secrets
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gogo-ai-agent-${{ github.workflow }}-${{ inputs.target_repo }}
+  cancel-in-progress: false
+
+jobs:
+  agent:
+    name: Run local quantized coding model and open draft PR
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    environment: gogo-ai-agent-approval
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout agent controller
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          path: agent-control
+
+      - name: Validate target repository input
+        env:
+          TARGET_REPO: ${{ inputs.target_repo }}
+          BASE_REF: ${{ inputs.base_ref }}
+        run: |
+          [[ "$TARGET_REPO" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]] || { echo "::error::Invalid owner/repository"; exit 1; }
+          [[ "$BASE_REF" =~ ^[A-Za-z0-9._/-]+$ ]] || { echo "::error::Invalid base ref"; exit 1; }
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.12"
+
+      - name: Test patch safety before model execution
+        working-directory: agent-control/.github/ai-agent
+        run: python -m unittest -v test_agent.py
+
+      - name: Checkout target repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: ${{ inputs.target_repo }}
+          ref: ${{ inputs.base_ref }}
+          token: ${{ secrets.GOGO_AGENT_TOKEN || github.token }}
+          path: target
+          fetch-depth: 0
+
+      - name: Build model runtime image
+        run: docker build -t gogo-ai-model agent-control/.github/ai-agent
+
+      - name: Start local quantized coding model
+        run: |
+          docker run --detach --name gogo-ai-model --publish 8080:8080 \
+            gogo-ai-model \
+            -hf Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF:Q4_K_M \
+            --host 0.0.0.0 --port 8080 -c 8192 -ngl 0
+          for attempt in $(seq 1 90); do
+            if curl --fail --silent http://127.0.0.1:8080/health >/dev/null; then
+              echo "Local model server is ready."
+              exit 0
+            fi
+            if ! docker ps --format '{{.Names}}' | grep -qx gogo-ai-model; then
+              docker logs gogo-ai-model || true
+              exit 1
+            fi
+            sleep 10
+          done
+          docker logs gogo-ai-model || true
+          echo "::error::Model server did not become ready within 15 minutes."
+          exit 1
+
+      - name: Generate and validate source patch
+        env:
+          TASK: ${{ inputs.task }}
+        run: |
+          python agent-control/.github/ai-agent/agent.py \
+            --repo "$GITHUB_WORKSPACE/target" \
+            --task "$TASK"
+
+      - name: Run repository-native checks
+        working-directory: target
+        run: |
+          set -euo pipefail
+          if [[ -f package.json ]]; then
+            if [[ -f package-lock.json ]]; then npm ci
+            elif [[ -f pnpm-lock.yaml ]]; then corepack enable && pnpm install --frozen-lockfile
+            elif [[ -f yarn.lock ]]; then corepack enable && yarn install --immutable
+            fi
+            if ! node -e "const p=require('./package.json'); process.exit(p.scripts?.test ? 0 : 1)"; then
+              echo "::warning::No package.json test script found; skipping JavaScript tests."
+              exit 0
+            fi
+            if [[ -f pnpm-lock.yaml ]]; then pnpm test
+            elif [[ -f yarn.lock ]]; then yarn test
+            else npm test
+            fi
+          elif [[ -f go.mod ]]; then
+            go test ./...
+          elif [[ -f Cargo.toml ]]; then
+            cargo test --locked
+          elif find . -maxdepth 3 -type f \( -name 'test_*.py' -o -name '*_test.py' \) | grep -q .; then
+            python -m pytest -q
+          else
+            echo "::warning::No supported test command detected."
+          fi
+
+      - name: Create isolated branch and draft pull request
+        env:
+          TARGET_REPO: ${{ inputs.target_repo }}
+          BASE_REF: ${{ inputs.base_ref }}
+          GH_TOKEN: ${{ secrets.GOGO_AGENT_TOKEN || github.token }}
+        working-directory: target
+        run: |
+          set -euo pipefail
+          if [[ -z "$(git status --porcelain)" ]]; then
+            echo "::error::The agent produced no repository changes."
+            exit 1
+          fi
+          BRANCH="ai-agent/run-${GITHUB_RUN_ID}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add -A
+          git commit -m "ai: propose repository improvement"
+          git push --set-upstream origin "$BRANCH"
+          gh pr create --repo "$TARGET_REPO" --base "$BASE_REF" --head "$BRANCH" \
+            --draft --title "AI proposal: repository improvement" \
+            --body "## GoGo GitHub-only AI Agent proposal
+
+This draft PR was generated by a local quantized Qwen2.5-Coder model inside a temporary GitHub Actions runner.
+
+- Target: $TARGET_REPO
+- Base: $BASE_REF
+- Run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+
+Repository-native checks ran before this PR was created. Inspect every changed line and test result. The agent does not merge PRs."
+
+      - name: Stop model container
+        if: always()
+        run: docker rm --force gogo-ai-model || true
