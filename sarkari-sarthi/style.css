@@ -38,6 +38,13 @@
 
 html {
     scroll-behavior: smooth;
+    /* The closed mobile drawer is translated off-canvas. Clip that hidden
+       overflow at the viewport so phones never gain horizontal scrolling. */
+    overflow-x: clip;
+}
+
+@supports not (overflow-x: clip) {
+    html { overflow-x: hidden; }
 }
 
 body {
@@ -1019,17 +1026,16 @@ body.menu-open {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    /* Mobile drawer: hidden off-canvas, slides in via .active
-       (toggled by script.js). This fixes the old bug where
-       display:none + a JS-only 'active' class left the menu
-       permanently invisible. */
+    /* Keep the closed drawer out of layout and the scrollable viewport.
+       The active class is toggled by script.js; display:flex is explicit
+       here so the drawer remains visible when opened. */
     .nav-menu {
         position: fixed;
         top: 0;
         right: 0;
         bottom: 0;
-        width: min(280px, 82vw);
-        display: flex;
+        width: min(280px, calc(100vw - 24px));
+        display: none;
         flex-direction: column;
         align-items: stretch;
         gap: 0;
@@ -1037,14 +1043,12 @@ body.menu-open {
         background: var(--background-primary);
         border-left: 1px solid var(--border-color);
         box-shadow: var(--shadow-heavy);
-        transform: translateX(100%);
-        transition: transform 0.25s ease;
         z-index: 1100;
         overflow-y: auto;
     }
 
     .nav-menu.active {
-        transform: translateX(0);
+        display: flex;
     }
 
     .nav-menu .nav-link {
