@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T16:31:26.387448+00:00",
+  "generatedAt": "2026-11-27T12:29:11.060705+00:00",
   "note": "Provider-declared catalogue metadata, not quality benchmarks. Verify current rates with providers.",
   "models": [
     {
@@ -426,8 +426,8 @@
       "id": "thinkingmachines/inkling-2-mini",
       "name": "Thinking Machines: Inkling 2 Mini",
       "context": 1048576,
-      "input": 0.075,
-      "output": 0.3
+      "input": 0.06,
+      "output": 0.24
     },
     {
       "id": "google/gemini-4-neon",
@@ -451,11 +451,11 @@
       "output": 0.1405
     },
     {
-      "id": "inclusionai/ling-3.2-flash:free",
-      "name": "inclusionAI: Ling 3.2 Flash (free)",
+      "id": "inclusionai/ling-3.2-flash",
+      "name": "inclusionAI: Ling 3.2 Flash",
       "context": 1048576,
-      "input": 0.0,
-      "output": 0.0
+      "input": 0.3,
+      "output": 0.9
     },
     {
       "id": "google/gemini-4-hydrogen",
@@ -552,8 +552,8 @@
       "id": "minimax/minimax-m3.1-flash",
       "name": "MiniMax: MiniMax M3.1 Flash",
       "context": 1048576,
-      "input": 0.075,
-      "output": 0.3
+      "input": 0.15,
+      "output": 0.6
     },
     {
       "id": "deepseek/deepseek-v4.1-flash-1017",
@@ -664,8 +664,8 @@
       "id": "~deepseek/deepseek-pro-latest",
       "name": "DeepSeek: DeepSeek Pro Latest",
       "context": 1048576,
-      "input": 0.111,
-      "output": 4.44
+      "input": 0.0999,
+      "output": 5.0
     },
     {
       "id": "~deepseek/deepseek-flash-latest",
@@ -678,8 +678,8 @@
       "id": "deepseek/deepseek-v4.1-flash",
       "name": "DeepSeek: DeepSeek V4.1 Flash",
       "context": 1048576,
-      "input": 0.0507,
-      "output": 0.2028
+      "input": 0.14,
+      "output": 0.42
     },
     {
       "id": "deepseek/deepseek-v4.1-flash:batch",
