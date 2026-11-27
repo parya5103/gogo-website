@@ -45,7 +45,8 @@ def safe_patch_paths(patch: str) -> list[str]:
         if path.is_absolute() or ".." in path.parts or not path.parts:
             raise ValueError(f"Unsafe patch path: {raw}")
         lowered = [part.lower() for part in path.parts]
-        if any(part in BLOCKED_PARTS for part in lowered):
+        sensitive_markers = ("secret", "credential", "service-account", "firebase-admin", "private-key", ".env")
+        if any(part in BLOCKED_PARTS for part in lowered) or any(marker in path.name.lower() for marker in sensitive_markers):
             raise ValueError(f"Protected path cannot be changed: {raw}")
         if path.name.lower() in BLOCKED_EXACT or path.suffix.lower() in {".pem", ".key", ".p12", ".pfx"}:
             raise ValueError(f"Protected file cannot be changed: {raw}")
@@ -70,7 +71,9 @@ def collect_context(root: Path, max_files: int = 25, max_chars: int = 24_000) ->
         path = PurePosixPath(raw)
         if path.suffix.lower() not in TEXT_SUFFIXES:
             continue
-        if any(part.lower() in BLOCKED_PARTS for part in path.parts):
+        lowered_path = [part.lower() for part in path.parts]
+        sensitive_markers = ("secret", "credential", "service-account", "firebase-admin", "private-key", ".env")
+        if any(part in BLOCKED_PARTS for part in lowered_path) or any(marker in path.name.lower() for marker in sensitive_markers):
             continue
         try:
             data = (root / raw).read_text(encoding="utf-8")
