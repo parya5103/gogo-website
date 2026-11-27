@@ -109,3 +109,10 @@ Last verified: 2026-11-27
 - Responsive regression: the checked-in central Sarkari copy still had the old fixed off-canvas drawer. At 390px, `#navMenu` extended to x=657 (document scroll width 413px); at 430px it extended to x=710 (document scroll width 433px). This is expected to clear only after the new Sarkari `gh-pages` publication and GoGo product sync.
 - Frontend performance build itself succeeded; its subsequent regression-suite step failed on the same Arrow Out SEO assertion.
 - PR #168 must remain unmerged until the current source-publish/sync sequence completes and all required checks pass. Do not hand-edit the synced `arrowout/` or `sarkari-sarthi/` directories to mask stale product sources.
+
+
+## Product sync regression repair (2026-11-28)
+- CI had been testing stale copies in the GoGo PR branch even though the source repositories already contained the fixes.
+- Refreshed `sarkari-sarthi/style.css` from the published `gh-pages` branch of `parya5103/Sarkari-Sarthi`; the closed mobile drawer now uses `display:none` and the active drawer explicitly uses `display:flex` with a viewport-bounded width.
+- Refreshed `arrowout/guide/index.html` from `main` of `parya5103/Fletch_Game`; privacy/contact links now resolve to `/arrowout/privacy.html` and `/arrowout/contact.html`.
+- These are source-synchronized copies, not independent product edits. The normal `Sync product apps` workflow remains the canonical publisher after merge.
