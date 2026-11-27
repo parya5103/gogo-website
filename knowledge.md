@@ -155,3 +155,12 @@ Last verified: 2026-11-27
 ## GitHub write access recheck (2026-11-28)
 - The GitHub App installation `179799567` now has repository selection `all`; `parya5103/gogo-website` reports `push: true`, `maintain: true`, and `admin: true` for the connected identity. The earlier 403 write-access blocker is no longer present for this repository.
 - Continue changes on a dedicated branch and open PRs; do not push unreviewed product or SEO changes directly to `main`.
+
+
+## Product SEO follow-up PRs (2026-11-28)
+- GitHub write access restored and verified across `gogo-website`, `PikaNews`, `Sarkari-Sarthi`, `Fletch_Game`, and `crystal-quest-web`. The GoGo knowledge update was committed as `64af85ebf3926b262e42c2c2632a97b66acd7a07`.
+- PikaNews PR #99 (`parya5103/PikaNews`): moves the existing 30-minute scheduled collector from :00/:30 to :07/:37 to reduce schedule contention. CI, CodeQL and Security scan passed on head `236f7e2d70557a8017e8fd1d69bc7da2a08147b4`. The PR remains open; do not claim schedule reliability until post-merge scheduled-run cadence is observed.
+- Sarkari Sarthi PR #255 (`parya5103/Sarkari-Sarthi`): adds a Madhya Pradesh official recruitment portal directory, links it from the verification guide, adds sitemap support driven by the visible Updated date, and updates source knowledge/agent notes. The initial sitemap regression test failed as expected before implementation; it passed on the next workflow run. JavaScript tests and remaining checks must finish before merge. The PR remains open.
+- Latest Sarkari manifest snapshot checked 2026-11-28: 324 records (281 active, 43 expired); verification labels 238 secondary_source_only, 42 needs_review, 1 official_verified, 43 expired. Sources: 310 allgovernmentjobs.in and 14 Employment News. Do not market these as 281 officially verified active vacancies.
+- The latest Sarkari source report showed Employment News fetch timeout. NCS is dynamic and the government-vacancies page returned 502 during direct retrieval; no NCS scraper was added. Continue to respect robots.txt and only automate stable, permitted official endpoints.
+- Source PRs must merge and their respective main-to-pages/central-sync workflows must succeed before GoGo central copies are treated as live. Do not merge without owner approval.
