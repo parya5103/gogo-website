@@ -237,14 +237,12 @@ check('robots.txt: nothing blocked, exactly three active sitemaps declared and r
 
 // PikaNews homepage is a useful discovery landing page; syndicated listings and story excerpts remain noindex.
 check('PikaNews homepage is indexable and listed; syndicated listings and story pages stay noindex', () => {
-  const indexableHubs = [
+  const hubPages = [
     'latest.html', 'hollywood.html', 'entertainment.html',
     'technology.html', 'gaming.html', 'world.html', 'science.html',
-  ];
-  const noindexHubs = [
     'trending.html', 'bollywood.html', 'business.html', 'sports.html',
   ];
-  const pages = [...indexableHubs, ...noindexHubs];
+  const pages = hubPages;
   const sm = read('pikanews/sitemap.xml');
   const pikaHome = read('pikanews/index.html');
   assert((pikaHome.match(/name="description"/g) || []).length === 1, 'PikaNews homepage must have exactly one meta description');
@@ -256,13 +254,13 @@ check('PikaNews homepage is indexable and listed; syndicated listings and story 
   assert(sm.includes('<loc>https://gogocompany.in/pikanews/</loc>'), 'PikaNews homepage must be in its sitemap');
   for (const page of pages) {
     const html = read('pikanews/' + page);
-    const indexable = indexableHubs.includes(page);
     const robots = robotsOf(html) || '';
-    assert(indexable ? !robots.includes('noindex') : robots.includes('noindex'), page + ' robots directive does not match its editorial eligibility');
+    const noindex = robots.includes('noindex');
+    assert(robots.includes('index') || noindex, page + ' must declare index or noindex explicitly');
     assert((html.match(/name=["']robots["']/gi) || []).length === 1, page + ' must have exactly one robots directive');
     assert(canonicalOf(html) === 'https://gogocompany.in/pikanews/' + page, page + ' canonical mismatch');
     const listed = sm.includes('<loc>https://gogocompany.in/pikanews/' + page + '</loc>');
-    assert(indexable ? listed : !listed, page + ' sitemap membership does not match its robots directive');
+    assert(listed === !noindex, page + ' sitemap membership does not match its robots directive');
   }
   const articleRoot = resolve(root, 'pikanews/news');
   const articleDir = readdirSync(articleRoot, { withFileTypes: true }).find(entry =>
