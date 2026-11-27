@@ -116,3 +116,9 @@ Last verified: 2026-11-27
 - Refreshed `sarkari-sarthi/style.css` from the published `gh-pages` branch of `parya5103/Sarkari-Sarthi`; the closed mobile drawer now uses `display:none` and the active drawer explicitly uses `display:flex` with a viewport-bounded width.
 - Refreshed `arrowout/guide/index.html` from `main` of `parya5103/Fletch_Game`; privacy/contact links now resolve to `/arrowout/privacy.html` and `/arrowout/contact.html`.
 - These are source-synchronized copies, not independent product edits. The normal `Sync product apps` workflow remains the canonical publisher after merge.
+
+
+## Mobile overflow follow-up (2026-11-28)
+- Latest PR #168 responsive run (46050545266) still fails on the Sarkari Sarthi route: at 390px the document scroll width is 413px; at 430px it is 433px. The report lists no individual overflowing element, so the exact layout contributor is not yet isolated.
+- Added horizontal overflow containment to the authoritative Sarkari Sarthi gh-pages stylesheet (body overflow-x: clip with a hidden fallback for browsers without clip) in commit 874059752a1483ffcbc9aca3cb7d454ae18e4b87.
+- Synced the GoGo PR branch copy to this source change. Rerun responsive regression at 320/360/390/430px before considering the fix verified. Do not merge PR #168 while the regression check is red.
