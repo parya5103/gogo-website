@@ -77,3 +77,12 @@ Last verified: 2026-11-27
 - Arrow Out PR #68: https://github.com/parya5103/Fletch_Game/pull/68
 
 - Arrow Out source PR #68 is merged; the central product-sync workflow must publish the updated `gh-pages` site copy before the central responsive regression can confirm the production route. The GoGo source PR remains open pending its latest CI.
+
+
+## Sarkari Sarthi mobile and homepage SEO fix (2026-11-27)
+- Source repository PR #252 was squash-merged into `parya5103/Sarkari-Sarthi` main (merge commit `c352a2f9fa70964b9fce1118553f8447542bf78f`).
+- Fixes off-canvas navigation horizontal overflow by clipping translated mobile drawer overflow at the root viewport, including a fallback for browsers without `overflow-x: clip`.
+- Aligns homepage document language to `en-IN`, adds explicit `index,follow` robots and `og:locale=en_IN`, and connects the Sarkari Sarthi WebSite schema to GoGo Company publisher and parent WebSite entities.
+- Does not alter job facts, JobPosting schema eligibility, expiry logic, verification labels or sitemap policy.
+- Central sync reads Sarkari Sarthi from its `gh-pages` branch; the merged main-branch changes become live only after the Sarkari publishing workflow updates `gh-pages` and the central `sync-products.yml` workflow copies it to GoGo Company. The sync schedule is 06:15 IST after the product's 05:00 IST publishing run.
+- No CI run was returned for PR #252 by the connected workflow-run lookup. The change is merged, but live responsive confirmation is still pending the product publish and central responsive regression.
