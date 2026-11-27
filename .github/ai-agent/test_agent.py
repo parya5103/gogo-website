@@ -23,6 +23,11 @@ class PatchSafetyTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             safe_patch_paths(patch)
 
+    def test_rejects_service_account_files(self):
+        patch = "--- a/config/firebase-adminsdk.json\\n+++ b/config/firebase-adminsdk.json\\n@@ -1 +1 @@\\n-a\\n+b\\n"
+        with self.assertRaises(ValueError):
+            safe_patch_paths(patch)
+
     def test_rejects_lockfiles(self):
         patch = "--- a/package-lock.json\n+++ b/package-lock.json\n@@ -1 +1 @@\n-a\n+b\n"
         with self.assertRaises(ValueError):
