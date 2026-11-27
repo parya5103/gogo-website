@@ -86,3 +86,13 @@ Last verified: 2026-11-27
 - Does not alter job facts, JobPosting schema eligibility, expiry logic, verification labels or sitemap policy.
 - Central sync reads Sarkari Sarthi from its `gh-pages` branch; the merged main-branch changes become live only after the Sarkari publishing workflow updates `gh-pages` and the central `sync-products.yml` workflow copies it to GoGo Company. The sync schedule is 06:15 IST after the product's 05:00 IST publishing run.
 - No CI run was returned for PR #252 by the connected workflow-run lookup. The change is merged, but live responsive confirmation is still pending the product publish and central responsive regression.
+
+
+## Follow-up CI evidence and source fixes (2026-11-27 23:50 IST)
+- PR #168 head commit `d549bc1b26fcc086e464b86817fa267724c610aa` was checked against GitHub Actions. Security scan and CodeQL passed; SEO validation, CI Tests, Build frontend performance assets, and Responsive regression failed.
+- The SEO validator itself reports 98 checks passed and only one failure: Arrow Out guide links still resolve incorrectly in the central synced copy. Source fix Fletch_Game PR #68 is merged; central product sync must run before this copy changes.
+- CI Tests log states all 52 test suites passed, but the overall job still fails because the same SEO regression command exits non-zero. Do not report the overall workflow as green.
+- Responsive regression found horizontal overflow on `/sarkari-sarthi/` at 390px (document width 413px) and 430px (document width 433px). The offender is the closed fixed `#navMenu` drawer positioned outside the viewport.
+- New Sarkari Sarthi source PR #253 changes the closed mobile drawer to `display:none`, restores `display:flex` only for `.active`, and constrains drawer width to viewport minus 24px. This avoids relying on root clipping alone. PR: https://github.com/parya5103/Sarkari-Sarthi/pull/253
+- PR #253 is open; its CodeQL, security scan and scheduled publishing workflows were in progress at last inspection. Do not merge until applicable checks complete. After merge, run the Sarkari publishing workflow, then central product sync, then rerun responsive regression.
+- PR #168 remains open and must not be merged until all required CI checks pass. Its new root sitemap validator still needs a green CI run after product source fixes sync.
