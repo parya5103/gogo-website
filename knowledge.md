@@ -130,3 +130,12 @@ Last verified: 2026-11-27
 - Post-merge checks observed: SEO validation passed; frontend performance asset build passed; CI Tests passed; Security scan passed (Trivy and Gitleaks jobs); Scorecard passed. CodeQL, Responsive regression, and Lighthouse were still in progress at last check. Do not mark these three green until their completed conclusions are fetched.
 - GitHub Pages build and deployment for the merge completed successfully (run 46052316284). This confirms deployment workflow success, not a live-browser verification of every route or Google indexing.
 - Follow up after outstanding checks: inspect responsive report at 320/360/390/430px; if it fails, fix the actual offender rather than relying only on page-level overflow clipping. Review Lighthouse metrics and remediate any regressions. Then continue the priority roadmap: PikaNews crawl/indexability and original editorial value, Sarkari Sarthi source verification/expiry/schema, then game landing-page search intent.
+
+
+## PR #168 post-merge verification (2026-11-28)
+- PR #168 merged to main as `52a2d3d7744b2a6859758cadf1251f0057d9fb3a`; GitHub Pages deployment completed successfully.
+- The post-merge main run on commit `5ca30fd7003c53cf9de37051858efeb87849046b` passed CI Tests, SEO validation, Build frontend performance assets, Responsive regression, Lighthouse, CodeQL, Security scan, and Scorecard supply-chain security.
+- Responsive regression now passes after the Sarkari Sarthi source CSS overflow-containment update; the authoritative source is `parya5103/Sarkari-Sarthi` branch `gh-pages`.
+- PikaNews source main advanced to `fd02adedbe` (2026-11-27 17:33 UTC) after the last central PikaNews sync commit `84821f71f2` (14:55 UTC). The current upstream sitemap lists `entertainment.html`, while the central copy still lists `technology.html`; this is a stale product-sync copy, not a sitemap validator failure.
+- Triggered the existing PikaNews immediate-refresh path by updating the workflow trigger comment in `.github/workflows/sync-pikanews.yml` (commit `00757474a55539a06a6fe32dea927faae90b537f`). The workflow verifies source/central sitemap equality and homepage robots/canonical tags before publishing. Confirm its run and deployment before treating PikaNews as fully synced.
+- Aggregated third-party article pages remain noindex; the News sitemap is intentionally empty until reviewed, substantial original PikaNews editorial qualifies. Do not index thin aggregated story pages just to increase URL count.
