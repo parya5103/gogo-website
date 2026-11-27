@@ -15,7 +15,7 @@ This file applies to work in parya5103/gogo-website.
 
 ## Product safety and data rules
 - Arrow Out: never simulate a rewarded ad with a timer or grant a hint without a verified provider reward callback. Keep the three free hints. Real ads require an approved provider, a consent review, and accurate privacy disclosures.
-- PikaNews: aggregated homepage/latest/trending/category pages remain noindex,follow and out of the sitemap until the editorial policy is met: four reviewed original stories overall and three for a category. Keep third-party story attribution and original-publisher links. Do not override this policy for SEO.
+- PikaNews: the homepage is indexable (`index,follow`) with canonical `/pikanews/`. Topic-hub indexation is dynamic and quality-gated by recency, substantial excerpts, distinct publisher domains, and the exact 12-story window rendered on the page; the upstream generator and tests are the source of truth. Never hardcode a permanent eligible/noindex category list in central tests or docs. On the 2026-11-27 upstream collector snapshot, Hollywood, Entertainment, Technology, World and Science were indexable; Latest, Gaming, Trending, Bollywood, Business and Sports were noindex. The regular sitemap must list a hub if and only if its robots directive is indexable. Individual third-party aggregated story pages remain `noindex,follow` and excluded from regular and Google News sitemaps. The Google News sitemap is reserved for reviewed original editorial. Keep publisher attribution and original-source links; never confuse homepage/topic-hub eligibility with individual story-page policy.
 - Sarkari Sarthi: calculate application deadlines in Asia/Kolkata; expired/cancelled jobs must not be searchable. needs_review and unknown verification states stay withheld from public search. Never invent missing dates, eligibility, or application links.
 - GTA 6 guide: verify time-sensitive platform/release/cheat claims against current authoritative sources, attribute third-party reporting, and avoid duplicate FAQ/disclaimer copy.
 - Ads: AdSense/AdMob must remain fail-closed until the real consent and provider integrations are configured and tested. ads.txt authorization or an account status is not proof of live impressions or earnings.
@@ -25,9 +25,7 @@ This file applies to work in parya5103/gogo-website.
 - The /ai/ hub is generated from public feeds + the OpenRouter public model
   catalogue. Model context windows and prices are provider-declared metadata,
   not a quality leaderboard; never fabricate scores, benchmarks or prices.
-- The Google Tag Manager container (GTM-T5MRTKJZ) must remain exactly once
-  per GoGo-owned HTML page; do not add it to synced product folders (they
-  are overwritten by sync; tag product repos individually instead).
+- The active Google Tag Manager container in the current GoGo-owned site files is GTM-TH4NX8MH. Preserve the existing placement and avoid duplicate loads. Do not copy this tag into synced product folders unless that product's upstream repository is intentionally configured for it.
 - Keep the GoGo Central notification module (assets/js/gogo-notifications.js)
   fail-closed; the OIDC-authorized /api/v1/automation/publish dispatch from
   the sync workflow must keep its audience-scoped token flow.
