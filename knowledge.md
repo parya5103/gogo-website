@@ -122,3 +122,11 @@ Last verified: 2026-11-27
 - Latest PR #168 responsive run (46050545266) still fails on the Sarkari Sarthi route: at 390px the document scroll width is 413px; at 430px it is 433px. The report lists no individual overflowing element, so the exact layout contributor is not yet isolated.
 - Added horizontal overflow containment to the authoritative Sarkari Sarthi gh-pages stylesheet (body overflow-x: clip with a hidden fallback for browsers without clip) in commit 874059752a1483ffcbc9aca3cb7d454ae18e4b87.
 - Synced the GoGo PR branch copy to this source change. Rerun responsive regression at 320/360/390/430px before considering the fix verified. Do not merge PR #168 while the regression check is red.
+
+
+## PR #168 merged and post-merge verification (2026-11-28)
+- PR #168 (`SEO: add root sitemap integrity validation`) was merged by the repository owner into `main` at merge commit `52a2d3d7744b2a6859758cadf1251f0057d9fb3a`. The earlier pre-merge instructions in this file are superseded by this merge record.
+- Confirmed on the default `main` branch that `sarkari-sarthi/style.css` includes the horizontal overflow containment (`overflow-x: clip` with fallback), and the root sitemap integrity validator and its test integration are merged.
+- Post-merge checks observed: SEO validation passed; frontend performance asset build passed; CI Tests passed; Security scan passed (Trivy and Gitleaks jobs); Scorecard passed. CodeQL, Responsive regression, and Lighthouse were still in progress at last check. Do not mark these three green until their completed conclusions are fetched.
+- GitHub Pages build and deployment for the merge completed successfully (run 46052316284). This confirms deployment workflow success, not a live-browser verification of every route or Google indexing.
+- Follow up after outstanding checks: inspect responsive report at 320/360/390/430px; if it fails, fix the actual offender rather than relying only on page-level overflow clipping. Review Lighthouse metrics and remediate any regressions. Then continue the priority roadmap: PikaNews crawl/indexability and original editorial value, Sarkari Sarthi source verification/expiry/schema, then game landing-page search intent.
