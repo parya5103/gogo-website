@@ -46,3 +46,14 @@ Last verified: 2026-11-27
 ## Current access limitation (2026-11-27)
 - The connected GSC Wizard tools returned payment_required because the connected account has no active subscription. Therefore live Search Console property, sitemap-processing, query and page-performance evidence was not available in this session.
 - A successful GitHub repository metadata read confirmed access to the public main repository. File-level changes must be tested and reviewed before merge.
+
+
+## PikaNews five-phase collector upgrade (2026-11-27)
+- PikaNews source repository: parya5103/PikaNews.
+- Feature implementation is in PR #98: https://github.com/parya5103/PikaNews/pull/98 (branch feat/news-collector-five-phase-upgrade).
+- Scope: conditional HTTP requests (ETag/Last-Modified), Actions-cached feed bodies and source health, safe redirect checks, bounded retry/backoff, JSON Feed parsing, RSS/Atom/JSON Feed discovery helper, health/priority-aware fetch order, limited reading-context extraction, and sitemap-to-page/canonical/robots validation.
+- PikaNews README.md and PikaNews/knowledge.md were updated on the feature branch.
+- The PikaNews static-first architecture and central GoGo publishing sync remain unchanged; do not add a second Pages deploy.
+- Do not activate newly discovered publishers automatically. Review availability, attribution, reuse permissions, region/language and image policy first.
+- Third-party RSS article pages remain noindex; original editorial and topic-hub eligibility gates remain in force.
+- PR is open and mergeable, but no CI status was returned at the time of this note. Do not claim tests passed or merge until CI is green.
