@@ -255,8 +255,9 @@ check('PikaNews homepage is indexable and listed; syndicated listings and story 
   for (const page of pages) {
     const html = read('pikanews/' + page);
     const robots = robotsOf(html) || '';
-    const noindex = robots.includes('noindex');
-    assert(robots.includes('index') || noindex, page + ' must declare index or noindex explicitly');
+    const directives = robots.split(',').map(value => value.trim());
+    const noindex = directives.includes('noindex');
+    assert(directives.includes('index') || noindex, page + ' must declare index or noindex explicitly');
     assert((html.match(/name=["']robots["']/gi) || []).length === 1, page + ' must have exactly one robots directive');
     assert(canonicalOf(html) === 'https://gogocompany.in/pikanews/' + page, page + ' canonical mismatch');
     const listed = sm.includes('<loc>https://gogocompany.in/pikanews/' + page + '</loc>');
