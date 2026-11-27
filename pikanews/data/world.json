@@ -1,5 +1,60 @@
 [
   {
+    "id": "fef1614b31bc496f200c368d011b9c435d48ab0fdb2b993b93d9fedac37e3673",
+    "title": "Black Friday 2026's 10 Best Magic: The Gathering Deals",
+    "summary": "Whether you're looking for a Commander deck or just some packs to rip, these are the best deals out there.",
+    "category": "world",
+    "source": "Polygon",
+    "url": "https://www.polygon.com/mtg-best-black-friday-2026-magic-the-gathering-deals",
+    "published_at": "2026-11-27T19:43:24+00:00",
+    "date_unverified": false,
+    "image_url": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/03/lessons-from-life-mtg-tmnt.png",
+    "collection_timestamp": "2026-11-27T20:02:05.885611+00:00",
+    "thin": false,
+    "classification_version": 2,
+    "author": "Corey Plante",
+    "tags": [
+      "Black Friday",
+      "Magic: The Gathering",
+      "Tabletop Games",
+      "Trading Card Game"
+    ]
+  },
+  {
+    "id": "f5ad3685553336665045a88a07a189f54d1a3fbf4e4e4ebe3db7f5fac3536201",
+    "title": "Wales aim to finish historic campaign with Japan win",
+    "summary": "Wales hope to finish the Nations Championship campaign on a high note against Japan at the Allianz Stadium in Twickenham on Saturday.",
+    "category": "politics",
+    "source": "BBC Sport",
+    "url": "https://www.bbc.co.uk/sport/rugby-union/articles/cr0jx98elggxo",
+    "published_at": "2026-11-27T19:35:49+00:00",
+    "date_unverified": false,
+    "image_url": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/4f22/live/2e33a8e0-e9a1-11f1-b880-15b494ba858d.jpg",
+    "collection_timestamp": "2026-11-27T20:02:05.839432+00:00",
+    "thin": false,
+    "classification_version": 2
+  },
+  {
+    "id": "515cd14c823e281335bee44a285bb59a10e5d67ceeb146d756dd7e5e36af505b",
+    "title": "'Pokémon Winds and Waves' Fans Will End 2026 On A Good Note",
+    "summary": "Fans of Pokémon starters Browt, Pombon and Gecqua have something to look forward to before 2026 ends, ahead of Winds and Waves' release",
+    "category": "world",
+    "source": "Polygon",
+    "url": "https://www.polygon.com/pokemon-winds-waves-starters-ponbom-gecqua-browt-plush",
+    "published_at": "2026-11-27T18:22:00+00:00",
+    "date_unverified": false,
+    "image_url": "https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/08/pokemon-winds-and-waves.png",
+    "collection_timestamp": "2026-11-27T19:35:28.002506+00:00",
+    "thin": false,
+    "classification_version": 2,
+    "author": "Patricia Hernandez",
+    "tags": [
+      "News",
+      "Pokemon",
+      "Pokemon Winds and Waves"
+    ]
+  },
+  {
     "id": "102074f67fc935d7e89cf8f131b5431a5e474d7102fcc949c1b3457aa43e4abe",
     "title": "'Buffy the Vampire Slayer' Star Reveals His 5 Favorite Episodes",
     "summary": "Can you guess all five?",
@@ -153,6 +208,28 @@
     ]
   },
   {
+    "id": "2647a5e139eefef9f768e31742057fdbfd0f3080a9311b32455b94925be01818",
+    "title": "You might lose your Oura health data if you’re still using an old Android phone",
+    "summary": "Oura will be dropping support for Android 11 on December 8th, 2026, and users may not have access to all of their data if they don't upgrade to Android 12 or higher before the deadline. The support page now reads: Oura will drop support for Android 11 on December 8, 2026. If you are using […]",
+    "category": "health",
+    "source": "The Verge",
+    "url": "https://www.theverge.com/gadgets/1044314/oura-ring-health-data-android-11",
+    "published_at": "2026-11-27T14:44:19-05:00",
+    "date_unverified": false,
+    "image_url": "https://platform.theverge.com/wp-content/uploads/sites/2/2026/06/268600_oura_ring_5_AKrales_0176.jpg?quality=90&strip=all&crop=0,0,100,100",
+    "collection_timestamp": "2026-11-27T20:02:05.887251+00:00",
+    "thin": false,
+    "classification_version": 2,
+    "author": "Terrence O’Brien",
+    "tags": [
+      "Gadgets",
+      "Health",
+      "News",
+      "Science",
+      "Wearable"
+    ]
+  },
+  {
     "id": "c0ae84b21958426512346f09e8b46e580ae7f051ca9dab847568d3737144f834",
     "title": "Spain’s election could pull Madrid closer to Trump’s Washington",
     "summary": "Spanish voters head to the polls on Sunday for a snap election that could bring socialist Prime Minister Pedro Sánchez's eight years in power to an end.",
@@ -161,7 +238,7 @@
     "url": "https://www.cnbc.com/2026/11/27/spain-election-trump-sanchez.html",
     "published_at": "2026-11-27T13:00:42+00:00",
     "date_unverified": false,
-    "image_url": null,
+    "image_url": "https://image.cnbcfm.com/api/v1/image/108559838-1795691246382-gettyimages-2306177236-AFP_D8HA863.jpeg?v=1795691270&w=1920&h=1080",
     "collection_timestamp": "2026-11-27T17:33:05.390792+00:00",
     "thin": false,
     "classification_version": 2
@@ -3160,47 +3237,6 @@
     "classification_version": 2
   },
   {
-    "id": "3197592a6a02db73f40a84630c926c81d3667a2d2359149c17f15ab875bb2de3",
-    "title": "Trump Got Played by Putin and Xi",
-    "summary": "The president's need for public validation has always been a vulnerability, and America’s smartest opponents know how to exploit it",
-    "category": "politics",
-    "source": "Rolling Stone",
-    "url": "https://www.rollingstone.com/politics/political-commentary/trump-played-summit-vladimir-putin-xi-jinping-1235661558",
-    "published_at": "2026-11-20T15:00:00+00:00",
-    "date_unverified": false,
-    "image_url": "https://www.rollingstone.com/wp-content/uploads/2026/11/trump-putin-xi-new-world-order.jpg?w=1600&h=900&crop=1",
-    "collection_timestamp": "2026-11-20T19:50:58.368434+00:00",
-    "thin": false,
-    "author": "Ryan Bort",
-    "tags": [
-      "Political Commentary",
-      "Politics",
-      "controversy",
-      "Donald Trump",
-      "Vladimir Putin",
-      "Xi Jinping"
-    ],
-    "classification_version": 2
-  },
-  {
-    "id": "eeea71937fee81e7005d643a85201afdaea1b4724e1a103d73d6fb64ceecaa96",
-    "title": "GTA 6 Is A British Success Story, Prime Minister Says, But He Won’t Play It",
-    "summary": "The Prime Minister of the UK, Andy Burnham, has labeled Rockstar Games a \"British success story\" amid GTA 6 's rave reviews and huge sales milestones . A spokesperson for his office told The Independent , \"Rockstar Games is a British success story made in Edinburgh, and many fans are already saying GTA has been worth the wait.\" Rockstar North is based in Edinburgh, Scotland, but GTA 6 was made by thousands of people across the globe. GTA is also historically linked to the UK, as the original gam",
-    "category": "politics",
-    "source": "GameSpot",
-    "url": "https://www.gamespot.com/articles/gta-6-is-a-british-success-story-prime-minister-says-but-he-wont-play-it",
-    "published_at": "2026-11-20T14:59:27+00:00",
-    "date_unverified": false,
-    "image_url": "https://www.gamespot.com/wp-content/uploads/2026/11/Jason_Duval_12.jpg?w=300",
-    "collection_timestamp": "2026-11-20T19:50:58.383451+00:00",
-    "thin": false,
-    "author": "Eddie Makuch",
-    "tags": [
-      "Gaming,News"
-    ],
-    "classification_version": 2
-  },
-  {
     "id": "9bffd452b7714440a8dac64e06b8abbb0a2c235f6d046780da2d7999ff52c119",
     "title": "Experts of the Committee against Torture Commend Norway’s Ban on Conversion Therapy, Raise Questions on the Identification of Torture Survivors in the Asylum Process and the Use of Mechanical Restraints in Psychiatric Institutions",
     "summary": "The Committee against Torture today concluded its consideration of the ninth periodic report of Norway, with Committee Experts commending Norway’s progress on gender, including amending the Penal Code to ban conversion therapy, while raising questions on identifying torture within the asylum…",
@@ -3584,7 +3620,7 @@
     "published_at": "2026-10-30T10:00:00+00:00",
     "date_unverified": false,
     "image_url": null,
-    "collection_timestamp": "2026-11-27T17:33:05.402808+00:00",
+    "collection_timestamp": "2026-11-27T20:02:05.844346+00:00",
     "thin": false,
     "classification_version": 2,
     "region": "europe",

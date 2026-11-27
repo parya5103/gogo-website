@@ -1,5 +1,19 @@
 [
   {
+    "id": "f5ad3685553336665045a88a07a189f54d1a3fbf4e4e4ebe3db7f5fac3536201",
+    "title": "Wales aim to finish historic campaign with Japan win",
+    "summary": "Wales hope to finish the Nations Championship campaign on a high note against Japan at the Allianz Stadium in Twickenham on Saturday.",
+    "category": "politics",
+    "source": "BBC Sport",
+    "url": "https://www.bbc.co.uk/sport/rugby-union/articles/cr0jx98elggxo",
+    "published_at": "2026-11-27T19:35:49+00:00",
+    "date_unverified": false,
+    "image_url": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/4f22/live/2e33a8e0-e9a1-11f1-b880-15b494ba858d.jpg",
+    "collection_timestamp": "2026-11-27T20:02:05.839432+00:00",
+    "thin": false,
+    "classification_version": 2
+  },
+  {
     "id": "c0ae84b21958426512346f09e8b46e580ae7f051ca9dab847568d3737144f834",
     "title": "Spain’s election could pull Madrid closer to Trump’s Washington",
     "summary": "Spanish voters head to the polls on Sunday for a snap election that could bring socialist Prime Minister Pedro Sánchez's eight years in power to an end.",
@@ -8,7 +22,7 @@
     "url": "https://www.cnbc.com/2026/11/27/spain-election-trump-sanchez.html",
     "published_at": "2026-11-27T13:00:42+00:00",
     "date_unverified": false,
-    "image_url": null,
+    "image_url": "https://image.cnbcfm.com/api/v1/image/108559838-1795691246382-gettyimages-2306177236-AFP_D8HA863.jpeg?v=1795691270&w=1920&h=1080",
     "collection_timestamp": "2026-11-27T17:33:05.390792+00:00",
     "thin": false,
     "classification_version": 2
@@ -843,47 +857,6 @@
     "image_url": "https://image.cnbcfm.com/api/v1/image/108273480-17726356822026-03-04t141724z_59018783_rc22pgawuafa_rtrmadp_0_usa-britain-cryptocurrency.jpeg?v=1772635700&w=1920&h=1080",
     "collection_timestamp": "2026-11-20T19:50:58.407604+00:00",
     "thin": false,
-    "classification_version": 2
-  },
-  {
-    "id": "3197592a6a02db73f40a84630c926c81d3667a2d2359149c17f15ab875bb2de3",
-    "title": "Trump Got Played by Putin and Xi",
-    "summary": "The president's need for public validation has always been a vulnerability, and America’s smartest opponents know how to exploit it",
-    "category": "politics",
-    "source": "Rolling Stone",
-    "url": "https://www.rollingstone.com/politics/political-commentary/trump-played-summit-vladimir-putin-xi-jinping-1235661558",
-    "published_at": "2026-11-20T15:00:00+00:00",
-    "date_unverified": false,
-    "image_url": "https://www.rollingstone.com/wp-content/uploads/2026/11/trump-putin-xi-new-world-order.jpg?w=1600&h=900&crop=1",
-    "collection_timestamp": "2026-11-20T19:50:58.368434+00:00",
-    "thin": false,
-    "author": "Ryan Bort",
-    "tags": [
-      "Political Commentary",
-      "Politics",
-      "controversy",
-      "Donald Trump",
-      "Vladimir Putin",
-      "Xi Jinping"
-    ],
-    "classification_version": 2
-  },
-  {
-    "id": "eeea71937fee81e7005d643a85201afdaea1b4724e1a103d73d6fb64ceecaa96",
-    "title": "GTA 6 Is A British Success Story, Prime Minister Says, But He Won’t Play It",
-    "summary": "The Prime Minister of the UK, Andy Burnham, has labeled Rockstar Games a \"British success story\" amid GTA 6 's rave reviews and huge sales milestones . A spokesperson for his office told The Independent , \"Rockstar Games is a British success story made in Edinburgh, and many fans are already saying GTA has been worth the wait.\" Rockstar North is based in Edinburgh, Scotland, but GTA 6 was made by thousands of people across the globe. GTA is also historically linked to the UK, as the original gam",
-    "category": "politics",
-    "source": "GameSpot",
-    "url": "https://www.gamespot.com/articles/gta-6-is-a-british-success-story-prime-minister-says-but-he-wont-play-it",
-    "published_at": "2026-11-20T14:59:27+00:00",
-    "date_unverified": false,
-    "image_url": "https://www.gamespot.com/wp-content/uploads/2026/11/Jason_Duval_12.jpg?w=300",
-    "collection_timestamp": "2026-11-20T19:50:58.383451+00:00",
-    "thin": false,
-    "author": "Eddie Makuch",
-    "tags": [
-      "Gaming,News"
-    ],
     "classification_version": 2
   },
   {
