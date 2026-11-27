@@ -150,3 +150,8 @@ Last verified: 2026-11-27
 - SMEPost Search Console property `sc-domain:gogocompany.in` currently grants only `free_recent_three_days` access (no comparison period); latest finalized window returned was 2026-11-22 through 2026-11-24. Sample observations: PikaNews homepage 7 impressions/0 clicks/avg position 9.43; GoGo homepage 6/0/8.50; canonical About page 5/0/5.20; MP Govt Jobs hub 17/0/20.88. These are small-sample observations, not trend conclusions.
 - The MP Govt Jobs hub is correctly `noindex` while it has zero qualifying official-verified records; do not remove noindex or add it to the sitemap until the programmatic hub quality gate is met. Old `/about.html` impressions appear to be a legacy redirect; canonical About page is `/about/`.
 - GSC Wizard tools are unavailable because that account has no active subscription; SMEPost free access is limited to the latest three settled days. A 28-day comparative SEO report requires restored longer-range Search Console access.
+
+
+## GitHub write access recheck (2026-11-28)
+- The GitHub App installation `179799567` now has repository selection `all`; `parya5103/gogo-website` reports `push: true`, `maintain: true`, and `admin: true` for the connected identity. The earlier 403 write-access blocker is no longer present for this repository.
+- Continue changes on a dedicated branch and open PRs; do not push unreviewed product or SEO changes directly to `main`.
