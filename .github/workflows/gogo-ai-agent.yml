@@ -45,7 +45,7 @@ jobs:
           TARGET_REPO: ${{ inputs.target_repo }}
           BASE_REF: ${{ inputs.base_ref }}
         run: |
-          [[ "$TARGET_REPO" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]] || { echo "::error::Invalid owner/repository"; exit 1; }
+          [[ "$TARGET_REPO" =~ ^parya5103/[A-Za-z0-9_.-]+$ ]] || { echo "::error::Only parya5103 GoGo repositories are allowed"; exit 1; }
           [[ "$BASE_REF" =~ ^[A-Za-z0-9._/-]+$ ]] || { echo "::error::Invalid base ref"; exit 1; }
 
       - name: Set up Python
