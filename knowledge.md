@@ -96,3 +96,16 @@ Last verified: 2026-11-27
 - New Sarkari Sarthi source PR #253 changes the closed mobile drawer to `display:none`, restores `display:flex` only for `.active`, and constrains drawer width to viewport minus 24px. This avoids relying on root clipping alone. PR: https://github.com/parya5103/Sarkari-Sarthi/pull/253
 - PR #253 is open; its CodeQL, security scan and scheduled publishing workflows were in progress at last inspection. Do not merge until applicable checks complete. After merge, run the Sarkari publishing workflow, then central product sync, then rerun responsive regression.
 - PR #168 remains open and must not be merged until all required CI checks pass. Its new root sitemap validator still needs a green CI run after product source fixes sync.
+
+
+## Follow-up: Sarkari Sarthi PR #253 merged; product publishing/sync pending (2026-11-27)
+- Sarkari Sarthi PR #253 was squash-merged after its PR checks completed successfully: CodeQL, Security scan, and the PR-triggered Daily Job Fetch and Deploy workflow's test job all passed. Merge commit: `1ff5a64e0733d545d486d18fbd7f0b2f418b9201`.
+- Source change in `style.css`: the closed mobile navigation drawer uses `display:none`; `.nav-menu.active` restores `display:flex`; width is capped at `min(280px, calc(100vw - 24px))`. Homepage metadata/schema changes from PR #252 remain in place.
+- The PR-triggered Daily Job Fetch and Deploy run did not publish: its `fetch-and-deploy` and health-check jobs were skipped because the run was a `pull_request` event. At the latest inspection, the `gh-pages` branch still contained the pre-PR drawer CSS. Do not claim the fix is live until a main-branch publish updates `gh-pages`.
+- GoGo `sync-products.yml` reads Sarkari Sarthi from `gh-pages` and Arrow Out from Fletch_Game `main`. Its schedule is 06:15 IST; after both product sources are published/synced, rerun the responsive regression.
+- PR #168 latest head at inspection: `6257f414f368bacdd85379208a0d1ad66443dd23`. Security scan and CodeQL passed; SEO validation, CI Tests, Build frontend performance assets, and Responsive regression failed.
+- SEO validation: 98 checks passed; the sole failure is the stale central Arrow Out guide copy, which still has `privacy.html` / `contact.html` links instead of the source-fixed `../privacy.html` / `../contact.html`. Arrow Out source PR #68 is merged; central sync remains required.
+- CI Tests: the suite fails on that same SEO regression check; the log also shows a Vite dependency-scan warning, but the fatal assertion is the stale Arrow Out guide link. Do not treat the warning as the root failure.
+- Responsive regression: the checked-in central Sarkari copy still had the old fixed off-canvas drawer. At 390px, `#navMenu` extended to x=657 (document scroll width 413px); at 430px it extended to x=710 (document scroll width 433px). This is expected to clear only after the new Sarkari `gh-pages` publication and GoGo product sync.
+- Frontend performance build itself succeeded; its subsequent regression-suite step failed on the same Arrow Out SEO assertion.
+- PR #168 must remain unmerged until the current source-publish/sync sequence completes and all required checks pass. Do not hand-edit the synced `arrowout/` or `sarkari-sarthi/` directories to mask stale product sources.
