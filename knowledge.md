@@ -57,4 +57,68 @@ Last verified: 2026-11-27
 - The PikaNews static-first architecture and central GoGo publishing sync remain unchanged; no second Pages deploy was added.
 - Newly discovered publishers are not automatically activated. Review availability, attribution, reuse permissions, region/language and image policy first.
 - Third-party RSS article pages remain noindex; original editorial and topic-hub eligibility gates remain in force.
-- CI status checks were not returned by the connected GitHub status endpoint after merge. Do not claim tests passed; inspect the Actions runs and resolve any failures before relying on the new collector in production.
+- The user confirmed on 2026-11-27 that PikaNews CI/tests passed after merge. The connected GitHub status endpoint had earlier returned no status rows, so this remains user-reported confirmation rather than independently verified run metadata.
+
+## Root sitemap integrity gate (2026-11-27)
+- Added `scripts/validate-root-sitemap.mjs` on branch `seo/root-sitemap-integrity-2026-11`.
+- The validator checks the root sitemap is advertised by root robots.txt, rejects duplicate/query/fragment/non-canonical-host URLs, resolves each listed URL to a published local HTML file, checks canonical alignment, rejects noindex pages in the sitemap, and validates optional lastmod syntax.
+- Added the validator to the `npm test` chain before the existing SEO build checks.
+- This is a build-time consistency safeguard; it does not prove Google crawled or indexed a URL and does not predict rankings.
+- Validation has not yet been run in a local checkout or GitHub Actions in this session. Merge only after CI confirms the current sitemap and all generated pages pass.
+- PR will be linked here after creation; product sync workflows and synced product directories remain untouched.
+
+
+## SEO regression fixes discovered during PR validation (2026-11-27)
+- The GoGo repository's `Build frontend performance assets` workflow exposed two existing SEO regression failures in `scripts/seo-tests.mjs`: Arrow Out guide privacy/contact links resolved under the wrong directory, and the AI hub meta description measured 180 characters against the project's 160-character limit.
+- AI hub source `ai/index.html` updated on this branch: meta description shortened to 131 characters while retaining AI news, models, pricing, research, open-source and original-source intent; document locale changed to `en-IN`.
+- Arrow Out source repository `parya5103/Fletch_Game` PR #68 was squash-merged successfully (merge commit `a28bb9997a8a95f510d486a77869a4d6deaff715`) after CI Tests, CI and Security scan all passed. It fixes all four guide privacy/contact links to resolve to product-root pages. Do not edit the synced `gogo-website/arrowout/` copy manually.
+- The first PR #168 workflow attempt failed in the existing SEO regression suite on those two issues. The AI change is now committed to this branch and the Arrow Out source fix is in PR #68; rerun CI after the latest commits and require green checks before merging PR #168.
+- PR #168: https://github.com/parya5103/gogo-website/pull/168
+- Arrow Out PR #68: https://github.com/parya5103/Fletch_Game/pull/68
+
+- Arrow Out source PR #68 is merged; the central product-sync workflow must publish the updated `gh-pages` site copy before the central responsive regression can confirm the production route. The GoGo source PR remains open pending its latest CI.
+
+
+## Sarkari Sarthi mobile and homepage SEO fix (2026-11-27)
+- Source repository PR #252 was squash-merged into `parya5103/Sarkari-Sarthi` main (merge commit `c352a2f9fa70964b9fce1118553f8447542bf78f`).
+- Fixes off-canvas navigation horizontal overflow by clipping translated mobile drawer overflow at the root viewport, including a fallback for browsers without `overflow-x: clip`.
+- Aligns homepage document language to `en-IN`, adds explicit `index,follow` robots and `og:locale=en_IN`, and connects the Sarkari Sarthi WebSite schema to GoGo Company publisher and parent WebSite entities.
+- Does not alter job facts, JobPosting schema eligibility, expiry logic, verification labels or sitemap policy.
+- Central sync reads Sarkari Sarthi from its `gh-pages` branch; the merged main-branch changes become live only after the Sarkari publishing workflow updates `gh-pages` and the central `sync-products.yml` workflow copies it to GoGo Company. The sync schedule is 06:15 IST after the product's 05:00 IST publishing run.
+- No CI run was returned for PR #252 by the connected workflow-run lookup. The change is merged, but live responsive confirmation is still pending the product publish and central responsive regression.
+
+
+## Follow-up CI evidence and source fixes (2026-11-27 23:50 IST)
+- PR #168 head commit `d549bc1b26fcc086e464b86817fa267724c610aa` was checked against GitHub Actions. Security scan and CodeQL passed; SEO validation, CI Tests, Build frontend performance assets, and Responsive regression failed.
+- The SEO validator itself reports 98 checks passed and only one failure: Arrow Out guide links still resolve incorrectly in the central synced copy. Source fix Fletch_Game PR #68 is merged; central product sync must run before this copy changes.
+- CI Tests log states all 52 test suites passed, but the overall job still fails because the same SEO regression command exits non-zero. Do not report the overall workflow as green.
+- Responsive regression found horizontal overflow on `/sarkari-sarthi/` at 390px (document width 413px) and 430px (document width 433px). The offender is the closed fixed `#navMenu` drawer positioned outside the viewport.
+- New Sarkari Sarthi source PR #253 changes the closed mobile drawer to `display:none`, restores `display:flex` only for `.active`, and constrains drawer width to viewport minus 24px. This avoids relying on root clipping alone. PR: https://github.com/parya5103/Sarkari-Sarthi/pull/253
+- PR #253 is open; its CodeQL, security scan and scheduled publishing workflows were in progress at last inspection. Do not merge until applicable checks complete. After merge, run the Sarkari publishing workflow, then central product sync, then rerun responsive regression.
+- PR #168 remains open and must not be merged until all required CI checks pass. Its new root sitemap validator still needs a green CI run after product source fixes sync.
+
+
+## Follow-up: Sarkari Sarthi PR #253 merged; product publishing/sync pending (2026-11-27)
+- Sarkari Sarthi PR #253 was squash-merged after its PR checks completed successfully: CodeQL, Security scan, and the PR-triggered Daily Job Fetch and Deploy workflow's test job all passed. Merge commit: `1ff5a64e0733d545d486d18fbd7f0b2f418b9201`.
+- Source change in `style.css`: the closed mobile navigation drawer uses `display:none`; `.nav-menu.active` restores `display:flex`; width is capped at `min(280px, calc(100vw - 24px))`. Homepage metadata/schema changes from PR #252 remain in place.
+- The PR-triggered Daily Job Fetch and Deploy run did not publish: its `fetch-and-deploy` and health-check jobs were skipped because the run was a `pull_request` event. A later main-branch publish has now updated Sarkari Sarthi `gh-pages`; verified published `style.css` blob: `b7e6953edcb6faad2bb40ea180ad5ece5299c7bc`, and the mobile `.nav-menu` rule now uses `display:none` while `.nav-menu.active` restores `display:flex`.
+- GoGo `sync-products.yml` reads Sarkari Sarthi from `gh-pages` and Arrow Out from Fletch_Game `main`. Its schedule is 06:15 IST. At 00:00 IST on 2026-11-28, the central sync had not yet been verified; wait for or manually dispatch the next sync, then rerun the responsive regression.
+- PR #168 latest head at inspection: `6257f414f368bacdd85379208a0d1ad66443dd23`. Security scan and CodeQL passed; SEO validation, CI Tests, Build frontend performance assets, and Responsive regression failed.
+- SEO validation: 98 checks passed; the sole failure is the stale central Arrow Out guide copy, which still has `privacy.html` / `contact.html` links instead of the source-fixed `../privacy.html` / `../contact.html`. Arrow Out source PR #68 is merged; central sync remains required.
+- CI Tests: the suite fails on that same SEO regression check; the log also shows a Vite dependency-scan warning, but the fatal assertion is the stale Arrow Out guide link. Do not treat the warning as the root failure.
+- Responsive regression: the checked-in central Sarkari copy still had the old fixed off-canvas drawer. At 390px, `#navMenu` extended to x=657 (document scroll width 413px); at 430px it extended to x=710 (document scroll width 433px). This is expected to clear only after the new Sarkari `gh-pages` publication and GoGo product sync.
+- Frontend performance build itself succeeded; its subsequent regression-suite step failed on the same Arrow Out SEO assertion.
+- PR #168 must remain unmerged until the current source-publish/sync sequence completes and all required checks pass. Do not hand-edit the synced `arrowout/` or `sarkari-sarthi/` directories to mask stale product sources.
+
+
+## Product sync regression repair (2026-11-28)
+- CI had been testing stale copies in the GoGo PR branch even though the source repositories already contained the fixes.
+- Refreshed `sarkari-sarthi/style.css` from the published `gh-pages` branch of `parya5103/Sarkari-Sarthi`; the closed mobile drawer now uses `display:none` and the active drawer explicitly uses `display:flex` with a viewport-bounded width.
+- Refreshed `arrowout/guide/index.html` from `main` of `parya5103/Fletch_Game`; privacy/contact links now resolve to `/arrowout/privacy.html` and `/arrowout/contact.html`.
+- These are source-synchronized copies, not independent product edits. The normal `Sync product apps` workflow remains the canonical publisher after merge.
+
+
+## Mobile overflow follow-up (2026-11-28)
+- Latest PR #168 responsive run (46050545266) still fails on the Sarkari Sarthi route: at 390px the document scroll width is 413px; at 430px it is 433px. The report lists no individual overflowing element, so the exact layout contributor is not yet isolated.
+- Added horizontal overflow containment to the authoritative Sarkari Sarthi gh-pages stylesheet (body overflow-x: clip with a hidden fallback for browsers without clip) in commit 874059752a1483ffcbc9aca3cb7d454ae18e4b87.
+- Synced the GoGo PR branch copy to this source change. Rerun responsive regression at 320/360/390/430px before considering the fix verified. Do not merge PR #168 while the regression check is red.
