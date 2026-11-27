@@ -1274,8 +1274,6 @@ a:focus {
 /* Sarkari Sarthi mobile-first interface refresh */
 :root { --primary-color:#2457a7; --secondary-color:#173b70; --accent-color:#087f8c; --text-primary:#172033; --text-secondary:#596579; --background-primary:#f7f9fc; --background-secondary:#eef3f9; --border-color:#dce3ee; --shadow-light:0 2px 8px rgba(23,32,51,.05); --shadow-medium:0 8px 22px rgba(23,32,51,.08); --shadow-heavy:0 16px 36px rgba(23,32,51,.12); }
 body { font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif; line-height:1.65; }
-/* Keep the closed off-canvas drawer from expanding the mobile document width. */
-@media (max-width:768px) { html, body { overflow-x: clip; } }
 .header { box-shadow:0 4px 18px rgba(23,32,51,.06); }
 .navbar { padding:.7rem 0; }
 .nav-logo { font-size:1.25rem; letter-spacing:-.03em; }
