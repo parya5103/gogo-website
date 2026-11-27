@@ -65,6 +65,7 @@ jobs:
           token: ${{ secrets.GOGO_AGENT_TOKEN || github.token }}
           path: target
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Build model runtime image
         run: docker build -t gogo-ai-model agent-control/.github/ai-agent
@@ -138,6 +139,7 @@ jobs:
             exit 1
           fi
           BRANCH="ai-agent/run-${GITHUB_RUN_ID}"
+          gh auth setup-git
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -b "$BRANCH"
