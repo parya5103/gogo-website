@@ -71,7 +71,9 @@ Last verified: 2026-11-27
 ## SEO regression fixes discovered during PR validation (2026-11-27)
 - The GoGo repository's `Build frontend performance assets` workflow exposed two existing SEO regression failures in `scripts/seo-tests.mjs`: Arrow Out guide privacy/contact links resolved under the wrong directory, and the AI hub meta description measured 180 characters against the project's 160-character limit.
 - AI hub source `ai/index.html` updated on this branch: meta description shortened to 131 characters while retaining AI news, models, pricing, research, open-source and original-source intent; document locale changed to `en-IN`.
-- Arrow Out source repository `parya5103/Fletch_Game` PR #68 fixes all four guide privacy/contact links to resolve to product-root pages. Do not edit the synced `gogo-website/arrowout/` copy manually.
+- Arrow Out source repository `parya5103/Fletch_Game` PR #68 was squash-merged successfully (merge commit `a28bb9997a8a95f510d486a77869a4d6deaff715`) after CI Tests, CI and Security scan all passed. It fixes all four guide privacy/contact links to resolve to product-root pages. Do not edit the synced `gogo-website/arrowout/` copy manually.
 - The first PR #168 workflow attempt failed in the existing SEO regression suite on those two issues. The AI change is now committed to this branch and the Arrow Out source fix is in PR #68; rerun CI after the latest commits and require green checks before merging PR #168.
 - PR #168: https://github.com/parya5103/gogo-website/pull/168
 - Arrow Out PR #68: https://github.com/parya5103/Fletch_Game/pull/68
+
+- Arrow Out source PR #68 is merged; the central product-sync workflow must publish the updated `gh-pages` site copy before the central responsive regression can confirm the production route. The GoGo source PR remains open pending its latest CI.
