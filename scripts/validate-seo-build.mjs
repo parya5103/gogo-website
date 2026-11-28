@@ -21,6 +21,7 @@ assert.match(about, /government recruitment information portal with source links
 const sharedJs = await read("assets/js/main.js");
 const css = await read("assets/css/style.css");
 const reactHomepage = await read("assets/js/gogo-home-react.js");
+const llms = await read("llms.txt");
 const homeCss = await read("frontend/src/styles.css");
 const reactHomepageCss = await read("assets/css/gogo-home-react.css");
 const sitemap = await read("sitemap.xml");
@@ -45,6 +46,12 @@ for (const policyPath of ["/about/", "/contact/", "/privacy-policy/", "/terms-an
   assert.ok(homepage.includes('href="' + policyPath + '"'), "homepage must expose trust/policy link " + policyPath);
 }
 assert.match(sharedJs, /isReactHome/);
+assert.match(sharedJs, /href: "\/about\//, "shared navigation must link directly to the canonical About page");
+assert.doesNotMatch(sharedJs, /href: "about\\.html"/, "shared navigation must not link to the legacy About redirect");
+assert.match(reactHomepage, /href:"\\.\\/about\\//, "homepage hero must link directly to the canonical About page");
+assert.doesNotMatch(reactHomepage, /href:"\\.\\/about\\.html"/, "homepage hero must not link to the legacy About redirect");
+assert.match(llms, /https:\\/\\/gogocompany\\.in\\/about\\//, "llms.txt must advertise the canonical About URL");
+assert.doesNotMatch(llms, /https:\\/\\/gogocompany\\.in\\/about\\.html/, "llms.txt must not advertise the legacy About redirect");
 assert.match(sharedJs, /ensureAccountAssets\(\)/);
 assert.match(css, /--accent:\s*#1e40af/i);
 assert.match(css, /site-header \.accent \{ color: #1e40af; \}/);
