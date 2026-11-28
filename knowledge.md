@@ -200,3 +200,11 @@ Last verified: 2026-11-27
 - The homepage title is `GoGo Company | Browser Games, AI & Digital Media` and its meta description is 134 characters, within the existing validator's 70–155 character range. Avoid changing snippets solely on this three-day sample. PR #171 fixes the concrete internal-link inconsistency by pointing shared navigation and hero links to canonical `/about/`.
 - The MP Govt Jobs hub remains intentionally noindex until qualifying verified records and substantive content meet the indexing gate. Do not optimize CTR by removing noindex or by implying the 281 active Sarkari records are officially verified.
 - GSC access mode remains `free_recent_three_days`; a 28/90-day comparison is not available. No ranking or traffic uplift is claimed.
+
+
+## Live production and scheduled workflow recheck (2026-11-28)
+- Live fetch confirmed GoGo homepage and PikaNews homepage return content with their intended canonical URLs and indexable robots directives. PikaNews clearly identifies itself as a publisher-attributed discovery feed and explains source responsibility, limitations and correction/removal process.
+- The MP Government Jobs page exists in both `parya5103/Sarkari-Sarthi` `main` and `gh-pages` with the same blob SHA `557bce42f2cdc4afb9a8e117d504a02b8e4fc618`. However, `parya5103/gogo-website` main does not yet contain `sarkari-sarthi/mp-government-jobs.html`, and the live URL currently returns HTTP 404. This isolates the gap to central product sync / deployment, not the Sarkari source publication. The Sync product apps workflow page most recently showed run #60 scheduled on 2026-11-27 as successful; a post-source-merge central sync and live 200 check remain required.
+- PikaNews scheduled collector history now shows scheduled run #112 on 2026-11-28 completed successfully; runs #110 and #108 on 2026-11-27 also succeeded. Runs #105 and #104 failed on 2026-11-27 before subsequent successful runs. The collector is active, but do not claim perfect 30-minute reliability; continue monitoring run timestamps and failures.
+- GoGo PR #170 updated head `af13898510c5e791359acb69ec29d0f43d54a79a`: CI Tests, Security scan (Trivy + Gitleaks), CodeQL and Responsive regression all completed successfully.
+- No PR was merged and no live deployment was initiated during this check.
