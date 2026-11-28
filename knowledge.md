@@ -223,3 +223,11 @@ Last verified: 2026-11-27
 - Investigated scheduled collector failures #104 (2026-11-26) and #105 (2026-11-27) from their actual GitHub Actions logs. Both failed in the pre-collection pytest step: one test still required the exact literal `noindex,follow` on `world.html` and `science.html`, while the page templates already emitted an explicit robots meta with `index,follow`. The run reported 1 failed and 165 passed; no collector/network exception was shown because collection did not proceed.
 - The current main-branch test has been corrected to assert that the pages carry explicit robots metadata, rather than hard-coding the stale noindex directive. Scheduled runs #108, #110 and #112 subsequently completed successfully, confirming the collector resumed after the test fix.
 - This is a resolved test-expectation regression, not evidence of an RSS provider outage. Continue observing future scheduled runs for independent fetch failures.
+
+
+## Final follow-up after PR #172 checks (2026-11-28)
+- GoGo PR #170 latest head `d10998abe61a6f483e8012af8c5d0327e40db464`: CI Tests, Security scan, CodeQL and Responsive regression are all complete with success. The responsive viewport audit and report upload completed successfully.
+- GoGo PR #172 latest head `7d275d4c7287824090bf25eb62f6a36f864d5485`: CI Tests, Security scan, CodeQL and Responsive regression are all complete with success. Its sync guard checks source page, central destination page, and canonical sitemap URL.
+- Sarkari Sarthi PR #256 head `9eb7cc88107a0a62a369a614a0cb2bd3b805ad23`: Daily Job Fetch and Deploy, Security scan and CodeQL all complete with success.
+- PikaNews PR #100 head `d69429d540a9f5df3a4bb1d7e498864fdd7aa5af`: CI, Security scan and CodeQL all complete with success.
+- Live MP Government Jobs URL was rechecked and still returned 404 before any merge/deployment. It must be rechecked after the approved PR #172 change is integrated and the product sync workflow completes.
