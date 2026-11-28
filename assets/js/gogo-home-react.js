@@ -41,7 +41,7 @@ function Hero(){
     h("p",{className:"gh-overline"},h("span",null), "INDEPENDENT DIGITAL STUDIO · INDIA"),
     h("h1",{id:"home-hero-title"},"A little more ",h("em",null,"wonder."),h("br"),"A lot more ",h("strong",null,"possibility.")),
     h("p",{className:"gh-lead"},"Games to get lost in. Tools to move forward. Stories and guides to keep you curious. Discover the growing world of GoGo Company."),
-    h("div",{className:"gh-hero-actions"},h("a",{className:"gh-button gh-button-primary",href:"#products"},"Explore our products",h("span",null,"↗")),h("a",{className:"gh-button gh-button-quiet",href:"./about.html"},"Meet GoGo",h("span",null,"→"))),
+    h("div",{className:"gh-hero-actions"},h("a",{className:"gh-button gh-button-primary",href:"#products"},"Explore our products",h("span",null,"↗")),h("a",{className:"gh-button gh-button-quiet",href:"./about/"},"Meet GoGo",h("span",null,"→"))),
     h("div",{className:"gh-proofline"},h("span",null,"✳ Built for curious minds"),h("span",null,"·"),h("span",null,"Made for every screen"))
    ),
    h("div",{className:"gh-orbit-scene","aria-label":"Five GoGo products in one connected ecosystem",role:"img"},

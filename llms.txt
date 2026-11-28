@@ -23,7 +23,7 @@ Gogo Company is an independent digital brand. It is not affiliated with Gogo Bus
 
 ## Official company information
 
-- [About Gogo Company](https://gogocompany.in/about.html): Canonical company profile, founder, location, contact and product directory.
+- [About Gogo Company](https://gogocompany.in/about/): Canonical company profile, founder, location, contact and product directory.
 - [Contact](https://gogocompany.in/contact/): Official contact page.
 - [Privacy policy](https://gogocompany.in/privacy-policy/): Privacy practices.
 - [Terms and conditions](https://gogocompany.in/terms-and-conditions/): Website terms.
