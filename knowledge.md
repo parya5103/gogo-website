@@ -148,7 +148,7 @@ Last verified: 2026-11-27
 - PikaNews collector stats at `2026-11-27T17:32:59Z`: 395 fetched, 122 new, 273 duplicates, 1 source error, 10 articles without valid publication dates, 0 expired. Next data-quality follow-up: identify the failed source and inspect date parsing/feeds for the 10 undated records; never fabricate publication dates.
 - PikaNews indexing policy remains intentional: aggregator article pages are noindex; News sitemap remains empty until reviewed, substantial original editorial meets the publisher/author/content gate. Do not index RSS excerpts to inflate indexed URL count.
 - SMEPost Search Console property `sc-domain:gogocompany.in` currently grants only `free_recent_three_days` access (no comparison period); latest finalized window returned was 2026-11-22 through 2026-11-24. Sample observations: PikaNews homepage 7 impressions/0 clicks/avg position 9.43; GoGo homepage 6/0/8.50; canonical About page 5/0/5.20; MP Govt Jobs hub 17/0/20.88. These are small-sample observations, not trend conclusions.
-- The MP Govt Jobs hub is correctly `noindex` while it has zero qualifying official-verified records; do not remove noindex or add it to the sitemap until the programmatic hub quality gate is met. Old `/about.html` impressions appear to be a legacy redirect; canonical About page is `/about/`.
+- The MP Government Jobs page is a curated official-portal directory, not a programmatic live-vacancy hub. Its source `gh-pages` page correctly uses `index,follow`, a self-canonical URL and a sitemap entry; it is suitable for indexing as an informational directory. Individual job records still require the strict official-verification gate. Old `/about.html` impressions appear to be a legacy redirect; canonical About page is `/about/`.
 - GSC Wizard tools are unavailable because that account has no active subscription; SMEPost free access is limited to the latest three settled days. A 28-day comparative SEO report requires restored longer-range Search Console access.
 
 
@@ -164,3 +164,70 @@ Last verified: 2026-11-27
 - Latest Sarkari manifest snapshot checked 2026-11-28: 324 records (281 active, 43 expired); verification labels 238 secondary_source_only, 42 needs_review, 1 official_verified, 43 expired. Sources: 310 allgovernmentjobs.in and 14 Employment News. Do not market these as 281 officially verified active vacancies.
 - The latest Sarkari source report showed Employment News fetch timeout. NCS is dynamic and the government-vacancies page returned 502 during direct retrieval; no NCS scraper was added. Continue to respect robots.txt and only automate stable, permitted official endpoints.
 - Source PRs must merge and their respective main-to-pages/central-sync workflows must succeed before GoGo central copies are treated as live. Do not merge without owner approval.
+
+
+## Product SEO status recheck (2026-11-28)
+
+- Sarkari Sarthi's default branch now contains `mp-government-jobs.html`; it is a source-first directory, not a live vacancy list. It distinguishes recruitment authorities from application facilitators and does not emit JobPosting schema. PR #255 is confirmed merged; default-branch source confirms the page is present. The CodeQL run `46060061040` completed successfully, as did the previously checked Python/JavaScript, Security and deploy checks on the proposed head.
+- PikaNews' default-branch collector workflow now contains `cron: '7,37 * * * *'`. CI, CodeQL and Security scan passed on head `236f7e2d70557a8017e8fd1d69bc7da2a08147b4`; PR #99 is confirmed merged. This change reduces schedule contention but does not prove GitHub will deliver every scheduled run; observe run timestamps over multiple days.
+- PikaNews sitemap audit: committed regular sitemap contains 10 URLs (homepage, three quality-qualified topic hubs and six static trust/legal pages); News sitemap is empty because there is no reviewed original editorial item meeting the author/content/review/date gate. This is intentional, not a sitemap failure. Aggregated third-party article pages remain noindex and excluded.
+- GoGo root `robots.txt` allows crawling and advertises the PikaNews sitemap. PikaNews homepage is explicitly `index,follow` with the correct canonical URL. Search-engine snippets are not authoritative for source markup; direct source inspection confirmed the Editorial & Corrections Policy HTML is correctly structured.
+- Sarkari source manifest still has 324 records (281 marked active, 43 expired) with 238 `secondary_source_only`, 42 `needs_review`, 1 `official_verified` and 43 expired labels. Do not describe the 281 active records as officially verified vacancies.
+- Sarkari's open PR #254 (mobile document overflow) remains separate from #255. The default-branch stylesheet already contains an `overflow-x: clip` guard and a fallback on `html`; recheck its current diff and responsive evidence before deciding whether #254 is still needed. Do not merge or close it automatically.
+- Next follow-up: monitor PikaNews scheduled-run cadence, inspect the 10 undated/invalid-date feed records from the latest collector audit without inventing dates, and validate central product sync + published sitemap before claiming every source change is live.
+
+
+- Additional PR #254 detail from the current diff comparison: its head `b4a53d972f00feb3804e784e4455257adb1dac55` adds a distinct `body { overflow-x: clip; }` declaration. Current `main` has the `html` overflow guard and fallback but not this body declaration. PR #254 is one commit ahead and eight commits behind current `main`; rebase/update it before merging, then publish `gh-pages` and rerun the full 320/360/390/430px + tablet responsive matrix. The PR's own Daily Job Fetch and Deploy, Security scan and CodeQL runs passed, but that does not replace the post-publish GoGo responsive test.
+
+
+## Follow-up verification — 2026-11-28 (continued)
+- Sarkari Sarthi PR #255 is closed and its MP Government Jobs directory is present on default-branch `main`; latest source workflow checks on head `90dd28fbd68e62db9705cf8ad117076859848e22` completed successfully for Daily Job Fetch and Deploy, Security scan and CodeQL.
+- PikaNews PR #99 is closed; the default-branch collector cron is `7,37 * * * *`. PikaNews PR #100 records the verified sitemap and indexation audit; its CI, CodeQL and Security scan all passed on head `d69429d540a9f5df3a4bb1d7e498864fdd7aa5af`. The News sitemap remains empty by design until reviewed original editorial qualifies.
+- Sarkari Sarthi PR #254 was eight commits behind current main. Rather than merge stale history, a clean replacement PR #256 was opened from current main with only the body overflow clipping and fallback change. Head `9eb7cc88107a0a62a369a614a0cb2bd3b805ad23` is one commit ahead and zero behind. Vercel reports success; source CI/CodeQL and a fresh post-publish GoGo responsive matrix are still required before treating it as complete.
+- Do not merge PR #256 or close PR #254 without owner approval. If #256 is accepted, close #254 as superseded after confirming the published result.
+- Current known remaining product follow-ups: monitor PikaNews scheduled-run cadence over several days; investigate failed/undated feeds without inventing dates; verify central GoGo sync after source PRs are merged; rerun Sarkari Sarthi responsive checks at 320/360/390/430px and tablet after publish.
+
+
+- Latest finalized Search Console page-level sample (2026-11-23..2026-11-25; free three-day window only): legacy `/about.html` received 33 impressions and 1 click (3.03% CTR, avg position 8.0); canonical `/about/` received 5 impressions and 0 clicks (avg position 5.2); homepage received 19 impressions and 0 clicks (avg position 7.53). Brand query `gogo company` appeared on both legacy About (5 impressions, position 5.2) and homepage (8 impressions, position 4.13). This is a tiny sample, not proof of harmful cannibalization; the legacy URL remains noindex/canonical redirect. PR #171 consolidates internal links to `/about/` rather than changing page intent or claiming a ranking lift.
+
+
+## Final check verification and latest GSC opportunities (2026-11-28)
+- GoGo PR #171 head `ae262dda23743de11510c5d53b2e74d7016f0e87`: CI Tests, SEO validation, frontend performance asset build, Security scan, CodeQL and Responsive regression all completed successfully. The responsive matrix is green for the test workflow; the PR remains open and unmerged.
+- Sarkari Sarthi PR #256 head `9eb7cc88107a0a62a369a614a0cb2bd3b805ad23`: Daily Job Fetch and Deploy, Security scan and CodeQL all completed successfully. This validates the source PR workflow, not a post-merge publication or central-site responsive run. PR #256 remains open; PR #254 remains a stale alternative and is not closed automatically.
+- PikaNews PR #100 head `d69429d540a9f5df3a4bb1d7e498864fdd7aa5af`: CI, Security scan and CodeQL all completed successfully. PR remains open and unmerged.
+- GoGo PR #170 documentation head `48f4ae44cbb5131120ec9face685308335ff88d8`: CI Tests, Security scan, CodeQL and Responsive regression all completed successfully. This update is being recorded on its existing docs branch.
+- Latest SMEPost GSC opportunity response for `sc-domain:gogocompany.in` is restricted to the finalized three-day window 2026-11-23..2026-11-25; no comparison period is available. Homepage: 19 impressions, 0 clicks, average position 7.53 (low-CTR candidate); `/sarkari-sarthi/mp-govt-jobs/`: 17 impressions, 0 clicks, avg position 20.24; `/pikanews/`: 8 impressions, 0 clicks, avg position 9.63; query `gogo`: 6 impressions, 0 clicks, avg position 8.33; query `gogo company`: homepage and legacy `/about.html` both surfaced, with 9 homepage impressions at avg position 3.78 and related rows showing 8 homepage impressions / 5 legacy impressions. These tiny samples identify inspection candidates only; they are not evidence of a trend or proven cannibalization.
+- The homepage title is `GoGo Company | Browser Games, AI & Digital Media` and its meta description is 134 characters, within the existing validator's 70–155 character range. Avoid changing snippets solely on this three-day sample. PR #171 fixes the concrete internal-link inconsistency by pointing shared navigation and hero links to canonical `/about/`.
+- The MP Government Jobs portal directory is an informational source-first guide (not a live vacancy list); source `gh-pages` confirms `index,follow`, self-canonical URL and a sitemap entry. It is appropriate to index this curated directory, while individual job records still require the strict official-verification gate. Do not imply the 281 active Sarkari records are officially verified.
+- GSC access mode remains `free_recent_three_days`; a 28/90-day comparison is not available. No ranking or traffic uplift is claimed.
+
+
+## Live production and scheduled workflow recheck (2026-11-28)
+- Live fetch confirmed GoGo homepage and PikaNews homepage return content with their intended canonical URLs and indexable robots directives. PikaNews clearly identifies itself as a publisher-attributed discovery feed and explains source responsibility, limitations and correction/removal process.
+- The MP Government Jobs page exists in both `parya5103/Sarkari-Sarthi` `main` and `gh-pages` with the same blob SHA `557bce42f2cdc4afb9a8e117d504a02b8e4fc618`. However, `parya5103/gogo-website` main does not yet contain `sarkari-sarthi/mp-government-jobs.html`, and the live URL currently returns HTTP 404. This isolates the gap to central product sync / deployment, not the Sarkari source publication. The Sync product apps workflow page most recently showed run #60 scheduled on 2026-11-27 as successful; a post-source-merge central sync and live 200 check remain required.
+- PikaNews scheduled collector history now shows scheduled run #112 on 2026-11-28 completed successfully; runs #110 and #108 on 2026-11-27 also succeeded. Runs #105 and #104 failed on 2026-11-27 before subsequent successful runs. The collector is active, but do not claim perfect 30-minute reliability; continue monitoring run timestamps and failures.
+- GoGo PR #170 updated head `af13898510c5e791359acb69ec29d0f43d54a79a`: CI Tests, Security scan (Trivy + Gitleaks), CodeQL and Responsive regression all completed successfully.
+- No PR was merged and no live deployment was initiated during this check.
+
+
+## Central sync regression guard PR (2026-11-28)
+- GoGo PR #172 (`fix/verify-sarkari-mp-jobs-sync`) adds explicit workflow checks that the MP Government Jobs directory exists in the Sarkari `gh-pages` checkout, survives rsync into the GoGo central copy, and is present in the copied Sarkari sitemap.
+- This guard addresses the observed source-to-central gap: the source page and sitemap entry exist, but the central copy/live URL were absent/404 at the time of audit. It will prevent a future sync run from silently publishing without the directory.
+- PR #172 is open and its head is one commit ahead of main with no divergence; checks are pending. It does not itself trigger a deployment or sync run.
+- GoGo PR #170 latest head `bc70526b3a3b442d3c2244e62d7af41a3687ba4a`: CI Tests, Security scan, CodeQL and Responsive regression all passed.
+- The GoGo responsive regression completed successfully on the docs branch; all listed steps, including route viewport audit and report upload, passed.
+- PR #171 canonical About internal links and PR #256 Sarkari mobile overflow remain open, mergeable, and unmerged. Their post-publication verification gates remain unchanged.
+
+
+## PikaNews collector failed-run root cause (2026-11-28)
+- Investigated scheduled collector failures #104 (2026-11-26) and #105 (2026-11-27) from their actual GitHub Actions logs. Both failed in the pre-collection pytest step: one test still required the exact literal `noindex,follow` on `world.html` and `science.html`, while the page templates already emitted an explicit robots meta with `index,follow`. The run reported 1 failed and 165 passed; no collector/network exception was shown because collection did not proceed.
+- The current main-branch test has been corrected to assert that the pages carry explicit robots metadata, rather than hard-coding the stale noindex directive. Scheduled runs #108, #110 and #112 subsequently completed successfully, confirming the collector resumed after the test fix.
+- This is a resolved test-expectation regression, not evidence of an RSS provider outage. Continue observing future scheduled runs for independent fetch failures.
+
+
+## Final follow-up after PR #172 checks (2026-11-28)
+- GoGo PR #170 latest head `d10998abe61a6f483e8012af8c5d0327e40db464`: CI Tests, Security scan, CodeQL and Responsive regression are all complete with success. The responsive viewport audit and report upload completed successfully.
+- GoGo PR #172 latest head `7d275d4c7287824090bf25eb62f6a36f864d5485`: CI Tests, Security scan, CodeQL and Responsive regression are all complete with success. Its sync guard checks source page, central destination page, and canonical sitemap URL.
+- Sarkari Sarthi PR #256 head `9eb7cc88107a0a62a369a614a0cb2bd3b805ad23`: Daily Job Fetch and Deploy, Security scan and CodeQL all complete with success.
+- PikaNews PR #100 head `d69429d540a9f5df3a4bb1d7e498864fdd7aa5af`: CI, Security scan and CodeQL all complete with success.
+- Live MP Government Jobs URL was rechecked and still returned 404 before any merge/deployment. It must be rechecked after the approved PR #172 change is integrated and the product sync workflow completes.
