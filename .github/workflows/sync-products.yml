@@ -169,6 +169,10 @@ jobs:
           test -f sarkari-sarthi/script.js
           test -f sarkari-sarthi/style.css
           test -f sarkari-sarthi/jobs/job_manifest.json
+          # The official MP recruitment portal directory must survive the source-to-central rsync.
+          test -f src-sarkari/mp-government-jobs.html
+          test -f sarkari-sarthi/mp-government-jobs.html
+          grep -Fq 'https://gogocompany.in/sarkari-sarthi/mp-government-jobs.html' sarkari-sarthi/sitemap.xml
 
           # Sarkari source is now the Sarkari-Sarthi repo's own published
           # gh-pages branch (the previously used lowercase repo no longer
