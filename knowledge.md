@@ -208,3 +208,12 @@ Last verified: 2026-11-27
 - PikaNews scheduled collector history now shows scheduled run #112 on 2026-11-28 completed successfully; runs #110 and #108 on 2026-11-27 also succeeded. Runs #105 and #104 failed on 2026-11-27 before subsequent successful runs. The collector is active, but do not claim perfect 30-minute reliability; continue monitoring run timestamps and failures.
 - GoGo PR #170 updated head `af13898510c5e791359acb69ec29d0f43d54a79a`: CI Tests, Security scan (Trivy + Gitleaks), CodeQL and Responsive regression all completed successfully.
 - No PR was merged and no live deployment was initiated during this check.
+
+
+## Central sync regression guard PR (2026-11-28)
+- GoGo PR #172 (`fix/verify-sarkari-mp-jobs-sync`) adds explicit workflow checks that the MP Government Jobs directory exists in the Sarkari `gh-pages` checkout, survives rsync into the GoGo central copy, and is present in the copied Sarkari sitemap.
+- This guard addresses the observed source-to-central gap: the source page and sitemap entry exist, but the central copy/live URL were absent/404 at the time of audit. It will prevent a future sync run from silently publishing without the directory.
+- PR #172 is open and its head is one commit ahead of main with no divergence; checks are pending. It does not itself trigger a deployment or sync run.
+- GoGo PR #170 latest head `bc70526b3a3b442d3c2244e62d7af41a3687ba4a`: CI Tests, Security scan, CodeQL and Responsive regression all passed.
+- The GoGo responsive regression completed successfully on the docs branch; all listed steps, including route viewport audit and report upload, passed.
+- PR #171 canonical About internal links and PR #256 Sarkari mobile overflow remain open, mergeable, and unmerged. Their post-publication verification gates remain unchanged.
