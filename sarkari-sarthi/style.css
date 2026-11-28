@@ -44,10 +44,12 @@ html {
 }
 
 @supports not (overflow-x: clip) {
+    body { overflow-x: hidden; }
     html { overflow-x: hidden; }
 }
 
 body {
+    overflow-x: clip;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: var(--text-primary);

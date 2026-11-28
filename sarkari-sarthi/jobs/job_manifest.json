@@ -1,8 +1,8 @@
 {
-  "last_updated": "2026-11-27T18:28:43.767748",
-  "total_jobs": 324,
-  "active_jobs": 281,
-  "expired_jobs": 43,
+  "last_updated": "2026-11-28T04:54:39.980330",
+  "total_jobs": 327,
+  "active_jobs": 282,
+  "expired_jobs": 45,
   "jobs": [
     {
       "id": "5ccd399e8537b84c5a77d05981e8dc67",
@@ -1893,7 +1893,7 @@
       "employment_type": null,
       "official_website": null,
       "description_summary": null,
-      "verification_status": "secondary_source_only"
+      "verification_status": "needs_review"
     },
     {
       "id": "a644c8683c6b3cb4738e9b69e810db40",
@@ -1936,7 +1936,7 @@
       "employment_type": null,
       "official_website": null,
       "description_summary": null,
-      "verification_status": "secondary_source_only"
+      "verification_status": "needs_review"
     },
     {
       "id": "74517d41db89e2e3784522e10b933e06",
@@ -1979,7 +1979,7 @@
       "employment_type": null,
       "official_website": null,
       "description_summary": null,
-      "verification_status": "secondary_source_only"
+      "verification_status": "needs_review"
     },
     {
       "id": "f3a556db660d41447483e3e75cd3237a",
@@ -2022,7 +2022,7 @@
       "employment_type": null,
       "official_website": null,
       "description_summary": null,
-      "verification_status": "secondary_source_only"
+      "verification_status": "needs_review"
     },
     {
       "id": "c20d59f6e4b56e715c5a457ea322806f",
@@ -2065,7 +2065,7 @@
       "employment_type": null,
       "official_website": null,
       "description_summary": null,
-      "verification_status": "secondary_source_only"
+      "verification_status": "needs_review"
     },
     {
       "id": "3dc459904bd6499a952ad3ff66a78530",
@@ -2110,7 +2110,7 @@
       "employment_type": null,
       "official_website": null,
       "description_summary": null,
-      "verification_status": "secondary_source_only"
+      "verification_status": "needs_review"
     },
     {
       "id": "102b5d67004eea0a598ecf384ce9b4b2",
@@ -2153,7 +2153,7 @@
       "employment_type": null,
       "official_website": null,
       "description_summary": null,
-      "verification_status": "secondary_source_only"
+      "verification_status": "needs_review"
     },
     {
       "id": "e4f813f357c0236d2d20eb9750d179f8",
@@ -2196,7 +2196,7 @@
       "employment_type": null,
       "official_website": null,
       "description_summary": null,
-      "verification_status": "secondary_source_only"
+      "verification_status": "needs_review"
     },
     {
       "id": "1945a6ed85c1e7304e2c05ef9c4bd18d",
@@ -2239,7 +2239,7 @@
       "employment_type": null,
       "official_website": null,
       "description_summary": null,
-      "verification_status": "secondary_source_only"
+      "verification_status": "needs_review"
     },
     {
       "id": "c4aa8a9c57728ff391f58ed35d3c21e8",
@@ -3782,52 +3782,6 @@
       "published_date": null,
       "original_source_url": "https://allgovernmentjobs.in/pgimer-notification-2026-apply-online-for-various-project-nurse-iii-posts/45060",
       "last_verified": "2026-11-03T04:00:07.873172",
-      "status": "active",
-      "recruitment_board": null,
-      "state": null,
-      "district": null,
-      "minimum_qualification": null,
-      "age_min": null,
-      "age_max": null,
-      "age_relaxation": null,
-      "salary": null,
-      "pay_scale": null,
-      "application_fee": null,
-      "selection_process": null,
-      "employment_type": null,
-      "official_website": null,
-      "description_summary": null,
-      "verification_status": "secondary_source_only"
-    },
-    {
-      "id": "69faca454fc71cd1bd44d42875d1c8d8",
-      "title": "ECHS Notification 2026 - Apply Offline for 36 Medical Officer, Dental Officer, Nursing Assistant and Other Posts",
-      "url": "https://allgovernmentjobs.in/echs-notification-2026-apply-offline-for-36-medical-officer-dental-officer-nursing-assistant-and-other-posts/45055",
-      "source": "allgovernmentjobs.in",
-      "description": "Ex-Servicemen Contributory Health Scheme (ECHS) has issued the official notification for 2026. To fill the vacancies for 36 Medical Officers, Dental Officers, Nursing Assistants, Pharmacists, Safaiwalas, Data Entry Operators, and Other Jobs. Candidates who have qualified in MBBS, MD/ MS, BDS, Diploma, DMLT, B.Sc, GNM, B. Pharm, 08th, 10th Pass, B.Sc Nursing can grab this chancea nd apply for the ECHS Notification 2026 . Here we have included the age Limit, selection process, salary structure,...",
-      "pdf_link": null,
-      "important_dates": {
-        "last_date": "27-11-2026",
-        "found_date": "27-11-2026"
-      },
-      "category": "Medical",
-      "skills": [
-        "Data Entry"
-      ],
-      "scraped_at": "2026-11-03T04:00:07.873218",
-      "links": [],
-      "organization": null,
-      "department": null,
-      "location": null,
-      "vacancies": null,
-      "advertisement_no": null,
-      "qualification": null,
-      "age_limit": null,
-      "official_notification_url": null,
-      "official_application_url": null,
-      "published_date": null,
-      "original_source_url": "https://allgovernmentjobs.in/echs-notification-2026-apply-offline-for-36-medical-officer-dental-officer-nursing-assistant-and-other-posts/45055",
-      "last_verified": "2026-11-03T04:00:07.873218",
       "status": "active",
       "recruitment_board": null,
       "state": null,
@@ -10075,52 +10029,6 @@
       "verification_status": "secondary_source_only"
     },
     {
-      "id": "319ebb40a1783aee449633c1ae08f669",
-      "title": "DTU Notification 2026 - Apply Offline for Data Scientist Posts",
-      "url": "https://allgovernmentjobs.in/dtu-notification-2026-apply-offline-for-data-scientist-posts/45503",
-      "source": "allgovernmentjobs.in",
-      "description": "The Delhi Technological University (DTU) has officially released the notification to fill the vacancy for 01 Data Scientist post. Interested and eligibile candidates can use this opportunity to apply for these posts before the last date of application. Candidates who have completed their M.E./M. Tech, Ph.D. in Computer Science Engineering can apply for the DTU Notification 2026. Interested applicants can apply in offline mode. Here we have mentioned the education details, age limit, selection...",
-      "pdf_link": null,
-      "important_dates": {
-        "last_date": "27-11-2026",
-        "found_date": "18-11-2026"
-      },
-      "category": "General",
-      "skills": [
-        "Analyst"
-      ],
-      "scraped_at": "2026-11-24T07:17:46.515113",
-      "links": [],
-      "organization": null,
-      "department": null,
-      "recruitment_board": null,
-      "location": null,
-      "state": null,
-      "district": null,
-      "vacancies": null,
-      "advertisement_no": null,
-      "qualification": null,
-      "minimum_qualification": null,
-      "age_limit": null,
-      "age_min": null,
-      "age_max": null,
-      "age_relaxation": null,
-      "salary": null,
-      "pay_scale": null,
-      "application_fee": null,
-      "selection_process": null,
-      "employment_type": null,
-      "official_notification_url": null,
-      "official_application_url": null,
-      "official_website": null,
-      "description_summary": null,
-      "published_date": null,
-      "original_source_url": "https://allgovernmentjobs.in/dtu-notification-2026-apply-offline-for-data-scientist-posts/45503",
-      "last_verified": "2026-11-24T07:17:46.515113",
-      "status": "active",
-      "verification_status": "secondary_source_only"
-    },
-    {
       "id": "c417c1ab55a302c1fc0da68ce1061767",
       "title": "FACT Notification 2026 - Walk-in interview for Craftsman Posts",
       "url": "https://allgovernmentjobs.in/fact-notification-2026-walk-in-interview-for-craftsman-posts/45500",
@@ -12755,6 +12663,188 @@
       ]
     },
     {
+      "id": "f2aff0f8947b119dff2cc4f20eff9326",
+      "title": "IIT BHU Notification 2026 - Apply Online for Project Research Scientist I Posts",
+      "url": "https://allgovernmentjobs.in/iit-bhu-notification-2026-apply-online-for-project-research-scientist-i-posts/45630",
+      "source": "allgovernmentjobs.in",
+      "description": "The Indian Institute of Technology Banaras Hindu University (IIT BHU) has declared the latest job notification for 2026. To fill the vacancies for Project Research Scientist I Jobs. Candidates who have qualified for M.E/ M.Tech, M.Pharm, or M.Sc. can take this opportunity and apply for the IIT BHU Notification 2026 . Here we have included the age limit, selection process, salary structure, education details, application fee, and how to apply for these posts. Interested and eligible candidates...",
+      "pdf_link": null,
+      "important_dates": {
+        "found_date": "18-12-2026"
+      },
+      "category": "General",
+      "skills": [],
+      "scraped_at": "2026-11-28T04:33:22.549677",
+      "links": [],
+      "organization": null,
+      "department": null,
+      "recruitment_board": null,
+      "location": null,
+      "state": null,
+      "district": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "minimum_qualification": null,
+      "age_limit": null,
+      "age_min": null,
+      "age_max": null,
+      "age_relaxation": null,
+      "salary": null,
+      "pay_scale": null,
+      "application_fee": null,
+      "selection_process": null,
+      "employment_type": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "official_website": null,
+      "description_summary": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/iit-bhu-notification-2026-apply-online-for-project-research-scientist-i-posts/45630",
+      "last_verified": "2026-11-28T04:54:39.980330",
+      "status": "active",
+      "verification_status": "secondary_source_only",
+      "source_refs": [
+        {
+          "source": "allgovernmentjobs.in",
+          "url": "https://allgovernmentjobs.in/iit-bhu-notification-2026-apply-online-for-project-research-scientist-i-posts/45630"
+        }
+      ]
+    },
+    {
+      "id": "ac5aa659f650db82a1bee32f8ed31742",
+      "title": "BEL Notification 2026 - Apply Offline for 10 Deputy Engineer, Manager Posts",
+      "url": "https://allgovernmentjobs.in/bel-notification-2026-apply-offline-for-10-deputy-engineer-manager-posts/45632",
+      "source": "allgovernmentjobs.in",
+      "description": "Bharat Electronics Limited (BEL) has officially released the notification to fill the vacancies of 10 Manager, Deputy Engineer Posts. Interested and eligibile candidates can use this opportunity to apply for these posts before the last date of application. Candidates who have completed their B.E./B. Tech in Electronics and Mechanical Engineering can apply for the BEL Notification 2026. Interested applicants can apply in offline mode. Here we have mentioned the education details, age limit, se...",
+      "pdf_link": null,
+      "important_dates": {
+        "last_date": "15-12-2026",
+        "found_date": "25-11-2026"
+      },
+      "category": "Engineering",
+      "skills": [],
+      "scraped_at": "2026-11-28T04:54:44.376857",
+      "links": [],
+      "organization": null,
+      "department": null,
+      "recruitment_board": null,
+      "location": null,
+      "state": null,
+      "district": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "minimum_qualification": null,
+      "age_limit": null,
+      "age_min": null,
+      "age_max": null,
+      "age_relaxation": null,
+      "salary": null,
+      "pay_scale": null,
+      "application_fee": null,
+      "selection_process": null,
+      "employment_type": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "official_website": null,
+      "description_summary": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/bel-notification-2026-apply-offline-for-10-deputy-engineer-manager-posts/45632",
+      "last_verified": "2026-11-28T04:54:44.376857",
+      "status": "active",
+      "verification_status": "secondary_source_only"
+    },
+    {
+      "id": "034d72c4846e4e48e29f46cf71fedfeb",
+      "title": "NAM Kerala Recruitment 2026 - Apply Online for 17 Multipurpose Worker and Nursing Assistant Posts",
+      "url": "https://allgovernmentjobs.in/nam-kerala-recruitment-2026-apply-online-for-17-multipurpose-worker-and-nursing-assistant-posts/45631",
+      "source": "allgovernmentjobs.in",
+      "description": "National Ayush Mission Kerala (NAM Kerala) has declared the official notification for 2026. To fill up the vacancies for 17 Multipurpose Worker and Nursing Assistant Jobs. Those candidates who have qualified in B.Sc Nursing, GNM, or ANM can grab this chance and apply for the NAM Kerala Recruitment 2026 . Here, we have included the age limit, selection process, salary structure, education details, application fee, and how to apply for these posts. Interested candidates can apply before the las...",
+      "pdf_link": null,
+      "important_dates": {
+        "found_date": "10-12-2026"
+      },
+      "category": "Administrative",
+      "skills": [],
+      "scraped_at": "2026-11-28T04:54:44.381440",
+      "links": [],
+      "organization": null,
+      "department": null,
+      "recruitment_board": null,
+      "location": null,
+      "state": null,
+      "district": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "minimum_qualification": null,
+      "age_limit": null,
+      "age_min": null,
+      "age_max": null,
+      "age_relaxation": null,
+      "salary": null,
+      "pay_scale": null,
+      "application_fee": null,
+      "selection_process": null,
+      "employment_type": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "official_website": null,
+      "description_summary": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/nam-kerala-recruitment-2026-apply-online-for-17-multipurpose-worker-and-nursing-assistant-posts/45631",
+      "last_verified": "2026-11-28T04:54:44.381440",
+      "status": "active",
+      "verification_status": "secondary_source_only"
+    },
+    {
+      "id": "319ebb40a1783aee449633c1ae08f669",
+      "title": "DTU Notification 2026 - Apply Offline for Data Scientist Posts",
+      "url": "https://allgovernmentjobs.in/dtu-notification-2026-apply-offline-for-data-scientist-posts/45503",
+      "source": "allgovernmentjobs.in",
+      "description": "The Delhi Technological University (DTU) has officially released the notification to fill the vacancy for 01 Data Scientist post. Interested and eligibile candidates can use this opportunity to apply for these posts before the last date of application. Candidates who have completed their M.E./M. Tech, Ph.D. in Computer Science Engineering can apply for the DTU Notification 2026. Interested applicants can apply in offline mode. Here we have mentioned the education details, age limit, selection...",
+      "pdf_link": null,
+      "important_dates": {
+        "last_date": "27-11-2026",
+        "found_date": "18-11-2026"
+      },
+      "category": "General",
+      "skills": [
+        "Analyst"
+      ],
+      "scraped_at": "2026-11-24T07:17:46.515113",
+      "links": [],
+      "organization": null,
+      "department": null,
+      "recruitment_board": null,
+      "location": null,
+      "state": null,
+      "district": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "minimum_qualification": null,
+      "age_limit": null,
+      "age_min": null,
+      "age_max": null,
+      "age_relaxation": null,
+      "salary": null,
+      "pay_scale": null,
+      "application_fee": null,
+      "selection_process": null,
+      "employment_type": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "official_website": null,
+      "description_summary": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/dtu-notification-2026-apply-offline-for-data-scientist-posts/45503",
+      "last_verified": "2026-11-24T07:17:46.515113",
+      "status": "expired",
+      "verification_status": "expired"
+    },
+    {
       "id": "4d2d64eed77975a66f5fae376c6f4493",
       "title": "NIPGR Notification 2026 - Walk-in interview for Research Associate I Posts",
       "url": "https://allgovernmentjobs.in/nipgr-notification-2026-walk-in-interview-for-research-associate-i-posts/45445",
@@ -14249,6 +14339,52 @@
       "published_date": null,
       "original_source_url": "https://allgovernmentjobs.in/bmrcl-recruitment-2026-apply-online-for-general-manager-posts/45057",
       "last_verified": "2026-11-03T04:00:07.875768",
+      "status": "expired",
+      "recruitment_board": null,
+      "state": null,
+      "district": null,
+      "minimum_qualification": null,
+      "age_min": null,
+      "age_max": null,
+      "age_relaxation": null,
+      "salary": null,
+      "pay_scale": null,
+      "application_fee": null,
+      "selection_process": null,
+      "employment_type": null,
+      "official_website": null,
+      "description_summary": null,
+      "verification_status": "expired"
+    },
+    {
+      "id": "69faca454fc71cd1bd44d42875d1c8d8",
+      "title": "ECHS Notification 2026 - Apply Offline for 36 Medical Officer, Dental Officer, Nursing Assistant and Other Posts",
+      "url": "https://allgovernmentjobs.in/echs-notification-2026-apply-offline-for-36-medical-officer-dental-officer-nursing-assistant-and-other-posts/45055",
+      "source": "allgovernmentjobs.in",
+      "description": "Ex-Servicemen Contributory Health Scheme (ECHS) has issued the official notification for 2026. To fill the vacancies for 36 Medical Officers, Dental Officers, Nursing Assistants, Pharmacists, Safaiwalas, Data Entry Operators, and Other Jobs. Candidates who have qualified in MBBS, MD/ MS, BDS, Diploma, DMLT, B.Sc, GNM, B. Pharm, 08th, 10th Pass, B.Sc Nursing can grab this chancea nd apply for the ECHS Notification 2026 . Here we have included the age Limit, selection process, salary structure,...",
+      "pdf_link": null,
+      "important_dates": {
+        "last_date": "27-11-2026",
+        "found_date": "27-11-2026"
+      },
+      "category": "Medical",
+      "skills": [
+        "Data Entry"
+      ],
+      "scraped_at": "2026-11-03T04:00:07.873218",
+      "links": [],
+      "organization": null,
+      "department": null,
+      "location": null,
+      "vacancies": null,
+      "advertisement_no": null,
+      "qualification": null,
+      "age_limit": null,
+      "official_notification_url": null,
+      "official_application_url": null,
+      "published_date": null,
+      "original_source_url": "https://allgovernmentjobs.in/echs-notification-2026-apply-offline-for-36-medical-officer-dental-officer-nursing-assistant-and-other-posts/45055",
+      "last_verified": "2026-11-03T04:00:07.873218",
       "status": "expired",
       "recruitment_board": null,
       "state": null,
