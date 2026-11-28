@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T12:29:11.060705+00:00",
+  "generatedAt": "2026-11-28T11:51:54.857377+00:00",
   "note": "Provider-declared catalogue metadata, not quality benchmarks. Verify current rates with providers.",
   "models": [
     {
@@ -489,8 +489,8 @@
       "id": "thinkingmachines/inkling-2-small",
       "name": "Thinking Machines: Inkling 2 Small",
       "context": 1048576,
-      "input": 0.3,
-      "output": 1.0
+      "input": 0.15,
+      "output": 0.5
     },
     {
       "id": "meta/muse-ember",
@@ -588,7 +588,7 @@
       "name": "NVIDIA: Nemotron 3.5 Super VL",
       "context": 1048576,
       "input": 0.15,
-      "output": 0.47
+      "output": 0.45
     },
     {
       "id": "google/gemini-4-argon",
@@ -678,8 +678,8 @@
       "id": "deepseek/deepseek-v4.1-flash",
       "name": "DeepSeek: DeepSeek V4.1 Flash",
       "context": 1048576,
-      "input": 0.14,
-      "output": 0.42
+      "input": 0.051,
+      "output": 0.567
     },
     {
       "id": "deepseek/deepseek-v4.1-flash:batch",
