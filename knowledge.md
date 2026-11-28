@@ -217,3 +217,9 @@ Last verified: 2026-11-27
 - GoGo PR #170 latest head `bc70526b3a3b442d3c2244e62d7af41a3687ba4a`: CI Tests, Security scan, CodeQL and Responsive regression all passed.
 - The GoGo responsive regression completed successfully on the docs branch; all listed steps, including route viewport audit and report upload, passed.
 - PR #171 canonical About internal links and PR #256 Sarkari mobile overflow remain open, mergeable, and unmerged. Their post-publication verification gates remain unchanged.
+
+
+## PikaNews collector failed-run root cause (2026-11-28)
+- Investigated scheduled collector failures #104 (2026-11-26) and #105 (2026-11-27) from their actual GitHub Actions logs. Both failed in the pre-collection pytest step: one test still required the exact literal `noindex,follow` on `world.html` and `science.html`, while the page templates already emitted an explicit robots meta with `index,follow`. The run reported 1 failed and 165 passed; no collector/network exception was shown because collection did not proceed.
+- The current main-branch test has been corrected to assert that the pages carry explicit robots metadata, rather than hard-coding the stale noindex directive. Scheduled runs #108, #110 and #112 subsequently completed successfully, confirming the collector resumed after the test fix.
+- This is a resolved test-expectation regression, not evidence of an RSS provider outage. Continue observing future scheduled runs for independent fetch failures.
