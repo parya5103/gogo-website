@@ -33,7 +33,7 @@
     { href: "crystalquest/", label: "Crystal Quest", page: "crystal-quest" },
     { href: "gta6/", label: "GTA 6 Guide", page: "gta6" },
     { href: "account/index.html", label: "Account", page: "account" },
-    { href: "about.html", label: "About", page: "about" },
+    { href: "/about/", label: "About", page: "about" },
     { href: "contact/index.html", label: "Contact", page: "contact" }
   ];
 
@@ -41,7 +41,7 @@
     {
       heading: "Company",
       links: [
-        { href: "about.html", label: "About Us" },
+        { href: "/about/", label: "About Us" },
         { href: "contact/index.html", label: "Contact" },
         { href: "account/index.html", label: "GoGo Account" },
       ]
