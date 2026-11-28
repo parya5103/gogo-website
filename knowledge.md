@@ -178,3 +178,11 @@ Last verified: 2026-11-27
 
 
 - Additional PR #254 detail from the current diff comparison: its head `b4a53d972f00feb3804e784e4455257adb1dac55` adds a distinct `body { overflow-x: clip; }` declaration. Current `main` has the `html` overflow guard and fallback but not this body declaration. PR #254 is one commit ahead and eight commits behind current `main`; rebase/update it before merging, then publish `gh-pages` and rerun the full 320/360/390/430px + tablet responsive matrix. The PR's own Daily Job Fetch and Deploy, Security scan and CodeQL runs passed, but that does not replace the post-publish GoGo responsive test.
+
+
+## Follow-up verification — 2026-11-28 (continued)
+- Sarkari Sarthi PR #255 is closed and its MP Government Jobs directory is present on default-branch `main`; latest source workflow checks on head `90dd28fbd68e62db9705cf8ad117076859848e22` completed successfully for Daily Job Fetch and Deploy, Security scan and CodeQL.
+- PikaNews PR #99 is closed; the default-branch collector cron is `7,37 * * * *`. PikaNews PR #100 records the verified sitemap and indexation audit; its CI, CodeQL and Security scan all passed on head `d69429d540a9f5df3a4bb1d7e498864fdd7aa5af`. The News sitemap remains empty by design until reviewed original editorial qualifies.
+- Sarkari Sarthi PR #254 was eight commits behind current main. Rather than merge stale history, a clean replacement PR #256 was opened from current main with only the body overflow clipping and fallback change. Head `9eb7cc88107a0a62a369a614a0cb2bd3b805ad23` is one commit ahead and zero behind. Vercel reports success; source CI/CodeQL and a fresh post-publish GoGo responsive matrix are still required before treating it as complete.
+- Do not merge PR #256 or close PR #254 without owner approval. If #256 is accepted, close #254 as superseded after confirming the published result.
+- Current known remaining product follow-ups: monitor PikaNews scheduled-run cadence over several days; investigate failed/undated feeds without inventing dates; verify central GoGo sync after source PRs are merged; rerun Sarkari Sarthi responsive checks at 320/360/390/430px and tablet after publish.
